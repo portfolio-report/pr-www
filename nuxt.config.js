@@ -69,5 +69,9 @@ module.exports = {
         })
       }
     }
-  }
+  },
+  /*
+   ** Express middleware
+   */
+  serverMiddleware: ['~/api/index.js']
 }
