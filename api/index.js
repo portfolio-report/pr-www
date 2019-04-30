@@ -1,6 +1,7 @@
 import express from 'express'
 import currencies from './currencies.js'
 import securities from './securities.js'
+import stats from './stats.js'
 
 const app = express()
 
@@ -25,6 +26,7 @@ app.get('/', function(req, res) {
 
 app.use('/currencies', currencies)
 app.use('/securities', securities)
+app.use('/stats', stats)
 
 // This has to be the last route!
 app.route('*').get(function(req, res) {
