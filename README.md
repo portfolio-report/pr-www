@@ -26,3 +26,16 @@ $ npm run devapi
 $ npm run build
 $ npm start
 ```
+
+## Docker
+
+``` bash
+# Build image
+$ docker build -t <my-image-name> pr-www/
+
+# Create shared folder
+$ mkdir -p shared/www-db-prod
+
+# Run container
+$ docker run -d --name pr-www-prod --volume "$(pwd)"/shared/www-db-prod:/app/db --publish 127.0.0.1:3001:3000 <my-image-name>
+```
