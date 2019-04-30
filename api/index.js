@@ -2,6 +2,21 @@ import express from 'express'
 
 const app = express()
 
+/**
+ * Remove header X-Powered-By: express
+ */
+app.disable('x-powered-by')
+
+/**
+ * Prettify JSON output
+ */
+app.set('json spaces', 2)
+
+/**
+ * Trust reverse proxy (e.g. use IP address from X-Forwarded-For)
+ */
+app.set('trust proxy', true)
+
 app.get('/', function(req, res) {
   res.json({ status: 'ok' })
 })
