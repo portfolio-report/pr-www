@@ -1,4 +1,5 @@
 import express from 'express'
+import securities from './securities.js'
 
 const app = express()
 
@@ -20,6 +21,8 @@ app.set('trust proxy', true)
 app.get('/', function(req, res) {
   res.json({ status: 'ok' })
 })
+
+app.use('/securities', securities)
 
 // This has to be the last route!
 app.route('*').get(function(req, res) {

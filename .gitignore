@@ -3,3 +3,6 @@ node_modules/
 
 # nuxt.js build output
 .nuxt
+
+# pr-www
+db/
