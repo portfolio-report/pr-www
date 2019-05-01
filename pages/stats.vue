@@ -50,6 +50,11 @@ export default {
     CountryView,
     GChart
   },
+  head() {
+    return {
+      title: 'Portfolio Report'
+    }
+  },
   data() {
     return {
       selectedPackage: {},

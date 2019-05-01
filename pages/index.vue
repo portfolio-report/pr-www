@@ -80,6 +80,11 @@
 <script>
 export default {
   components: {},
+  head() {
+    return {
+      title: 'Portfolio Report'
+    }
+  },
   data() {
     return {
       searchTerm: '',
