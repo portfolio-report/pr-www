@@ -11,7 +11,9 @@
     </v-select>
     <div v-if="typeof selectedPackage.name !== 'undefined'">
       <h2>Package {{ selectedPackage.name }}</h2>
-      <!-- TODO: Display stats over several versions of the package -->
+
+      <GChart type="ColumnChart" :data="chartData" />
+
       <v-data-table
         :headers="headers"
         :items="versionArray"
@@ -40,10 +42,13 @@
 <script>
 import DateView from '~/components/stats-date'
 import CountryView from '~/components/stats-country'
+import { GChart } from 'vue-google-charts'
+
 export default {
   components: {
     DateView,
-    CountryView
+    CountryView,
+    GChart
   },
   data() {
     return {
@@ -76,6 +81,13 @@ export default {
       return Object.entries(this.selectedPackage.versions).map(e => {
         return { name: e[0], ...e[1] }
       })
+    },
+    chartData: function() {
+      return [['Version', 'Count']].concat(
+        this.versionArray.map(e => {
+          return [e.name, e.total]
+        })
+      )
     }
   },
   async asyncData({ $axios }) {
