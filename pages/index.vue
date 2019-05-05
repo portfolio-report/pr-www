@@ -70,14 +70,73 @@
           <v-alert v-model="resultsLimited" type="warning" outline>
             Output limited to 10 results.
           </v-alert>
+
+          <a @click="showContactForm = true">Get in contact</a>
         </v-card-text>
         <v-card-actions></v-card-actions>
       </v-card>
+
+      <v-dialog v-model="showContactForm" width="500">
+        <v-card>
+          <v-card-title class="headline grey lighten-2" primary-title>
+            Contact
+            <v-spacer />
+            <v-btn color="grey" flat icon @click="showContactForm = false">
+              <v-icon>close</v-icon>
+            </v-btn>
+          </v-card-title>
+
+          <v-card-text>
+            <v-form v-model="contactFormValid">
+              <v-text-field
+                v-model="name"
+                :rules="nameRules"
+                label="Your name"
+              />
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                label="Your email address"
+              />
+              <v-text-field
+                v-model="subject"
+                :rules="subjectRules"
+                label="Subject"
+              />
+              <v-textarea
+                v-model="message"
+                :rules="messageRules"
+                label="Your message"
+              />
+            </v-form>
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-alert :value="showErrorMessage" type="error" outline>
+            Message could not be send. Please try again later.
+          </v-alert>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              :disabled="!contactFormValid && !sendingContactForm"
+              :loading="sendingContactForm"
+              @click="send"
+            >
+              Send
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+import isEmail from 'validator/lib/isEmail'
+
 export default {
   components: {},
   head() {
@@ -98,7 +157,22 @@ export default {
       noResults: false,
       searching: false,
       error: false,
-      errorText: ''
+      errorText: '',
+      showContactForm: false,
+      contactFormValid: false,
+      sendingContactForm: false,
+      showErrorMessage: false,
+      name: '',
+      nameRules: [v => !!v || 'Name is required'],
+      email: '',
+      emailRules: [
+        v => !!v || 'Email is required',
+        v => isEmail(v) || 'Email must be valid'
+      ],
+      subject: '',
+      subjectRules: [v => !!v || 'Subject is required'],
+      message: '',
+      messageRules: [v => !!v || 'Message is required']
     }
   },
   computed: {
@@ -137,6 +211,28 @@ export default {
           this.noResults = false
           this.error = true
           this.errorText = error.message
+        })
+    },
+    send: function() {
+      this.sendingContactForm = true
+      this.showErrorMessage = false
+      const data = {
+        name: this.name,
+        email: this.email,
+        subject: this.subject,
+        message: this.message
+      }
+      this.$axios
+        .post('/api/contact', data)
+        .then(res => {
+          this.sendingContactForm = false
+          this.showContactForm = false
+        })
+        .catch(err => {
+          this.sendingContactForm = false
+          this.showErrorMessage = true
+          // eslint-disable-next-line no-console
+          console.log(err)
         })
     }
   }

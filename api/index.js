@@ -1,4 +1,5 @@
 import express from 'express'
+import contact from './contact.js'
 import currencies from './currencies.js'
 import securities from './securities.js'
 import stats from './stats.js'
@@ -24,6 +25,7 @@ app.get('/', function(req, res) {
   res.json({ status: 'ok' })
 })
 
+app.use('/contact', contact)
 app.use('/currencies', currencies)
 app.use('/securities', securities)
 app.use('/stats', stats)
