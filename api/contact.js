@@ -1,3 +1,4 @@
+import util from 'util'
 import express from 'express'
 import nodemailer from 'nodemailer'
 import { check, validationResult } from 'express-validator/check'
@@ -40,7 +41,7 @@ router.post(
   function(req, res) {
     const validationErrors = validationResult(req)
     if (!validationErrors.isEmpty()) {
-      log('Error validating input: ' + String(validationErrors.array()))
+      log('Error validating input: ' + util.inspect(validationErrors.array()))
       return res.status(400).json({ status: 'error' })
     }
 
@@ -64,11 +65,11 @@ router.post(
         text: req.body.message + '\n\nRemote IP: ' + req.ip
       })
       .then(info => {
-        log('Email sent: ' + String(info))
+        log('Email sent: ' + util.inspect(info))
         res.json({ status: 'ok' })
       })
       .catch(err => {
-        log('Error sending email: ' + String(err))
+        log('Error sending email: ' + util.inspect(err))
         res.status(500).json({ status: 'error' })
       })
   }
