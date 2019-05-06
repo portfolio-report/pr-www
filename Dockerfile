@@ -13,12 +13,17 @@ RUN cd node_modules/geoip-lite && npm run-script updatedb
 COPY . .
 
 # Build Nuxt
+ARG API_URL
 RUN npm run build
 
 VOLUME /app/db
+VOLUME /app/api/config.js
 
 EXPOSE 3000
 
 ENV NUXT_HOST=0.0.0.0
+
+# Set ENV value from ARG
+ENV API_URL=${API_URL}
 
 CMD npm start
