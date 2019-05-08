@@ -73,5 +73,5 @@ module.exports = {
   /*
    ** Express middleware
    */
-  serverMiddleware: ['~/api/index.js']
+  serverMiddleware: ['~/server/express-session.js', '~/api/index.js']
 }
