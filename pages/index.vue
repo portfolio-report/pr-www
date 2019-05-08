@@ -1,79 +1,81 @@
 <template>
-  <v-layout column justify-center align-center>
+  <v-layout justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <v-card>
+      <v-card class="elevation-12">
         <v-card-title class="headline">
           Security search
         </v-card-title>
+        <v-form v-model="searchFormValid" @submit.prevent="search">
+          <v-card-text>
+            <v-text-field
+              v-model="searchTerm"
+              :rules="searchRules"
+              label="ISIN/WKN/Symbol/Name"
+              clearable
+              append-icon="search"
+            />
+            <v-select
+              v-model="securityType"
+              :items="securityTypeItems"
+              label="Security type"
+            />
+
+            <v-alert v-model="noResults" type="info" outline>
+              Sorry, no results were found.
+            </v-alert>
+
+            <v-alert v-model="error" type="error" outline>
+              Sorry, there was an error:<br />{{ errorText }}
+            </v-alert>
+
+            <v-alert v-model="resultsLimited" type="warning" outline>
+              Output limited to 10 results.
+            </v-alert>
+          </v-card-text>
+          <v-card-actions>
+            <a @click="showContactForm = true">Get in contact</a>
+            <v-spacer />
+            <v-btn
+              type="submit"
+              color="primary"
+              :loading="searching"
+              :disabled="!searchFormValid || searching"
+            >
+              Search
+            </v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card>
+
+      <v-card v-for="result in results" :key="result.uuid">
+        <v-card-title>
+          <span>{{ result.name }}</span>
+          <v-chip small color="primary" text-color="white">
+            {{ result.security_type }}
+          </v-chip>
+        </v-card-title>
         <v-card-text>
-          <v-text-field
-            v-model="searchTerm"
-            label="ISIN/WKN/Symbol/Name"
-            clearable
-            append-icon="search"
-            @keyup.enter="search"
-          />
-          <v-select
-            v-model="securityType"
-            :items="securityTypeItems"
-            label="Security type"
-          />
-          <v-btn
-            color="primary"
-            small
-            :loading="searching"
-            :disabled="searching"
-            @click="search"
-          >
-            Search
-          </v-btn>
-
-          <v-alert v-model="noResults" type="info" outline>
-            Sorry, no results were found.
-          </v-alert>
-
-          <v-alert v-model="error" type="error" outline>
-            Sorry, there was an error:<br />{{ errorText }}
-          </v-alert>
-
-          <v-card v-for="result in results" :key="result.uuid">
-            <v-card-title>
-              <span>{{ result.name }}</span>
-              <v-chip small color="primary" text-color="white">
-                {{ result.security_type }}
-              </v-chip>
-            </v-card-title>
-            <v-card-text>
-              <ul>
-                <li>
-                  ISIN: <b>{{ result.isin }}</b>
-                </li>
-                <li>
-                  WKN: <b>{{ result.wkn }}</b>
-                </li>
-                <li v-if="result.markets['XFRA']">
-                  Symbol (Frankfurt):
-                  <b>{{ result.markets['XFRA'].symbol }}</b>
-                </li>
-                <li v-if="result.markets['XNAS']">
-                  Symbol (NASDAQ):
-                  <b>{{ result.markets['XNAS'].symbol }}</b>
-                </li>
-                <li v-if="result.markets['XNYS']">
-                  Symbol (New York):
-                  <b>{{ result.markets['XNYS'].symbol }}</b>
-                </li>
-              </ul>
-            </v-card-text>
-          </v-card>
-
-          <v-alert v-model="resultsLimited" type="warning" outline>
-            Output limited to 10 results.
-          </v-alert>
-
-          <a @click="showContactForm = true">Get in contact</a>
+          <ul>
+            <li>
+              ISIN: <b>{{ result.isin }}</b>
+            </li>
+            <li>
+              WKN: <b>{{ result.wkn }}</b>
+            </li>
+            <li v-if="result.markets['XFRA']">
+              Symbol (Frankfurt):
+              <b>{{ result.markets['XFRA'].symbol }}</b>
+            </li>
+            <li v-if="result.markets['XNAS']">
+              Symbol (NASDAQ):
+              <b>{{ result.markets['XNAS'].symbol }}</b>
+            </li>
+            <li v-if="result.markets['XNYS']">
+              Symbol (New York):
+              <b>{{ result.markets['XNYS'].symbol }}</b>
+            </li>
+          </ul>
         </v-card-text>
-        <v-card-actions></v-card-actions>
       </v-card>
 
       <v-dialog v-model="showContactForm" width="500">
@@ -146,7 +148,9 @@ export default {
   },
   data() {
     return {
+      searchFormValid: false,
       searchTerm: '',
+      searchRules: [v => !!v || 'Required'],
       securityType: 'share',
       securityTypeItems: [
         { text: 'share', value: 'share' },

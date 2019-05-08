@@ -8,6 +8,11 @@
 
 <script>
 export default {
+  head() {
+    return {
+      title: 'Portfolio Report'
+    }
+  },
   // eslint-disable-next-line
   props: { error: Object }
 }
