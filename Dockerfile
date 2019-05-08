@@ -17,7 +17,6 @@ ARG API_URL
 RUN npm run build
 
 VOLUME /app/db
-VOLUME /app/api/config.js
 
 EXPOSE 3000
 

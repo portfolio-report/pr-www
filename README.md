@@ -44,12 +44,11 @@ $ docker build -t <my-image-name> --build-arg API_URL=$API_URL pr-www/
 $ mkdir -p shared/www-db-prod
 
 # Create config
-$ vim shared/config-prod.js
+$ vim pr-www/api/config.js
 
 # Run container
 $ docker run -d --name pr-www-prod \
   --volume "$(pwd)"/shared/www-db-prod:/app/db \
-  --volume "$(pwd)"/shared/config-prod.js:/app/api/config.js \
   -e BASE_URL=https://www.example.com/ \
   --publish 127.0.0.1:3001:3000 <my-image-name>
 ```
