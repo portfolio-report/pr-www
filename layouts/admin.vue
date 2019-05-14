@@ -30,11 +30,15 @@
         <v-menu open-on-hover bottom offset-y>
           <template v-slot:activator="{ on }">
             <v-btn color="primary" flat v-on="on">
+              <v-icon>person</v-icon>
               {{ username }}
             </v-btn>
           </template>
           <v-list>
             <v-list-tile @click="logout">
+              <v-list-tile-avatar>
+                <v-icon>mdi-logout-variant</v-icon>
+              </v-list-tile-avatar>
               <v-list-tile-title>Logout</v-list-tile-title>
             </v-list-tile>
           </v-list>
