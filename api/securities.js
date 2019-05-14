@@ -1,5 +1,6 @@
 import express from 'express'
 import NeDB from 'nedb-promises'
+import { escapeRegExp } from 'lodash-es'
 
 const db = NeDB.create({
   filename: './db/securities.db.json',
@@ -30,7 +31,7 @@ router.route('/:uuid').get(async function(req, res) {
 })
 
 router.route('/search/:search').get(async function(req, res) {
-  const search = req.params.search
+  const search = escapeRegExp(req.params.search)
   const paramType = req.query.type
 
   const typeCondition = paramType ? { security_type: paramType } : {}
