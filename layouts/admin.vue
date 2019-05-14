@@ -8,6 +8,14 @@
             <v-list-tile-title>Home</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile router to="/admin/securities" exact>
+          <v-list-tile-action>
+            <v-icon>attach_money</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Securities</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         <v-list-tile router to="/" exact>
           <v-list-tile-action> <v-icon>public</v-icon> </v-list-tile-action>
           <v-list-tile-content>
