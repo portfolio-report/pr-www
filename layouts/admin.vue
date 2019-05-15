@@ -16,6 +16,14 @@
             <v-list-tile-title>Securities</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile router to="/admin/backup" exact>
+          <v-list-tile-action>
+            <v-icon>settings_backup_restore</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Backup & Restore</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         <v-list-tile router to="/" exact>
           <v-list-tile-action> <v-icon>public</v-icon> </v-list-tile-action>
           <v-list-tile-content>

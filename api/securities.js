@@ -1,7 +1,9 @@
 import express from 'express'
 import NeDB from 'nedb-promises'
 import { escapeRegExp } from 'lodash-es'
+import Debug from 'debug'
 import { authRequired } from './auth.js'
+const log = Debug('api:securities')
 
 const db = NeDB.create({
   filename: './db/securities.db.json',
@@ -9,6 +11,9 @@ const db = NeDB.create({
 })
 
 const router = express.Router()
+
+// Parse (large) JSON payloads
+router.use(express.json({ limit: '20mb' }))
 
 /**
  * Read securities from db with query parameters
@@ -66,7 +71,14 @@ async function readSecurities({
  * Get list of securities
  */
 router.get('/', authRequired, async function(req, res) {
-  const limit = parseInt(req.query.limit) || 10
+  let limit
+  if (isNaN(parseInt(req.query.limit))) {
+    limit = 10
+  } else if (parseInt(req.query.limit) === 0) {
+    limit = undefined
+  } else {
+    limit = parseInt(req.query.limit)
+  }
   const skip = parseInt(req.query.skip) || 0
   const sort = req.query.sort || 'name'
   const descending = req.query.desc === 'true'
@@ -83,6 +95,33 @@ router.get('/', authRequired, async function(req, res) {
       securityType
     })
   )
+})
+
+/**
+ * Create security or securities
+ */
+router.post('/', authRequired, async function(req, res, next) {
+  if (req.query.multiple === undefined) {
+    // Insert single security
+    const err = new Error('not implemented')
+    err.statusCode = 500
+    return next(err)
+  } else {
+    // Insert multiple securities
+    const securities = req.body
+    log('Inserting', securities.length, 'entries')
+    await db.insert(securities)
+    res.json({ status: 'ok' })
+  }
+})
+
+/**
+ * Delete all securities
+ */
+router.delete('/', authRequired, async function(req, res) {
+  log('Dropping database')
+  await db.remove({}, { multi: true })
+  res.send()
 })
 
 /**
