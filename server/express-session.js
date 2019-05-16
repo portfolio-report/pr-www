@@ -3,23 +3,53 @@
  * and session store on the server using SQLite.
  */
 
+import fs from 'fs'
 import session from 'express-session'
 import CSS from 'connect-session-sequelize'
 import Sequelize from 'sequelize'
 import config from '../api/config.js'
 
-const sequelize = new Sequelize('sessions', null, null, {
-  dialect: 'sqlite',
-  storage: './db/sessions.sqlite',
-  logging: false // Don't log every SQL to console
-})
+/**
+ * Check if directory exists
+ */
+function pathExists(path) {
+  try {
+    fs.statSync(path)
+    return true
+  } catch {
+    return false
+  }
+}
 
-const SequelizeStore = CSS(session.Store)
+/**
+ * Use sequelize database if database folder exists.
+ * I.e. normal operation in development or production.
+ * If folder does not exist (e.g. during build in Docker image),
+ * built-in in-memory database will be used.
+ */
+let sequelizeStore
 
-const sequelizeStore = new SequelizeStore({ db: sequelize })
+if (pathExists('./db/')) {
+  /**
+   * If folder exists, use sequelize database.
 
-// Initialize database
-sequelizeStore.sync()
+   */
+
+  const sequelize = new Sequelize('sessions', null, null, {
+    dialect: 'sqlite',
+    storage: './db/sessions.sqlite',
+    logging: false // Don't log every SQL to console
+  })
+
+  const SequelizeStore = CSS(session.Store)
+
+  sequelizeStore = new SequelizeStore({ db: sequelize })
+
+  // Initialize database
+  sequelizeStore.sync()
+} else {
+  // Folder does not exist (e.g. during build) -> use in memory database
+}
 
 export default session({
   secret: config.auth.secret,
