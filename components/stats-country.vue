@@ -3,7 +3,7 @@
     <v-data-table
       :headers="headers"
       :items="items"
-      hide-actions="true"
+      :hide-actions="true"
       :pagination.sync="pagination"
     >
       <template v-slot:items="props">

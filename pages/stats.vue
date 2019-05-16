@@ -17,7 +17,7 @@
       <v-data-table
         :headers="headers"
         :items="versionArray"
-        hide-actions="true"
+        :hide-actions="true"
       >
         <template v-slot:items="props">
           <tr @click="selectedVersion = props.item">
@@ -72,7 +72,7 @@ export default {
           sortable: true,
           value: 'count'
         },
-        { text: 'Show details' }
+        { text: 'Show details', value: '' }
       ]
     }
   },
@@ -96,7 +96,7 @@ export default {
     }
   },
   async asyncData({ $axios }) {
-    const stats = await $axios.$get('/api/stats')
+    const stats = await $axios.$get('/api/stats/updates')
     return { stats }
   }
 }

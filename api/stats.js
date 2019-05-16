@@ -1,71 +1,139 @@
 import express from 'express'
-import NeDB from 'nedb'
+import NeDB from 'nedb-promises'
 import geoip from 'geoip-lite'
+import Debug from 'debug'
+import { authRequired } from './auth.js'
+const log = Debug('api:securities')
 
-const db = new NeDB({
+const db = NeDB.create({
   filename: './db/stats.db.json',
   autoload: true
 })
 
 const router = express.Router()
 
-router.route('/').get(function(req, res) {
-  db.find({ type: 'update' }, function(err, updates) {
-    if (err) {
-      res.send(err)
-    }
+// Parse (large) JSON payloads
+router.use(express.json({ limit: '20mb' }))
 
-    const packages = {}
+/**
+ * Serialize entry before conversion to JSON
+ */
+function serialize(entry) {
+  entry.dt = entry.dt.toISOString() // Convert Date to String
+  return entry
+}
 
-    updates.forEach(el => {
-      /* Count updates by package */
-      if (!(el.package in packages)) {
-        packages[el.package] = { total: 0, versions: {} }
-      }
-      packages[el.package].total += 1
+/**
+ * Deserialize entry after conversion from JSON
+ */
+function deserialize(entry) {
+  entry.dt = new Date(entry).dt // Convert from String to Date
+  return entry
+}
 
-      /* Count updates by package/version */
-      const versions = packages[el.package].versions
+/**
+ * Get all entries, i.e. stats data
+ */
+router.get('/', authRequired, async function(req, res) {
+  const entries = await db.find({})
 
-      if (!(el.version in versions)) {
-        versions[el.version] = { total: 0, dates: {}, countries: {} }
-      }
+  entries.map(e => serialize(e))
 
-      versions[el.version].total += 1
+  const totalCount = await db.count({})
 
-      /* Count updates by package/version/date */
-      const dates = versions[el.version].dates
-
-      const date = el.dt.toISOString().slice(0, 10)
-      if (!(date in dates)) {
-        dates[date] = 0
-      }
-
-      dates[date] += 1
-
-      /* Count updates by package/version/country */
-      const countries = versions[el.version].countries
-
-      if (!(el.country in countries)) {
-        countries[el.country] = 0
-      }
-
-      countries[el.country] += 1
-    })
-
-    const result = {
-      updates: {
-        total: updates.length,
-        packages: packages
-      }
-    }
-
-    // Send answer to client
-    res.json(result)
-  })
+  res.json({ entries, params: { totalCount } })
 })
 
-router.route('/update/:package/:version').get(function(req, res) {
+/**
+ * Delete all entries, i.e. stats data
+ */
+router.delete('/', authRequired, async function(req, res) {
+  log('Dropping database')
+  await db.remove({}, { multi: true })
+  res.send()
+})
+
+/**
+ * Create entries, i.e. stats data
+ */
+router.post('/', authRequired, async function(req, res, next) {
+  if (req.query.multiple === undefined) {
+    // Insert single entry
+    const err = new Error('not implemented')
+    err.statusCode = 500
+    return next(err)
+  } else {
+    // Insert multiple securities
+    const entries = req.body
+
+    entries.map(e => deserialize(e))
+
+    log('Inserting', entries.length, 'entries')
+    await db.insert(entries)
+    res.json({ status: 'ok' })
+  }
+})
+
+/**
+ * Get statistics on updates
+ */
+router.route('/updates').get(async function(req, res) {
+  const updates = await db.find({ type: 'update' })
+
+  const packages = {}
+
+  updates.forEach(el => {
+    /* Count updates by package */
+    if (!(el.package in packages)) {
+      packages[el.package] = { total: 0, versions: {} }
+    }
+    packages[el.package].total += 1
+
+    /* Count updates by package/version */
+    const versions = packages[el.package].versions
+
+    if (!(el.version in versions)) {
+      versions[el.version] = { total: 0, dates: {}, countries: {} }
+    }
+
+    versions[el.version].total += 1
+
+    /* Count updates by package/version/date */
+    const dates = versions[el.version].dates
+
+    const date = el.dt.toISOString().slice(0, 10)
+    if (!(date in dates)) {
+      dates[date] = 0
+    }
+
+    dates[date] += 1
+
+    /* Count updates by package/version/country */
+    const countries = versions[el.version].countries
+
+    if (!(el.country in countries)) {
+      countries[el.country] = 0
+    }
+
+    countries[el.country] += 1
+  })
+
+  const result = {
+    updates: {
+      total: updates.length,
+      packages: packages
+    }
+  }
+
+  // Send answer to client
+  res.json(result)
+})
+
+/**
+ * Count requests (GET or HEAD) as
+ * update of a certain package to a certain version
+ */
+router.route('/update/:package/:version').get(async function(req, res) {
   // Resolve IP to country
   const ipLookup = geoip.lookup(req.ip) || {}
   const country = ipLookup.country
@@ -79,7 +147,8 @@ router.route('/update/:package/:version').get(function(req, res) {
     country: country,
     useragent: req.headers['user-agent']
   }
-  db.insert(logLine)
+
+  await db.insert(logLine)
 
   // Send answer to client
   res.send('ok')

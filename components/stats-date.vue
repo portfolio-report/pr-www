@@ -2,7 +2,7 @@
   <div>
     <GChart type="LineChart" :data="chartData" :options="chartOptions" />
 
-    <v-data-table :headers="headers" :items="tableItems" hide-actions="true">
+    <v-data-table :headers="headers" :items="tableItems" :hide-actions="true">
       <template v-slot:items="props">
         <td>{{ props.item.date }}</td>
         <td class="text-xs-right">{{ props.item.count }}</td>
