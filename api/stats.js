@@ -63,13 +63,11 @@ router.post('/', authRequired, async function(req, res, next) {
     err.statusCode = 500
     return next(err)
   } else {
-    // Insert multiple securities
+    // Insert multiple entries
     const entries = req.body
-
     entries.map(e => deserialize(e))
-
-    log('Inserting', entries.length, 'entries')
-    await db.insert(entries)
+    const result = await db.insert(entries)
+    log(`Inserted ${result.length} of ${entries.length} entries`)
     res.json({ status: 'ok' })
   }
 })

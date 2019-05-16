@@ -98,30 +98,29 @@ router.get('/', authRequired, async function(req, res) {
 })
 
 /**
- * Create security or securities
+ * Create entries, i.e. securities
  */
 router.post('/', authRequired, async function(req, res, next) {
   if (req.query.multiple === undefined) {
-    // Insert single security
+    // Insert single entry
     const err = new Error('not implemented')
     err.statusCode = 500
     return next(err)
   } else {
-    // Insert multiple securities
-    const securities = req.body
-    log('Inserting', securities.length, 'entries')
-    await db.insert(securities)
+    // Insert multiple entries
+    const entries = req.body
+    const result = await db.insert(entries)
+    log(`Inserted ${result.length} of ${entries.length} entries`)
     res.json({ status: 'ok' })
   }
 })
 
 /**
- * Delete all securities
+ * Delete all entries, i.e. securities
  */
 router.delete('/', authRequired, async function(req, res) {
-  log('Dropping database')
   const count = await db.remove({}, { multi: true })
-  log(`Deleted ${count} rows`)
+  log(`Deleted ${count} entries`)
   res.send()
 })
 
