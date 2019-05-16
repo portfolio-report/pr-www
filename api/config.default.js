@@ -3,7 +3,7 @@ export default {
     secret: 'change_me',
     admin: {
       username: '',
-      password: ''
+      password: '' // plain:secret || sha256:2bb80d53...
     }
   },
   contact: {

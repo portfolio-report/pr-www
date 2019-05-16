@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import express from 'express'
 import Debug from 'debug'
 import config from './config.js'
@@ -15,12 +16,39 @@ router.post('/login', function(req, res, next) {
   const { username, password } = req.body
 
   if (
-    config.auth.admin.username &&
-    config.auth.admin.password &&
-    config.auth.admin.username !== '' &&
-    config.auth.admin.password !== '' &&
+    config.auth.admin.username === undefined ||
+    config.auth.admin.password === undefined ||
+    config.auth.admin.username === '' ||
+    config.auth.admin.password === ''
+  ) {
+    log('Configuration for authentication missing')
+
+    const err = new Error('Unauthorized')
+    err.statusCode = 401
+    return next(err)
+  }
+
+  let passwordCompare
+  if (config.auth.admin.password.match(/^plain:/)) {
+    passwordCompare = 'plain:' + password
+  } else if (config.auth.admin.password.match(/^sha256:/)) {
+    passwordCompare =
+      'sha256:' +
+      crypto
+        .createHash('sha256')
+        .update(password)
+        .digest('hex')
+  } else {
+    log('Configuration for authentication invalid, unknown cipher')
+
+    const err = new Error('Unauthorized')
+    err.statusCode = 401
+    return next(err)
+  }
+
+  if (
     username === config.auth.admin.username &&
-    password === config.auth.admin.password
+    passwordCompare === config.auth.admin.password
   ) {
     log(`Creating session for '${username}'`)
 
@@ -32,6 +60,8 @@ router.post('/login', function(req, res, next) {
     // Return user back to client
     res.json(user)
   } else {
+    log('Invalid username/password')
+
     const err = new Error('Unauthorized')
     err.statusCode = 401
     return next(err)
