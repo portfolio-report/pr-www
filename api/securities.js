@@ -120,7 +120,8 @@ router.post('/', authRequired, async function(req, res, next) {
  */
 router.delete('/', authRequired, async function(req, res) {
   log('Dropping database')
-  await db.remove({}, { multi: true })
+  const count = await db.remove({}, { multi: true })
+  log(`Deleted ${count} rows`)
   res.send()
 })
 

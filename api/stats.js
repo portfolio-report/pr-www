@@ -3,7 +3,7 @@ import NeDB from 'nedb-promises'
 import geoip from 'geoip-lite'
 import Debug from 'debug'
 import { authRequired } from './auth.js'
-const log = Debug('api:securities')
+const log = Debug('api:stats')
 
 const db = NeDB.create({
   filename: './db/stats.db.json',
@@ -27,7 +27,7 @@ function serialize(entry) {
  * Deserialize entry after conversion from JSON
  */
 function deserialize(entry) {
-  entry.dt = new Date(entry).dt // Convert from String to Date
+  entry.dt = new Date(entry.dt) // Convert from String to Date
   return entry
 }
 
@@ -48,8 +48,8 @@ router.get('/', authRequired, async function(req, res) {
  * Delete all entries, i.e. stats data
  */
 router.delete('/', authRequired, async function(req, res) {
-  log('Dropping database')
-  await db.remove({}, { multi: true })
+  const count = await db.remove({}, { multi: true })
+  log(`Dropped database, deleted ${count} rows`)
   res.send()
 })
 
