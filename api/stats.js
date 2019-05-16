@@ -49,7 +49,7 @@ router.get('/', authRequired, async function(req, res) {
  */
 router.delete('/', authRequired, async function(req, res) {
   const count = await db.remove({}, { multi: true })
-  log(`Dropped database, deleted ${count} rows`)
+  log(`Deleted ${count} entries`)
   res.send()
 })
 
