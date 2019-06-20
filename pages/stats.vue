@@ -22,6 +22,12 @@
         <template v-slot:items="props">
           <tr @click="selectedVersion = props.item">
             <td>{{ props.item.name }}</td>
+            <td>
+              {{ props.item.dt_first_update.toLocaleString('de-DE') }}
+            </td>
+            <td>
+              {{ props.item.dt_last_update.toLocaleString('de-DE') }}
+            </td>
             <td class="text-xs-right">{{ props.item.total }}</td>
             <td><v-btn>Details</v-btn></td>
           </tr>
@@ -67,6 +73,18 @@ export default {
           value: 'date'
         },
         {
+          text: 'From',
+          align: 'left',
+          sortable: true,
+          value: 'dt_first_update'
+        },
+        {
+          text: 'To',
+          align: 'left',
+          sortable: true,
+          value: 'dt_last_update'
+        },
+        {
           text: 'Count',
           align: 'right',
           sortable: true,
@@ -97,6 +115,23 @@ export default {
   },
   async asyncData({ $axios }) {
     const stats = await $axios.$get('/api/stats/updates')
+
+    /* Convert datetime strings to objects */
+    for (const p in stats.updates.packages) {
+      for (const v in stats.updates.packages[p].versions) {
+        if (stats.updates.packages[p].versions[v].dt_first_update) {
+          stats.updates.packages[p].versions[v].dt_first_update = new Date(
+            stats.updates.packages[p].versions[v].dt_first_update
+          )
+        }
+        if (stats.updates.packages[p].versions[v].dt_last_update) {
+          stats.updates.packages[p].versions[v].dt_last_update = new Date(
+            stats.updates.packages[p].versions[v].dt_last_update
+          )
+        }
+      }
+    }
+
     return { stats }
   }
 }

@@ -106,6 +106,24 @@ router.route('/updates').get(async function(req, res) {
 
     dates[date] += 1
 
+    /* Find first and last updates of a given package/version */
+    if (
+      versions[el.version].dt_first_update === undefined ||
+      versions[el.version].dt_first_update > el.dt
+    ) {
+      versions[el.version].dt_first_update = el.dt
+    }
+
+    if (
+      versions[el.version].dt_last_update === undefined ||
+      versions[el.version].dt_last_update < el.dt
+    ) {
+      versions[el.version].dt_last_update = el.dt
+    }
+
+    /* Country: Merge undefined and empty string */
+    if (el.country === undefined) el.country = ''
+
     /* Count updates by package/version/country */
     const countries = versions[el.version].countries
 
