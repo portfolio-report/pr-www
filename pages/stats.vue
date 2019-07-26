@@ -70,7 +70,7 @@ export default {
           text: 'Version',
           align: 'left',
           sortable: true,
-          value: 'date'
+          value: 'name'
         },
         {
           text: 'From',
@@ -107,9 +107,11 @@ export default {
     },
     chartData: function() {
       return [['Version', 'Count']].concat(
-        this.versionArray.map(e => {
-          return [e.name, e.total]
-        })
+        this.versionArray
+          .map(e => {
+            return [e.name, e.total]
+          })
+          .sort((a, b) => a[0].localeCompare(b[0]))
       )
     }
   },
