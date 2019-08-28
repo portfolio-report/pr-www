@@ -21,7 +21,7 @@
                 <v-list-tile-content>
                   <v-text-field
                     v-model="pagination.search"
-                    append-icon="search"
+                    append-icon="mdi-magnify"
                     clearable
                     single-line
                   />

@@ -12,7 +12,7 @@
               :rules="searchRules"
               label="ISIN/WKN/Symbol/Name"
               clearable
-              append-icon="search"
+              append-icon="mdi-magnify"
             />
             <v-select
               v-model="securityType"
@@ -84,7 +84,7 @@
             Contact
             <v-spacer />
             <v-btn color="grey" flat icon @click="showContactForm = false">
-              <v-icon>close</v-icon>
+              <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-card-title>
 

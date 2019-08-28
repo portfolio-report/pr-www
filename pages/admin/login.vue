@@ -17,13 +17,13 @@
               <v-text-field
                 v-model="formUsername"
                 label="Username"
-                prepend-icon="person"
+                prepend-icon="mdi-account"
               />
               <v-text-field
                 v-model="formPassword"
                 label="Password"
                 type="password"
-                prepend-icon="lock"
+                prepend-icon="mdi-lock"
               />
             </v-card-text>
             <v-card-actions>

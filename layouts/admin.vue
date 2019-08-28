@@ -3,14 +3,14 @@
     <v-navigation-drawer v-model="leftDrawerOpen" fixed app>
       <v-list>
         <v-list-tile router to="/admin/" exact>
-          <v-list-tile-action> <v-icon>home</v-icon> </v-list-tile-action>
+          <v-list-tile-action> <v-icon>mdi-home</v-icon> </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Home</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile router to="/admin/securities" exact>
           <v-list-tile-action>
-            <v-icon>attach_money</v-icon>
+            <v-icon>mdi-currency-usd</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Securities</v-list-tile-title>
@@ -18,20 +18,20 @@
         </v-list-tile>
         <v-list-tile router to="/admin/backup" exact>
           <v-list-tile-action>
-            <v-icon>settings_backup_restore</v-icon>
+            <v-icon>mdi-backup-restore</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Backup & Restore</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile router to="/" exact>
-          <v-list-tile-action> <v-icon>public</v-icon> </v-list-tile-action>
+          <v-list-tile-action> <v-icon>mdi-earth</v-icon> </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Public site</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile router to="/stats" exact>
-          <v-list-tile-action> <v-icon>bar_chart</v-icon> </v-list-tile-action>
+          <v-list-tile-action> <v-icon>mdi-poll</v-icon> </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Statistics</v-list-tile-title>
           </v-list-tile-content>
@@ -46,7 +46,7 @@
         <v-menu open-on-hover bottom offset-y>
           <template v-slot:activator="{ on }">
             <v-btn color="primary" flat v-on="on">
-              <v-icon>person</v-icon>
+              <v-icon>mdi-account</v-icon>
               {{ username }}
             </v-btn>
           </template>
