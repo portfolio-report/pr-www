@@ -20,15 +20,15 @@
               label="Security type"
             />
 
-            <v-alert v-model="noResults" type="info" outline>
+            <v-alert v-model="noResults" type="info" outlined>
               Sorry, no results were found.
             </v-alert>
 
-            <v-alert v-model="error" type="error" outline>
+            <v-alert v-model="error" type="error" outlined>
               Sorry, there was an error:<br />{{ errorText }}
             </v-alert>
 
-            <v-alert v-model="resultsLimited" type="warning" outline>
+            <v-alert v-model="resultsLimited" type="warning" outlined>
               Output limited to 10 results.
             </v-alert>
           </v-card-text>
@@ -83,7 +83,7 @@
           <v-card-title class="headline grey lighten-2" primary-title>
             Contact
             <v-spacer />
-            <v-btn color="grey" flat icon @click="showContactForm = false">
+            <v-btn color="grey" text icon @click="showContactForm = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-card-title>
@@ -115,7 +115,7 @@
 
           <v-divider></v-divider>
 
-          <v-alert :value="showErrorMessage" type="error" outline>
+          <v-alert :value="showErrorMessage" type="error" outlined>
             Message could not be send. Please try again later.
           </v-alert>
 

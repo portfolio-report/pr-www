@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-alert :value="true" type="error" outline>
+    <v-alert :value="true" type="error" outlined>
       {{ error.message }}
     </v-alert>
   </div>

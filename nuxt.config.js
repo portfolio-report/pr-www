@@ -1,4 +1,4 @@
-const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+const colors = require('vuetify/es5/util/colors').default
 const pkg = require('./package')
 
 module.exports = {
@@ -33,11 +33,6 @@ module.exports = {
         type: 'image/png',
         sizes: '192x192',
         href: '/favicon-192.png'
-      },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
       }
     ]
   },
@@ -50,43 +45,53 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['~/assets/style/app.styl'],
+  css: [],
 
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/vuetify', '@/plugins/materialdesignicons'],
-
+  plugins: [],
+  /*
+   ** Nuxt.js dev-modules
+   */
+  buildModules: [
+    // Doc: https://github.com/nuxt-community/eslint-module
+    '@nuxtjs/vuetify'
+  ],
   /*
    ** Nuxt.js modules
    */
   modules: ['@nuxtjs/axios'],
+  /*
+   ** vuetify module configuration
+   ** https://github.com/nuxt-community/vuetify-module
+   */
+  vuetify: {
+    customVariables: ['~/assets/variables.scss'],
+    theme: {
+      dark: false,
+      themes: {
+        light: {
+          primary: '#006e90', // colors.blue.darken2
+          accent: colors.grey.darken3,
+          secondary: '#f18f01', // colors.amber.darken3
+          info: '#006e90', // colors.teal.lighten1
+          warning: '#f18f01', // colors.amber.base
+          error: colors.deepOrange.accent4,
+          success: '#99C24D' // colors.green.accent3
+        }
+      }
+    }
+  },
 
   /*
    ** Build configuration
    */
   build: {
-    transpile: ['vuetify/lib'],
-    plugins: [new VuetifyLoaderPlugin()],
-    loaders: {
-      stylus: {
-        import: ['~assets/style/variables.styl']
-      }
-    },
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {
-      // Run ESLint on save
-      if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
-    }
+    extend(config, ctx) {}
   },
   /*
    ** Express middleware

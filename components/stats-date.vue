@@ -2,10 +2,17 @@
   <div>
     <GChart type="LineChart" :data="chartData" :options="chartOptions" />
 
-    <v-data-table :headers="headers" :items="tableItems" :hide-actions="true">
-      <template v-slot:items="props">
-        <td>{{ props.item.date }}</td>
-        <td class="text-xs-right">{{ props.item.count }}</td>
+    <v-data-table
+      :headers="headers"
+      :items="tableItems"
+      :hide-default-footer="true"
+      sort-by="date"
+    >
+      <template v-slot:item="props">
+        <tr>
+          <td>{{ props.item.date }}</td>
+          <td class="text-right">{{ props.item.count }}</td>
+        </tr>
       </template>
     </v-data-table>
   </div>

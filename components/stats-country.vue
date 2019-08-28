@@ -3,12 +3,15 @@
     <v-data-table
       :headers="headers"
       :items="items"
-      :hide-actions="true"
-      :pagination.sync="pagination"
+      :hide-default-footer="true"
+      :options.sync="pagination"
+      :items-per-page="-1"
     >
-      <template v-slot:items="props">
-        <td>{{ props.item.country }}</td>
-        <td class="text-xs-right">{{ props.item.count }}</td>
+      <template v-slot:item="props">
+        <tr>
+          <td>{{ props.item.country }}</td>
+          <td class="text-right">{{ props.item.count }}</td>
+        </tr>
       </template>
     </v-data-table>
   </div>
@@ -39,9 +42,8 @@ export default {
         }
       ],
       pagination: {
-        sortBy: 'count',
-        descending: true,
-        rowsPerPage: -1
+        sortBy: ['count'],
+        sortDesc: [true]
       }
     }
   },

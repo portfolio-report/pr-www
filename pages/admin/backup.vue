@@ -1,7 +1,7 @@
 <template>
   <v-layout column justify-center>
     <v-flex xs12 sm8 md6>
-      <v-tabs color="primary" dark slider-color="secondary" grow>
+      <v-tabs background-color="primary" dark slider-color="secondary" grow>
         <v-tab key="backup">Backup</v-tab>
         <v-tab key="restore">Restore</v-tab>
 
@@ -32,12 +32,12 @@
               <input type="file" @change="handleFileUpload" />
             </v-card-text>
             <v-list>
-              <v-list-tile>
+              <v-list-item>
                 Type: {{ restoreBackupInfo.entityType }}
-              </v-list-tile>
-              <v-list-tile>
+              </v-list-item>
+              <v-list-item>
                 Number of entries: {{ restoreBackupInfo.length }}
-              </v-list-tile>
+              </v-list-item>
             </v-list>
 
             <DialogConfirm ref="confirm" />

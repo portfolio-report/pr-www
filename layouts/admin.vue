@@ -2,65 +2,63 @@
   <v-app>
     <v-navigation-drawer v-model="leftDrawerOpen" fixed app>
       <v-list>
-        <v-list-tile router to="/admin/" exact>
-          <v-list-tile-action> <v-icon>mdi-home</v-icon> </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Home</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile router to="/admin/securities" exact>
-          <v-list-tile-action>
+        <v-list-item router to="/admin/" exact>
+          <v-list-item-action> <v-icon>mdi-home</v-icon> </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item router to="/admin/securities" exact>
+          <v-list-item-action>
             <v-icon>mdi-currency-usd</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Securities</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile router to="/admin/backup" exact>
-          <v-list-tile-action>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Securities</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item router to="/admin/backup" exact>
+          <v-list-item-action>
             <v-icon>mdi-backup-restore</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Backup & Restore</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile router to="/" exact>
-          <v-list-tile-action> <v-icon>mdi-earth</v-icon> </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Public site</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile router to="/stats" exact>
-          <v-list-tile-action> <v-icon>mdi-poll</v-icon> </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Statistics</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Backup & Restore</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item router to="/" exact>
+          <v-list-item-action> <v-icon>mdi-earth</v-icon> </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Public site</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item router to="/stats" exact>
+          <v-list-item-action> <v-icon>mdi-poll</v-icon> </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Statistics</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar fixed app>
-      <v-toolbar-side-icon @click="leftDrawerOpen = !leftDrawerOpen" />
+    <v-app-bar fixed app>
+      <v-app-bar-nav-icon @click="leftDrawerOpen = !leftDrawerOpen" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-toolbar-items>
-        <v-menu open-on-hover bottom offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn color="primary" flat v-on="on">
-              <v-icon>mdi-account</v-icon>
-              {{ username }}
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-tile @click="logout">
-              <v-list-tile-avatar>
-                <v-icon>mdi-logout-variant</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-title>Logout</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-      </v-toolbar-items>
-    </v-toolbar>
+      <v-menu open-on-hover bottom offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" text v-on="on">
+            <v-icon>mdi-account</v-icon>
+            {{ username }}
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="logout">
+            <v-list-item-avatar>
+              <v-icon>mdi-logout-variant</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
     <v-content>
       <v-container>
         <nuxt />

@@ -6,9 +6,9 @@
         <v-spacer></v-spacer>
         <v-menu bottom left offset-y :close-on-content-click="false">
           <template v-slot:activator="{ on }">
-            <v-btn icon color="primary" v-on="on">
+            <v-btn icon v-on="on">
               <v-icon>{{
-                pagination.search || pagination.securityType
+                securitySearch || securityType
                   ? 'mdi-filter'
                   : 'mdi-filter-outline'
               }}</v-icon>
@@ -17,26 +17,23 @@
           <v-card>
             <v-list>
               <v-subheader>Search</v-subheader>
-              <v-list-tile>
-                <v-list-tile-content>
+              <v-list-item>
+                <v-list-item-content>
                   <v-text-field
-                    v-model="pagination.search"
+                    v-model="securitySearch"
                     append-icon="mdi-magnify"
                     clearable
                     single-line
                   />
-                </v-list-tile-content>
-              </v-list-tile>
+                </v-list-item-content>
+              </v-list-item>
               <v-divider />
               <v-subheader>Security type</v-subheader>
-              <v-list-tile>
-                <v-list-tile-content>
-                  <v-select
-                    v-model="pagination.securityType"
-                    :items="securityTypeItems"
-                  />
-                </v-list-tile-content>
-              </v-list-tile>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-select v-model="securityType" :items="securityTypeItems" />
+                </v-list-item-content>
+              </v-list-item>
             </v-list>
           </v-card>
         </v-menu>
@@ -45,9 +42,9 @@
       <v-data-table
         :headers="headers"
         :items="entries"
-        :pagination.sync="pagination"
-        :total-items="pagination.totalItems"
-        :rows-per-page-items="rowsPerPageItems"
+        :options.sync="pagination"
+        :server-items-length="totalItems"
+        :footer-props="footerProps"
         :loading="loading"
       >
         <template v-slot:items="props">
@@ -96,16 +93,16 @@ export default {
       ],
       searchQuery: '',
       pagination: {
-        rowsPerPage: 10,
-        descending: false,
-        sortBy: 'name',
-        page: 1,
-        totalItems: 0,
-        search: '',
-        securityType: ''
+        'items-per-page': 10,
+        sortBy: ['name'],
+        sortDesc: [false],
+        page: 1
       },
+      securitySearch: '',
+      securityType: '',
+      totalItems: 0,
       loading: false,
-      rowsPerPageItems: [10, 25, 50, 100]
+      footerProps: { 'items-per-page-options': [10, 25, 50, 100] }
     }
   },
   watch: {
@@ -114,6 +111,12 @@ export default {
         this.getSecurities()
       },
       deep: true
+    },
+    securitySearch() {
+      this.getSecurities()
+    },
+    securityType() {
+      this.getSecurities()
     }
   },
   methods: {
@@ -122,16 +125,16 @@ export default {
 
       const res = await this.$axios.$get('/api/securities', {
         params: {
-          sort: this.pagination.sortBy,
-          skip: this.pagination.rowsPerPage * (this.pagination.page - 1),
-          limit: this.pagination.rowsPerPage,
-          desc: this.pagination.descending,
-          search: this.pagination.search,
-          security_type: this.pagination.securityType
+          sort: this.pagination.sortBy[0],
+          skip: this.pagination['items-per-page'] * (this.pagination.page - 1),
+          limit: this.pagination['items-per-page'],
+          desc: this.pagination.sortDesc[0],
+          search: this.securitySearch,
+          security_type: this.securityType
         }
       })
       this.entries = res.entries
-      this.pagination.totalItems = res.params.totalCount
+      this.totalItems = res.params.totalCount
 
       this.loading = false
     }, 300) // debounce 300ms

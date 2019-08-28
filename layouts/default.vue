@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <v-toolbar fixed app>
+    <v-app-bar fixed app>
       <v-toolbar-title v-text="title" />
-    </v-toolbar>
+    </v-app-bar>
     <v-content>
       <v-container>
         <nuxt />

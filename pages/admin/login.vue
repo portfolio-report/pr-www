@@ -11,7 +11,7 @@
           </v-card-text>
           <div v-else>
             <v-card-text>
-              <v-alert :value="errorMessage" type="error" outline>
+              <v-alert :value="errorMessage" type="error" outlined>
                 {{ errorMessage }}
               </v-alert>
               <v-text-field

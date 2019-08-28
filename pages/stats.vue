@@ -17,9 +17,10 @@
       <v-data-table
         :headers="headers"
         :items="versionArray"
-        :hide-actions="true"
+        :hide-default-footer="true"
+        sort-by="name"
       >
-        <template v-slot:items="props">
+        <template v-slot:item="props">
           <tr @click="selectedVersion = props.item">
             <td>{{ props.item.name }}</td>
             <td>
@@ -28,7 +29,7 @@
             <td>
               {{ props.item.dt_last_update.toLocaleString('de-DE') }}
             </td>
-            <td class="text-xs-right">{{ props.item.total }}</td>
+            <td class="text-right">{{ props.item.total }}</td>
             <td><v-btn>Details</v-btn></td>
           </tr>
         </template>
