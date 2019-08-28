@@ -23,13 +23,13 @@ import { GChart } from 'vue-google-charts'
 
 export default {
   components: {
-    GChart
+    GChart,
   },
   props: {
     dates: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -38,18 +38,18 @@ export default {
           text: 'Date',
           align: 'left',
           sortable: true,
-          value: 'date'
+          value: 'date',
         },
         {
           text: 'Count',
           align: 'right',
           sortable: true,
-          value: 'count'
-        }
+          value: 'count',
+        },
       ],
       chartOptions: {
-        curveType: 'function'
-      }
+        curveType: 'function',
+      },
     }
   },
   computed: {
@@ -57,7 +57,7 @@ export default {
       return Object.entries(this.dates).map(e => {
         return {
           date: e[0],
-          count: e[1]
+          count: e[1],
         }
       })
     },
@@ -67,7 +67,7 @@ export default {
           a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0
         )
       )
-    }
-  }
+    },
+  },
 }
 </script>

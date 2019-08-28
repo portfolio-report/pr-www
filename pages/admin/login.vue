@@ -43,20 +43,20 @@ import { mapGetters } from 'vuex'
 export default {
   head() {
     return {
-      title: 'Portfolio Report'
+      title: 'Portfolio Report',
     }
   },
   data() {
     return {
       formUsername: '',
       formPassword: '',
-      errorMessage: null
+      errorMessage: null,
     }
   },
   computed: {
     ...mapGetters({
-      authenticated: 'auth/isAuthenticated'
-    })
+      authenticated: 'auth/isAuthenticated',
+    }),
   },
   methods: {
     async login() {
@@ -64,17 +64,17 @@ export default {
         this.errorMessage = null
         await this.$store.dispatch('auth/login', {
           username: this.formUsername,
-          password: this.formPassword
+          password: this.formPassword,
         })
         this.formUsername = ''
         this.formPassword = ''
         this.$router.push({
-          path: '/admin/'
+          path: '/admin/',
         })
       } catch (err) {
         this.errorMessage = err.message
       }
-    }
-  }
+    },
+  },
 }
 </script>

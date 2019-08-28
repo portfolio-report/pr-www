@@ -143,7 +143,7 @@ export default {
   components: {},
   head() {
     return {
-      title: 'Portfolio Report'
+      title: 'Portfolio Report',
     }
   },
   data() {
@@ -155,7 +155,7 @@ export default {
       securityTypeItems: [
         { text: 'share', value: 'share' },
         { text: 'bond', value: 'bond' },
-        { text: '[all]', value: '' }
+        { text: '[all]', value: '' },
       ],
       results: [],
       noResults: false,
@@ -171,20 +171,20 @@ export default {
       email: '',
       emailRules: [
         v => !!v || 'Email is required',
-        v => isEmail(v) || 'Email must be valid'
+        v => isEmail(v) || 'Email must be valid',
       ],
       subject: '',
       subjectRules: [v => !!v || 'Subject is required'],
       message: '',
-      messageRules: [v => !!v || 'Message is required']
+      messageRules: [v => !!v || 'Message is required'],
     }
   },
   computed: {
     resultsLimited: {
       get() {
         return this.results.length === 10
-      }
-    }
+      },
+    },
   },
   methods: {
     search() {
@@ -224,7 +224,7 @@ export default {
         name: this.name,
         email: this.email,
         subject: this.subject,
-        message: this.message
+        message: this.message,
       }
       this.$axios
         .post('/api/contact', data)
@@ -238,7 +238,7 @@ export default {
           // eslint-disable-next-line no-console
           console.log(err)
         })
-    }
-  }
+    },
+  },
 }
 </script>

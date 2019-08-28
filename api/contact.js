@@ -36,7 +36,7 @@ router.post(
     check('message')
       .isString()
       .isLength({ min: 1 })
-      .trim()
+      .trim(),
   ],
   function(req, res) {
     const validationErrors = validationResult(req)
@@ -62,7 +62,7 @@ router.post(
         from: `"${req.body.name}" <${req.body.email}>`,
         to: config.contact.recipientEmailAddress,
         subject: 'Message via www.portfolio-report.net: ' + req.body.subject,
-        text: req.body.message + '\n\nRemote IP: ' + req.ip
+        text: req.body.message + '\n\nRemote IP: ' + req.ip,
       })
       .then(info => {
         log('Email sent: ' + util.inspect(info))

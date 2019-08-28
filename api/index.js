@@ -65,5 +65,5 @@ app.use(function(err, req, res, next) {
 
 export default {
   path: '/api',
-  handler: app
+  handler: app,
 }

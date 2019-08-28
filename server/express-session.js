@@ -38,7 +38,7 @@ if (pathExists('./db/')) {
   const sequelize = new Sequelize('sessions', null, null, {
     dialect: 'sqlite',
     storage: './db/sessions.sqlite',
-    logging: false // Don't log every SQL to console
+    logging: false, // Don't log every SQL to console
   })
 
   const SequelizeStore = CSS(session.Store)
@@ -58,5 +58,5 @@ export default session({
   saveUninitialized: false,
   cookie: { maxAge: 3600000 }, // 1h
   unset: 'destroy',
-  store: sequelizeStore
+  store: sequelizeStore,
 })

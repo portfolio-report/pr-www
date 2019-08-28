@@ -15,8 +15,8 @@
 export default {
   data() {
     return {
-      title: 'Portfolio Report'
+      title: 'Portfolio Report',
     }
-  }
+  },
 }
 </script>

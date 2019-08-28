@@ -7,5 +7,5 @@ export const actions = {
     if (req.session && req.session.user) {
       commit('auth/setUser', req.session.user)
     }
-  }
+  },
 }

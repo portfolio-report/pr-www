@@ -10,7 +10,7 @@
 export default {
   head() {
     return {
-      title: 'Portfolio Report'
+      title: 'Portfolio Report',
     }
   },
   // eslint-disable-next-line

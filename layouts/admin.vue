@@ -75,22 +75,22 @@ export default {
   data() {
     return {
       title: 'Portfolio Report Admin',
-      leftDrawerOpen: false
+      leftDrawerOpen: false,
     }
   },
   computed: {
     ...mapGetters({
       authenticated: 'auth/isAuthenticated',
-      username: 'auth/username'
-    })
+      username: 'auth/username',
+    }),
   },
   methods: {
     logout() {
       this.$store.dispatch('auth/logout')
       this.$router.push({
-        path: '/admin/login'
+        path: '/admin/login',
       })
-    }
-  }
+    },
+  },
 }
 </script>

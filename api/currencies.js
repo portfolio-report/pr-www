@@ -8,7 +8,7 @@ const log = Debug('api:currencies')
 
 const db = NeDB.create({
   filename: './db/currencies.db.json',
-  autoload: true
+  autoload: true,
 })
 
 const router = express.Router()
@@ -20,7 +20,7 @@ router.route('/').get(async function(req, res) {
     prices.map(p => {
       return {
         currencyCode: p.currencyCode,
-        priceCurrencyCode: p.priceCurrencyCode
+        priceCurrencyCode: p.priceCurrencyCode,
       }
     })
   )
@@ -58,7 +58,7 @@ const ecbCurrencies = [
   'PHP',
   'SGD',
   'THB',
-  'ZAR'
+  'ZAR',
 ]
 
 router
@@ -74,7 +74,7 @@ router
       res.json({
         currencyCode,
         priceCurrencyCode,
-        price: prices
+        price: prices,
       })
       return
     } else if (currencyCode === 'USD' && priceCurrencyCode === 'AED') {
@@ -83,7 +83,7 @@ router
       res.json({
         currencyCode,
         priceCurrencyCode,
-        price: prices
+        price: prices,
       })
       return
     }
@@ -91,7 +91,7 @@ router
     // Search the database
     const prices = await db.findOne({
       currencyCode,
-      priceCurrencyCode
+      priceCurrencyCode,
     })
 
     if (
@@ -116,19 +116,19 @@ router
       const prices = foo.CompactData.DataSet.Series.Obs.map(el => {
         return {
           date: el._attributes.TIME_PERIOD,
-          value: Number(el._attributes.OBS_VALUE)
+          value: Number(el._attributes.OBS_VALUE),
         }
       })
       const newPrices = {
         currencyCode,
         priceCurrencyCode,
         cacheDate: new Date(),
-        price: prices
+        price: prices,
       }
       await db.update(
         {
           currencyCode,
-          priceCurrencyCode
+          priceCurrencyCode,
         },
         newPrices,
         { upsert: true }

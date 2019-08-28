@@ -7,7 +7,7 @@ const log = Debug('api:stats')
 
 const db = NeDB.create({
   filename: './db/stats.db.json',
-  autoload: true
+  autoload: true,
 })
 
 const router = express.Router()
@@ -137,8 +137,8 @@ router.route('/updates').get(async function(req, res) {
   const result = {
     updates: {
       total: updates.length,
-      packages
-    }
+      packages,
+    },
   }
 
   // Send answer to client
@@ -161,7 +161,7 @@ router.route('/update/:package/:version').get(async function(req, res) {
     package: req.params.package,
     version: req.params.version,
     country,
-    useragent: req.headers['user-agent']
+    useragent: req.headers['user-agent'],
   }
 
   await db.insert(logLine)

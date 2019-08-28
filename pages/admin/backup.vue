@@ -63,7 +63,7 @@ export default {
   components: { DialogConfirm },
   head() {
     return {
-      title: 'Portfolio Report Admin'
+      title: 'Portfolio Report Admin',
     }
   },
   data() {
@@ -71,7 +71,7 @@ export default {
       loadingSecurities: false,
       loadingStats: false,
       loadingRestore: false,
-      restoreFileContent: null
+      restoreFileContent: null,
     }
   },
   computed: {
@@ -84,7 +84,7 @@ export default {
       ) {
         return {
           entityType: this.restoreFileContent.backup.entityType,
-          length: this.restoreFileContent.entries.length
+          length: this.restoreFileContent.entries.length,
         }
       } else {
         return { entityType: '-', length: '-' }
@@ -95,7 +95,7 @@ export default {
         this.restoreFileContent !== null &&
         ['securities', 'stats'].includes(this.restoreBackupInfo.entityType)
       )
-    }
+    },
   },
   methods: {
     async downloadBackup(entityType) {
@@ -152,7 +152,7 @@ export default {
           title: `Restore ${entityType}`,
           message:
             'Are you sure you want to replace the current database content?',
-          color: 'secondary'
+          color: 'secondary',
         })
       ) {
         // Delete existing securities
@@ -164,14 +164,14 @@ export default {
           this.restoreFileContent.entries,
           {
             headers: {
-              'Content-Type': 'application/json'
-            }
+              'Content-Type': 'application/json',
+            },
           }
         )
       }
 
       this.loadingRestore = false
-    }
-  }
+    },
+  },
 }
 </script>

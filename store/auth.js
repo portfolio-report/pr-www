@@ -6,7 +6,7 @@
  */
 
 export const state = () => ({
-  user: null
+  user: null,
 })
 
 export const getters = {
@@ -19,13 +19,13 @@ export const getters = {
     } else {
       return null
     }
-  }
+  },
 }
 
 export const mutations = {
   setUser(state, user) {
     state.user = user
-  }
+  },
 }
 
 export const actions = {
@@ -43,5 +43,5 @@ export const actions = {
   async logout({ commit }) {
     await this.$axios.$post('/api/auth/logout')
     commit('setUser', null)
-  }
+  },
 }

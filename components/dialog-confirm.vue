@@ -31,8 +31,8 @@ export default {
     title: null,
     options: {
       color: 'primary',
-      width: 300
-    }
+      width: 300,
+    },
   }),
   methods: {
     open({ title, message, ...options }) {
@@ -52,7 +52,7 @@ export default {
     no() {
       this.resolve(false)
       this.dialog = false
-    }
-  }
+    },
+  },
 }
 </script>

@@ -65,7 +65,7 @@ export default {
   layout: 'admin',
   head() {
     return {
-      title: 'Portfolio Report Admin'
+      title: 'Portfolio Report Admin',
     }
   },
   data() {
@@ -73,36 +73,36 @@ export default {
       headers: [
         {
           text: 'UUID',
-          value: 'uuid'
+          value: 'uuid',
         },
         {
           text: 'Name',
           align: 'left',
           sortable: true,
-          value: 'name'
+          value: 'name',
         },
         { text: 'ISIN', value: 'isin' },
         { text: 'WKN', value: 'wkn' },
-        { text: 'Type', value: 'security_type' }
+        { text: 'Type', value: 'security_type' },
       ],
       entries: [],
       securityTypeItems: [
         { text: '', value: '' },
         { text: 'share', value: 'share' },
-        { text: 'bond', value: 'bond' }
+        { text: 'bond', value: 'bond' },
       ],
       searchQuery: '',
       pagination: {
         'items-per-page': 10,
         sortBy: ['name'],
         sortDesc: [false],
-        page: 1
+        page: 1,
       },
       securitySearch: '',
       securityType: '',
       totalItems: 0,
       loading: false,
-      footerProps: { 'items-per-page-options': [10, 25, 50, 100] }
+      footerProps: { 'items-per-page-options': [10, 25, 50, 100] },
     }
   },
   watch: {
@@ -110,14 +110,14 @@ export default {
       handler() {
         this.getSecurities()
       },
-      deep: true
+      deep: true,
     },
     securitySearch() {
       this.getSecurities()
     },
     securityType() {
       this.getSecurities()
-    }
+    },
   },
   methods: {
     getSecurities: debounce(async function() {
@@ -130,14 +130,14 @@ export default {
           limit: this.pagination['items-per-page'],
           desc: this.pagination.sortDesc[0],
           search: this.securitySearch,
-          security_type: this.securityType
-        }
+          security_type: this.securityType,
+        },
       })
       this.entries = res.entries
       this.totalItems = res.params.totalCount
 
       this.loading = false
-    }, 300) // debounce 300ms
-  }
+    }, 300), // debounce 300ms
+  },
 }
 </script>

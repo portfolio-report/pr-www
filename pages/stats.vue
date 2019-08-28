@@ -55,11 +55,11 @@ export default {
   components: {
     DateView,
     CountryView,
-    GChart
+    GChart,
   },
   head() {
     return {
-      title: 'Portfolio Report'
+      title: 'Portfolio Report',
     }
   },
   data() {
@@ -71,28 +71,28 @@ export default {
           text: 'Version',
           align: 'left',
           sortable: true,
-          value: 'name'
+          value: 'name',
         },
         {
           text: 'From',
           align: 'left',
           sortable: true,
-          value: 'dt_first_update'
+          value: 'dt_first_update',
         },
         {
           text: 'To',
           align: 'left',
           sortable: true,
-          value: 'dt_last_update'
+          value: 'dt_last_update',
         },
         {
           text: 'Count',
           align: 'right',
           sortable: true,
-          value: 'count'
+          value: 'count',
         },
-        { text: 'Show details', value: '' }
-      ]
+        { text: 'Show details', value: '' },
+      ],
     }
   },
   computed: {
@@ -114,7 +114,7 @@ export default {
           })
           .sort((a, b) => a[0].localeCompare(b[0]))
       )
-    }
+    },
   },
   async asyncData({ $axios }) {
     const stats = await $axios.$get('/api/stats/updates')
@@ -136,6 +136,6 @@ export default {
     }
 
     return { stats }
-  }
+  },
 }
 </script>

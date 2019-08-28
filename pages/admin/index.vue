@@ -9,8 +9,8 @@ export default {
   layout: 'admin',
   head() {
     return {
-      title: 'Portfolio Report Admin'
+      title: 'Portfolio Report Admin',
     }
-  }
+  },
 }
 </script>

@@ -22,8 +22,8 @@ export default {
   props: {
     countries: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -32,19 +32,19 @@ export default {
           text: 'Country',
           align: 'left',
           sortable: true,
-          value: 'country'
+          value: 'country',
         },
         {
           text: 'Count',
           align: 'right',
           sortable: true,
-          value: 'count'
-        }
+          value: 'count',
+        },
       ],
       pagination: {
         sortBy: ['count'],
-        sortDesc: [true]
-      }
+        sortDesc: [true],
+      },
     }
   },
   computed: {
@@ -52,10 +52,10 @@ export default {
       return Object.entries(this.countries).map(e => {
         return {
           country: e[0],
-          count: e[1]
+          count: e[1],
         }
       })
-    }
-  }
+    },
+  },
 }
 </script>

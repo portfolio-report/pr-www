@@ -7,7 +7,7 @@ const log = Debug('api:securities')
 
 const db = NeDB.create({
   filename: './db/securities.db.json',
-  autoload: true
+  autoload: true,
 })
 
 const router = express.Router()
@@ -24,7 +24,7 @@ async function readSecurities({
   sort,
   descending,
   search,
-  securityType
+  securityType,
 }) {
   const filters = []
 
@@ -40,8 +40,8 @@ async function readSecurities({
         { wkn: { $regex: regexExactIMatch } },
         { 'markets.XFRA.symbol': { $regex: regexExactIMatch } },
         { 'markets.XNAS.symbol': { $regex: regexExactIMatch } },
-        { 'markets.XNYS.symbol': { $regex: regexExactIMatch } }
-      ]
+        { 'markets.XNYS.symbol': { $regex: regexExactIMatch } },
+      ],
     })
   }
 
@@ -51,7 +51,7 @@ async function readSecurities({
   }
 
   const query = {
-    $and: filters
+    $and: filters,
   }
 
   // Read entries
@@ -92,7 +92,7 @@ router.get('/', authRequired, async function(req, res) {
       sort,
       descending,
       search,
-      securityType
+      securityType,
     })
   )
 })
@@ -131,7 +131,7 @@ router.route('/:uuid').get(async function(req, res) {
   const uuid = req.params.uuid
 
   const security = await db.findOne({
-    uuid
+    uuid,
   })
   if (!security) {
     res.status(404).json({ message: 'Security not found.' })
@@ -154,7 +154,7 @@ router.route('/search/:search').get(async function(req, res) {
   const entries = (await readSecurities({
     limit: 10,
     search,
-    securityType
+    securityType,
   })).entries
 
   // Hide internal IDs
