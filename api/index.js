@@ -4,6 +4,7 @@ import auth from './auth.js'
 import contact from './contact.js'
 import currencies from './currencies.js'
 import securities from './securities.js'
+import securitiesStaging from './securities-staging.js'
 import stats from './stats.js'
 const log = Debug('api:index')
 
@@ -32,6 +33,7 @@ app.use('/auth', auth)
 app.use('/contact', contact)
 app.use('/currencies', currencies)
 app.use('/securities', securities)
+app.use('/securities-staging', securitiesStaging)
 app.use('/stats', stats)
 
 /**

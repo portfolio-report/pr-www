@@ -2,7 +2,9 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
       <v-toolbar color="primary" dark>
-        <v-toolbar-title>Securities</v-toolbar-title>
+        <v-toolbar-title>
+          {{ showStagedEntries ? 'Staged' : '' }} Securities
+        </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-menu bottom left offset-y :close-on-content-click="false">
           <template v-slot:activator="{ on }">
@@ -39,6 +41,12 @@
         </v-menu>
       </v-toolbar>
 
+      <v-switch
+        v-model="showStagedEntries"
+        label="Staged entries"
+        color="primary"
+      />
+
       <v-data-table
         :headers="headers"
         :items="entries"
@@ -70,6 +78,7 @@ export default {
   },
   data() {
     return {
+      showStagedEntries: false,
       headers: [
         {
           text: 'UUID',
@@ -118,12 +127,19 @@ export default {
     securityType() {
       this.getSecurities()
     },
+    showStagedEntries() {
+      this.getSecurities()
+    },
   },
   methods: {
     getSecurities: debounce(async function() {
       this.loading = true
 
-      const res = await this.$axios.$get('/api/securities', {
+      const url = this.showStagedEntries
+        ? '/api/securities-staging'
+        : '/api/securities'
+
+      const res = await this.$axios.$get(url, {
         params: {
           sort: this.pagination.sortBy[0],
           skip: this.pagination['items-per-page'] * (this.pagination.page - 1),
