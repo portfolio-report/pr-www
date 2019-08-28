@@ -181,13 +181,13 @@ export default {
   },
   computed: {
     resultsLimited: {
-      get: function() {
+      get() {
         return this.results.length === 10
       }
     }
   },
   methods: {
-    search: function() {
+    search() {
       this.searching = true
       this.noResults = false
       this.error = false
@@ -200,7 +200,7 @@ export default {
           if (res.ok) {
             return res
           } else {
-            throw Error(res.statusText)
+            throw new Error(res.statusText)
           }
         })
         .then(res => res.json())
@@ -217,7 +217,7 @@ export default {
           this.errorText = error.message
         })
     },
-    send: function() {
+    send() {
       this.sendingContactForm = true
       this.showErrorMessage = false
       const data = {

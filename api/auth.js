@@ -29,9 +29,9 @@ router.post('/login', function(req, res, next) {
   }
 
   let passwordCompare
-  if (config.auth.admin.password.match(/^plain:/)) {
+  if (config.auth.admin.password.startsWith('plain:')) {
     passwordCompare = 'plain:' + password
-  } else if (config.auth.admin.password.match(/^sha256:/)) {
+  } else if (config.auth.admin.password.startsWith('sha256:')) {
     passwordCompare =
       'sha256:' +
       crypto

@@ -72,8 +72,8 @@ router
       const prices = []
       prices.push({ date: '1971-01-01', value: 100 })
       res.json({
-        currencyCode: currencyCode,
-        priceCurrencyCode: priceCurrencyCode,
+        currencyCode,
+        priceCurrencyCode,
         price: prices
       })
       return
@@ -81,8 +81,8 @@ router
       const prices = []
       prices.push({ date: '1990-01-01', value: 3.6725 })
       res.json({
-        currencyCode: currencyCode,
-        priceCurrencyCode: priceCurrencyCode,
+        currencyCode,
+        priceCurrencyCode,
         price: prices
       })
       return
@@ -90,8 +90,8 @@ router
 
     // Search the database
     const prices = await db.findOne({
-      currencyCode: currencyCode,
-      priceCurrencyCode: priceCurrencyCode
+      currencyCode,
+      priceCurrencyCode
     })
 
     if (
@@ -120,15 +120,15 @@ router
         }
       })
       const newPrices = {
-        currencyCode: currencyCode,
-        priceCurrencyCode: priceCurrencyCode,
+        currencyCode,
+        priceCurrencyCode,
         cacheDate: new Date(),
         price: prices
       }
       await db.update(
         {
-          currencyCode: currencyCode,
-          priceCurrencyCode: priceCurrencyCode
+          currencyCode,
+          priceCurrencyCode
         },
         newPrices,
         { upsert: true }

@@ -131,7 +131,7 @@ router.route('/:uuid').get(async function(req, res) {
   const uuid = req.params.uuid
 
   const security = await db.findOne({
-    uuid: uuid
+    uuid
   })
   if (!security) {
     res.status(404).json({ message: 'Security not found.' })

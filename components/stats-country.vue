@@ -22,7 +22,7 @@ export default {
       required: true
     }
   },
-  data: function() {
+  data() {
     return {
       headers: [
         {
@@ -46,7 +46,7 @@ export default {
     }
   },
   computed: {
-    items: function() {
+    items() {
       return Object.entries(this.countries).map(e => {
         return {
           country: e[0],

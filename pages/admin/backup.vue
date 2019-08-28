@@ -75,7 +75,7 @@ export default {
     }
   },
   computed: {
-    restoreBackupInfo: function() {
+    restoreBackupInfo() {
       if (
         this.restoreFileContent &&
         this.restoreFileContent.backup &&
@@ -90,7 +90,7 @@ export default {
         return { entityType: '-', length: '-' }
       }
     },
-    restoreBackupValid: function() {
+    restoreBackupValid() {
       return (
         this.restoreFileContent !== null &&
         ['securities', 'stats'].includes(this.restoreBackupInfo.entityType)
@@ -98,7 +98,7 @@ export default {
     }
   },
   methods: {
-    downloadBackup: async function(entityType) {
+    async downloadBackup(entityType) {
       const data = await this.$axios.$get(`/api/${entityType}?limit=0`)
 
       // Add information to identify the backup
@@ -116,12 +116,12 @@ export default {
       document.body.appendChild(link)
       link.click()
     },
-    downloadSecurities: async function() {
+    async downloadSecurities() {
       this.loadingSecurities = true
       await this.downloadBackup('securities')
       this.loadingSecurities = false
     },
-    downloadStats: async function() {
+    async downloadStats() {
       this.loadingStats = true
       await this.downloadBackup('stats')
       this.loadingStats = false
@@ -142,7 +142,7 @@ export default {
         await readAsTextAsync(event.target.files[0])
       )
     },
-    restoreBackup: async function() {
+    async restoreBackup() {
       this.loadingRestore = true
 
       const entityType = this.restoreBackupInfo.entityType

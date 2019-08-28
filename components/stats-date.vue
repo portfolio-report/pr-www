@@ -24,7 +24,7 @@ export default {
       required: true
     }
   },
-  data: function() {
+  data() {
     return {
       headers: [
         {
@@ -46,7 +46,7 @@ export default {
     }
   },
   computed: {
-    tableItems: function() {
+    tableItems() {
       return Object.entries(this.dates).map(e => {
         return {
           date: e[0],
@@ -54,7 +54,7 @@ export default {
         }
       })
     },
-    chartData: function() {
+    chartData() {
       return [['Date', 'Count']].concat(
         Object.entries(this.dates).sort((a, b) =>
           a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0

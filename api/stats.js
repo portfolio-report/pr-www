@@ -137,7 +137,7 @@ router.route('/updates').get(async function(req, res) {
   const result = {
     updates: {
       total: updates.length,
-      packages: packages
+      packages
     }
   }
 
@@ -160,7 +160,7 @@ router.route('/update/:package/:version').get(async function(req, res) {
     type: 'update',
     package: req.params.package,
     version: req.params.version,
-    country: country,
+    country,
     useragent: req.headers['user-agent']
   }
 

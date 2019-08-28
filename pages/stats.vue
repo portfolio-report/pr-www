@@ -46,9 +46,9 @@
 </template>
 
 <script>
+import { GChart } from 'vue-google-charts'
 import DateView from '~/components/stats-date'
 import CountryView from '~/components/stats-country'
-import { GChart } from 'vue-google-charts'
 
 export default {
   components: {
@@ -95,17 +95,17 @@ export default {
     }
   },
   computed: {
-    packageArray: function() {
+    packageArray() {
       return Object.entries(this.stats.updates.packages).map(e => {
         return { name: e[0], ...e[1] }
       })
     },
-    versionArray: function() {
+    versionArray() {
       return Object.entries(this.selectedPackage.versions).map(e => {
         return { name: e[0], ...e[1] }
       })
     },
-    chartData: function() {
+    chartData() {
       return [['Version', 'Count']].concat(
         this.versionArray
           .map(e => {
