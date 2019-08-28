@@ -1,7 +1,7 @@
 import util from 'util'
 import express from 'express'
 import nodemailer from 'nodemailer'
-import { check, validationResult } from 'express-validator/check'
+import { check, validationResult } from 'express-validator'
 import Debug from 'debug'
 import config from './config.js'
 const log = Debug('api:contact')
