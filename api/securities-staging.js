@@ -13,8 +13,8 @@ const db = NeDB.create({
 
 const router = express.Router()
 
-// Parse text/plain payload
-router.use(bodyParser.text())
+// Parse (large) text/plain payload
+router.use(bodyParser.text({ limit: '50mb' }))
 
 // Parse (large) JSON payloads
 router.use(express.json({ limit: '20mb' }))
