@@ -2,38 +2,18 @@
   <v-app>
     <v-navigation-drawer v-model="leftDrawerOpen" fixed app>
       <v-list>
-        <v-list-item router to="/admin/" exact>
-          <v-list-item-action> <v-icon>mdi-home</v-icon> </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item router to="/admin/securities" exact>
+        <v-list-item
+          v-for="menuItem in menuItems"
+          :key="menuItem.name"
+          router
+          :to="menuItem.to"
+          exact
+        >
           <v-list-item-action>
-            <v-icon>mdi-currency-usd</v-icon>
+            <v-icon>{{ menuItem.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Securities</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item router to="/admin/backup" exact>
-          <v-list-item-action>
-            <v-icon>mdi-backup-restore</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Backup & Restore</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item router to="/" exact>
-          <v-list-item-action> <v-icon>mdi-earth</v-icon> </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Public site</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item router to="/stats" exact>
-          <v-list-item-action> <v-icon>mdi-poll</v-icon> </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Statistics</v-list-item-title>
+            <v-list-item-title>{{ menuItem.name }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -76,6 +56,26 @@ export default {
     return {
       title: 'Portfolio Report Admin',
       leftDrawerOpen: false,
+      menuItems: [
+        { name: 'Home', icon: 'mdi-home', to: '/admin/' },
+        {
+          name: 'Securities',
+          icon: 'mdi-currency-usd',
+          to: '/admin/securities',
+        },
+        {
+          name: 'Update securities',
+          icon: 'mdi-download',
+          to: '/admin/securities/staging',
+        },
+        {
+          name: 'Backup & Restore',
+          icon: 'mdi-backup-restore',
+          to: '/admin/backup',
+        },
+        { name: 'Public site', icon: 'mdi-earth', to: '/' },
+        { name: 'Statistics', icon: 'mdi-poll', to: '/stats' },
+      ],
     }
   },
   computed: {
