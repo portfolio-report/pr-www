@@ -1,14 +1,9 @@
 import express from 'express'
-import NeDB from 'nedb-promises'
 import geoip from 'geoip-lite'
 import Debug from 'debug'
 import { authRequired } from './auth.js'
+import { statsDb as db } from './inc/db.js'
 const log = Debug('api:stats')
-
-const db = NeDB.create({
-  filename: './db/stats.db.json',
-  autoload: true,
-})
 
 const router = express.Router()
 

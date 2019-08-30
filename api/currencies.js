@@ -1,15 +1,9 @@
 import express from 'express'
-import NeDB from 'nedb-promises'
 import axios from 'axios'
 import xmljs from 'xml-js'
-
 import Debug from 'debug'
+import { currenciesDb as db } from './inc/db.js'
 const log = Debug('api:currencies')
-
-const db = NeDB.create({
-  filename: './db/currencies.db.json',
-  autoload: true,
-})
 
 const router = express.Router()
 

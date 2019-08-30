@@ -1,14 +1,9 @@
 import express from 'express'
-import NeDB from 'nedb-promises'
 import { escapeRegExp } from 'lodash-es'
 import Debug from 'debug'
 import { authRequired } from './auth.js'
+import { securitiesDb as db } from './inc/db.js'
 const log = Debug('api:securities')
-
-const db = NeDB.create({
-  filename: './db/securities.db.json',
-  autoload: true,
-})
 
 const router = express.Router()
 
