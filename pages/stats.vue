@@ -19,6 +19,7 @@
         :items="versionArray"
         :hide-default-footer="true"
         sort-by="name"
+        items-per-page="-1"
       >
         <template v-slot:item="props">
           <tr @click="selectedVersion = props.item">
