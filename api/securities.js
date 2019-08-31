@@ -25,17 +25,16 @@ async function readSecurities({
 
   // Add filter based on search text
   if (search) {
-    const regexStartIMatch = new RegExp('^' + search, 'i')
-    const regexExactIMatch = new RegExp('^' + search + '$', 'i')
+    const regexStartIMatch = new RegExp('^' + escapeRegExp(search), 'i')
 
     filters.push({
       $or: [
         { name: { $regex: regexStartIMatch } },
-        { isin: { $regex: regexExactIMatch } },
-        { wkn: { $regex: regexExactIMatch } },
-        { 'markets.XFRA.symbol': { $regex: regexExactIMatch } },
-        { 'markets.XNAS.symbol': { $regex: regexExactIMatch } },
-        { 'markets.XNYS.symbol': { $regex: regexExactIMatch } },
+        { isin: search.toUpperCase() },
+        { wkn: search.toUpperCase() },
+        { 'markets.XFRA.symbol': search.toUpperCase() },
+        { 'markets.XNAS.symbol': search.toUpperCase() },
+        { 'markets.XNYS.symbol': search.toUpperCase() },
       ],
     })
   }
@@ -77,7 +76,7 @@ router.get('/', authRequired, async function(req, res) {
   const skip = parseInt(req.query.skip) || 0
   const sort = req.query.sort || 'name'
   const descending = req.query.desc === 'true'
-  const search = escapeRegExp(req.query.search) || ''
+  const search = req.query.search || ''
   const securityType = req.query.security_type || ''
 
   res.json(
@@ -143,7 +142,7 @@ router.route('/:uuid').get(async function(req, res) {
  * Search for securities - without authentication
  */
 router.route('/search/:search').get(async function(req, res) {
-  const search = escapeRegExp(req.params.search) || ''
+  const search = req.params.search || ''
   const securityType = req.query.type || ''
 
   const entries = (await readSecurities({
