@@ -2,7 +2,11 @@ import express from 'express'
 import { escapeRegExp } from 'lodash-es'
 import Debug from 'debug'
 import { authRequired } from './auth.js'
-import { securitiesDb as db, getSecuritiesFts as getFts } from './inc/db.js'
+import {
+  securitiesDb as db,
+  getSecuritiesFts as getFts,
+  updateFts,
+} from './inc/db.js'
 const log = Debug('api:securities')
 
 const router = express.Router()
@@ -168,6 +172,14 @@ router.route('/search/:search').get(async function(req, res, next) {
 
   // Return 10 results
   res.json(entries.slice(0, 10))
+})
+
+/**
+ * Endpoint to update full text search index from current database content
+ */
+router.post('/search/update', authRequired, function(req, res) {
+  updateFts()
+  res.json({ status: 'ok' })
 })
 
 export default router

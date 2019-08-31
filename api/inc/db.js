@@ -36,8 +36,6 @@ securitiesDb.ensureIndex({ fieldName: 'markets.XFRA.symbol' })
 securitiesDb.ensureIndex({ fieldName: 'markets.XNAS.symbol' })
 securitiesDb.ensureIndex({ fieldName: 'markets.XNYS.symbol' })
 
-log('Creating full text search index...')
-
 /**
  * Creates a full text search index for all database entries
  */
@@ -49,23 +47,33 @@ async function createFtsFromDb(db, options) {
 
 let securitiesFts
 
-createFtsFromDb(securitiesDb, {
-  shouldSort: true,
-  maxPatternLength: 32,
-  minMatchCharLength: 2,
-  keys: [
-    'uuid',
-    'name',
-    'isin',
-    'wkn',
-    'markets.XFRA.symbol',
-    'markets.XNAS.symbol',
-    'markets.XNYS.symbol',
-  ],
-}).then(fts => {
-  securitiesFts = fts
-  log('Full text search index created.')
-})
+/**
+ * Export a function to create/update the full text search index
+ */
+export function updateFts() {
+  log('Creating/updating full text search index...')
+
+  createFtsFromDb(securitiesDb, {
+    shouldSort: true,
+    maxPatternLength: 32,
+    minMatchCharLength: 2,
+    keys: [
+      'uuid',
+      'name',
+      'isin',
+      'wkn',
+      'markets.XFRA.symbol',
+      'markets.XNAS.symbol',
+      'markets.XNYS.symbol',
+    ],
+  }).then(fts => {
+    securitiesFts = fts
+    log('Full text search index created.')
+  })
+}
+
+// Initially create the full text search index
+updateFts()
 
 /**
  * Export a function to get the full text search index

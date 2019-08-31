@@ -4,6 +4,7 @@
       <v-tabs background-color="primary" dark slider-color="secondary" grow>
         <v-tab key="backup">Backup</v-tab>
         <v-tab key="restore">Restore</v-tab>
+        <v-tab key="fts">Full text search</v-tab>
 
         <v-tab-item key="backup">
           <v-card flat>
@@ -26,6 +27,7 @@
             </v-btn>
           </v-card>
         </v-tab-item>
+
         <v-tab-item key="restore">
           <v-card flat>
             <v-card-text>
@@ -49,6 +51,19 @@
             >
               Restore
             </v-btn>
+          </v-card>
+        </v-tab-item>
+
+        <v-tab-item key="fts">
+          <v-card flat>
+            <v-card-text>
+              Update full text search index to reflect database changes
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="primary" @click="updateFts">
+                Update index
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-tab-item>
       </v-tabs>
@@ -171,6 +186,10 @@ export default {
       }
 
       this.loadingRestore = false
+    },
+
+    updateFts() {
+      this.$axios.post('/api/securities/search/update')
     },
   },
 }
