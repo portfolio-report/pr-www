@@ -2,7 +2,7 @@ import express from 'express'
 import { escapeRegExp } from 'lodash-es'
 import Debug from 'debug'
 import { authRequired } from './auth.js'
-import { securitiesDb as db } from './inc/db.js'
+import { securitiesDb as db, getSecuritiesFts as getFts } from './inc/db.js'
 const log = Debug('api:securities')
 
 const router = express.Router()
@@ -141,22 +141,33 @@ router.route('/:uuid').get(async function(req, res) {
 /**
  * Search for securities - without authentication
  */
-router.route('/search/:search').get(async function(req, res) {
+router.route('/search/:search').get(async function(req, res, next) {
   const search = req.params.search || ''
   const securityType = req.query.type || ''
 
-  const entries = (await readSecurities({
-    limit: 10,
-    search,
-    securityType,
-  })).entries
+  const fts = getFts()
+
+  // Send error message if full text search index is not ready yet
+  if (!fts) {
+    const err = new Error('Service Unavailable')
+    err.statusCode = 503
+    return next(err)
+  }
+
+  let entries = await fts.search(search)
+
+  // Filter by securityType
+  if (securityType) {
+    entries = entries.filter(e => e.security_type === securityType)
+  }
 
   // Hide internal IDs
   entries.forEach(doc => {
     doc._id = undefined
   })
 
-  res.json(entries)
+  // Return 10 results
+  res.json(entries.slice(0, 10))
 })
 
 export default router
