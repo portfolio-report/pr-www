@@ -1,7 +1,7 @@
 <template>
   <v-layout justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <v-card class="elevation-12">
+      <v-card>
         <v-card-title class="headline">
           Security search
         </v-card-title>
@@ -47,7 +47,7 @@
         </v-form>
       </v-card>
 
-      <v-card v-for="result in results" :key="result.uuid">
+      <v-card v-for="result in results" :key="result.uuid" class="mt-4">
         <v-card-title>
           <span>{{ result.name }}</span>
           <v-chip small color="primary" text-color="white">
