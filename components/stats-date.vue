@@ -7,7 +7,7 @@
       :items="tableItems"
       :hide-default-footer="true"
       sort-by="date"
-      items-per-page="-1"
+      :items-per-page="-1"
     >
       <template v-slot:item="props">
         <tr>
