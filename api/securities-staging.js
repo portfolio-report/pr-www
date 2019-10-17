@@ -2,8 +2,9 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { escapeRegExp } from 'lodash-es'
 import Debug from 'debug'
+import Sequelize from 'sequelize'
 import { authRequired } from './auth.js'
-import { securitiesStagingDb as db } from './inc/db.js'
+import { StagedSecurity } from './inc/sequelize.js'
 const log = Debug('api:securities-staging')
 
 const router = express.Router()
@@ -29,17 +30,12 @@ async function readSecurities({
 
   // Add filter based on search text
   if (search) {
-    const regexStartIMatch = new RegExp('^' + search, 'i')
-    const regexExactIMatch = new RegExp('^' + search + '$', 'i')
-
     filters.push({
-      $or: [
-        { name: { $regex: regexStartIMatch } },
-        { isin: { $regex: regexExactIMatch } },
-        { wkn: { $regex: regexExactIMatch } },
-        { 'markets.XFRA.symbol': { $regex: regexExactIMatch } },
-        { 'markets.XNAS.symbol': { $regex: regexExactIMatch } },
-        { 'markets.XNYS.symbol': { $regex: regexExactIMatch } },
+      [Sequelize.Op.or]: [
+        { name: { [Sequelize.Op.substring]: search } },
+        { isin: { [Sequelize.Op.like]: search } },
+        { wkn: { [Sequelize.Op.like]: search } },
+        { symbol_xfra: { [Sequelize.Op.like]: search } },
       ],
     })
   }
@@ -49,21 +45,18 @@ async function readSecurities({
     filters.push({ security_type: securityType })
   }
 
-  const query = {
-    $and: filters,
+  const where = {
+    [Sequelize.Op.and]: filters,
   }
 
-  // Read entries
-  const entries = await db
-    .find(query)
-    .sort({ [sort]: descending ? -1 : 1 })
-    .skip(skip)
-    .limit(limit)
+  const result = await StagedSecurity.findAndCountAll({
+    where,
+    order: [[sort, descending ? 'DESC' : 'ASC']],
+    limit,
+    offset: skip,
+  })
 
-  // Count all (matching) elements
-  const totalCount = await db.count(query)
-
-  return { entries, params: { totalCount } }
+  return { entries: result.rows, params: { totalCount: result.count } }
 }
 
 /**
@@ -111,7 +104,7 @@ router.post('/', authRequired, async function(req, res, next) {
     } else {
       // Insert multiple entries
       const entries = req.body
-      const result = await db.insert(entries)
+      const result = await StagedSecurity.bulkCreate(entries)
       log(`Inserted ${result.length} of ${entries.length} entries`)
       res.json({ status: 'ok' })
     }
@@ -143,9 +136,7 @@ router.post('/', authRequired, async function(req, res, next) {
       security.name = line[headers.indexOf('Instrument')]
       security.isin = line[headers.indexOf('ISIN')]
       security.wkn = line[headers.indexOf('WKN')].slice(-6) // Only last 6 digits,
-
-      const symbol = line[headers.indexOf('Mnemonic')]
-      security.markets = { XFRA: { symbol } }
+      security.symbol_xfra = line[headers.indexOf('Mnemonic')]
 
       /* Infer security_type from Instrument Group */
       const group = line[headers.indexOf('Instrument Group')]
@@ -167,7 +158,7 @@ router.post('/', authRequired, async function(req, res, next) {
       return security
     })
 
-    const result = await db.insert(entries)
+    const result = await StagedSecurity.bulkCreate(entries)
     log(`Inserted ${result.length} of ${entries.length} entries`)
     res.json({ status: 'ok' })
   }
@@ -177,7 +168,7 @@ router.post('/', authRequired, async function(req, res, next) {
  * Delete all entries, i.e. securities
  */
 router.delete('/', authRequired, async function(req, res) {
-  const count = await db.remove({}, { multi: true })
+  const count = await StagedSecurity.destroy({ truncate: true })
   log(`Deleted ${count} entries`)
   res.send()
 })
