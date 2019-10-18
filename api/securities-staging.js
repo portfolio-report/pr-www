@@ -4,7 +4,7 @@ import { escapeRegExp } from 'lodash-es'
 import Debug from 'debug'
 import Sequelize from 'sequelize'
 import { authRequired } from './auth.js'
-import { StagedSecurity } from './inc/sequelize.js'
+import { Security } from './inc/sequelize.js'
 const log = Debug('api:securities-staging')
 
 const router = express.Router()
@@ -16,9 +16,9 @@ router.use(bodyParser.text({ limit: '50mb' }))
 router.use(express.json({ limit: '20mb' }))
 
 /**
- * Read securities from db with query parameters
+ * Read staged securities from db with query parameters
  */
-async function readSecurities({
+async function readStagedSecurities({
   limit,
   skip,
   sort,
@@ -35,21 +35,21 @@ async function readSecurities({
         { name: { [Sequelize.Op.substring]: search } },
         { isin: { [Sequelize.Op.like]: search } },
         { wkn: { [Sequelize.Op.like]: search } },
-        { symbol_xfra: { [Sequelize.Op.like]: search } },
+        { symbolXfra: { [Sequelize.Op.like]: search } },
       ],
     })
   }
 
   // Add filter based on securityType
   if (securityType) {
-    filters.push({ security_type: securityType })
+    filters.push({ securityType })
   }
 
   const where = {
-    [Sequelize.Op.and]: filters,
+    [Sequelize.Op.and]: [{ staged: true }, { [Sequelize.Op.and]: filters }],
   }
 
-  const result = await StagedSecurity.findAndCountAll({
+  const result = await Security.findAndCountAll({
     where,
     order: [[sort, descending ? 'DESC' : 'ASC']],
     limit,
@@ -60,7 +60,7 @@ async function readSecurities({
 }
 
 /**
- * Get list of securities
+ * Get list of staged securities
  */
 router.get('/', authRequired, async function(req, res) {
   let limit
@@ -77,37 +77,28 @@ router.get('/', authRequired, async function(req, res) {
   const search = escapeRegExp(req.query.search) || ''
   const securityType = req.query.security_type || ''
 
-  res.json(
-    await readSecurities({
-      limit,
-      skip,
-      sort,
-      descending,
-      search,
-      securityType,
-    })
-  )
+  const result = await readStagedSecurities({
+    limit,
+    skip,
+    sort,
+    descending,
+    search,
+    securityType,
+  })
+  result.entries = result.entries.map(el => el.toApiFormat())
+  res.json(result)
 })
 
 /**
- * Create entries, i.e. securities
+ * Create entries, i.e. staged securities
  */
 router.post('/', authRequired, async function(req, res, next) {
   if (req.query.sourceFormat === undefined) {
     // expect format like in GET operations (json)
 
-    if (req.query.multiple === undefined) {
-      // Insert single entry
-      const err = new Error('not implemented')
-      err.statusCode = 500
-      return next(err)
-    } else {
-      // Insert multiple entries
-      const entries = req.body
-      const result = await StagedSecurity.bulkCreate(entries)
-      log(`Inserted ${result.length} of ${entries.length} entries`)
-      res.json({ status: 'ok' })
-    }
+    const err = new Error('not implemented')
+    err.statusCode = 500
+    return next(err)
   } else if (req.query.sourceFormat === 'xetra') {
     if (
       !req.headers['content-type'] ||
@@ -133,12 +124,13 @@ router.post('/', authRequired, async function(req, res, next) {
     // Convert data lines to objects
     const entries = data.map(line => {
       const security = {}
+      security.staged = true
       security.name = line[headers.indexOf('Instrument')]
       security.isin = line[headers.indexOf('ISIN')]
       security.wkn = line[headers.indexOf('WKN')].slice(-6) // Only last 6 digits,
-      security.symbol_xfra = line[headers.indexOf('Mnemonic')]
+      security.symbolXfra = line[headers.indexOf('Mnemonic')]
 
-      /* Infer security_type from Instrument Group */
+      /* Infer securityType from Instrument Group */
       const group = line[headers.indexOf('Instrument Group')]
 
       const groupMapping = {
@@ -151,14 +143,14 @@ router.post('/', authRequired, async function(req, res, next) {
 
       for (const name of Object.keys(groupMapping)) {
         if (groupMapping[name].includes(group)) {
-          security.security_type = name
+          security.securityType = name
         }
       }
 
       return security
     })
 
-    const result = await StagedSecurity.bulkCreate(entries)
+    const result = await Security.bulkCreate(entries)
     log(`Inserted ${result.length} of ${entries.length} entries`)
     res.json({ status: 'ok' })
   }
@@ -168,7 +160,7 @@ router.post('/', authRequired, async function(req, res, next) {
  * Delete all entries, i.e. securities
  */
 router.delete('/', authRequired, async function(req, res) {
-  const count = await StagedSecurity.destroy({ truncate: true })
+  const count = await Security.destroy({ where: { staged: true } })
   log(`Deleted ${count} entries`)
   res.send()
 })
