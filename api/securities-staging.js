@@ -1,6 +1,5 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import { escapeRegExp } from 'lodash-es'
 import Debug from 'debug'
 import Sequelize from 'sequelize'
 import { authRequired } from './auth.js'
@@ -36,6 +35,8 @@ async function readStagedSecurities({
         { isin: { [Sequelize.Op.like]: search } },
         { wkn: { [Sequelize.Op.like]: search } },
         { symbolXfra: { [Sequelize.Op.like]: search } },
+        { symbolXnas: { [Sequelize.Op.like]: search } },
+        { symbolXnys: { [Sequelize.Op.like]: search } },
       ],
     })
   }
@@ -74,7 +75,7 @@ router.get('/', authRequired, async function(req, res) {
   const skip = parseInt(req.query.skip) || 0
   const sort = req.query.sort || 'name'
   const descending = req.query.desc === 'true'
-  const search = escapeRegExp(req.query.search) || ''
+  const search = req.query.search || ''
   const securityType = req.query.security_type || ''
 
   const result = await readStagedSecurities({
@@ -157,7 +158,7 @@ router.post('/', authRequired, async function(req, res, next) {
 })
 
 /**
- * Delete all entries, i.e. securities
+ * Delete all entries, i.e. staged securities
  */
 router.delete('/', authRequired, async function(req, res) {
   const count = await Security.destroy({ where: { staged: true } })

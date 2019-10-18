@@ -1,12 +1,9 @@
 import express from 'express'
-import { escapeRegExp } from 'lodash-es'
 import Debug from 'debug'
+import Sequelize from 'sequelize'
 import { authRequired } from './auth.js'
-import {
-  securitiesDb as db,
-  getSecuritiesFts as getFts,
-  updateFts,
-} from './inc/db.js'
+import { getSecuritiesFts, updateSecuritiesFts } from './inc/db.js'
+import { Security } from './inc/sequelize.js'
 const log = Debug('api:securities')
 
 const router = express.Router()
@@ -29,40 +26,35 @@ async function readSecurities({
 
   // Add filter based on search text
   if (search) {
-    const regexStartIMatch = new RegExp('^' + escapeRegExp(search), 'i')
-
     filters.push({
-      $or: [
-        { name: { $regex: regexStartIMatch } },
-        { isin: search.toUpperCase() },
-        { wkn: search.toUpperCase() },
-        { 'markets.XFRA.symbol': search.toUpperCase() },
-        { 'markets.XNAS.symbol': search.toUpperCase() },
-        { 'markets.XNYS.symbol': search.toUpperCase() },
+      [Sequelize.Op.or]: [
+        { name: { [Sequelize.Op.substring]: search } },
+        { isin: { [Sequelize.Op.like]: search } },
+        { wkn: { [Sequelize.Op.like]: search } },
+        { symbolXfra: { [Sequelize.Op.like]: search } },
+        { symbolXnas: { [Sequelize.Op.like]: search } },
+        { symbolXnys: { [Sequelize.Op.like]: search } },
       ],
     })
   }
 
   // Add filter based on securityType
   if (securityType) {
-    filters.push({ security_type: securityType })
+    filters.push({ securityType })
   }
 
-  const query = {
-    $and: filters,
+  const where = {
+    [Sequelize.Op.and]: [{ staged: false }, { [Sequelize.Op.and]: filters }],
   }
 
-  // Read entries
-  const entries = await db
-    .find(query)
-    .sort({ [sort]: descending ? -1 : 1 })
-    .skip(skip)
-    .limit(limit)
+  const result = await Security.findAndCountAll({
+    where,
+    order: [[sort, descending ? 'DESC' : 'ASC']],
+    limit,
+    offset: skip,
+  })
 
-  // Count all (matching) elements
-  const totalCount = await db.count(query)
-
-  return { entries, params: { totalCount } }
+  return { entries: result.rows, params: { totalCount: result.count } }
 }
 
 /**
@@ -83,16 +75,16 @@ router.get('/', authRequired, async function(req, res) {
   const search = req.query.search || ''
   const securityType = req.query.security_type || ''
 
-  res.json(
-    await readSecurities({
-      limit,
-      skip,
-      sort,
-      descending,
-      search,
-      securityType,
-    })
-  )
+  const result = await readSecurities({
+    limit,
+    skip,
+    sort,
+    descending,
+    search,
+    securityType,
+  })
+  result.entries = result.entries.map(el => el.toApiFormat())
+  res.json(result)
 })
 
 /**
@@ -106,8 +98,10 @@ router.post('/', authRequired, async function(req, res, next) {
     return next(err)
   } else {
     // Insert multiple entries
-    const entries = req.body
-    const result = await db.insert(entries)
+    const entries = req.body.map(e =>
+      Security.fromApiFormat(e, { staged: false })
+    )
+    const result = await Security.bulkCreate(entries)
     log(`Inserted ${result.length} of ${entries.length} entries`)
     res.json({ status: 'ok' })
   }
@@ -117,7 +111,7 @@ router.post('/', authRequired, async function(req, res, next) {
  * Delete all entries, i.e. securities
  */
 router.delete('/', authRequired, async function(req, res) {
-  const count = await db.remove({}, { multi: true })
+  const count = await Security.destroy({ where: { staged: false } })
   log(`Deleted ${count} entries`)
   res.send()
 })
@@ -128,18 +122,17 @@ router.delete('/', authRequired, async function(req, res) {
 router.route('/:uuid').get(async function(req, res) {
   const uuid = req.params.uuid
 
-  const security = await db.findOne({
-    uuid,
-  })
+  const where = {
+    [Sequelize.Op.and]: [{ staged: false }, { uuid }],
+  }
+  const security = await Security.findOne({ where })
+
   if (!security) {
     res.status(404).json({ message: 'Security not found.' })
     return
   }
 
-  // Hide internal ID
-  security._id = undefined
-
-  res.json(security)
+  res.json(security.toApiFormat())
 })
 
 /**
@@ -149,7 +142,7 @@ router.route('/search/:search').get(async function(req, res, next) {
   const search = req.params.search || ''
   const securityType = req.query.type || ''
 
-  const fts = getFts()
+  const fts = getSecuritiesFts()
 
   // Send error message if full text search index is not ready yet
   if (!fts) {
@@ -178,7 +171,7 @@ router.route('/search/:search').get(async function(req, res, next) {
  * Endpoint to update full text search index from current database content
  */
 router.post('/search/update', authRequired, function(req, res) {
-  updateFts()
+  updateSecuritiesFts()
   res.json({ status: 'ok' })
 })
 

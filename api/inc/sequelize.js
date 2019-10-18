@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize'
+import { get } from 'lodash-es'
 import Debug from 'debug'
 const log = Debug('api:sequelize')
 
@@ -21,6 +22,20 @@ export class Security extends Sequelize.Model {
         XNYS: { symbol: this.symbolXnys },
       },
       security_type: this.securityType,
+    }
+  }
+
+  static fromApiFormat(obj, { staged }) {
+    return {
+      uuid: obj.uuid,
+      name: obj.name,
+      isin: obj.isin,
+      wkn: obj.wkn,
+      symbolXfra: get(obj, 'markets.XFRA.symbol'),
+      symbolXnas: get(obj, 'markets.XNAS.symbol'),
+      symbolXnys: get(obj, 'markets.XNYS.symbol'),
+      securityType: obj.security_type,
+      staged,
     }
   }
 }
@@ -53,6 +68,7 @@ Security.init(
     },
     staged: {
       type: Sequelize.BOOLEAN,
+      allowNull: false,
     },
   },
   {
