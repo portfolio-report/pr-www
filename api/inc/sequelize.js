@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize'
-import { get } from 'lodash-es'
+import get from 'lodash/get'
 import Debug from 'debug'
 const log = Debug('api:sequelize')
 
