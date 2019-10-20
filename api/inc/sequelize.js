@@ -11,7 +11,7 @@ export const sequelize = new Sequelize({
 
 export class Security extends Sequelize.Model {
   toApiFormat() {
-    return {
+    const obj = {
       uuid: this.uuid,
       name: this.name,
       isin: this.isin,
@@ -23,6 +23,12 @@ export class Security extends Sequelize.Model {
       },
       security_type: this.securityType,
     }
+    for (const i of ['XFRA', 'XNAS', 'XNYS']) {
+      if (obj.markets[i].symbol === null) {
+        delete obj.markets[i]
+      }
+    }
+    return obj
   }
 
   static fromApiFormat(obj, { staged }) {
