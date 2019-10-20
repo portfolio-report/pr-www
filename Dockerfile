@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Only re-run install if package files have changed
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # Update GeoIP database
 RUN cd node_modules/geoip-lite && npm run-script updatedb
