@@ -19,6 +19,13 @@ $ npm install
 
 - Update `api/config.js`
 
+## Database
+
+``` bash
+# Initialize database
+$ npm run sync-db
+```
+
 ## Build Setup
 
 ``` bash

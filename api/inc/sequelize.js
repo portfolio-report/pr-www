@@ -3,7 +3,7 @@ import get from 'lodash/get'
 import Debug from 'debug'
 const log = Debug('api:sequelize')
 
-const sequelize = new Sequelize({
+export const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: './db/database.sqlite',
   logging: log,
@@ -87,5 +87,3 @@ Security.init(
     ],
   }
 )
-
-Security.sync({ alter: true })
