@@ -60,7 +60,7 @@
           <td>{{ props.item.name }}</td>
           <td>{{ props.item.isin }}</td>
           <td>{{ props.item.wkn }}</td>
-          <td>{{ props.item.security_type }}</td>
+          <td>{{ props.item.securityType }}</td>
         </template>
       </v-data-table>
     </v-flex>
@@ -92,7 +92,7 @@ export default {
         },
         { text: 'ISIN', value: 'isin' },
         { text: 'WKN', value: 'wkn' },
-        { text: 'Type', value: 'security_type' },
+        { text: 'Type', value: 'securityType' },
       ],
       entries: [],
       securityTypeItems: [
@@ -146,7 +146,7 @@ export default {
           limit: this.pagination['items-per-page'],
           desc: this.pagination.sortDesc[0],
           search: this.securitySearch,
-          security_type: this.securityType,
+          securityType: this.securityType,
         },
       })
       this.entries = res.entries

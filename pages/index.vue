@@ -51,7 +51,7 @@
         <v-card-title>
           <span>{{ result.name }}</span>
           <v-chip small color="primary" text-color="white">
-            {{ result.security_type }}
+            {{ result.securityType }}
           </v-chip>
         </v-card-title>
         <v-card-text>
@@ -62,17 +62,17 @@
             <li>
               WKN: <b>{{ result.wkn }}</b>
             </li>
-            <li v-if="result.markets['XFRA']">
+            <li v-if="result.symbolXfra">
               Symbol (Frankfurt):
-              <b>{{ result.markets['XFRA'].symbol }}</b>
+              <b>{{ result.symbolXfra }}</b>
             </li>
-            <li v-if="result.markets['XNAS']">
+            <li v-if="result.symbolXnas">
               Symbol (NASDAQ):
-              <b>{{ result.markets['XNAS'].symbol }}</b>
+              <b>{{ result.symbolXnas }}</b>
             </li>
-            <li v-if="result.markets['XNYS']">
+            <li v-if="result.symbolXnys">
               Symbol (New York):
-              <b>{{ result.markets['XNYS'].symbol }}</b>
+              <b>{{ result.symbolXnys }}</b>
             </li>
           </ul>
         </v-card-text>
@@ -194,7 +194,7 @@ export default {
       fetch(
         `/api/securities/search/${encodeURIComponent(
           this.searchTerm.trim()
-        )}?type=${encodeURIComponent(this.securityType)}`
+        )}?securityType=${encodeURIComponent(this.securityType)}`
       )
         .then(res => {
           if (res.ok) {

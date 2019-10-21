@@ -42,14 +42,7 @@ export function updateSecuritiesFts() {
         shouldSort: true,
         maxPatternLength: 32,
         minMatchCharLength: 2,
-        keys: [
-          'name',
-          'isin',
-          'wkn',
-          'markets.XFRA.symbol',
-          'markets.XNAS.symbol',
-          'markets.XNYS.symbol',
-        ],
+        keys: ['name', 'isin', 'wkn', 'symbolXfra', 'symbolXnas', 'symbolXnys'],
       }
       return new Fuse(entries, options)
     })

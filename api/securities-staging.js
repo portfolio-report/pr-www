@@ -76,7 +76,7 @@ router.get('/', authRequired, async function(req, res) {
   const sort = req.query.sort || 'name'
   const descending = req.query.desc === 'true'
   const search = req.query.search || ''
-  const securityType = req.query.security_type || ''
+  const securityType = req.query.securityType || ''
 
   const result = await readStagedSecurities({
     limit,
@@ -86,7 +86,6 @@ router.get('/', authRequired, async function(req, res) {
     search,
     securityType,
   })
-  result.entries = result.entries.map(el => el.toApiFormat())
   res.json(result)
 })
 

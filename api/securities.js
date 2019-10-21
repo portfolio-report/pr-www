@@ -11,6 +11,17 @@ const router = express.Router()
 // Parse (large) JSON payloads
 router.use(express.json({ limit: '20mb' }))
 
+const publicSecurityAttributes = [
+  'uuid',
+  'name',
+  'isin',
+  'wkn',
+  'symbolXfra',
+  'symbolXnas',
+  'symbolXnys',
+  'securityType',
+]
+
 /**
  * Read securities from db with query parameters
  */
@@ -73,7 +84,7 @@ router.get('/', authRequired, async function(req, res) {
   const sort = req.query.sort || 'name'
   const descending = req.query.desc === 'true'
   const search = req.query.search || ''
-  const securityType = req.query.security_type || ''
+  const securityType = req.query.securityType || ''
 
   const result = await readSecurities({
     limit,
@@ -83,7 +94,6 @@ router.get('/', authRequired, async function(req, res) {
     search,
     securityType,
   })
-  result.entries = result.entries.map(el => el.toApiFormat())
   res.json(result)
 })
 
@@ -98,9 +108,7 @@ router.post('/', authRequired, async function(req, res, next) {
     return next(err)
   } else {
     // Insert multiple entries
-    const entries = req.body.map(e =>
-      Security.fromApiFormat(e, { staged: false })
-    )
+    const entries = req.body
     const result = await Security.bulkCreate(entries)
     log(`Inserted ${result.length} of ${entries.length} entries`)
     res.json({ status: 'ok' })
@@ -117,7 +125,7 @@ router.delete('/', authRequired, async function(req, res) {
 })
 
 /**
- * Get single security
+ * Get single security (public, deprecated)
  */
 router.route('/:uuid').get(async function(req, res) {
   const uuid = req.params.uuid
@@ -136,11 +144,34 @@ router.route('/:uuid').get(async function(req, res) {
 })
 
 /**
- * Search for securities - without authentication
+ * Get single security (public)
+ */
+router.route('/uuid/:uuid').get(async function(req, res) {
+  const uuid = req.params.uuid
+
+  const where = {
+    staged: false,
+    uuid,
+  }
+  const security = await Security.findOne({
+    where,
+    attributes: publicSecurityAttributes,
+  })
+
+  if (!security) {
+    res.status(404).json({ message: 'Security not found.' })
+    return
+  }
+
+  res.json(security)
+})
+
+/**
+ * Search securities (public)
  */
 router.route('/search/:search').get(async function(req, res, next) {
   const search = req.params.search || ''
-  const securityType = req.query.type || ''
+  const securityType = req.query.securityType || ''
 
   const fts = getSecuritiesFts()
 
@@ -155,7 +186,7 @@ router.route('/search/:search').get(async function(req, res, next) {
 
   // Filter by securityType
   if (securityType) {
-    entries = entries.filter(e => e.security_type === securityType)
+    entries = entries.filter(e => e.securityType === securityType)
   }
 
   // Hide internal IDs

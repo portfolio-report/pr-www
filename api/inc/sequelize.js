@@ -1,5 +1,4 @@
 import Sequelize from 'sequelize'
-import get from 'lodash/get'
 import Debug from 'debug'
 const log = Debug('api:sequelize')
 
@@ -21,7 +20,11 @@ export class Security extends Sequelize.Model {
         XNAS: { symbol: this.symbolXnas },
         XNYS: { symbol: this.symbolXnys },
       },
+      symbolXfra: this.symbolXfra,
+      symbolXnas: this.symbolXnas,
+      symbolXnys: this.symbolXnys,
       security_type: this.securityType,
+      securityType: this.securityType,
     }
     for (const i of ['XFRA', 'XNAS', 'XNYS']) {
       if (obj.markets[i].symbol === null) {
@@ -29,20 +32,6 @@ export class Security extends Sequelize.Model {
       }
     }
     return obj
-  }
-
-  static fromApiFormat(obj, { staged }) {
-    return {
-      uuid: obj.uuid,
-      name: obj.name,
-      isin: obj.isin,
-      wkn: obj.wkn,
-      symbolXfra: get(obj, 'markets.XFRA.symbol'),
-      symbolXnas: get(obj, 'markets.XNAS.symbol'),
-      symbolXnys: get(obj, 'markets.XNYS.symbol'),
-      securityType: obj.security_type,
-      staged,
-    }
   }
 }
 
