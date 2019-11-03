@@ -171,7 +171,7 @@ router.route('/uuid/:uuid').get(async function(req, res) {
  */
 router.route('/search/:search').get(async function(req, res, next) {
   const search = req.params.search || ''
-  const securityType = req.query.securityType || ''
+  const securityType = req.query.securityType || req.query.type || ''
 
   const fts = getSecuritiesFts()
 
