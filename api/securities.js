@@ -125,6 +125,17 @@ router.post('/', authRequired, async function(req, res, next) {
 })
 
 /**
+ * Update single entry, i.e. security
+ */
+router.put('/:id', authRequired, async function(req, res) {
+  const id = req.params.id
+  const security = await Security.findOne({ where: { id } })
+  Object.assign(security, req.body)
+  await security.save()
+  res.json({ status: 'ok' })
+})
+
+/**
  * Delete all entries, i.e. securities
  */
 router.delete('/', authRequired, async function(req, res) {

@@ -47,6 +47,70 @@
         color="primary"
       />
 
+      <v-dialog v-model="showEditDialog" max-width="600">
+        <v-card>
+          <v-card-title>Edit security {{ editedItem.id }}</v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <v-checkbox
+                    v-model="editedItem.staged"
+                    label="Staged"
+                    disabled
+                  />
+                </v-col>
+                <v-col cols="12" sm="12" md="8">
+                  <v-text-field
+                    v-model="editedItem.uuid"
+                    label="UUID"
+                    disabled
+                  />
+                </v-col>
+                <v-col cols="12" sm="12" md="8">
+                  <v-text-field v-model="editedItem.name" label="Name" />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field v-model="editedItem.isin" label="ISIN" />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field v-model="editedItem.wkn" label="WKN" />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="editedItem.symbolXfra"
+                    label="Symbol Frankfurt"
+                  />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="editedItem.symbolXnas"
+                    label="Symbol NASDAQ"
+                  />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="editedItem.symbolXnys"
+                    label="Symbol New York"
+                  />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="editedItem.securityType"
+                    label="Type"
+                  />
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="closeEditDialog">Cancel</v-btn>
+            <v-btn color="primary" text @click="saveEditDialog">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
       <v-data-table
         :headers="headers"
         :items="entries"
@@ -61,6 +125,11 @@
           <td>{{ props.item.isin }}</td>
           <td>{{ props.item.wkn }}</td>
           <td>{{ props.item.securityType }}</td>
+        </template>
+        <template v-slot:item.action="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
         </template>
       </v-data-table>
     </v-flex>
@@ -78,6 +147,19 @@ export default {
   },
   data() {
     return {
+      showEditDialog: false,
+      editedItem: {
+        id: null,
+        uuid: null,
+        name: null,
+        isin: null,
+        wkn: null,
+        securityType: null,
+        symbolXfra: null,
+        symbolXnas: null,
+        symbolXnys: null,
+        staged: null,
+      },
       showStagedEntries: false,
       headers: [
         {
@@ -93,6 +175,7 @@ export default {
         { text: 'ISIN', value: 'isin' },
         { text: 'WKN', value: 'wkn' },
         { text: 'Type', value: 'securityType' },
+        { text: 'Actions', value: 'action', sortable: false },
       ],
       entries: [],
       securityTypeItems: [
@@ -151,6 +234,25 @@ export default {
 
       this.loading = false
     }, 300), // debounce 300ms
+    editItem(item) {
+      // Edit a copy of the object
+      this.editedItem = Object.assign({}, item)
+      this.showEditDialog = true
+    },
+    async saveEditDialog() {
+      await this.$axios.$put(
+        `/api/securities/${this.editedItem.id}`,
+        this.editedItem
+      )
+
+      // Update to reflect changes
+      this.getSecurities()
+
+      this.showEditDialog = false
+    },
+    closeEditDialog() {
+      this.showEditDialog = false
+    },
   },
 }
 </script>
