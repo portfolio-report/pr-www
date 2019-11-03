@@ -135,11 +135,7 @@ export default {
     getSecurities: debounce(async function() {
       this.loading = true
 
-      const url = this.showStagedEntries
-        ? '/api/securities-staging'
-        : '/api/securities'
-
-      const res = await this.$axios.$get(url, {
+      const res = await this.$axios.$get('/api/securities', {
         params: {
           sort: this.pagination.sortBy[0],
           skip: this.pagination['items-per-page'] * (this.pagination.page - 1),
@@ -147,6 +143,7 @@ export default {
           desc: this.pagination.sortDesc[0],
           search: this.securitySearch,
           securityType: this.securityType,
+          staged: this.showStagedEntries,
         },
       })
       this.entries = res.entries

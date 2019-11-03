@@ -32,6 +32,7 @@ async function readSecurities({
   descending,
   search,
   securityType,
+  staged,
 }) {
   const filters = []
 
@@ -54,9 +55,12 @@ async function readSecurities({
     filters.push({ securityType })
   }
 
-  const where = {
-    [Sequelize.Op.and]: [{ staged: false }, { [Sequelize.Op.and]: filters }],
+  // Add filter based on staged
+  if (staged !== undefined) {
+    filters.push({ staged })
   }
+
+  const where = { [Sequelize.Op.and]: filters }
 
   const result = await Security.findAndCountAll({
     where,
@@ -85,6 +89,10 @@ router.get('/', authRequired, async function(req, res) {
   const descending = req.query.desc === 'true'
   const search = req.query.search || ''
   const securityType = req.query.securityType || ''
+  let staged
+  if (req.query.staged) {
+    staged = req.query.staged === 'true'
+  }
 
   const result = await readSecurities({
     limit,
@@ -93,6 +101,7 @@ router.get('/', authRequired, async function(req, res) {
     descending,
     search,
     securityType,
+    staged,
   })
   res.json(result)
 })
@@ -119,7 +128,7 @@ router.post('/', authRequired, async function(req, res, next) {
  * Delete all entries, i.e. securities
  */
 router.delete('/', authRequired, async function(req, res) {
-  const count = await Security.destroy({ where: { staged: false } })
+  const count = await Security.destroy({ truncate: true })
   log(`Deleted ${count} entries`)
   res.send()
 })
