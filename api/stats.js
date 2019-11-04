@@ -41,11 +41,6 @@ router.post('/', authRequired, async function(req, res, next) {
   } else {
     // Insert multiple entries
     const entries = req.body
-    entries.map(e => {
-      if (!e.timestamp) {
-        e.timestamp = e.dt
-      }
-    })
     const result = await ClientUpdate.bulkCreate(entries)
     log(`Inserted ${result.length} of ${entries.length} entries`)
     res.json({ status: 'ok' })
