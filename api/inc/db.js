@@ -11,11 +11,6 @@ export const currenciesDb = NeDB.create({
   autoload: true,
 })
 
-export const statsDb = NeDB.create({
-  filename: './db/stats.db.json',
-  autoload: true,
-})
-
 /**
  * Placeholder for full text search for securities
  */

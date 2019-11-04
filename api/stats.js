@@ -1,49 +1,30 @@
 import express from 'express'
 import geoip from 'geoip-lite'
 import Debug from 'debug'
+import Sequelize from 'sequelize'
 import { authRequired } from './auth.js'
-import { statsDb as db } from './inc/db.js'
+import { ClientUpdate } from './inc/sequelize.js'
 const log = Debug('api:stats')
 
 const router = express.Router()
 
 // Parse (large) JSON payloads
-router.use(express.json({ limit: '20mb' }))
-
-/**
- * Serialize entry before conversion to JSON
- */
-function serialize(entry) {
-  entry.dt = entry.dt.toISOString() // Convert Date to String
-  return entry
-}
-
-/**
- * Deserialize entry after conversion from JSON
- */
-function deserialize(entry) {
-  entry.dt = new Date(entry.dt) // Convert from String to Date
-  return entry
-}
+router.use(express.json({ limit: '50mb' }))
 
 /**
  * Get all entries, i.e. stats data
  */
 router.get('/', authRequired, async function(req, res) {
-  const entries = await db.find({})
+  const result = await ClientUpdate.findAndCountAll()
 
-  entries.map(e => serialize(e))
-
-  const totalCount = await db.count({})
-
-  res.json({ entries, params: { totalCount } })
+  res.json({ entries: result.rows, params: { totalCount: result.count } })
 })
 
 /**
  * Delete all entries, i.e. stats data
  */
 router.delete('/', authRequired, async function(req, res) {
-  const count = await db.remove({}, { multi: true })
+  const count = await ClientUpdate.destroy({ truncate: true })
   log(`Deleted ${count} entries`)
   res.send()
 })
@@ -60,8 +41,12 @@ router.post('/', authRequired, async function(req, res, next) {
   } else {
     // Insert multiple entries
     const entries = req.body
-    entries.map(e => deserialize(e))
-    const result = await db.insert(entries)
+    entries.map(e => {
+      if (!e.timestamp) {
+        e.timestamp = e.dt
+      }
+    })
+    const result = await ClientUpdate.bulkCreate(entries)
     log(`Inserted ${result.length} of ${entries.length} entries`)
     res.json({ status: 'ok' })
   }
@@ -71,7 +56,7 @@ router.post('/', authRequired, async function(req, res, next) {
  * Get statistics on updates
  */
 router.route('/updates').get(async function(req, res) {
-  const updates = await db.find({ type: 'update' })
+  const updates = await ClientUpdate.findAll()
 
   const packages = {}
 
@@ -94,7 +79,7 @@ router.route('/updates').get(async function(req, res) {
     /* Count updates by package/version/date */
     const dates = versions[el.version].dates
 
-    const date = el.dt.toISOString().slice(0, 10)
+    const date = el.timestamp.toISOString().slice(0, 10)
     if (!(date in dates)) {
       dates[date] = 0
     }
@@ -104,16 +89,16 @@ router.route('/updates').get(async function(req, res) {
     /* Find first and last updates of a given package/version */
     if (
       versions[el.version].dt_first_update === undefined ||
-      versions[el.version].dt_first_update > el.dt
+      versions[el.version].dt_first_update > el.timestamp
     ) {
-      versions[el.version].dt_first_update = el.dt
+      versions[el.version].dt_first_update = el.timestamp
     }
 
     if (
       versions[el.version].dt_last_update === undefined ||
-      versions[el.version].dt_last_update < el.dt
+      versions[el.version].dt_last_update < el.timestamp
     ) {
-      versions[el.version].dt_last_update = el.dt
+      versions[el.version].dt_last_update = el.timestamp
     }
 
     /* Country: Merge undefined and empty string */
@@ -144,25 +129,25 @@ router.route('/updates').get(async function(req, res) {
  * Count requests (GET or HEAD) as
  * update of a certain package to a certain version
  */
-router.route('/update/:package/:version').get(async function(req, res) {
-  // Resolve IP to country
-  const ipLookup = geoip.lookup(req.ip) || {}
-  const country = ipLookup.country
+router
+  .route('/update/name.abuchen.portfolio/:version')
+  .get(async function(req, res) {
+    // Resolve IP to country
+    const ipLookup = geoip.lookup(req.ip) || {}
+    const country = ipLookup.country
 
-  // Log the update to database
-  const logLine = {
-    dt: new Date(),
-    type: 'update',
-    package: req.params.package,
-    version: req.params.version,
-    country,
-    useragent: req.headers['user-agent'],
-  }
+    // Log the update to database
+    const entry = {
+      timestamp: new Date(),
+      version: req.params.version,
+      country,
+      useragent: req.headers['user-agent'],
+    }
 
-  await db.insert(logLine)
+    await ClientUpdate.create(entry)
 
-  // Send answer to client
-  res.send('ok')
-})
+    // Send answer to client
+    res.send('ok')
+  })
 
 export default router

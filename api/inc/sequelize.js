@@ -82,3 +82,35 @@ Security.init(
     ],
   }
 )
+
+export class ClientUpdate extends Sequelize.Model {}
+
+ClientUpdate.init(
+  {
+    timestamp: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
+    version: {
+      type: Sequelize.STRING(20),
+      validate: { len: [0, 20] },
+      allowNull: false,
+    },
+    country: {
+      type: Sequelize.STRING(2),
+    },
+    useragent: {
+      type: Sequelize.STRING(50),
+    },
+  },
+  {
+    sequelize,
+    modelName: 'clientUpdate',
+    timestamps: false,
+    indexes: [
+      { fields: ['timestamp'] },
+      { fields: ['version'] },
+      { fields: ['country'] },
+    ],
+  }
+)
