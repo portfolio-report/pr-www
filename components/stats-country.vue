@@ -2,7 +2,7 @@
   <div>
     <v-data-table
       :headers="headers"
-      :items="items"
+      :items="countries"
       :hide-default-footer="true"
       :options.sync="pagination"
       :items-per-page="-1"
@@ -21,7 +21,7 @@
 export default {
   props: {
     countries: {
-      type: Object,
+      type: Array,
       required: true,
     },
   },
@@ -46,16 +46,6 @@ export default {
         sortDesc: [true],
       },
     }
-  },
-  computed: {
-    items() {
-      return Object.entries(this.countries).map(e => {
-        return {
-          country: e[0],
-          count: e[1],
-        }
-      })
-    },
   },
 }
 </script>

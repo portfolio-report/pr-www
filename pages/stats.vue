@@ -1,48 +1,38 @@
 <template>
   <div>
     <h1>Statistics</h1>
-    <v-select v-model="selectedPackage" :items="packageArray" label="Package">
-      <template slot="item" slot-scope="data">
-        {{ data.item.name }} ({{ data.item.total }})
+    <h2>Client Updates</h2>
+
+    <GChart type="ColumnChart" :data="chartData" />
+
+    <v-data-table
+      :headers="headers"
+      :items="stats.versions"
+      :hide-default-footer="true"
+      sort-by="version"
+      :items-per-page="-1"
+    >
+      <template v-slot:item="props">
+        <tr @click="selectedVersion = props.item">
+          <td>{{ props.item.version }}</td>
+          <td>
+            {{ props.item.dt_first_update.toLocaleString('de-DE') }}
+          </td>
+          <td>
+            {{ props.item.dt_last_update.toLocaleString('de-DE') }}
+          </td>
+          <td class="text-right">{{ props.item.count }}</td>
+          <td><v-btn>Details</v-btn></td>
+        </tr>
       </template>
-      <template slot="selection" slot-scope="data">
-        {{ data.item.name }}
-      </template>
-    </v-select>
-    <div v-if="typeof selectedPackage.name !== 'undefined'">
-      <h2>Package {{ selectedPackage.name }}</h2>
+    </v-data-table>
 
-      <GChart type="ColumnChart" :data="chartData" />
-
-      <v-data-table
-        :headers="headers"
-        :items="versionArray"
-        :hide-default-footer="true"
-        sort-by="name"
-        :items-per-page="-1"
-      >
-        <template v-slot:item="props">
-          <tr @click="selectedVersion = props.item">
-            <td>{{ props.item.name }}</td>
-            <td>
-              {{ props.item.dt_first_update.toLocaleString('de-DE') }}
-            </td>
-            <td>
-              {{ props.item.dt_last_update.toLocaleString('de-DE') }}
-            </td>
-            <td class="text-right">{{ props.item.total }}</td>
-            <td><v-btn>Details</v-btn></td>
-          </tr>
-        </template>
-      </v-data-table>
-
-      <div v-if="selectedVersion !== null">
-        <h3>Version {{ selectedVersion.name }}</h3>
-        <h4>Updates by date</h4>
-        <date-view :dates="selectedVersion.dates" />
-        <h4>Updates by country</h4>
-        <country-view :countries="selectedVersion.countries" />
-      </div>
+    <div v-if="selectedVersion !== null">
+      <h3>Version {{ selectedVersion.version }}</h3>
+      <h4>Updates by date</h4>
+      <date-view :dates="selectedVersion.dates" />
+      <h4>Updates by country</h4>
+      <country-view :countries="selectedVersion.countries" />
     </div>
   </div>
 </template>
@@ -65,26 +55,25 @@ export default {
   },
   data() {
     return {
-      selectedPackage: {},
       selectedVersion: null,
       headers: [
         {
           text: 'Version',
           align: 'left',
           sortable: true,
-          value: 'name',
+          value: 'version',
         },
         {
           text: 'From',
           align: 'left',
           sortable: true,
-          value: 'dt_first_update',
+          value: 'sort_first_update',
         },
         {
           text: 'To',
           align: 'left',
           sortable: true,
-          value: 'dt_last_update',
+          value: 'sort_last_update',
         },
         {
           text: 'Count',
@@ -97,22 +86,10 @@ export default {
     }
   },
   computed: {
-    packageArray() {
-      return Object.entries(this.stats.updates.packages).map(e => {
-        return { name: e[0], ...e[1] }
-      })
-    },
-    versionArray() {
-      return Object.entries(this.selectedPackage.versions).map(e => {
-        return { name: e[0], ...e[1] }
-      })
-    },
     chartData() {
       return [['Version', 'Count']].concat(
-        this.versionArray
-          .map(e => {
-            return [e.name, e.total]
-          })
+        this.stats.versions
+          .map(e => [e.version, e.count])
           .sort((a, b) => a[0].localeCompare(b[0]))
       )
     },
@@ -120,19 +97,15 @@ export default {
   async asyncData({ $axios }) {
     const stats = await $axios.$get('/api/stats/updates')
 
-    /* Convert datetime strings to objects */
-    for (const p in stats.updates.packages) {
-      for (const v in stats.updates.packages[p].versions) {
-        if (stats.updates.packages[p].versions[v].dt_first_update) {
-          stats.updates.packages[p].versions[v].dt_first_update = new Date(
-            stats.updates.packages[p].versions[v].dt_first_update
-          )
-        }
-        if (stats.updates.packages[p].versions[v].dt_last_update) {
-          stats.updates.packages[p].versions[v].dt_last_update = new Date(
-            stats.updates.packages[p].versions[v].dt_last_update
-          )
-        }
+    /* Convert datetime strings to objects and numerical */
+    for (const v of stats.versions) {
+      if (v.dt_first_update) {
+        v.dt_first_update = new Date(v.dt_first_update)
+        v.sort_first_update = v.dt_first_update.getTime()
+      }
+      if (v.dt_last_update) {
+        v.dt_last_update = new Date(v.dt_last_update)
+        v.sort_last_update = v.dt_last_update.getTime()
       }
     }
 

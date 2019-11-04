@@ -51,73 +51,42 @@ router.post('/', authRequired, async function(req, res, next) {
  * Get statistics on updates
  */
 router.route('/updates').get(async function(req, res) {
-  const updates = await ClientUpdate.findAll()
-
-  const packages = {}
-
-  updates.forEach(el => {
-    /* Count updates by package */
-    if (!(el.package in packages)) {
-      packages[el.package] = { total: 0, versions: {} }
-    }
-    packages[el.package].total += 1
-
-    /* Count updates by package/version */
-    const versions = packages[el.package].versions
-
-    if (!(el.version in versions)) {
-      versions[el.version] = { total: 0, dates: {}, countries: {} }
-    }
-
-    versions[el.version].total += 1
-
-    /* Count updates by package/version/date */
-    const dates = versions[el.version].dates
-
-    const date = el.timestamp.toISOString().slice(0, 10)
-    if (!(date in dates)) {
-      dates[date] = 0
-    }
-
-    dates[date] += 1
-
-    /* Find first and last updates of a given package/version */
-    if (
-      versions[el.version].dt_first_update === undefined ||
-      versions[el.version].dt_first_update > el.timestamp
-    ) {
-      versions[el.version].dt_first_update = el.timestamp
-    }
-
-    if (
-      versions[el.version].dt_last_update === undefined ||
-      versions[el.version].dt_last_update < el.timestamp
-    ) {
-      versions[el.version].dt_last_update = el.timestamp
-    }
-
-    /* Country: Merge undefined and empty string */
-    if (el.country === undefined) el.country = ''
-
-    /* Count updates by package/version/country */
-    const countries = versions[el.version].countries
-
-    if (!(el.country in countries)) {
-      countries[el.country] = 0
-    }
-
-    countries[el.country] += 1
+  let versions = await ClientUpdate.findAll({
+    attributes: [
+      'version',
+      [Sequelize.fn('count', Sequelize.col('*')), 'count'],
+      [Sequelize.fn('max', Sequelize.col('timestamp')), 'dt_last_update'],
+      [Sequelize.fn('min', Sequelize.col('timestamp')), 'dt_first_update'],
+    ],
+    group: ['version'],
   })
 
-  const result = {
-    updates: {
-      total: updates.length,
-      packages,
-    },
+  // Convert to plain objects
+  versions = versions.map(v => v.toJSON())
+
+  for (const version of versions) {
+    // Add updates per day
+    version.dates = await ClientUpdate.findAll({
+      attributes: [
+        [Sequelize.fn('date', Sequelize.col('timestamp')), 'date'],
+        [Sequelize.fn('count', Sequelize.col('*')), 'count'],
+      ],
+      group: ['date'],
+      where: { version: version.version },
+    })
+
+    // Add updates per country
+    version.countries = await ClientUpdate.findAll({
+      attributes: [
+        [Sequelize.fn('IFNULL', Sequelize.col('country'), ''), 'country'],
+        [Sequelize.fn('count', Sequelize.col('*')), 'count'],
+      ],
+      group: Sequelize.fn('IFNULL', Sequelize.col('country'), ''),
+      where: { version: version.version },
+    })
   }
 
-  // Send answer to client
-  res.json(result)
+  res.json({ versions })
 })
 
 /**

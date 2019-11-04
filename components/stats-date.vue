@@ -4,7 +4,7 @@
 
     <v-data-table
       :headers="headers"
-      :items="tableItems"
+      :items="dates"
       :hide-default-footer="true"
       sort-by="date"
       :items-per-page="-1"
@@ -28,7 +28,7 @@ export default {
   },
   props: {
     dates: {
-      type: Object,
+      type: Array,
       required: true,
     },
   },
@@ -54,19 +54,11 @@ export default {
     }
   },
   computed: {
-    tableItems() {
-      return Object.entries(this.dates).map(e => {
-        return {
-          date: e[0],
-          count: e[1],
-        }
-      })
-    },
     chartData() {
       return [['Date', 'Count']].concat(
-        Object.entries(this.dates).sort((a, b) =>
-          a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0
-        )
+        this.dates
+          .map(e => [e.date, e.count])
+          .sort((a, b) => a[0].localeCompare(b[0]))
       )
     },
   },
