@@ -136,6 +136,15 @@ router.put('/:id', authRequired, async function(req, res) {
 })
 
 /**
+ * Delete single entry, i.e. security
+ */
+router.delete('/:id', authRequired, async function(req, res) {
+  const id = req.params.id
+  await Security.destroy({ where: { id } })
+  res.json({ status: 'ok' })
+})
+
+/**
  * Delete all entries, i.e. securities
  */
 router.delete('/', authRequired, async function(req, res) {

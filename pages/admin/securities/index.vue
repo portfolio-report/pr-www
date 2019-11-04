@@ -130,16 +130,23 @@
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
+          <v-icon small @click="deleteItem(item)">
+            mdi-delete
+          </v-icon>
         </template>
       </v-data-table>
+
+      <DialogConfirm ref="confirm" />
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import debounce from 'lodash/debounce'
+import DialogConfirm from '../../../components/dialog-confirm'
 export default {
   layout: 'admin',
+  components: { DialogConfirm },
   head() {
     return {
       title: 'Portfolio Report Admin',
@@ -252,6 +259,18 @@ export default {
     },
     closeEditDialog() {
       this.showEditDialog = false
+    },
+    async deleteItem(item) {
+      if (
+        await this.$refs.confirm.open({
+          title: 'Delete security',
+          message: `Are you sure you want to delete "${item.name}"?`,
+          color: 'secondary',
+        })
+      ) {
+        await this.$axios.$delete(`/api/securities/${item.id}`)
+        this.getSecurities()
+      }
     },
   },
 }
