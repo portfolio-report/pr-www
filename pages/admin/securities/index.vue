@@ -192,7 +192,7 @@ export default {
       ],
       searchQuery: '',
       pagination: {
-        'items-per-page': 10,
+        itemsPerPage: 10,
         sortBy: ['name'],
         sortDesc: [false],
         page: 1,
@@ -228,8 +228,8 @@ export default {
       const res = await this.$axios.$get('/api/securities', {
         params: {
           sort: this.pagination.sortBy[0],
-          skip: this.pagination['items-per-page'] * (this.pagination.page - 1),
-          limit: this.pagination['items-per-page'],
+          skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
+          limit: this.pagination.itemsPerPage,
           desc: this.pagination.sortDesc[0],
           search: this.securitySearch,
           securityType: this.securityType,
