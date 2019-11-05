@@ -15,7 +15,23 @@ router.use(express.json({ limit: '50mb' }))
  * Get all entries, i.e. stats data
  */
 router.get('/', authRequired, async function(req, res) {
-  const result = await ClientUpdate.findAndCountAll()
+  let limit
+  if (isNaN(parseInt(req.query.limit))) {
+    limit = 10
+  } else if (parseInt(req.query.limit) === 0) {
+    limit = undefined
+  } else {
+    limit = parseInt(req.query.limit)
+  }
+  const skip = parseInt(req.query.skip) || 0
+  const sort = req.query.sort || 'timestamp'
+  const descending = req.query.desc === 'true'
+
+  const result = await ClientUpdate.findAndCountAll({
+    order: [[sort, descending ? 'DESC' : 'ASC']],
+    limit,
+    offset: skip,
+  })
 
   res.json({ entries: result.rows, params: { totalCount: result.count } })
 })
@@ -45,6 +61,15 @@ router.post('/', authRequired, async function(req, res, next) {
     log(`Inserted ${result.length} of ${entries.length} entries`)
     res.json({ status: 'ok' })
   }
+})
+
+/**
+ * Delete single entry
+ */
+router.delete('/:id', authRequired, async function(req, res) {
+  const id = req.params.id
+  await ClientUpdate.destroy({ where: { id } })
+  res.json({ status: 'ok' })
 })
 
 /**

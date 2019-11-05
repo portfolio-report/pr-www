@@ -69,6 +69,11 @@ export default {
           to: '/admin/securities/staging',
         },
         {
+          name: 'Client updates',
+          icon: 'mdi-poll',
+          to: '/admin/stats',
+        },
+        {
           name: 'Backup & Restore',
           icon: 'mdi-backup-restore',
           to: '/admin/backup',
