@@ -15,14 +15,7 @@ router.use(express.json({ limit: '50mb' }))
  * Get all entries, i.e. stats data
  */
 router.get('/', authRequired, async function(req, res) {
-  let limit
-  if (isNaN(parseInt(req.query.limit))) {
-    limit = 10
-  } else if (parseInt(req.query.limit) === 0) {
-    limit = undefined
-  } else {
-    limit = parseInt(req.query.limit)
-  }
+  const limit = parseInt(req.query.limit) || 10
   const skip = parseInt(req.query.skip) || 0
   const sort = req.query.sort || 'timestamp'
   const descending = req.query.desc === 'true'
@@ -49,33 +42,6 @@ router.get('/', authRequired, async function(req, res) {
   })
 
   res.json({ entries: result.rows, params: { totalCount: result.count } })
-})
-
-/**
- * Delete all entries, i.e. stats data
- */
-router.delete('/', authRequired, async function(req, res) {
-  const count = await ClientUpdate.destroy({ truncate: true })
-  log(`Deleted ${count} entries`)
-  res.send()
-})
-
-/**
- * Create entries, i.e. stats data
- */
-router.post('/', authRequired, async function(req, res, next) {
-  if (req.query.multiple === undefined) {
-    // Insert single entry
-    const err = new Error('not implemented')
-    err.statusCode = 500
-    return next(err)
-  } else {
-    // Insert multiple entries
-    const entries = req.body
-    const result = await ClientUpdate.bulkCreate(entries)
-    log(`Inserted ${result.length} of ${entries.length} entries`)
-    res.json({ status: 'ok' })
-  }
 })
 
 /**

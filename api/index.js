@@ -1,6 +1,7 @@
 import express from 'express'
 import Debug from 'debug'
 import auth from './auth.js'
+import backups from './backups.js'
 import contact from './contact.js'
 import currencies from './currencies.js'
 import securities from './securities.js'
@@ -30,6 +31,7 @@ app.get('/', function(req, res) {
 })
 
 app.use('/auth', auth)
+app.use('/backups', backups)
 app.use('/contact', contact)
 app.use('/currencies', currencies)
 app.use('/securities', securities)

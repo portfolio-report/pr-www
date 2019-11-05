@@ -2,56 +2,48 @@
   <v-layout column justify-center>
     <v-flex xs12 sm8 md6>
       <v-tabs background-color="primary" dark slider-color="secondary" grow>
-        <v-tab key="backup">Backup</v-tab>
-        <v-tab key="restore">Restore</v-tab>
+        <v-tab key="database">Database</v-tab>
         <v-tab key="fts">Full text search</v-tab>
 
-        <v-tab-item key="backup">
+        <v-tab-item key="database">
           <v-card flat>
-            <v-card-text>Download backup files:</v-card-text>
-            <v-btn
-              color="primary"
-              :loading="loadingSecurities"
-              :disabled="loadingSecurities"
-              @click="downloadSecurities"
-            >
-              Download securities
-            </v-btn>
-            <v-btn
-              color="primary"
-              :loading="loadingStats"
-              :disabled="loadingStats"
-              @click="downloadStats"
-            >
-              Download stats data
-            </v-btn>
+            <v-card-text>Create backup files:</v-card-text>
+            <v-card-actions>
+              <v-btn
+                color="primary"
+                :loading="loadingCreateBackups"
+                :disabled="loadingCreateBackups"
+                @click="createBackups"
+              >
+                Create Backups
+              </v-btn>
+            </v-card-actions>
           </v-card>
-        </v-tab-item>
 
-        <v-tab-item key="restore">
-          <v-card flat>
-            <v-card-text>
-              <input type="file" @change="handleFileUpload" />
-            </v-card-text>
-            <v-list>
-              <v-list-item>
-                Type: {{ restoreBackupInfo.entityType }}
-              </v-list-item>
-              <v-list-item>
-                Number of entries: {{ restoreBackupInfo.length }}
-              </v-list-item>
-            </v-list>
+          <v-data-table :headers="headers" :items="entries" :loading="loading">
+            <template v-slot:items="props">
+              <td>{{ props.item.name }}</td>
+              <td>{{ props.item.size }}</td>
+            </template>
+            <template v-slot:item.action="{ item }">
+              <v-icon small class="mr-2" @click="downloadItem(item)">
+                mdi-download
+              </v-icon>
+              <v-icon small class="mr-2" @click="restoreItem(item)">
+                mdi-backup-restore
+              </v-icon>
+              <v-icon small @click="deleteItem(item)">
+                mdi-delete
+              </v-icon>
+            </template>
+          </v-data-table>
 
-            <DialogConfirm ref="confirm" />
-            <v-btn
-              color="secondary"
-              :loading="loadingRestore"
-              :disabled="loadingRestore || !restoreBackupValid"
-              @click="restoreBackup"
-            >
-              Restore
-            </v-btn>
-          </v-card>
+          <DialogConfirm ref="confirm" />
+
+          <v-overlay :value="loadingRestore">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+            <div class="title">Restore ongoing...</div>
+          </v-overlay>
         </v-tab-item>
 
         <v-tab-item key="fts">
@@ -72,6 +64,7 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import DialogConfirm from '../../components/dialog-confirm'
 export default {
   layout: 'admin',
@@ -83,108 +76,67 @@ export default {
   },
   data() {
     return {
-      loadingSecurities: false,
-      loadingStats: false,
+      loadingCreateBackups: false,
       loadingRestore: false,
-      restoreFileContent: null,
+      entries: [],
+      loading: false,
+      headers: [
+        {
+          text: 'Name',
+          value: 'name',
+        },
+        {
+          text: 'Size',
+          value: 'size',
+        },
+        { text: 'Actions', value: 'action', sortable: false },
+      ],
     }
   },
-  computed: {
-    restoreBackupInfo() {
-      if (
-        this.restoreFileContent &&
-        this.restoreFileContent.backup &&
-        this.restoreFileContent.entries &&
-        Array.isArray(this.restoreFileContent.entries)
-      ) {
-        return {
-          entityType: this.restoreFileContent.backup.entityType,
-          length: this.restoreFileContent.entries.length,
-        }
-      } else {
-        return { entityType: '-', length: '-' }
-      }
-    },
-    restoreBackupValid() {
-      return (
-        this.restoreFileContent !== null &&
-        ['securities', 'stats'].includes(this.restoreBackupInfo.entityType)
-      )
-    },
+  mounted() {
+    this.getEntries()
   },
   methods: {
-    async downloadBackup(entityType) {
-      const data = await this.$axios.$get(`/api/${entityType}?limit=0`)
-
-      // Add information to identify the backup
-      data.backup = { entityType }
-
-      const url = window.URL.createObjectURL(
-        new Blob([JSON.stringify(data)], { type: 'application/json' })
-      )
+    getEntries: debounce(async function() {
+      this.loading = true
+      this.entries = await this.$axios.$get('/api/backups/')
+      this.loading = false
+    }, 300), // debounce 300ms
+    downloadItem(item) {
       const link = document.createElement('a')
-      link.href = url
-      link.setAttribute(
-        'download',
-        `backup-${entityType}-${new Date().toISOString()}.json`
-      )
+      link.href = `/api/backups/${item.name}`
       document.body.appendChild(link)
       link.click()
     },
-    async downloadSecurities() {
-      this.loadingSecurities = true
-      await this.downloadBackup('securities')
-      this.loadingSecurities = false
+    async createBackups() {
+      this.loadingCreateBackups = true
+      await this.$axios.$post(`/api/backups/`)
+      this.getEntries()
+      this.loadingCreateBackups = false
     },
-    async downloadStats() {
-      this.loadingStats = true
-      await this.downloadBackup('stats')
-      this.loadingStats = false
-    },
-    async handleFileUpload(event) {
-      // Prevent restore of previous file
-      this.restoreFileContent = null
-
-      function readAsTextAsync(file) {
-        return new Promise((resolve, reject) => {
-          const fr = new FileReader()
-          fr.onload = e => resolve(e.target.result)
-          fr.readAsText(file)
-        })
-      }
-
-      this.restoreFileContent = JSON.parse(
-        await readAsTextAsync(event.target.files[0])
-      )
-    },
-    async restoreBackup() {
-      this.loadingRestore = true
-
-      const entityType = this.restoreBackupInfo.entityType
-
+    async deleteItem(item) {
       if (
         await this.$refs.confirm.open({
-          title: `Restore ${entityType}`,
-          message:
-            'Are you sure you want to replace the current database content?',
+          title: 'Delete backup file',
+          message: `Are you sure you want to delete the backup file "${item.name}"?`,
           color: 'secondary',
         })
       ) {
-        // Delete existing securities
-        await this.$axios.$delete(`/api/${entityType}`)
-
-        // Insert securities from file
-        await this.$axios.post(
-          `/api/${entityType}?multiple`,
-          this.restoreFileContent.entries,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        await this.$axios.$delete(`/api/backups/${item.name}`)
+        this.getEntries()
       }
-
+    },
+    async restoreItem(item) {
+      this.loadingRestore = true
+      if (
+        await this.$refs.confirm.open({
+          title: 'Restore backup file',
+          message: `Are you sure you want to restore the backup file "${item.name}"?`,
+          color: 'secondary',
+        })
+      ) {
+        await this.$axios.$post(`/api/backups/${item.name}/restore`)
+      }
       this.loadingRestore = false
     },
 
