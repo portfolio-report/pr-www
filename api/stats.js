@@ -28,6 +28,11 @@ router.get('/', authRequired, async function(req, res) {
   const descending = req.query.desc === 'true'
   const version = req.query.version
 
+  log(
+    `Getting entries, limit: ${limit}, skip: ${skip}, ` +
+      `sort: ${sort}, desc: ${descending}, version: ${version}`
+  )
+
   const filters = []
 
   if (version) {
@@ -78,6 +83,7 @@ router.post('/', authRequired, async function(req, res, next) {
  */
 router.delete('/:id', authRequired, async function(req, res) {
   const id = req.params.id
+  log(`Deleting entry ${id}`)
   await ClientUpdate.destroy({ where: { id } })
   res.json({ status: 'ok' })
 })

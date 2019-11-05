@@ -94,6 +94,12 @@ router.get('/', authRequired, async function(req, res) {
     staged = req.query.staged === 'true'
   }
 
+  log(
+    `Getting entries, limit: ${limit}, skip: ${skip}, ` +
+      `sort: ${sort}, desc: ${descending}, search: ${search}, ` +
+      `securityType: ${securityType}, staged: ${staged}`
+  )
+
   const result = await readSecurities({
     limit,
     skip,
@@ -129,6 +135,7 @@ router.post('/', authRequired, async function(req, res, next) {
  */
 router.put('/:id', authRequired, async function(req, res) {
   const id = req.params.id
+  log(`Updating entry ${id}`)
   const security = await Security.findOne({ where: { id } })
   Object.assign(security, req.body)
   await security.save()
@@ -140,6 +147,7 @@ router.put('/:id', authRequired, async function(req, res) {
  */
 router.delete('/:id', authRequired, async function(req, res) {
   const id = req.params.id
+  log(`Deleting entry ${id}`)
   await Security.destroy({ where: { id } })
   res.json({ status: 'ok' })
 })
