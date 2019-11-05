@@ -5,6 +5,26 @@
         <v-toolbar-title>
           Client Updates
         </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-menu bottom left offset-y :close-on-content-click="false">
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on">
+              <v-icon>{{
+                filterVersion ? 'mdi-filter' : 'mdi-filter-outline'
+              }}</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-list>
+              <v-subheader>Version</v-subheader>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-text-field v-model="filterVersion" clearable single-line />
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-menu>
       </v-toolbar>
 
       <v-dialog v-model="showEditDialog" max-width="600">
@@ -82,6 +102,7 @@ export default {
   },
   data() {
     return {
+      filterVersion: null,
       showEditDialog: false,
       editedItem: {
         id: null,
@@ -122,6 +143,9 @@ export default {
       },
       deep: true,
     },
+    filterVersion() {
+      this.getEntries()
+    },
   },
   methods: {
     getEntries: debounce(async function() {
@@ -133,6 +157,7 @@ export default {
           skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
           limit: this.pagination.itemsPerPage,
           desc: this.pagination.sortDesc[0],
+          version: this.filterVersion,
         },
       })
       this.entries = res.entries

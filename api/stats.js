@@ -26,8 +26,18 @@ router.get('/', authRequired, async function(req, res) {
   const skip = parseInt(req.query.skip) || 0
   const sort = req.query.sort || 'timestamp'
   const descending = req.query.desc === 'true'
+  const version = req.query.version
+
+  const filters = []
+
+  if (version) {
+    filters.push({ version })
+  }
+
+  const where = { [Sequelize.Op.and]: filters }
 
   const result = await ClientUpdate.findAndCountAll({
+    where,
     order: [[sort, descending ? 'DESC' : 'ASC']],
     limit,
     offset: skip,
