@@ -2,7 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import Debug from 'debug'
 import { authRequired } from './auth.js'
-import { Security } from './inc/sequelize.js'
+import { sequelize, Security } from './inc/sequelize.js'
 const log = Debug('api:securities-staging')
 
 const router = express.Router()
@@ -87,6 +87,103 @@ router.delete('/', authRequired, async function(req, res) {
   const count = await Security.destroy({ where: { staged: true } })
   log(`Deleted ${count} entries`)
   res.send()
+})
+
+router.get('/stats', authRequired, async function(req, res) {
+  // Count securities
+  const countSecurities = await Security.count({ where: { staged: false } })
+  const countStagedSecurities = await Security.count({
+    where: { staged: true },
+  })
+  const countStagedSecuritiesNoUuid = await Security.count({
+    where: { staged: true, uuid: null },
+  })
+
+  // Check for non-unique ISINs of unstaged and staged securities
+  const duplicateIsins = []
+  for (const staged of [0, 1]) {
+    duplicateIsins[staged] = await sequelize
+      .query(
+        `SELECT isin FROM securities WHERE staged = :staged GROUP BY isin HAVING COUNT(*) > 1`,
+        { type: sequelize.QueryTypes.SELECT, replacements: { staged } }
+      )
+      .map(e => e.isin)
+  }
+
+  res.json({
+    countSecurities,
+    countStagedSecurities,
+    countStagedSecuritiesNoUuid,
+    duplicateIsins: duplicateIsins[0],
+    duplicateIsinsStaged: duplicateIsins[1],
+  })
+})
+
+/**
+ * Match staged with unstaged securities based on ISIN
+ */
+router.post('/match/isin', authRequired, async function(req, res, next) {
+  // Take over UUID from securities with matching ISIN
+  await sequelize.query(
+    `UPDATE securities
+     SET
+      uuid = (SELECT s2.uuid FROM securities s2
+              WHERE s2.staged = 0
+                AND s2.isin = securities.isin
+             )
+    WHERE uuid IS NULL
+      AND staged = 1
+      /* (Redundant) check to only copy from securities with unique key fields */
+      AND 1 = (SELECT COUNT(*) FROM securities s2
+               WHERE s2.staged = 0
+                 AND s2.isin = securities.isin
+              )
+      /* (Redundant) check to only apply on staged securities with unique key fields */
+      AND 1 = (SELECT COUNT(*) FROM securities s2
+               WHERE s2.staged = 1
+                 AND s2.isin = securities.isin
+              )
+    `
+  )
+
+  res.json({ status: 'ok' })
+})
+
+/**
+ * Get all changes comparing staged and unstaged security (with same UUID)
+ */
+router.get('/compare/changes', authRequired, async function(req, res) {
+  const limit = parseInt(req.query.limit) || 10
+  const skip = parseInt(req.query.skip) || 0
+  const sort = req.query.sort || 'uuid'
+  const descending = req.query.desc === 'true'
+
+  log(
+    `Getting entries, limit: ${limit}, skip: ${skip}, ` +
+      `sort: ${sort}, desc: ${descending}`
+  )
+
+  const sqlFromWhere = `FROM securities s
+                        INNER JOIN securities ss ON (s.uuid = ss.uuid AND s.staged = 0 AND ss.staged = 1)
+                        WHERE s.name != ss.name OR s.isin != ss.isin OR s.wkn != ss.wkn
+                       `
+
+  const entries = await sequelize.query(
+    `SELECT s.uuid AS uuid, s.name AS name, ss.name AS nameStaged, s.isin AS isin, ss.isin AS isinStaged, s.wkn AS wkn, ss.wkn AS wknStaged
+     ${sqlFromWhere}
+     ORDER BY ${sort} ${descending ? 'DESC' : 'ASC'}
+     LIMIT ${limit} OFFSET ${skip}
+    `,
+    { type: sequelize.QueryTypes.SELECT }
+  )
+  const count = await sequelize.query(
+    `SELECT count(*) AS cnt ${sqlFromWhere}`,
+    {
+      type: sequelize.QueryTypes.SELECT,
+    }
+  )
+
+  res.json({ entries, params: { totalCount: count[0].cnt } })
 })
 
 export default router
