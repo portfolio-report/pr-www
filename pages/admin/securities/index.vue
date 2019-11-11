@@ -247,7 +247,7 @@ export default {
       this.showEditDialog = true
     },
     async saveEditDialog() {
-      await this.$axios.$put(
+      await this.$axios.$patch(
         `/api/securities/${this.editedItem.id}`,
         this.editedItem
       )

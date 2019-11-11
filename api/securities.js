@@ -108,7 +108,7 @@ router.get('/', authRequired, async function(req, res) {
 /**
  * Update single entry, i.e. security
  */
-router.put('/:id', authRequired, async function(req, res) {
+router.patch('/:id', authRequired, async function(req, res) {
   const id = req.params.id
   log(`Updating entry ${id}`)
   const security = await Security.findOne({ where: { id } })
