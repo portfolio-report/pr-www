@@ -127,13 +127,16 @@
 
         <v-tab-item key="compare">
           <v-data-table
+            v-model="selectedEntries"
             :headers="headers"
             :items="entries"
+            item-key="uuid"
             :options.sync="pagination"
             :server-items-length="totalItems"
             :footer-props="footerProps"
             :loading="loading"
             dense
+            show-select
           >
             <template v-slot:item.name="{ item }">
               <span :class="{ 'red--text': item.name != item.nameStaged }">
@@ -168,6 +171,15 @@
               </span>
             </template>
           </v-data-table>
+
+          <v-btn
+            color="primary"
+            :loading="loadingApply"
+            :disabled="loadingApply"
+            @click="applyChanges"
+          >
+            Apply changes (for selected rows)
+          </v-btn>
         </v-tab-item>
       </v-tabs>
     </v-flex>
@@ -199,6 +211,7 @@ export default {
       loadingDelete: false,
       loadingImport: false,
       loadingMatch: false,
+      loadingApply: false,
       headers: [
         {
           text: 'UUID',
@@ -222,6 +235,7 @@ export default {
         { text: 'WKN (staged)', value: 'wknStaged' },
       ],
       entries: [],
+      selectedEntries: [],
       pagination: {
         itemsPerPage: 10,
         sortBy: ['name'],
@@ -264,6 +278,20 @@ export default {
 
       this.loading = false
     }, 300), // debounce 300ms
+
+    async applyChanges() {
+      this.loadingApply = true
+      for (const item of this.selectedEntries) {
+        await this.$axios.$patch(`/api/securities/${item.id}`, {
+          name: item.nameStaged,
+          isin: item.isinStaged,
+          wkn: item.wknStaged,
+        })
+      }
+      this.loadingApply = false
+
+      this.updateEntries()
+    },
 
     /**
      * Update statistics data from API

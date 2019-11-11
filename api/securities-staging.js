@@ -169,7 +169,7 @@ router.get('/compare/changes', authRequired, async function(req, res) {
                        `
 
   const entries = await sequelize.query(
-    `SELECT s.uuid AS uuid, s.name AS name, ss.name AS nameStaged, s.isin AS isin, ss.isin AS isinStaged, s.wkn AS wkn, ss.wkn AS wknStaged
+    `SELECT s.id AS id, ss.id AS idStaged, s.uuid AS uuid, s.name AS name, ss.name AS nameStaged, s.isin AS isin, ss.isin AS isinStaged, s.wkn AS wkn, ss.wkn AS wknStaged
      ${sqlFromWhere}
      ORDER BY ${sort} ${descending ? 'DESC' : 'ASC'}
      LIMIT ${limit} OFFSET ${skip}
