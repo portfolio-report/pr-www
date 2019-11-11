@@ -89,6 +89,10 @@
                       Content: "{{ importFileContent.substring(0, 50) }}..."
                       <br />
                       Size: {{ Math.round(importFileContent.length / 1024) }} kB
+
+                      <v-progress-linear v-model="uploadProgress" height="25">
+                        <strong>{{ Math.ceil(uploadProgress) }}%</strong>
+                      </v-progress-linear>
                     </p>
 
                     <v-btn
@@ -212,6 +216,7 @@ export default {
       loadingImport: false,
       loadingMatch: false,
       loadingApply: false,
+      uploadProgress: 0,
       headers: [
         {
           text: 'UUID',
@@ -323,6 +328,7 @@ export default {
      */
     async openImportFile(event) {
       this.importFileContent = null
+      this.uploadProgress = 0
 
       function readAsTextAsync(file) {
         return new Promise((resolve, reject) => {
@@ -346,6 +352,10 @@ export default {
           headers: { 'Content-Type': 'text/plain' },
           params: {
             sourceFormat: 'xetra',
+          },
+          onUploadProgress: progressEvent => {
+            this.uploadProgress =
+              (progressEvent.loaded / progressEvent.total) * 100
           },
         }
       )
