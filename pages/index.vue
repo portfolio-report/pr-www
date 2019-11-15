@@ -121,14 +121,13 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
+            <btn-loading
               color="primary"
-              :disabled="!contactFormValid && !sendingContactForm"
-              :loading="sendingContactForm"
-              @click="send"
+              :disabled="!contactFormValid"
+              :action="send"
             >
               Send
-            </v-btn>
+            </btn-loading>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -138,9 +137,10 @@
 
 <script>
 import isEmail from 'validator/lib/isEmail'
+import BtnLoading from '../components/btn-loading'
 
 export default {
-  components: {},
+  components: { BtnLoading },
   head() {
     return {
       title: 'Portfolio Report',
@@ -164,7 +164,6 @@ export default {
       errorText: '',
       showContactForm: false,
       contactFormValid: false,
-      sendingContactForm: false,
       showErrorMessage: false,
       name: '',
       nameRules: [v => !!v || 'Name is required'],
@@ -217,8 +216,7 @@ export default {
           this.errorText = error.message
         })
     },
-    send() {
-      this.sendingContactForm = true
+    async send() {
       this.showErrorMessage = false
       const data = {
         name: this.name,
@@ -226,18 +224,14 @@ export default {
         subject: this.subject,
         message: this.message,
       }
-      this.$axios
-        .post('/api/contact', data)
-        .then(res => {
-          this.sendingContactForm = false
-          this.showContactForm = false
-        })
-        .catch(err => {
-          this.sendingContactForm = false
-          this.showErrorMessage = true
-          // eslint-disable-next-line no-console
-          console.log(err)
-        })
+      try {
+        await this.$axios.post('/api/contact', data)
+        this.showContactForm = false
+      } catch (err) {
+        this.showErrorMessage = true
+        // eslint-disable-next-line no-console
+        console.log(err)
+      }
     },
   },
 }

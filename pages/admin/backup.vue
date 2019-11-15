@@ -9,14 +9,9 @@
           <v-card flat>
             <v-card-text>Create backup files:</v-card-text>
             <v-card-actions>
-              <v-btn
-                color="primary"
-                :loading="loadingCreateBackups"
-                :disabled="loadingCreateBackups"
-                @click="createBackups"
-              >
+              <btn-loading color="primary" :action="createBackups">
                 Create Backups
-              </v-btn>
+              </btn-loading>
             </v-card-actions>
           </v-card>
 
@@ -66,9 +61,10 @@
 <script>
 import debounce from 'lodash/debounce'
 import DialogConfirm from '../../components/dialog-confirm'
+import BtnLoading from '../../components/btn-loading'
 export default {
   layout: 'admin',
-  components: { DialogConfirm },
+  components: { DialogConfirm, BtnLoading },
   head() {
     return {
       title: 'Portfolio Report Admin',
@@ -76,7 +72,6 @@ export default {
   },
   data() {
     return {
-      loadingCreateBackups: false,
       loadingRestore: false,
       entries: [],
       loading: false,
@@ -109,10 +104,8 @@ export default {
       link.click()
     },
     async createBackups() {
-      this.loadingCreateBackups = true
       await this.$axios.$post(`/api/backups/`)
       this.getEntries()
-      this.loadingCreateBackups = false
     },
     async deleteItem(item) {
       if (

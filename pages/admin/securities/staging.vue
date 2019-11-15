@@ -56,14 +56,9 @@
                   </v-card-text>
                   <v-card-actions>
                     <DialogConfirm ref="confirm" />
-                    <v-btn
-                      color="primary"
-                      :disabled="loadingDelete"
-                      :loading="loadingDelete"
-                      @click="deleteStaging"
-                    >
+                    <btn-loading color="primary" :action="deleteStaging">
                       Delete staged securities
-                    </v-btn>
+                    </btn-loading>
                   </v-card-actions>
                 </v-card>
               </v-col>
@@ -95,13 +90,13 @@
                       </v-progress-linear>
                     </p>
 
-                    <v-btn
+                    <btn-loading
                       color="primary"
-                      :disabled="loadingImport || !importFileContent"
-                      :loading="loadingImport"
-                      @click="importFile"
-                      >Import</v-btn
+                      :action="importFile"
+                      :disabled="!importFileContent"
                     >
+                      Import
+                    </btn-loading>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -114,14 +109,12 @@
                   </v-card-text>
                   <v-card-actions>
                     <DialogConfirm ref="confirm" />
-                    <v-btn
+                    <btn-loading
                       color="primary"
-                      :disabled="loadingMatch"
-                      :loading="loadingMatch"
-                      @click="matchStagedSecurities"
+                      :action="matchStagedSecurities"
                     >
                       Match by ISIN
-                    </v-btn>
+                    </btn-loading>
                   </v-card-actions>
                 </v-card>
               </v-col>
@@ -176,14 +169,9 @@
             </template>
           </v-data-table>
 
-          <v-btn
-            color="primary"
-            :loading="loadingApply"
-            :disabled="loadingApply"
-            @click="applyChanges"
-          >
+          <btn-loading color="primary" :action="applyChanges">
             Apply changes (for selected rows)
-          </v-btn>
+          </btn-loading>
         </v-tab-item>
       </v-tabs>
     </v-flex>
@@ -193,10 +181,11 @@
 <script>
 import debounce from 'lodash/debounce'
 import DialogConfirm from '../../../components/dialog-confirm'
+import BtnLoading from '../../../components/btn-loading'
 
 export default {
   layout: 'admin',
-  components: { DialogConfirm },
+  components: { DialogConfirm, BtnLoading },
   head() {
     return {
       title: 'Portfolio Report Admin',
@@ -212,10 +201,6 @@ export default {
         duplicateIsinsStaged: [],
       },
       importFileContent: '',
-      loadingDelete: false,
-      loadingImport: false,
-      loadingMatch: false,
-      loadingApply: false,
       uploadProgress: 0,
       headers: [
         {
@@ -285,7 +270,6 @@ export default {
     }, 300), // debounce 300ms
 
     async applyChanges() {
-      this.loadingApply = true
       for (const item of this.selectedEntries) {
         await this.$axios.$patch(`/api/securities/${item.id}`, {
           name: item.nameStaged,
@@ -293,8 +277,6 @@ export default {
           wkn: item.wknStaged,
         })
       }
-      this.loadingApply = false
-
       this.updateEntries()
     },
 
@@ -309,7 +291,6 @@ export default {
      * Delete all staged securities via API
      */
     async deleteStaging() {
-      this.loadingDelete = true
       if (
         await this.$refs.confirm.open({
           title: 'Delete staged securities',
@@ -320,7 +301,6 @@ export default {
         await this.$axios.$delete(`/api/securities-staging`)
         await this.updateStats()
       }
-      this.loadingDelete = false
     },
 
     /**
@@ -344,7 +324,6 @@ export default {
      * Send content of the file to API
      */
     async importFile() {
-      this.loadingImport = true
       await this.$axios.post(
         '/api/securities-staging',
         this.importFileContent,
@@ -360,17 +339,14 @@ export default {
         }
       )
       await this.updateStats()
-      this.loadingImport = false
     },
 
     /**
      * Compare current with staged securities
      */
     async matchStagedSecurities() {
-      this.loadingMatch = true
       await this.$axios.post('/api/securities-staging/match/isin')
       await this.updateStats()
-      this.loadingMatch = false
     },
   },
 }
