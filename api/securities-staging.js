@@ -165,11 +165,19 @@ router.get('/compare/changes', authRequired, async function(req, res) {
 
   const sqlFromWhere = `FROM securities s
                         INNER JOIN securities ss ON (s.uuid = ss.uuid AND s.staged = 0 AND ss.staged = 1)
-                        WHERE s.name != ss.name OR s.isin != ss.isin OR s.wkn != ss.wkn
+                        WHERE s.name != ss.name
+                           OR s.isin != ss.isin
+                           OR s.wkn != ss.wkn
+                           OR s.symbolXfra != ss.symbolXfra
                        `
 
   const entries = await sequelize.query(
-    `SELECT s.id AS id, ss.id AS idStaged, s.uuid AS uuid, s.name AS name, ss.name AS nameStaged, s.isin AS isin, ss.isin AS isinStaged, s.wkn AS wkn, ss.wkn AS wknStaged
+    `SELECT s.id AS id, ss.id AS idStaged,
+            s.uuid AS uuid,
+            s.name AS name, ss.name AS nameStaged,
+            s.isin AS isin, ss.isin AS isinStaged,
+            s.wkn AS wkn, ss.wkn AS wknStaged,
+            s.symbolXfra AS symbolXfra, ss.symbolXfra AS symbolXfraStaged
      ${sqlFromWhere}
      ORDER BY ${sort} ${descending ? 'DESC' : 'ASC'}
      LIMIT ${limit} OFFSET ${skip}

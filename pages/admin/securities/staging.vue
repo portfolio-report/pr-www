@@ -167,6 +167,21 @@
                 {{ item.wknStaged }}
               </span>
             </template>
+
+            <template v-slot:item.symbolXfra="{ item }">
+              <span
+                :class="{
+                  'red--text': item.symbolXfra != item.symbolXfraStaged,
+                }"
+              >
+                {{ item.symbolXfra }}
+              </span>
+            </template>
+            <template v-slot:item.symbolXfraStaged="{ item }">
+              <span v-if="item.symbolXfra != item.symbolXfraStaged">
+                {{ item.symbolXfraStaged }}
+              </span>
+            </template>
           </v-data-table>
 
           <btn-loading color="primary" :action="applyChanges">
@@ -223,6 +238,8 @@ export default {
         { text: 'ISIN (staged)', value: 'isinStaged' },
         { text: 'WKN', value: 'wkn' },
         { text: 'WKN (staged)', value: 'wknStaged' },
+        { text: 'Symbol XFRA', value: 'symbolXfra' },
+        { text: 'Symbol XFRA (staged)', value: 'symbolXfraStaged' },
       ],
       entries: [],
       selectedEntries: [],
@@ -275,6 +292,7 @@ export default {
           name: item.nameStaged,
           isin: item.isinStaged,
           wkn: item.wknStaged,
+          symbolXfra: item.symbolXfraStaged,
         })
       }
       this.updateEntries()
