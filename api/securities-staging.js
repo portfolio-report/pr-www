@@ -169,6 +169,7 @@ router.get('/compare/changes', authRequired, async function(req, res) {
                            OR s.isin != ss.isin
                            OR s.wkn != ss.wkn
                            OR s.symbolXfra != ss.symbolXfra
+                           OR s.securityType != ss.securityType
                        `
 
   const entries = await sequelize.query(
@@ -177,7 +178,8 @@ router.get('/compare/changes', authRequired, async function(req, res) {
             s.name AS name, ss.name AS nameStaged,
             s.isin AS isin, ss.isin AS isinStaged,
             s.wkn AS wkn, ss.wkn AS wknStaged,
-            s.symbolXfra AS symbolXfra, ss.symbolXfra AS symbolXfraStaged
+            s.symbolXfra AS symbolXfra, ss.symbolXfra AS symbolXfraStaged,
+            s.securityType AS securityType, ss.securityType AS securityTypeStaged
      ${sqlFromWhere}
      ORDER BY ${sort} ${descending ? 'DESC' : 'ASC'}
      LIMIT ${limit} OFFSET ${skip}

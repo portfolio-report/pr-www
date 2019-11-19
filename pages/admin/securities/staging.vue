@@ -181,6 +181,23 @@
                 {{ item.symbolXfraStaged }}
               </span>
             </template>
+
+            <template v-slot:item.securityType="{ item }">
+              <span
+                :class="{
+                  'red--text': item.securityType != item.securityTypeStaged,
+                }"
+              >
+                {{ item.securityType }}
+              </span>
+              <br />
+              <span
+                v-if="item.securityType != item.securityTypeStaged"
+                class="green--text"
+              >
+                {{ item.securityTypeStaged }}
+              </span>
+            </template>
           </v-data-table>
 
           <btn-loading color="primary" :action="applyChanges">
@@ -230,6 +247,7 @@ export default {
         { text: 'ISIN', value: 'isin' },
         { text: 'WKN', value: 'wkn' },
         { text: 'Symbol XFRA', value: 'symbolXfra' },
+        { text: 'Type', value: 'securityType' },
       ],
       entries: [],
       selectedEntries: [],
@@ -283,6 +301,7 @@ export default {
           isin: item.isinStaged,
           wkn: item.wknStaged,
           symbolXfra: item.symbolXfraStaged,
+          securityType: item.securityTypeStaged,
         })
       }
       this.updateEntries()
