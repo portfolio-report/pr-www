@@ -139,9 +139,8 @@
               <span :class="{ 'red--text': item.name != item.nameStaged }">
                 {{ item.name }}
               </span>
-            </template>
-            <template v-slot:item.nameStaged="{ item }">
-              <span v-if="item.name != item.nameStaged">
+              <br />
+              <span v-if="item.name != item.nameStaged" class="green--text">
                 {{ item.nameStaged }}
               </span>
             </template>
@@ -150,9 +149,8 @@
               <span :class="{ 'red--text': item.isin != item.isinStaged }">
                 {{ item.isin }}
               </span>
-            </template>
-            <template v-slot:item.isinStaged="{ item }">
-              <span v-if="item.isin != item.isinStaged">
+              <br />
+              <span v-if="item.isin != item.isinStaged" class="green--text">
                 {{ item.isinStaged }}
               </span>
             </template>
@@ -161,9 +159,8 @@
               <span :class="{ 'red--text': item.wkn != item.wknStaged }">
                 {{ item.wkn }}
               </span>
-            </template>
-            <template v-slot:item.wknStaged="{ item }">
-              <span v-if="item.wkn != item.wknStaged">
+              <br />
+              <span v-if="item.wkn != item.wknStaged" class="green--text">
                 {{ item.wknStaged }}
               </span>
             </template>
@@ -176,9 +173,11 @@
               >
                 {{ item.symbolXfra }}
               </span>
-            </template>
-            <template v-slot:item.symbolXfraStaged="{ item }">
-              <span v-if="item.symbolXfra != item.symbolXfraStaged">
+              <br />
+              <span
+                v-if="item.symbolXfra != item.symbolXfraStaged"
+                class="green--text"
+              >
                 {{ item.symbolXfraStaged }}
               </span>
             </template>
@@ -228,18 +227,9 @@ export default {
           sortable: true,
           value: 'name',
         },
-        {
-          text: 'Name (staged)',
-          align: 'left',
-          sortable: true,
-          value: 'nameStaged',
-        },
         { text: 'ISIN', value: 'isin' },
-        { text: 'ISIN (staged)', value: 'isinStaged' },
         { text: 'WKN', value: 'wkn' },
-        { text: 'WKN (staged)', value: 'wknStaged' },
         { text: 'Symbol XFRA', value: 'symbolXfra' },
-        { text: 'Symbol XFRA (staged)', value: 'symbolXfraStaged' },
       ],
       entries: [],
       selectedEntries: [],
