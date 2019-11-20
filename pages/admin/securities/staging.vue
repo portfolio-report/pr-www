@@ -267,6 +267,7 @@ export default {
           securityType: item.securityTypeStaged,
         })
       }
+      this.selectedEntries = []
       this.updateEntries()
     },
 
