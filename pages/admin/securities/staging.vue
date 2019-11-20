@@ -136,67 +136,29 @@
             show-select
           >
             <template v-slot:item.name="{ item }">
-              <span :class="{ 'red--text': item.name != item.nameStaged }">
-                {{ item.name }}
-              </span>
-              <br />
-              <span v-if="item.name != item.nameStaged" class="green--text">
-                {{ item.nameStaged }}
-              </span>
+              <compare-text :old-text="item.name" :new-text="item.nameStaged" />
             </template>
 
             <template v-slot:item.isin="{ item }">
-              <span :class="{ 'red--text': item.isin != item.isinStaged }">
-                {{ item.isin }}
-              </span>
-              <br />
-              <span v-if="item.isin != item.isinStaged" class="green--text">
-                {{ item.isinStaged }}
-              </span>
+              <compare-text :old-text="item.isin" :new-text="item.isinStaged" />
             </template>
 
             <template v-slot:item.wkn="{ item }">
-              <span :class="{ 'red--text': item.wkn != item.wknStaged }">
-                {{ item.wkn }}
-              </span>
-              <br />
-              <span v-if="item.wkn != item.wknStaged" class="green--text">
-                {{ item.wknStaged }}
-              </span>
+              <compare-text :old-text="item.wkn" :new-text="item.wknStaged" />
             </template>
 
             <template v-slot:item.symbolXfra="{ item }">
-              <span
-                :class="{
-                  'red--text': item.symbolXfra != item.symbolXfraStaged,
-                }"
-              >
-                {{ item.symbolXfra }}
-              </span>
-              <br />
-              <span
-                v-if="item.symbolXfra != item.symbolXfraStaged"
-                class="green--text"
-              >
-                {{ item.symbolXfraStaged }}
-              </span>
+              <compare-text
+                :old-text="item.symbolXfra"
+                :new-text="item.symbolXfraStaged"
+              />
             </template>
 
             <template v-slot:item.securityType="{ item }">
-              <span
-                :class="{
-                  'red--text': item.securityType != item.securityTypeStaged,
-                }"
-              >
-                {{ item.securityType }}
-              </span>
-              <br />
-              <span
-                v-if="item.securityType != item.securityTypeStaged"
-                class="green--text"
-              >
-                {{ item.securityTypeStaged }}
-              </span>
+              <compare-text
+                :old-text="item.securityType"
+                :new-text="item.securityTypeStaged"
+              />
             </template>
           </v-data-table>
 
@@ -213,10 +175,11 @@
 import debounce from 'lodash/debounce'
 import DialogConfirm from '../../../components/dialog-confirm'
 import BtnLoading from '../../../components/btn-loading'
+import CompareText from '../../../components/compare-text'
 
 export default {
   layout: 'admin',
-  components: { DialogConfirm, BtnLoading },
+  components: { DialogConfirm, BtnLoading, CompareText },
   head() {
     return {
       title: 'Portfolio Report Admin',
