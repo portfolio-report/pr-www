@@ -106,6 +106,28 @@ router.get('/', authRequired, async function(req, res) {
 })
 
 /**
+ * Create single entry, i.e. security
+ */
+router.post('/', authRequired, async function(req, res) {
+  function createUuid() {
+    let dt = new Date().getTime()
+    return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = (dt + Math.random() * 16) % 16 | 0
+      dt = Math.floor(dt / 16)
+      return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16)
+    })
+  }
+
+  const entry = req.body
+  if (entry.staged === false && !entry.uuid) {
+    entry.uuid = createUuid()
+  }
+  log(`Creating entry ${entry.uuid}`)
+  const security = await Security.create(entry)
+  res.json(security)
+})
+
+/**
  * Update single entry, i.e. security
  */
 router.patch('/:id', authRequired, async function(req, res) {
