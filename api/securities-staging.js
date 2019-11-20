@@ -45,6 +45,13 @@ router.post('/', authRequired, async function(req, res, next) {
     // Remove empty lines (e.g. last line)
     data = data.filter(line => line.length > 1)
 
+    // Only accept MIC XFRA (Frankfurt) or empty (indexes)
+    data = data.filter(
+      line =>
+        line[headers.indexOf('MIC Code')] === 'XFRA' ||
+        line[headers.indexOf('MIC Code')] === ''
+    )
+
     // Convert data lines to objects
     const entries = data.map(line => {
       const security = {}
