@@ -166,7 +166,7 @@ router.get('/compare/changes', authRequired, async function(req, res) {
   const descending = req.query.desc === 'true'
 
   log(
-    `Getting entries, limit: ${limit}, skip: ${skip}, ` +
+    `Getting changed entries, limit: ${limit}, skip: ${skip}, ` +
       `sort: ${sort}, desc: ${descending}`
   )
 
@@ -193,6 +193,66 @@ router.get('/compare/changes', authRequired, async function(req, res) {
     `,
     { type: sequelize.QueryTypes.SELECT }
   )
+  const count = await sequelize.query(
+    `SELECT count(*) AS cnt ${sqlFromWhere}`,
+    {
+      type: sequelize.QueryTypes.SELECT,
+    }
+  )
+
+  res.json({ entries, params: { totalCount: count[0].cnt } })
+})
+
+/**
+ * Get added/removed securities, i.e. securities only/not in staging
+ */
+router.get('/compare/added-removed', authRequired, async function(req, res) {
+  const limit = parseInt(req.query.limit) || 10
+  const skip = parseInt(req.query.skip) || 0
+  const sort = req.query.sort || 'isin'
+  const descending = req.query.desc === 'true'
+
+  log(
+    `Getting added/removed entries, limit: ${limit}, skip: ${skip}, ` +
+      `sort: ${sort}, desc: ${descending}`
+  )
+
+  const sqlFromWhere = `FROM securities
+                        WHERE (
+                          staged = 1 AND
+                          uuid IS NULL
+                        ) OR (
+                          staged = 0 AND
+                          uuid NOT IN (SELECT uuid FROM securities WHERE staged = 1 AND uuid IS NOT NULL)
+                        )
+                       `
+
+  const entries = await sequelize
+    .query(
+      `SELECT id,
+            uuid,
+            staged,
+            name,
+            isin,
+            wkn,
+            symbolXfra,
+            securityType
+     ${sqlFromWhere}
+     ORDER BY ${sort} ${descending ? 'DESC' : 'ASC'}
+     LIMIT ${limit} OFFSET ${skip}
+    `,
+      { type: sequelize.QueryTypes.SELECT }
+    )
+    .map(e => {
+      if (e.staged === 1) {
+        e.type = 'added'
+      } else {
+        e.type = 'removed'
+      }
+      delete e.staged
+      return e
+    })
+
   const count = await sequelize.query(
     `SELECT count(*) AS cnt ${sqlFromWhere}`,
     {

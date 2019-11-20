@@ -3,7 +3,8 @@
     <v-flex xs12 sm8 md6>
       <v-tabs slider-color="secondary" grow>
         <v-tab key="prepare">Prepare</v-tab>
-        <v-tab key="compare">Compare</v-tab>
+        <v-tab key="changed">Changed securities</v-tab>
+        <v-tab key="added-removed">Added/removed securities</v-tab>
 
         <v-tab-item key="prepare">
           <v-container>
@@ -122,16 +123,16 @@
           </v-container>
         </v-tab-item>
 
-        <v-tab-item key="compare">
+        <v-tab-item key="changed">
           <v-data-table
-            v-model="selectedEntries"
-            :headers="headers"
-            :items="entries"
+            v-model="changedSelectedEntries"
+            :headers="changedHeaders"
+            :items="changedEntries"
             item-key="uuid"
-            :options.sync="pagination"
-            :server-items-length="totalItems"
-            :footer-props="footerProps"
-            :loading="loading"
+            :options.sync="changedPagination"
+            :server-items-length="changedTotalItems"
+            :footer-props="changedFooterProps"
+            :loading="changedLoading"
             dense
             show-select
           >
@@ -166,6 +167,26 @@
             Apply changes (for selected rows)
           </btn-loading>
         </v-tab-item>
+
+        <v-tab-item key="added-removed">
+          <v-data-table
+            v-model="addedRemovedSelectedEntries"
+            :headers="addedRemovedHeaders"
+            :items="addedRemovedEntries"
+            item-key="id"
+            :options.sync="addedRemovedPagination"
+            :server-items-length="addedRemovedTotalItems"
+            :footer-props="addedRemovedFooterProps"
+            :loading="addedRemovedLoading"
+            dense
+            show-select
+          >
+          </v-data-table>
+
+          <btn-loading color="primary" :action="addRemoveEntries">
+            Add/remove (selected entries)
+          </btn-loading>
+        </v-tab-item>
       </v-tabs>
     </v-flex>
   </v-layout>
@@ -196,7 +217,7 @@ export default {
       },
       importFileContent: '',
       uploadProgress: 0,
-      headers: [
+      changedHeaders: [
         {
           text: 'UUID',
           value: 'uuid',
@@ -212,23 +233,57 @@ export default {
         { text: 'Symbol XFRA', value: 'symbolXfra' },
         { text: 'Type', value: 'securityType' },
       ],
-      entries: [],
-      selectedEntries: [],
-      pagination: {
+      changedEntries: [],
+      changedSelectedEntries: [],
+      changedPagination: {
         itemsPerPage: 10,
         sortBy: ['name'],
         sortDesc: [false],
         page: 1,
       },
-      totalItems: 0,
-      loading: false,
-      footerProps: { 'items-per-page-options': [10, 25, 50, 100] },
+      changedTotalItems: 0,
+      changedLoading: false,
+      changedFooterProps: { 'items-per-page-options': [10, 25, 50, 100] },
+      addedRemovedHeaders: [
+        { text: 'Type', value: 'type' },
+        {
+          text: 'UUID',
+          value: 'uuid',
+        },
+        {
+          text: 'Name',
+          align: 'left',
+          sortable: true,
+          value: 'name',
+        },
+        { text: 'ISIN', value: 'isin' },
+        { text: 'WKN', value: 'wkn' },
+        { text: 'Symbol XFRA', value: 'symbolXfra' },
+        { text: 'Type', value: 'securityType' },
+      ],
+      addedRemovedEntries: [],
+      addedRemovedSelectedEntries: [],
+      addedRemovedPagination: {
+        itemsPerPage: 10,
+        sortBy: ['name'],
+        sortDesc: [false],
+        page: 1,
+      },
+      addedRemovedTotalItems: 0,
+      addedRemovedLoading: false,
+      addedRemovedFooterProps: { 'items-per-page-options': [10, 25, 50, 100] },
     }
   },
   watch: {
-    pagination: {
+    changedPagination: {
       handler() {
-        this.updateEntries()
+        this.updateChangedEntries()
+      },
+      deep: true,
+    },
+    addedRemovedPagination: {
+      handler() {
+        this.updateAddedRemovedEntries()
       },
       deep: true,
     },
@@ -237,28 +292,52 @@ export default {
     this.updateStats()
   },
   methods: {
-    updateEntries: debounce(async function() {
-      this.loading = true
+    updateChangedEntries: debounce(async function() {
+      this.changedLoading = true
 
       const res = await this.$axios.$get(
         '/api/securities-staging/compare/changes',
         {
           params: {
-            sort: this.pagination.sortBy[0],
-            skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
-            limit: this.pagination.itemsPerPage,
-            desc: this.pagination.sortDesc[0],
+            sort: this.changedPagination.sortBy[0],
+            skip:
+              this.changedPagination.itemsPerPage *
+              (this.changedPagination.page - 1),
+            limit: this.changedPagination.itemsPerPage,
+            desc: this.changedPagination.sortDesc[0],
           },
         }
       )
-      this.entries = res.entries
-      this.totalItems = res.params.totalCount
+      this.changedEntries = res.entries
+      this.changedTotalItems = res.params.totalCount
 
-      this.loading = false
+      this.changedLoading = false
+    }, 300), // debounce 300ms
+
+    updateAddedRemovedEntries: debounce(async function() {
+      this.addedRemovedLoading = true
+
+      const res = await this.$axios.$get(
+        '/api/securities-staging/compare/added-removed',
+        {
+          params: {
+            sort: this.addedRemovedPagination.sortBy[0],
+            skip:
+              this.addedRemovedPagination.itemsPerPage *
+              (this.addedRemovedPagination.page - 1),
+            limit: this.addedRemovedPagination.itemsPerPage,
+            desc: this.addedRemovedPagination.sortDesc[0],
+          },
+        }
+      )
+      this.addedRemovedEntries = res.entries
+      this.addedRemovedTotalItems = res.params.totalCount
+
+      this.addedRemovedLoading = false
     }, 300), // debounce 300ms
 
     async applyChanges() {
-      for (const item of this.selectedEntries) {
+      for (const item of this.changedSelectedEntries) {
         await this.$axios.$patch(`/api/securities/${item.id}`, {
           name: item.nameStaged,
           isin: item.isinStaged,
@@ -267,8 +346,29 @@ export default {
           securityType: item.securityTypeStaged,
         })
       }
-      this.selectedEntries = []
-      this.updateEntries()
+      this.changedSelectedEntries = []
+      this.updateChangedEntries()
+    },
+
+    async addRemoveEntries() {
+      for (const item of this.addedRemovedSelectedEntries) {
+        if (item.type === 'added') {
+          const { uuid } = await this.$axios.$post(`/api/securities/`, {
+            staged: false,
+            name: item.name,
+            isin: item.isin,
+            wkn: item.wkn,
+            symbolXfra: item.symbolXfra,
+            securityType: item.securityType,
+          })
+          // Add newly generated UUID to staged security to remove entry from table
+          await this.$axios.$patch(`/api/securities/${item.id}`, { uuid })
+        } else if (item.type === 'removed') {
+          await this.$axios.$delete(`/api/securities/${item.id}`)
+        }
+      }
+      this.addedRemovedSelectedEntries = []
+      this.updateAddedRemovedEntries()
     },
 
     /**
@@ -333,7 +433,7 @@ export default {
     },
 
     /**
-     * Compare current with staged securities
+     * Match current with staged securities
      */
     async matchStagedSecurities() {
       await this.$axios.post('/api/securities-staging/match/isin')
