@@ -32,7 +32,6 @@ let sequelizeStore
 if (pathExists('./db/')) {
   /**
    * If folder exists, use sequelize database.
-
    */
 
   const sequelize = new Sequelize('sessions', null, null, {
@@ -43,7 +42,11 @@ if (pathExists('./db/')) {
 
   const SequelizeStore = CSS(session.Store)
 
-  sequelizeStore = new SequelizeStore({ db: sequelize })
+  sequelizeStore = new SequelizeStore({
+    db: sequelize,
+    expiration: 60 * 60 * 1000, // Sessions are invalidated after 1h
+    checkExpirationInterval: 10 * 60 * 1000, // Expiry is checked every 10mins
+  })
 
   // Initialize database
   sequelizeStore.sync()
@@ -56,7 +59,6 @@ export default session({
   name: 'sid',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 3600000 }, // 1h
   unset: 'destroy',
   store: sequelizeStore,
 })
