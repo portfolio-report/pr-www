@@ -109,12 +109,35 @@
                     Match current with staged securities
                   </v-card-text>
                   <v-card-actions>
-                    <DialogConfirm ref="confirm" />
                     <btn-loading
                       color="primary"
-                      :action="matchStagedSecurities"
+                      :action="matchStagedSecuritiesByIsin"
                     >
                       Match by ISIN
+                    </btn-loading>
+                    <btn-loading
+                      color="primary"
+                      :action="matchStagedSecuritiesByName"
+                    >
+                      Match by name
+                    </btn-loading>
+                    <btn-loading
+                      color="primary"
+                      :action="matchStagedSecuritiesByWkn"
+                    >
+                      Match by WKN
+                    </btn-loading>
+                    <btn-loading
+                      color="primary"
+                      :action="matchStagedSecuritiesBySymbolXfra"
+                    >
+                      Match by Symbol (XFRA)
+                    </btn-loading>
+                    <btn-loading
+                      color="secondary"
+                      :action="unmatchStagedSecurities"
+                    >
+                      Remove matches
                     </btn-loading>
                   </v-card-actions>
                 </v-card>
@@ -433,10 +456,42 @@ export default {
     },
 
     /**
-     * Match current with staged securities
+     * Match current with staged securities by ISIN
      */
-    async matchStagedSecurities() {
+    async matchStagedSecuritiesByIsin() {
       await this.$axios.post('/api/securities-staging/match/isin')
+      await this.updateStats()
+    },
+
+    /**
+     * Match current with staged securities by name
+     */
+    async matchStagedSecuritiesByName() {
+      await this.$axios.post('/api/securities-staging/match/name')
+      await this.updateStats()
+    },
+
+    /**
+     * Match current with staged securities by WKN
+     */
+    async matchStagedSecuritiesByWkn() {
+      await this.$axios.post('/api/securities-staging/match/wkn')
+      await this.updateStats()
+    },
+
+    /**
+     * Match current with staged securities by symbol (XFRA)
+     */
+    async matchStagedSecuritiesBySymbolXfra() {
+      await this.$axios.post('/api/securities-staging/match/symbolXfra')
+      await this.updateStats()
+    },
+
+    /**
+     * Unmatch staged securities
+     */
+    async unmatchStagedSecurities() {
+      await this.$axios.delete('/api/securities-staging/match/')
       await this.updateStats()
     },
   },

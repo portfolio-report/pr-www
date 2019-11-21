@@ -127,29 +127,57 @@ router.get('/stats', authRequired, async function(req, res) {
 })
 
 /**
- * Match staged with unstaged securities based on ISIN
+ * Match staged with unstaged securities based on key field (exact match)
  */
-router.post('/match/isin', authRequired, async function(req, res, next) {
-  // Take over UUID from securities with matching ISIN
+router.post('/match/:key', authRequired, async function(req, res, next) {
+  const key = req.params.key
+
+  if (!['name', 'isin', 'wkn', 'symbolXfra'].includes(key)) {
+    log(`Cannot match staged securities by ${key}`)
+    const err = new Error('Page not found')
+    err.statusCode = 404
+    return next(err)
+  }
+
+  log(`Matching staged securities by ${key}`)
+
+  // Take over UUID from securities with matching key field
   await sequelize.query(
     `UPDATE securities
      SET
       uuid = (SELECT s2.uuid FROM securities s2
               WHERE s2.staged = 0
-                AND s2.isin = securities.isin
+                AND s2.${key} = securities.${key}
              )
     WHERE uuid IS NULL
       AND staged = 1
-      /* (Redundant) check to only copy from securities with unique key fields */
+      /* Only copy from securities with unique key fields */
       AND 1 = (SELECT COUNT(*) FROM securities s2
                WHERE s2.staged = 0
-                 AND s2.isin = securities.isin
+                 AND s2.${key} = securities.${key}
               )
-      /* (Redundant) check to only apply on staged securities with unique key fields */
+      /* Only apply on staged securities with unique key fields */
       AND 1 = (SELECT COUNT(*) FROM securities s2
                WHERE s2.staged = 1
-                 AND s2.isin = securities.isin
+                 AND s2.${key} = securities.${key}
               )
+    `
+  )
+
+  res.json({ status: 'ok' })
+})
+
+/**
+ * Remove matches of unstaged securities
+ */
+router.delete('/match/', authRequired, async function(req, res, next) {
+  log(`Delete matches of staged securities`)
+
+  await sequelize.query(
+    `UPDATE securities
+     SET
+      uuid = NULL
+    WHERE staged = 1 AND uuid IS NOT NULL
     `
   )
 
