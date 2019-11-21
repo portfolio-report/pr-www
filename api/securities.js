@@ -40,6 +40,7 @@ async function readSecurities({
   if (search) {
     filters.push({
       [Sequelize.Op.or]: [
+        { uuid: { [Sequelize.Op.like]: search } },
         { name: { [Sequelize.Op.substring]: search } },
         { isin: { [Sequelize.Op.like]: search } },
         { wkn: { [Sequelize.Op.like]: search } },
