@@ -11,7 +11,7 @@ const router = express.Router()
 // Parse (large) JSON payloads
 router.use(express.json({ limit: '20mb' }))
 
-const publicSecurityAttributes = [
+export const publicSecurityAttributes = [
   'uuid',
   'name',
   'isin',
@@ -151,25 +151,6 @@ router.delete('/:id', authRequired, async function(req, res) {
 })
 
 /**
- * Get single security (public, deprecated)
- */
-router.route('/:uuid').get(async function(req, res) {
-  const uuid = req.params.uuid
-
-  const where = {
-    [Sequelize.Op.and]: [{ staged: false }, { uuid }],
-  }
-  const security = await Security.findOne({ where })
-
-  if (!security) {
-    res.status(404).json({ message: 'Security not found.' })
-    return
-  }
-
-  res.json(security.toApiFormat())
-})
-
-/**
  * Get single security (public)
  */
 router.route('/uuid/:uuid').get(async function(req, res) {
@@ -197,7 +178,7 @@ router.route('/uuid/:uuid').get(async function(req, res) {
  */
 router.route('/search/:search').get(async function(req, res, next) {
   const search = req.params.search || ''
-  const securityType = req.query.securityType || req.query.type || ''
+  const securityType = req.query.securityType || ''
 
   const fts = getSecuritiesFts()
 
@@ -214,11 +195,6 @@ router.route('/search/:search').get(async function(req, res, next) {
   if (securityType) {
     entries = entries.filter(e => e.securityType === securityType)
   }
-
-  // Hide internal IDs
-  entries.forEach(doc => {
-    doc._id = undefined
-  })
 
   // Return 10 results
   res.json(entries.slice(0, 10))

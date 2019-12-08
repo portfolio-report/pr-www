@@ -2,6 +2,7 @@ import NeDB from 'nedb-promises'
 import Fuse from 'fuse.js'
 import Debug from 'debug'
 import { Security } from './sequelize.js'
+import { publicSecurityAttributes } from './../securities.js'
 const log = Debug('api:db')
 
 log('Loading databases...')
@@ -30,9 +31,11 @@ export function getSecuritiesFts() {
 export function updateSecuritiesFts() {
   log('Creating/updating full text search index...')
 
-  Security.findAll({ where: { staged: false } })
+  Security.findAll({
+    where: { staged: false },
+    attributes: publicSecurityAttributes,
+  })
     .then(entries => {
-      entries = entries.map(e => e.toApiFormat())
       const options = {
         shouldSort: true,
         maxPatternLength: 32,

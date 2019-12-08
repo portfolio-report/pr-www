@@ -8,32 +8,7 @@ export const sequelize = new Sequelize({
   logging: log,
 })
 
-export class Security extends Sequelize.Model {
-  toApiFormat() {
-    const obj = {
-      uuid: this.uuid,
-      name: this.name,
-      isin: this.isin,
-      wkn: this.wkn,
-      markets: {
-        XFRA: { symbol: this.symbolXfra },
-        XNAS: { symbol: this.symbolXnas },
-        XNYS: { symbol: this.symbolXnys },
-      },
-      symbolXfra: this.symbolXfra,
-      symbolXnas: this.symbolXnas,
-      symbolXnys: this.symbolXnys,
-      security_type: this.securityType,
-      securityType: this.securityType,
-    }
-    for (const i of ['XFRA', 'XNAS', 'XNYS']) {
-      if (obj.markets[i].symbol === null) {
-        delete obj.markets[i]
-      }
-    }
-    return obj
-  }
-}
+export class Security extends Sequelize.Model {}
 
 Security.init(
   {
