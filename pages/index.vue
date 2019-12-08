@@ -33,7 +33,7 @@
             </v-alert>
           </v-card-text>
           <v-card-actions>
-            <a @click="showContactForm = true">Get in contact</a>
+            <v-btn to="/contact" x-small>Get in contact</v-btn>
             <v-spacer />
             <v-btn
               type="submit"
@@ -77,70 +77,12 @@
           </ul>
         </v-card-text>
       </v-card>
-
-      <v-dialog v-model="showContactForm" width="500">
-        <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>
-            Contact
-            <v-spacer />
-            <v-btn color="grey" text icon @click="showContactForm = false">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-card-title>
-
-          <v-card-text>
-            <v-form v-model="contactFormValid">
-              <v-text-field
-                v-model="name"
-                :rules="nameRules"
-                label="Your name"
-              />
-              <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                label="Your email address"
-              />
-              <v-text-field
-                v-model="subject"
-                :rules="subjectRules"
-                label="Subject"
-              />
-              <v-textarea
-                v-model="message"
-                :rules="messageRules"
-                label="Your message"
-              />
-            </v-form>
-          </v-card-text>
-
-          <v-divider></v-divider>
-
-          <v-alert :value="showErrorMessage" type="error" outlined>
-            Message could not be send. Please try again later.
-          </v-alert>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <btn-loading
-              color="primary"
-              :disabled="!contactFormValid"
-              :action="send"
-            >
-              Send
-            </btn-loading>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import isEmail from 'validator/lib/isEmail'
-import BtnLoading from '../components/btn-loading'
-
 export default {
-  components: { BtnLoading },
   head() {
     return {
       title: 'Portfolio Report',
@@ -162,20 +104,6 @@ export default {
       searching: false,
       error: false,
       errorText: '',
-      showContactForm: false,
-      contactFormValid: false,
-      showErrorMessage: false,
-      name: '',
-      nameRules: [v => !!v || 'Name is required'],
-      email: '',
-      emailRules: [
-        v => !!v || 'Email is required',
-        v => isEmail(v) || 'Email must be valid',
-      ],
-      subject: '',
-      subjectRules: [v => !!v || 'Subject is required'],
-      message: '',
-      messageRules: [v => !!v || 'Message is required'],
     }
   },
   computed: {
@@ -215,23 +143,6 @@ export default {
           this.error = true
           this.errorText = error.message
         })
-    },
-    async send() {
-      this.showErrorMessage = false
-      const data = {
-        name: this.name,
-        email: this.email,
-        subject: this.subject,
-        message: this.message,
-      }
-      try {
-        await this.$axios.post('/api/contact', data)
-        this.showContactForm = false
-      } catch (err) {
-        this.showErrorMessage = true
-        // eslint-disable-next-line no-console
-        console.log(err)
-      }
     },
   },
 }
