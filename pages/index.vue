@@ -113,11 +113,32 @@ export default {
       },
     },
   },
+  mounted() {
+    // Read query parameters from URL
+    const q = this.$route.query.q
+    const securityType = this.$route.query.securityType
+
+    if (securityType !== undefined) {
+      this.securityType = securityType
+    }
+
+    if (q) {
+      this.searchTerm = this.$route.query.q
+      this.search()
+    }
+  },
   methods: {
     search() {
       this.searching = true
       this.noResults = false
       this.error = false
+
+      // Update query parameter in URL
+      this.$router.push({
+        path: this.$route.path,
+        query: { q: this.searchTerm, securityType: this.securityType },
+      })
+
       fetch(
         `/api/securities/search/${encodeURIComponent(
           this.searchTerm.trim()
