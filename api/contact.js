@@ -38,7 +38,7 @@ router.post(
       .isLength({ min: 1 })
       .trim(),
   ],
-  function(req, res) {
+  async function(req, res) {
     const validationErrors = validationResult(req)
     if (!validationErrors.isEmpty()) {
       log('Error validating input: ' + util.inspect(validationErrors.array()))
@@ -56,22 +56,22 @@ router.post(
       return res.status(500).json({ status: 'error' })
     }
 
-    nodemailer
-      .createTransport(config.contact.nodemailerTransportOptions)
-      .sendMail({
-        from: `"${req.body.name}" <${req.body.email}>`,
-        to: config.contact.recipientEmailAddress,
-        subject: 'Message via www.portfolio-report.net: ' + req.body.subject,
-        text: req.body.message + '\n\nRemote IP: ' + req.ip,
-      })
-      .then(info => {
-        log('Email sent: ' + util.inspect(info))
-        res.json({ status: 'ok' })
-      })
-      .catch(err => {
-        log('Error sending email: ' + util.inspect(err))
-        res.status(500).json({ status: 'error' })
-      })
+    try {
+      const info = await nodemailer
+        .createTransport(config.contact.nodemailerTransportOptions)
+        .sendMail({
+          from: `"${req.body.name}" <${req.body.email}>`,
+          to: config.contact.recipientEmailAddress,
+          subject: 'Message via www.portfolio-report.net: ' + req.body.subject,
+          text: req.body.message + '\n\nRemote IP: ' + req.ip,
+        })
+
+      log('Email sent: ' + util.inspect(info))
+      res.json({ status: 'ok' })
+    } catch (err) {
+      log('Error sending email: ' + util.inspect(err))
+      res.status(500).json({ status: 'error' })
+    }
   }
 )
 

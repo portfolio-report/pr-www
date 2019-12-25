@@ -128,7 +128,7 @@ export default {
     }
   },
   methods: {
-    search() {
+    async search() {
       this.searching = true
       this.noResults = false
       this.error = false
@@ -139,31 +139,23 @@ export default {
         query: { q: this.searchTerm, securityType: this.securityType },
       })
 
-      fetch(
-        `/api/securities/search/${encodeURIComponent(
-          this.searchTerm.trim()
-        )}?securityType=${encodeURIComponent(this.securityType)}`
-      )
-        .then(res => {
-          if (res.ok) {
-            return res
-          } else {
-            throw new Error(res.statusText)
-          }
-        })
-        .then(res => res.json())
-        .then(res => {
-          this.searching = false
-          this.results = res
-          this.noResults = this.results.length === 0
-        })
-        .catch(error => {
-          this.searching = false
-          this.results = []
-          this.noResults = false
-          this.error = true
-          this.errorText = error.message
-        })
+      try {
+        const res = await this.$axios.$get(
+          `/api/securities/search/${encodeURIComponent(
+            this.searchTerm.trim()
+          )}?securityType=${encodeURIComponent(this.securityType)}`
+        )
+
+        this.searching = false
+        this.results = res
+        this.noResults = this.results.length === 0
+      } catch (error) {
+        this.searching = false
+        this.results = []
+        this.noResults = false
+        this.error = true
+        this.errorText = error.message
+      }
     },
   },
 }

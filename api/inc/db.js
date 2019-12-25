@@ -28,26 +28,24 @@ export function getSecuritiesFts() {
 /**
  * Create/update the full text search index for securities
  */
-export function updateSecuritiesFts() {
+export async function updateSecuritiesFts() {
   log('Creating/updating full text search index...')
 
-  Security.findAll({
+  const entries = await Security.findAll({
     where: { staged: false },
     attributes: publicSecurityAttributes,
   })
-    .then(entries => {
-      const options = {
-        shouldSort: true,
-        maxPatternLength: 32,
-        minMatchCharLength: 2,
-        keys: ['name', 'isin', 'wkn', 'symbolXfra', 'symbolXnas', 'symbolXnys'],
-      }
-      return new Fuse(entries, options)
-    })
-    .then(fts => {
-      securitiesFts = fts
-      log('Full text search index created.')
-    })
+
+  const options = {
+    shouldSort: true,
+    maxPatternLength: 32,
+    minMatchCharLength: 2,
+    keys: ['name', 'isin', 'wkn', 'symbolXfra', 'symbolXnas', 'symbolXnys'],
+  }
+  const fts = new Fuse(entries, options)
+
+  securitiesFts = fts
+  log('Full text search index created.')
 }
 
 // Initially create the full text search index

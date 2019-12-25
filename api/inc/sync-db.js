@@ -7,8 +7,9 @@ log('Creating/updating db definition...')
 
 sequelize
   .sync({ alter: true })
-  .then(input => {
+  .then(() => {
     log('done.')
+    return true
   })
   .catch(err => {
     log(err)
