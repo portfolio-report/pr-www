@@ -13,6 +13,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'prettier',
     'prettier/vue',
+    'plugin:promise/recommended',
   ],
   plugins: ['prettier'],
   // add your custom rules here
