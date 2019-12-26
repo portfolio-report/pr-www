@@ -62,8 +62,9 @@ router.post(
         .sendMail({
           from: `"${req.body.name}" <${req.body.email}>`,
           to: config.contact.recipientEmailAddress,
+          headers: { 'X-Remote-IP': req.ip },
           subject: 'Message via www.portfolio-report.net: ' + req.body.subject,
-          text: req.body.message + '\n\nRemote IP: ' + req.ip,
+          text: req.body.message,
         })
 
       log('Email sent: ' + util.inspect(info))
