@@ -96,7 +96,9 @@ export default {
       securityType: 'share',
       securityTypeItems: [
         { text: 'share', value: 'share' },
+        { text: 'fund', value: 'fund' },
         { text: 'bond', value: 'bond' },
+        { text: 'index', value: 'index' },
         { text: '[all]', value: '' },
       ],
       results: [],
