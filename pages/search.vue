@@ -118,14 +118,11 @@ export default {
   mounted() {
     // Read query parameters from URL
     const q = this.$route.query.q
-    const securityType = this.$route.query.securityType
-
-    if (securityType !== undefined) {
-      this.securityType = securityType
-    }
+    const securityType = this.$route.query.securityType || ''
 
     if (q) {
-      this.searchTerm = this.$route.query.q
+      this.searchTerm = q
+      this.securityType = securityType
       this.search()
     }
   },
@@ -136,9 +133,13 @@ export default {
       this.error = false
 
       // Update query parameter in URL
+      const query = { q: this.searchTerm }
+      if (this.securityType) {
+        query.securityType = this.securityType
+      }
       this.$router.push({
         path: this.$route.path,
-        query: { q: this.searchTerm, securityType: this.securityType },
+        query,
       })
 
       try {
