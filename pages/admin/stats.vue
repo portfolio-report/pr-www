@@ -95,11 +95,6 @@ import DialogConfirm from '../../components/dialog-confirm'
 export default {
   layout: 'admin',
   components: { DialogConfirm },
-  head() {
-    return {
-      title: 'Portfolio Report Admin',
-    }
-  },
   data() {
     return {
       filterVersion: null,
@@ -185,6 +180,11 @@ export default {
         this.getEntries()
       }
     },
+  },
+  head() {
+    return {
+      title: 'Portfolio Report Admin',
+    }
   },
 }
 </script>

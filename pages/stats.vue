@@ -48,10 +48,22 @@ export default {
     CountryView,
     GChart,
   },
-  head() {
-    return {
-      title: 'Portfolio Report',
+  async asyncData({ $axios }) {
+    const stats = await $axios.$get('/api/stats/updates')
+
+    /* Convert datetime strings to objects and numerical */
+    for (const v of stats.versions) {
+      if (v.dt_first_update) {
+        v.dt_first_update = new Date(v.dt_first_update)
+        v.sort_first_update = v.dt_first_update.getTime()
+      }
+      if (v.dt_last_update) {
+        v.dt_last_update = new Date(v.dt_last_update)
+        v.sort_last_update = v.dt_last_update.getTime()
+      }
     }
+
+    return { stats }
   },
   data() {
     return {
@@ -94,22 +106,10 @@ export default {
       )
     },
   },
-  async asyncData({ $axios }) {
-    const stats = await $axios.$get('/api/stats/updates')
-
-    /* Convert datetime strings to objects and numerical */
-    for (const v of stats.versions) {
-      if (v.dt_first_update) {
-        v.dt_first_update = new Date(v.dt_first_update)
-        v.sort_first_update = v.dt_first_update.getTime()
-      }
-      if (v.dt_last_update) {
-        v.dt_last_update = new Date(v.dt_last_update)
-        v.sort_last_update = v.dt_last_update.getTime()
-      }
+  head() {
+    return {
+      title: 'Portfolio Report',
     }
-
-    return { stats }
   },
 }
 </script>

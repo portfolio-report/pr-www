@@ -224,11 +224,6 @@ import CompareText from '../../../components/compare-text'
 export default {
   layout: 'admin',
   components: { DialogConfirm, BtnLoading, CompareText },
-  head() {
-    return {
-      title: 'Portfolio Report Admin',
-    }
-  },
   data() {
     return {
       stats: {
@@ -494,6 +489,11 @@ export default {
       await this.$axios.delete('/api/securities-staging/match/')
       await this.updateStats()
     },
+  },
+  head() {
+    return {
+      title: 'Portfolio Report Admin',
+    }
   },
 }
 </script>

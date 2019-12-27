@@ -65,11 +65,6 @@ import BtnLoading from '../../components/btn-loading'
 export default {
   layout: 'admin',
   components: { DialogConfirm, BtnLoading },
-  head() {
-    return {
-      title: 'Portfolio Report Admin',
-    }
-  },
   data() {
     return {
       loadingRestore: false,
@@ -136,6 +131,11 @@ export default {
     updateFts() {
       this.$axios.post('/api/securities/search/update')
     },
+  },
+  head() {
+    return {
+      title: 'Portfolio Report Admin',
+    }
   },
 }
 </script>

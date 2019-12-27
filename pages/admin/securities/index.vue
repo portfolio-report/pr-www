@@ -147,11 +147,6 @@ import DialogConfirm from '../../../components/dialog-confirm'
 export default {
   layout: 'admin',
   components: { DialogConfirm },
-  head() {
-    return {
-      title: 'Portfolio Report Admin',
-    }
-  },
   data() {
     return {
       showEditDialog: false,
@@ -272,6 +267,11 @@ export default {
         this.getSecurities()
       }
     },
+  },
+  head() {
+    return {
+      title: 'Portfolio Report Admin',
+    }
   },
 }
 </script>

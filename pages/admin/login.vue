@@ -41,11 +41,6 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  head() {
-    return {
-      title: 'Portfolio Report',
-    }
-  },
   data() {
     return {
       formUsername: '',
@@ -75,6 +70,11 @@ export default {
         this.errorMessage = err.message
       }
     },
+  },
+  head() {
+    return {
+      title: 'Portfolio Report',
+    }
   },
 }
 </script>

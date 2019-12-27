@@ -109,7 +109,9 @@ router.get('/stats', authRequired, async function(req, res) {
   // Check for non-unique ISINs of unstaged and staged securities
   const duplicateIsins = []
   for (const staged of [0, 1]) {
-    duplicateIsins[staged] = await sequelize
+    duplicateIsins[
+      staged
+    ] = await sequelize
       .query(
         `SELECT isin FROM securities WHERE staged = :staged GROUP BY isin HAVING COUNT(*) > 1`,
         { type: sequelize.QueryTypes.SELECT, replacements: { staged } }

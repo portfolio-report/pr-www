@@ -54,11 +54,6 @@ import BtnLoading from '../components/btn-loading'
 
 export default {
   components: { BtnLoading },
-  head() {
-    return {
-      title: 'Portfolio Report - Contact',
-    }
-  },
   data() {
     return {
       contactFormValid: false,
@@ -93,6 +88,11 @@ export default {
         console.log(err)
       }
     },
+  },
+  head() {
+    return {
+      title: 'Portfolio Report - Contact',
+    }
   },
 }
 </script>

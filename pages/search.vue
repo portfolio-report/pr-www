@@ -83,11 +83,6 @@
 
 <script>
 export default {
-  head() {
-    return {
-      title: 'Portfolio Report',
-    }
-  },
   data() {
     return {
       searchFormValid: false,
@@ -160,6 +155,11 @@ export default {
         this.errorText = error.message
       }
     },
+  },
+  head() {
+    return {
+      title: 'Portfolio Report',
+    }
   },
 }
 </script>
