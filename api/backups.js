@@ -3,7 +3,7 @@ import path from 'path'
 import express from 'express'
 import Debug from 'debug'
 import { authRequired } from './auth.js'
-import { Security, ClientUpdate } from './inc/sequelize.js'
+import { Security, ClientUpdate, Market, Price } from './inc/sequelize.js'
 
 const log = Debug('api:backups')
 
@@ -39,7 +39,7 @@ router.post('/', authRequired, async function(req, res) {
 
   const timestamp = new Date().toISOString().replace(/:/g, '_')
 
-  for (const Table of [ClientUpdate, Security]) {
+  for (const Table of [ClientUpdate, Security, Market, Price]) {
     const result = await Table.findAndCountAll()
 
     const fileName = `backup-${Table.name}-${timestamp}.json`
@@ -90,6 +90,8 @@ router.post('/:file/restore', authRequired, async function(req, res, next) {
   let Table
   if (backup.table === 'clientUpdate') Table = ClientUpdate
   else if (backup.table === 'security') Table = Security
+  else if (backup.table === 'market') Table = Market
+  else if (backup.table === 'price') Table = Price
   else {
     const err = new Error(`Unknown backup table "${backup.table}"`)
     err.statusCode = 400

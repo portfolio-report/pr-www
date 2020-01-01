@@ -58,6 +58,61 @@ Security.init(
   }
 )
 
+export class Market extends Sequelize.Model {}
+
+Market.init(
+  {
+    marketCode: {
+      type: Sequelize.STRING(4),
+      allowNull: false,
+    },
+    currencyCode: {
+      type: Sequelize.STRING(3),
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'market',
+    timestamps: false,
+    indexes: [
+      { fields: ['securityId'] },
+      { fields: ['securityId', 'marketCode'], unique: true },
+    ],
+  }
+)
+
+// Implicitely add securityId
+Market.belongsTo(Security, { onDelete: 'cascade' })
+Security.hasMany(Market, { onDelete: 'cascade' })
+
+export class Price extends Sequelize.Model {}
+
+Price.init(
+  {
+    date: {
+      type: Sequelize.DATEONLY,
+      allowNull: false,
+    },
+    value: {
+      type: Sequelize.DECIMAL(10, 4),
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'price',
+    timestamps: false,
+    indexes: [
+      { fields: ['marketId'] },
+      { fields: ['marketId', 'date'], unique: true },
+    ],
+  }
+)
+
+Price.belongsTo(Market, { onDelete: 'cascade' })
+Market.hasMany(Price, { onDelete: 'cascade' })
+
 export class ClientUpdate extends Sequelize.Model {}
 
 ClientUpdate.init(

@@ -3,7 +3,7 @@ import Debug from 'debug'
 import Sequelize from 'sequelize'
 import { authRequired } from './auth.js'
 import { getSecuritiesFts, updateSecuritiesFts } from './inc/db.js'
-import { Security } from './inc/sequelize.js'
+import { Security, Market, Price } from './inc/sequelize.js'
 const log = Debug('api:securities')
 
 const router = express.Router()
@@ -163,6 +163,12 @@ router.route('/uuid/:uuid').get(async function(req, res) {
   const security = await Security.findOne({
     where,
     attributes: publicSecurityAttributes,
+    include: [
+      {
+        model: Market,
+        attributes: ['marketCode', 'currencyCode'],
+      },
+    ],
   })
 
   if (!security) {
@@ -206,6 +212,97 @@ router.route('/search/:search').get(async function(req, res, next) {
 router.post('/search/update', authRequired, function(req, res) {
   updateSecuritiesFts()
   res.json({ status: 'ok' })
+})
+
+/**
+ * Create/update market and prices
+ */
+router.patch('/:securityId/market/:marketCode', authRequired, async function(
+  req,
+  res,
+  next
+) {
+  const { securityId, marketCode } = req.params
+
+  const entry = req.body
+  // Overwrite attributes if given
+  entry.securityId = securityId
+  entry.marketCode = marketCode
+
+  log(`Creating/updating market ${securityId}/${marketCode}`)
+  try {
+    const [market] = await Market.findOrBuild({
+      where: { marketCode, securityId },
+    })
+    Object.assign(market, entry)
+    await market.save()
+
+    // Create/update the associated prices
+    if (entry.prices) {
+      for (const newPrice of entry.prices) {
+        const [price] = await Price.findOrBuild({
+          where: { marketId: market.id, date: newPrice.date },
+        })
+        price.value = newPrice.value
+        await price.save()
+      }
+    }
+  } catch (err) {
+    // Most likely problem: foreign key constraint failed
+    if (!(await Security.findOne({ where: { id: securityId } })))
+      return res.status(404).json({ message: 'Security not found.' })
+
+    // Unkown error
+    log(err)
+    return next(err)
+  }
+
+  return res.json({ status: 'ok' })
+})
+
+/**
+ * Delete market and prices
+ */
+router.delete('/:securityId/market/:marketCode', authRequired, async function(
+  req,
+  res
+) {
+  const { securityId, marketCode } = req.params
+  log(`Deleting market ${securityId}/${marketCode}`)
+  await Market.destroy({ where: { securityId, marketCode } })
+  res.json({ status: 'ok' })
+})
+
+/**
+ * Get security prices (public)
+ */
+router.route('/uuid/:uuid/market/:marketCode').get(async function(req, res) {
+  const uuid = req.params.uuid
+  const marketCode = req.params.marketCode
+
+  const where = {
+    staged: false,
+    uuid,
+  }
+  const security = await Security.findOne({
+    where,
+    attributes: publicSecurityAttributes,
+    include: [
+      {
+        model: Market,
+        attributes: ['marketCode', 'currencyCode'],
+        where: { marketCode },
+        include: [{ model: Price, attributes: ['date', 'value'] }],
+      },
+    ],
+  })
+
+  if (!security) {
+    res.status(404).json({ message: 'Not found.' })
+    return
+  }
+
+  res.json(security.markets[0])
 })
 
 export default router
