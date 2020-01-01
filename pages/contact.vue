@@ -7,7 +7,7 @@
         </v-card-title>
 
         <v-card-text>
-          <v-form v-model="contactFormValid">
+          <v-form ref="form" v-model="contactFormValid">
             <v-text-field v-model="name" :rules="nameRules" label="Your name" />
             <v-text-field
               v-model="email"
@@ -63,7 +63,7 @@ export default {
       email: '',
       emailRules: [
         v => !!v || 'Required',
-        v => isEmail(v) || 'Valid email required',
+        v => (!!v && isEmail(v)) || 'Valid email required',
       ],
       subject: '',
       subjectRules: [v => !!v || 'Required'],
@@ -82,6 +82,7 @@ export default {
       }
       try {
         await this.$axios.post('/api/contact', data)
+        this.$refs.form.reset()
       } catch (err) {
         this.showErrorMessage = true
         // eslint-disable-next-line no-console
