@@ -1,0 +1,6 @@
+const path = require('path')
+
+module.exports = {
+  'config': path.resolve('api', 'sequelize-config.json'),
+  'migrations-path': path.resolve('api', 'inc', 'migrations'),
+}

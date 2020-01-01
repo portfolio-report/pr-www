@@ -25,4 +25,4 @@ ENV NUXT_HOST=0.0.0.0
 # Set ENV value from ARG
 ENV API_URL=${API_URL}
 
-CMD npm run sync-db && npm start
+CMD npm run migrations && npm start

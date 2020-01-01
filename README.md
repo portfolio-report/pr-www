@@ -22,8 +22,11 @@ $ npm install
 ## Database
 
 ``` bash
-# Initialize database
-$ npm run sync-db
+# Initialize/update database
+$ npm run migrations
+
+# Get status of migrations
+$ node_modules\.bin\sequelize-cli db:migrate:status
 ```
 
 ## Build Setup

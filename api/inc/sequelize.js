@@ -1,10 +1,10 @@
 import Sequelize from 'sequelize'
 import Debug from 'debug'
+import * as dbConfig from '../sequelize-config.json'
 const log = Debug('api:sequelize')
 
 export const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './db/database.sqlite',
+  ...dbConfig.development,
   logging: log,
 })
 
@@ -45,16 +45,6 @@ Security.init(
     sequelize,
     modelName: 'security',
     timestamps: false,
-    indexes: [
-      { fields: ['uuid', 'staged'] },
-      { fields: ['name', 'staged'] },
-      { fields: ['isin', 'staged'] },
-      { fields: ['wkn', 'staged'] },
-      { fields: ['symbolXfra', 'staged'] },
-      { fields: ['symbolXnas', 'staged'] },
-      { fields: ['symbolXnys', 'staged'] },
-      { fields: ['securityType', 'staged'] },
-    ],
   }
 )
 
@@ -75,10 +65,6 @@ Market.init(
     sequelize,
     modelName: 'market',
     timestamps: false,
-    indexes: [
-      { fields: ['securityId'] },
-      { fields: ['securityId', 'marketCode'], unique: true },
-    ],
   }
 )
 
@@ -103,10 +89,6 @@ Price.init(
     sequelize,
     modelName: 'price',
     timestamps: false,
-    indexes: [
-      { fields: ['marketId'] },
-      { fields: ['marketId', 'date'], unique: true },
-    ],
   }
 )
 
@@ -137,10 +119,5 @@ ClientUpdate.init(
     sequelize,
     modelName: 'clientUpdate',
     timestamps: false,
-    indexes: [
-      { fields: ['timestamp'] },
-      { fields: ['version'] },
-      { fields: ['country'] },
-    ],
   }
 )
