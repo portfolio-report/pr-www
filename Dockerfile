@@ -6,9 +6,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# Update GeoIP database
-RUN cd node_modules/geoip-lite && npm run-script updatedb
-
 # Copy the rest of the app
 COPY . .
 

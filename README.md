@@ -29,6 +29,10 @@ $ npm run migrations
 $ node_modules\.bin\sequelize-cli db:migrate:status
 ```
 
+## GeoIP lookups
+
+- Place `IP2LOCATION-LITE-DB1.IPV6.BIN` (from https://lite.ip2location.com) in db folder
+
 ## Build Setup
 
 ``` bash

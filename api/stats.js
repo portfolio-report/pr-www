@@ -1,7 +1,7 @@
 import express from 'express'
-import geoip from 'geoip-lite'
 import Debug from 'debug'
 import Sequelize from 'sequelize'
+import { getCountryFromIp } from './inc/geoip.js'
 import { authRequired } from './auth.js'
 import { ClientUpdate } from './inc/sequelize.js'
 const log = Debug('api:stats')
@@ -104,8 +104,7 @@ router
   .route('/update/name.abuchen.portfolio/:version')
   .get(async function(req, res) {
     // Resolve IP to country
-    const ipLookup = geoip.lookup(req.ip) || {}
-    const country = ipLookup.country
+    const country = getCountryFromIp(req.ip)
 
     // Log the update to database
     const entry = {
