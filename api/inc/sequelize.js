@@ -80,7 +80,7 @@ Price.init(
       type: Sequelize.DATEONLY,
       allowNull: false,
     },
-    value: {
+    close: {
       type: Sequelize.DECIMAL(10, 4),
       allowNull: false,
     },

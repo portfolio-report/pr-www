@@ -243,7 +243,7 @@ router.patch('/:securityId/market/:marketCode', authRequired, async function(
         const [price] = await Price.findOrBuild({
           where: { marketId: market.id, date: newPrice.date },
         })
-        price.value = newPrice.value
+        price.close = newPrice.close
         await price.save()
       }
     }
@@ -292,7 +292,7 @@ router.route('/uuid/:uuid/market/:marketCode').get(async function(req, res) {
         model: Market,
         attributes: ['marketCode', 'currencyCode'],
         where: { marketCode },
-        include: [{ model: Price, attributes: ['date', 'value'] }],
+        include: [{ model: Price, attributes: ['date', 'close'] }],
       },
     ],
   })
