@@ -285,7 +285,13 @@ router.route('/uuid/:uuid/market/:marketCode').get(async function(req, res) {
   const uuid = req.params.uuid
   const marketCode = req.params.marketCode
 
-  const fromDate = req.query.from || '1900-01-01'
+  function getDefaultFromDate() {
+    const d = new Date()
+    d.setDate(d.getDate() - 14) // 14 days in the past
+    return d.toISOString().substring(0, 10)
+  }
+
+  const fromDate = req.query.from || getDefaultFromDate()
 
   const where = {
     staged: false,
