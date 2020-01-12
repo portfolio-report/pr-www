@@ -60,6 +60,8 @@ Market.init(
       type: Sequelize.STRING(3),
       allowNull: true,
     },
+    firstPriceDate: Sequelize.DATEONLY,
+    lastPriceDate: Sequelize.DATEONLY,
   },
   {
     sequelize,

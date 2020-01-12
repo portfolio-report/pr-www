@@ -3,7 +3,7 @@ import Debug from 'debug'
 import Sequelize from 'sequelize'
 import { authRequired, isAuthenticated } from './auth.js'
 import { getSecuritiesFts, updateSecuritiesFts } from './inc/db.js'
-import { Security, Market, Price } from './inc/sequelize.js'
+import { Security, Market, Price, sequelize } from './inc/sequelize.js'
 const log = Debug('api:securities')
 
 const router = express.Router()
@@ -164,7 +164,12 @@ router.route('/uuid/:uuid').get(async function(req, res) {
     include: [
       {
         model: Market,
-        attributes: ['marketCode', 'currencyCode'],
+        attributes: [
+          'marketCode',
+          'currencyCode',
+          'firstPriceDate',
+          'lastPriceDate',
+        ],
       },
     ],
   }
@@ -252,6 +257,12 @@ router.patch('/:securityId/market/:marketCode', authRequired, async function(
         await price.save()
       }
     }
+
+    // Keep firstPriceDate and lastPriceDate up-to-date
+    await sequelize.query(`UPDATE markets SET
+    firstPriceDate = (SELECT MIN(date) FROM prices WHERE marketId = ${market.id}),
+    lastPriceDate =  (SELECT MAX(date) FROM prices WHERE marketId = ${market.id})
+    WHERE id = ${market.id}`)
   } catch (err) {
     // Most likely problem: foreign key constraint failed
     if (!(await Security.findOne({ where: { id: securityId } })))
@@ -303,7 +314,12 @@ router.route('/uuid/:uuid/market/:marketCode').get(async function(req, res) {
     include: [
       {
         model: Market,
-        attributes: ['marketCode', 'currencyCode'],
+        attributes: [
+          'marketCode',
+          'currencyCode',
+          'firstPriceDate',
+          'lastPriceDate',
+        ],
         where: { marketCode },
         include: [
           {
