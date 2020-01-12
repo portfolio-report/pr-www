@@ -73,12 +73,19 @@ router.post('/login', function(req, res, next) {
  */
 export const authRequired = (req, res, next) => {
   // If the user is not authenticated
-  if (!req.session || !req.session.user) {
+  if (!isAuthenticated(req)) {
     const err = new Error('Unauthorized')
     err.statusCode = 401
     return next(err)
   }
   next()
+}
+
+/**
+ * Determine if a request is authenticated
+ */
+export const isAuthenticated = req => {
+  return req.session && req.session.user
 }
 
 /**

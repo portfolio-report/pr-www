@@ -1,7 +1,7 @@
 import express from 'express'
 import Debug from 'debug'
 import Sequelize from 'sequelize'
-import { authRequired } from './auth.js'
+import { authRequired, isAuthenticated } from './auth.js'
 import { getSecuritiesFts, updateSecuritiesFts } from './inc/db.js'
 import { Security, Market, Price } from './inc/sequelize.js'
 const log = Debug('api:securities')
@@ -156,20 +156,25 @@ router.delete('/:id', authRequired, async function(req, res) {
 router.route('/uuid/:uuid').get(async function(req, res) {
   const uuid = req.params.uuid
 
-  const where = {
-    staged: false,
-    uuid,
-  }
-  const security = await Security.findOne({
-    where,
-    attributes: publicSecurityAttributes,
+  const findOptions = {
+    where: {
+      staged: false,
+      uuid,
+    },
     include: [
       {
         model: Market,
         attributes: ['marketCode', 'currencyCode'],
       },
     ],
-  })
+  }
+
+  // Limit output if request is not authenticated
+  if (!isAuthenticated(req)) {
+    findOptions.attributes = publicSecurityAttributes
+  }
+
+  const security = await Security.findOne(findOptions)
 
   if (!security) {
     res.status(404).json({ message: 'Security not found.' })
