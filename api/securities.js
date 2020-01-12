@@ -280,6 +280,8 @@ router.route('/uuid/:uuid/market/:marketCode').get(async function(req, res) {
   const uuid = req.params.uuid
   const marketCode = req.params.marketCode
 
+  const fromDate = req.query.from || '1900-01-01'
+
   const where = {
     staged: false,
     uuid,
@@ -292,7 +294,14 @@ router.route('/uuid/:uuid/market/:marketCode').get(async function(req, res) {
         model: Market,
         attributes: ['marketCode', 'currencyCode'],
         where: { marketCode },
-        include: [{ model: Price, attributes: ['date', 'close'] }],
+        include: [
+          {
+            model: Price,
+            attributes: ['date', 'close'],
+            where: { date: { [Sequelize.Op.gte]: fromDate } },
+            required: false,
+          },
+        ],
       },
     ],
   })
