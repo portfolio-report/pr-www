@@ -31,6 +31,7 @@ export function initClientUpdate() {
     {
       sequelize,
       modelName: 'clientUpdate',
+      tableName: 'clientupdates',
       timestamps: false,
     }
   )

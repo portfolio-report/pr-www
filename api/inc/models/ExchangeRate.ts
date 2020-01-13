@@ -24,6 +24,7 @@ export function initExchangeRate() {
     {
       sequelize,
       modelName: 'exchangeRate',
+      tableName: 'exchangerates',
       timestamps: false,
     }
   )
