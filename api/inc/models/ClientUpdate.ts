@@ -25,7 +25,7 @@ export function initClientUpdate() {
         type: DataTypes.STRING(2),
       },
       useragent: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING(60),
       },
     },
     {
