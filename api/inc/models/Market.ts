@@ -27,8 +27,14 @@ export function initMarket() {
         type: DataTypes.STRING(3),
         allowNull: true,
       },
-      firstPriceDate: DataTypes.DATEONLY,
-      lastPriceDate: DataTypes.DATEONLY,
+      firstPriceDate: {
+        field: 'first_price_date',
+        type: DataTypes.DATEONLY,
+      },
+      lastPriceDate: {
+        field: 'last_price_date',
+        type: DataTypes.DATEONLY,
+      },
       symbol: DataTypes.STRING(10),
       updatePrices: {
         field: 'update_prices',
@@ -45,6 +51,6 @@ export function initMarket() {
   )
 
   // Implicitely add securityId
-  Market.belongsTo(Security, { onDelete: 'cascade' })
-  Security.hasMany(Market, { onDelete: 'cascade' })
+  Market.belongsTo(Security, { onDelete: 'cascade', foreignKey: 'security_id' })
+  Security.hasMany(Market, { onDelete: 'cascade', foreignKey: 'security_id' })
 }

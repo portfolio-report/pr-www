@@ -46,6 +46,6 @@ export function initEvent() {
   )
 
   // Implicitely add securityId
-  Event.belongsTo(Security, { onDelete: 'cascade' })
-  Security.hasMany(Event, { onDelete: 'cascade' })
+  Event.belongsTo(Security, { onDelete: 'cascade', foreignKey: 'security_id' })
+  Security.hasMany(Event, { onDelete: 'cascade', foreignKey: 'security_id' })
 }
