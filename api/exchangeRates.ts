@@ -47,7 +47,7 @@ router.patch(
       // Create/update the associated prices
       if (prices) {
         await sequelize.query(
-          'INSERT INTO exchangeRatePrices (exchangeRateId, date, value) ' +
+          'INSERT INTO exchangerate_prices (exchangerate_id, date, value) ' +
             'VALUES ' +
             prices
               .map(
@@ -55,7 +55,7 @@ router.patch(
                   `(${exchangeRate.id}, '${price.date}', ${price.value})`
               )
               .join(',') +
-            ' ON CONFLICT(exchangeRateId, date) DO UPDATE SET value=excluded.value'
+            ' ON CONFLICT(exchangerate_id, date) DO UPDATE SET value=excluded.value'
         )
       }
     } catch (err) {

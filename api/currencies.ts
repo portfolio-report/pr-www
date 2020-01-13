@@ -10,7 +10,7 @@ const router = express.Router()
  */
 router.route('/').get(async function (_req: Request, res: Response) {
   const currencies = await sequelize.query(
-    'SELECT baseCurrencyCode as currencyCode from exchangeRates UNION SELECT quoteCurrencyCode as currencyCode from exchangeRates',
+    'SELECT base_currency_code as "currencyCode" from exchangeRates UNION SELECT quote_currency_code as "currencyCode" from exchangeRates',
     { type: Sequelize.QueryTypes.SELECT }
   )
 

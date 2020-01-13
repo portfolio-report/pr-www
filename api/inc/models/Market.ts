@@ -51,6 +51,12 @@ export function initMarket() {
   )
 
   // Implicitely add securityId
-  Market.belongsTo(Security, { onDelete: 'cascade', foreignKey: 'security_id' })
-  Security.hasMany(Market, { onDelete: 'cascade', foreignKey: 'security_id' })
+  Market.belongsTo(Security, {
+    onDelete: 'cascade',
+    foreignKey: { name: 'securityId', field: 'security_id' },
+  })
+  Security.hasMany(Market, {
+    onDelete: 'cascade',
+    foreignKey: { name: 'securityId', field: 'security_id' },
+  })
 }

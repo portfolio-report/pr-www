@@ -382,20 +382,20 @@ router.patch(
       // Create/update the associated prices
       if (entry.prices) {
         await sequelize.query(
-          'INSERT INTO prices (marketId, date, close) ' +
+          'INSERT INTO prices (market_id, date, close) ' +
             'VALUES ' +
             entry.prices
               .map((price) => `(${market.id}, '${price.date}', ${price.close})`)
               .join(',') +
-            'ON CONFLICT(marketId, date) DO UPDATE SET close=excluded.close'
+            'ON CONFLICT(market_id, date) DO UPDATE SET close=excluded.close'
         )
       }
 
       // Keep firstPriceDate and lastPriceDate up-to-date
       await sequelize.query(`UPDATE markets SET
-    firstPriceDate = (SELECT MIN(date) FROM prices WHERE marketId = ${market.id}),
-    lastPriceDate =  (SELECT MAX(date) FROM prices WHERE marketId = ${market.id})
-    WHERE id = ${market.id}`)
+        first_price_date = (SELECT MIN(date) FROM prices WHERE market_id = ${market.id}),
+        last_price_date =  (SELECT MAX(date) FROM prices WHERE market_id = ${market.id})
+        WHERE id = ${market.id}`)
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err)
@@ -417,7 +417,7 @@ router.delete(
     log(`Deleting market ${uuid}/${marketCode}`)
 
     await sequelize.query(
-      'DELETE FROM markets WHERE marketCode = :marketCode AND securityId IN (SELECT id FROM securities WHERE uuid = :uuid)',
+      'DELETE FROM markets WHERE market_code = :marketCode AND security_id IN (SELECT id FROM securities WHERE uuid = :uuid)',
       { replacements: { uuid, marketCode } }
     )
 

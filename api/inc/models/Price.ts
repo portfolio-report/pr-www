@@ -28,6 +28,12 @@ export function initPrice() {
     }
   )
 
-  Price.belongsTo(Market, { onDelete: 'cascade', foreignKey: 'market_id' })
-  Market.hasMany(Price, { onDelete: 'cascade', foreignKey: 'market_id' })
+  Price.belongsTo(Market, {
+    onDelete: 'cascade',
+    foreignKey: { name: 'marketId', field: 'market_id' },
+  })
+  Market.hasMany(Price, {
+    onDelete: 'cascade',
+    foreignKey: { name: 'marketId', field: 'market_id' },
+  })
 }
