@@ -30,12 +30,12 @@ export function initExchangeRatePrice() {
   )
 
   ExchangeRatePrice.belongsTo(ExchangeRate, {
-    foreignKey: 'exchangeRateId',
+    foreignKey: 'exchangerate_id',
     onDelete: 'cascade',
   })
   ExchangeRate.hasMany(ExchangeRatePrice, {
     as: 'prices',
-    foreignKey: 'exchangeRateId',
+    foreignKey: 'exchangerate_id',
     onDelete: 'cascade',
   })
 }

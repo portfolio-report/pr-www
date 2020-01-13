@@ -13,10 +13,12 @@ export function initExchangeRate() {
   ExchangeRate.init(
     {
       baseCurrencyCode: {
+        field: 'base_currency_code',
         type: DataTypes.STRING(3),
         allowNull: false,
       },
       quoteCurrencyCode: {
+        field: 'quote_currency_code',
         type: DataTypes.STRING(3),
         allowNull: false,
       },

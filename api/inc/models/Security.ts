@@ -32,15 +32,19 @@ export function initSecurity() {
         type: DataTypes.STRING(6),
       },
       symbolXfra: {
+        field: 'symbol_xfra',
         type: DataTypes.STRING(10),
       },
       symbolXnas: {
+        field: 'symbol_xnas',
         type: DataTypes.STRING(10),
       },
       symbolXnys: {
+        field: 'symbol_xnys',
         type: DataTypes.STRING(10),
       },
       securityType: {
+        field: 'security_type',
         type: DataTypes.ENUM('share', 'fund', 'bond', 'index'),
       },
     },

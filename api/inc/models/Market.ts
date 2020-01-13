@@ -18,10 +18,12 @@ export function initMarket() {
   Market.init(
     {
       marketCode: {
+        field: 'market_code',
         type: DataTypes.STRING(4),
         allowNull: false,
       },
       currencyCode: {
+        field: 'currency_code',
         type: DataTypes.STRING(3),
         allowNull: true,
       },
@@ -29,6 +31,7 @@ export function initMarket() {
       lastPriceDate: DataTypes.DATEONLY,
       symbol: DataTypes.STRING(10),
       updatePrices: {
+        field: 'update_prices',
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,

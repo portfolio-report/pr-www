@@ -29,6 +29,7 @@ export function initEvent() {
         allowNull: true,
       },
       currencyCode: {
+        field: 'currency_code',
         type: DataTypes.STRING(3),
         allowNull: true,
       },
