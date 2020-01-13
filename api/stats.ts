@@ -89,10 +89,10 @@ router.route('/updates').get(async function (_req, res: Response) {
     // Add updates per country
     version.countries = await ClientUpdate.findAll({
       attributes: [
-        [Sequelize.fn('IFNULL', Sequelize.col('country'), ''), 'country'],
+        [Sequelize.fn('COALESCE', Sequelize.col('country'), ''), 'country'],
         [Sequelize.fn('count', Sequelize.col('*')), 'count'],
       ],
-      group: Sequelize.fn('IFNULL', Sequelize.col('country'), ''),
+      group: Sequelize.fn('COALESCE', Sequelize.col('country'), ''),
       where: { version: version.version },
     })
   }
