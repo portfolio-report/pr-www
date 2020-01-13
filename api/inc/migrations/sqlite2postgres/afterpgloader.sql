@@ -7,7 +7,7 @@ ALTER TABLE "clientUpdates" ALTER COLUMN version SET NOT NULL;
 ALTER TABLE "clientUpdates" ALTER COLUMN country TYPE varchar(2);
 ALTER TABLE "clientUpdates" ALTER COLUMN useragent TYPE varchar(60);
 
-ALTER TABLE events ALTER COLUMN id TYPE INT;
+ALTER TABLE "events" ALTER COLUMN id TYPE INT;
 ALTER TABLE "events" ALTER COLUMN "securityId" TYPE INT;
 ALTER TABLE "events" ALTER COLUMN date SET NOT NULL;
 ALTER TABLE "events" ALTER COLUMN type TYPE varchar(10);
