@@ -86,6 +86,31 @@ CREATE SEQUENCE "exchangerates_prices_id_seq" OWNED BY "exchangeRatePrices".id;
 SELECT setval('exchangerates_prices_id_seq', coalesce(max(id), 0) + 1, false) FROM "exchangeRatePrices";
 ALTER TABLE "exchangeRatePrices" ALTER COLUMN id SET DEFAULT nextval('exchangerates_prices_id_seq');
 
+-- additional indexes
+CREATE INDEX "clientupdates_timestamp" ON "clientUpdates" ("timestamp");
+CREATE INDEX "clientupdates_version" ON "clientUpdates" ("version");
+CREATE INDEX "clientupdates_country" ON "clientUpdates" ("country");
+CREATE INDEX "exchangerates_base_currency_code" ON "exchangeRates" ("baseCurrencyCode");
+CREATE INDEX "exchangerates_quote_currency_code" ON "exchangeRates" ("quoteCurrencyCode");
+CREATE UNIQUE INDEX "exchangerates_base_currency_code_quote_currency_code" ON "exchangeRates" ("baseCurrencyCode", "quoteCurrencyCode");
+CREATE INDEX "exchangerates_prices_exchange_rate_id" ON "exchangeRatePrices" ("exchangeRateId");
+CREATE UNIQUE INDEX "exchangerates_prices_exchange_rate_id_date" ON "exchangeRatePrices" ("exchangeRateId", "date");
+CREATE UNIQUE INDEX "securities_uuid" ON "securities" ("uuid");
+CREATE INDEX "securities_name" ON "securities" ("name");
+CREATE INDEX "securities_isin" ON "securities" ("isin");
+CREATE INDEX "securities_wkn" ON "securities" ("wkn");
+CREATE INDEX "securities_symbol_xfra" ON "securities" ("symbolXfra");
+CREATE INDEX "securities_symbol_xnas" ON "securities" ("symbolXnas");
+CREATE INDEX "securities_symbol_xnys" ON "securities" ("symbolXnys");
+CREATE INDEX "securities_security_type" ON "securities" ("securityType");
+CREATE INDEX "events_security_id" ON "events" ("securityId");
+CREATE INDEX "events_security_id_date" ON "events" ("securityId", "date");
+CREATE INDEX "events_security_id_type" ON "events" ("securityId", "type");
+CREATE INDEX "markets_security_id" ON "markets" ("securityId");
+CREATE UNIQUE INDEX "markets_security_id_market_code" ON "markets" ("securityId", "marketCode");
+CREATE INDEX "prices_market_id" ON "prices" ("marketId");
+CREATE UNIQUE INDEX "prices_market_id_date" ON "prices" ("marketId", "date");
+
 -- foreign keys
 ALTER TABLE "events" ADD CONSTRAINT "events_security_id_fkey" FOREIGN KEY ("securityId") REFERENCES "securities" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "markets" ADD CONSTRAINT "markets_security_id_fkey" FOREIGN KEY ("securityId") REFERENCES "securities" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
