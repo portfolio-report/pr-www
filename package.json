@@ -38,6 +38,7 @@
     "nodemailer": "^6.4.17",
     "nuxt": "^2.14.12",
     "nuxt-property-decorator": "^2.8.8",
+    "pg": "^8.5.1",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
     "sqlite3": "^5.0.1",
