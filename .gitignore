@@ -4,6 +4,9 @@ node_modules/
 # nuxt.js build output
 .nuxt
 
+# .env
+.env
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
