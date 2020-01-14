@@ -1,6 +1,5 @@
-import { Options, Sequelize } from 'sequelize'
+import { Sequelize } from 'sequelize'
 import Debug from 'debug'
-import dbConfig from '../sequelize-config.json'
 import { Security, initSecurity } from './models/Security'
 import { Market, initMarket } from './models/Market'
 import { Price, initPrice } from './models/Price'
@@ -13,10 +12,9 @@ import {
 } from './models/ExchangeRatePrice'
 const log = Debug('pr-www:sequelize')
 
-export const sequelize = new Sequelize({
-  ...dbConfig.development,
+export const sequelize = new Sequelize(process.env.DATABASE_URL || '', {
   logging: log,
-} as Options)
+})
 
 initSecurity()
 initMarket()
