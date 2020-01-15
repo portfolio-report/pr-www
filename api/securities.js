@@ -227,7 +227,7 @@ router.post('/search/update', authRequired, function(req, res) {
 /**
  * Create/update market and prices
  */
-router.patch('/:securityId/market/:marketCode', authRequired, async function(
+router.patch('/:securityId/markets/:marketCode', authRequired, async function(
   req,
   res,
   next
@@ -279,7 +279,7 @@ router.patch('/:securityId/market/:marketCode', authRequired, async function(
 /**
  * Delete market and prices
  */
-router.delete('/:securityId/market/:marketCode', authRequired, async function(
+router.delete('/:securityId/markets/:marketCode', authRequired, async function(
   req,
   res
 ) {
@@ -292,7 +292,7 @@ router.delete('/:securityId/market/:marketCode', authRequired, async function(
 /**
  * Get security prices (public)
  */
-router.route('/uuid/:uuid/market/:marketCode').get(async function(req, res) {
+router.route('/uuid/:uuid/markets/:marketCode').get(async function(req, res) {
   const uuid = req.params.uuid
   const marketCode = req.params.marketCode
 
