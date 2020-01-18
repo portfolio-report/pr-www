@@ -182,7 +182,7 @@ export default class SecurityPage extends Vue {
 
   async saveEditMarketDialog() {
     await this.$axios.$patch(
-      `/api/securities/${this.security.id}/markets/${this.editedMarket.marketCode}`,
+      `/api/securities/uuid/${this.security.uuid}/markets/${this.editedMarket.marketCode}`,
       this.editedMarket
     )
 
