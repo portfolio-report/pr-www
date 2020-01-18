@@ -18,4 +18,4 @@ EXPOSE 3000
 
 ENV NUXT_HOST=0.0.0.0
 
-CMD yarn migrations && yarn start
+CMD yarn migrate up && yarn start
