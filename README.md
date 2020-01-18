@@ -14,45 +14,55 @@ $ yarn install --frozen-lockfile
 
 ## Configuration
 
-- Create `api/config.json`, e.g.
-  ```json
-  {
-    "auth": {
-      "adminUsers": [
-        {
-          "username": "...",
-          "password": "plain:secret"
-        },
-        {
-          "username": "...",
-          "password": "sha256:2bb80d53..."
-        }
-      ]
-    },
-    "contact": {
-      "recipientEmailAddress": "me@example.com",
-      "nodemailerTransportOptions": {}
-    }
+Create `.env` configuration file or respective environment variables:
+```ini
+# PostgreSQL database
+DATABASE_URL="postgresql://user:password@host:5432/database"
+
+# Random string to sign session ID cookie (optional, highly recommended)
+SESSION_SECRET="..."
+
+# Minimum number of search results shown (optional)
+SEARCH_MIN_RESULTS=10
+
+# Maximum score of search results shown (optional)
+SEARCH_MAX_SCORE=0.1
+```
+
+Create `api/config.json`, e.g.:
+```json
+{
+  "auth": {
+    "adminUsers": [
+      {
+        "username": "...",
+        "password": "plain:secret"
+      },
+      {
+        "username": "...",
+        "password": "sha256:2bb80d53..."
+      }
+    ]
+  },
+  "contact": {
+    "recipientEmailAddress": "me@example.com",
+    "nodemailerTransportOptions": {}
   }
-  ```
-  - For `nodemailerTransportOptions` see https://nodemailer.com/smtp/, e.g.
-    ```json
-    {
-      "host": "localhost",
-      "port": 25
-    }
-    ```
-- Environment variable `SESSION_SECRET` should contain unique, random string to sign session ID cookie
-- Environment variables `SEARCH_MIN_RESULTS` and `SEARCH_MAX_SCORE` can be used to fine tune search results
+}
+```
+For `nodemailerTransportOptions` see https://nodemailer.com/smtp/, e.g.
+```json
+{
+  "host": "localhost",
+  "port": 25
+}
+```
 
 ## Database
 
 ``` bash
 # Initialize/update database
-$ yarn migrations
-
-# Get status of migrations
-$ node_modules\.bin\sequelize-cli db:migrate:status
+$ yarn migrate up
 ```
 
 ## GeoIP lookups
@@ -91,5 +101,6 @@ $ docker run -d --name pr-www-prod \
   --mount type=bind,source="$(pwd)"/shared/www-db-prod,target=/app/db \
   --mount type=bind,source="$(pwd)"/config.prod.json,target=/app/api/config.json \
   -e SESSION_SECRET=change_me \
+  -e DATABASE_URL="postgresql://..." \
   --publish 127.0.0.1:3001:3000 <my-image-name>
 ```
