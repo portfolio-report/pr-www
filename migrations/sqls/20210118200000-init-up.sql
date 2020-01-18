@@ -73,7 +73,7 @@ CREATE TABLE "markets" (
   "first_price_date" DATE,
   "last_price_date" DATE,
   "symbol" VARCHAR(10),
-  "update_prices" SMALLINT NOT NULL
+  "update_prices" BOOLEAN NOT NULL
 );
 
 CREATE INDEX "markets_security_id" ON "markets" ("security_id");

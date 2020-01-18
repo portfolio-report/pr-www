@@ -48,6 +48,7 @@ ALTER TABLE "markets" ALTER COLUMN "market_code" SET NOT NULL;
 ALTER TABLE "markets" ALTER COLUMN "currency_code" TYPE varchar(3);
 ALTER TABLE "markets" ALTER COLUMN "symbol" TYPE varchar(10);
 ALTER TABLE "markets" ALTER COLUMN "update_prices" SET NOT NULL;
+ALTER TABLE "markets" ALTER COLUMN "update_prices" TYPE bool USING update_prices::int::bool;
 
 ALTER TABLE "prices" ALTER COLUMN id TYPE INT;
 ALTER TABLE "prices" ALTER COLUMN "market_id" TYPE INT;
