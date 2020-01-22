@@ -24,8 +24,10 @@
     },
     "types": [
       "@types/node",
-      "@nuxt/types"
-    ]
+      "@nuxt/types",
+      "./api/@types/ip2location-nodejs",
+    ],
+    "resolveJsonModule": true,
   },
   "exclude": [
     "node_modules"

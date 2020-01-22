@@ -17,7 +17,7 @@ export function init() {
   }
 }
 
-export function getCountryFromIp(ip) {
+export function getCountryFromIp(ip: string): string {
   return initialized ? ip2loc.IP2Location_get_country_short(ip) : ''
 }
 

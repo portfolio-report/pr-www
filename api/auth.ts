@@ -1,7 +1,8 @@
 import crypto from 'crypto'
-import express from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 import Debug from 'debug'
-import config from './config.js'
+import { HttpError } from './inc/HttpError'
+import config from './config'
 const log = Debug('api:auth')
 
 const router = express.Router()
@@ -12,7 +13,11 @@ router.use(express.json())
 /**
  * Check credentials and create session
  */
-router.post('/login', function(req, res, next) {
+router.post('/login', function(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const { username, password } = req.body
 
   if (
@@ -23,9 +28,7 @@ router.post('/login', function(req, res, next) {
   ) {
     log('Configuration for authentication missing')
 
-    const err = new Error('Unauthorized')
-    err.statusCode = 401
-    return next(err)
+    return next(new HttpError(401, 'Unauthorized'))
   }
 
   let passwordCompare
@@ -41,9 +44,7 @@ router.post('/login', function(req, res, next) {
   } else {
     log('Configuration for authentication invalid, unknown cipher')
 
-    const err = new Error('Unauthorized')
-    err.statusCode = 401
-    return next(err)
+    return next(new HttpError(401, 'Unauthorized'))
   }
 
   if (
@@ -55,28 +56,30 @@ router.post('/login', function(req, res, next) {
     const user = { username }
 
     // Store user in session
-    req.session.user = user
+    if (req.session) {
+      req.session.user = user
+    }
 
     // Return user back to client
     res.json(user)
   } else {
     log('Invalid username/password')
 
-    const err = new Error('Unauthorized')
-    err.statusCode = 401
-    return next(err)
+    return next(new HttpError(401, 'Unauthorized'))
   }
 })
 
 /**
  * Express middleware function to protect api requests from unauthenticated access
  */
-export const authRequired = (req, _res, next) => {
+export const authRequired = (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
   // If the user is not authenticated
   if (!isAuthenticated(req)) {
-    const err = new Error('Unauthorized')
-    err.statusCode = 401
-    return next(err)
+    return next(new HttpError(401, 'Unauthorized'))
   }
   next()
 }
@@ -84,22 +87,22 @@ export const authRequired = (req, _res, next) => {
 /**
  * Determine if a request is authenticated
  */
-export const isAuthenticated = req => {
+export const isAuthenticated = (req: Request) => {
   return req.session && req.session.user
 }
 
 /**
  * Show details about the user from the session
  */
-router.get('/me', authRequired, function(req, res) {
-  return res.json(req.session.user)
+router.get('/me', authRequired, function(req: Request, res: Response) {
+  return res.json(req.session?.user)
 })
 
 /**
  * Destroy session
  */
-router.post('/logout', authRequired, function(req, res) {
-  log(`Destroying session for '${req.session.user.username}'`)
+router.post('/logout', authRequired, function(req: Request, res: Response) {
+  log(`Destroying session for '${req.session?.user.username}'`)
 
   // Remove the session
   delete req.session
@@ -110,9 +113,9 @@ router.post('/logout', authRequired, function(req, res) {
 /**
  * List all sessions, session IDs are sensitive!
  */
-router.get('/sessions', authRequired, async (req, res) => {
-  const sessions = await req.sessionStore.sessionModel.findAll()
-  sessions.map(e => {
+router.get('/sessions', authRequired, async (req: Request, res: Response) => {
+  const sessions = await (req as any).sessionStore.sessionModel.findAll()
+  sessions.map((e: any) => {
     e.data = JSON.parse(e.dataValues.data)
     return e
   })

@@ -99,7 +99,7 @@ module.exports = {
   /*
    ** Express middleware
    */
-  serverMiddleware: ['~/server/express-session.js', '~/api/index.js'],
+  serverMiddleware: ['~/server/express-session', '~/api'],
 
   /**
    * Watch files/folders for changes (and restart server)

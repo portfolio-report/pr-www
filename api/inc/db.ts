@@ -1,8 +1,8 @@
 import NeDB from 'nedb-promises'
-import Fuse from 'fuse.js'
+import Fuse, { FuseOptions } from 'fuse.js'
 import Debug from 'debug'
-import { Security } from './sequelize.js'
-import { publicSecurityAttributes } from './../securities.js'
+import { Security } from './sequelize'
+import { publicSecurityAttributes } from './../securities'
 const log = Debug('api:db')
 
 log('Loading databases...')
@@ -15,13 +15,13 @@ export const currenciesDb = NeDB.create({
 /**
  * Placeholder for full text search for securities
  */
-let securitiesFts
+let securitiesFts: Fuse<Security, FuseOptions<Security>>
 
 /**
  * Returns full text search index for securities
  * Can return undefined if index is not ready (yet)
  */
-export function getSecuritiesFts() {
+export function getSecuritiesFts(): Fuse<Security, FuseOptions<Security>> {
   return securitiesFts
 }
 
@@ -31,12 +31,12 @@ export function getSecuritiesFts() {
 export async function updateSecuritiesFts() {
   log('Creating/updating full text search index...')
 
-  const entries = await Security.findAll({
+  const entries: Array<Security> = await Security.findAll({
     where: { staged: false },
     attributes: publicSecurityAttributes,
   })
 
-  const options = {
+  const options: FuseOptions<Security> = {
     shouldSort: true,
     maxPatternLength: 32,
     minMatchCharLength: 2,

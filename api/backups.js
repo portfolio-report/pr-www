@@ -2,8 +2,8 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import express from 'express'
 import Debug from 'debug'
-import { authRequired } from './auth.js'
-import { Security, ClientUpdate, Market, Price } from './inc/sequelize.js'
+import { authRequired } from './auth'
+import { Security, ClientUpdate, Market, Price } from './inc/sequelize'
 
 const log = Debug('api:backups')
 

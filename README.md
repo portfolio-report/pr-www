@@ -61,7 +61,7 @@ $ docker build -t <my-image-name> --build-arg API_URL=$API_URL pr-www/
 $ mkdir -p shared/www-db-prod
 
 # Create config
-$ vim pr-www/api/config.js
+$ vim pr-www/api/config.ts
 
 # Run container
 $ docker run -d --name pr-www-prod \

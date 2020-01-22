@@ -1,9 +1,10 @@
-import express from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 import Debug from 'debug'
 import Sequelize from 'sequelize'
-import { authRequired, isAuthenticated } from './auth.js'
-import { getSecuritiesFts, updateSecuritiesFts } from './inc/db.js'
-import { Security, Market, Price, sequelize } from './inc/sequelize.js'
+import { authRequired, isAuthenticated } from './auth'
+import { getSecuritiesFts, updateSecuritiesFts } from './inc/db'
+import { Security, Market, Price, sequelize } from './inc/sequelize'
+import { HttpError } from './inc/HttpError'
 const log = Debug('api:securities')
 
 const router = express.Router()
@@ -33,6 +34,14 @@ async function readSecurities({
   search,
   securityType,
   staged,
+}: {
+  limit: number
+  skip: number
+  sort: string
+  descending: boolean
+  search: string
+  securityType: string
+  staged: boolean
 }) {
   const filters = []
 
@@ -76,14 +85,14 @@ async function readSecurities({
 /**
  * Get list of securities
  */
-router.get('/', authRequired, async function(req, res) {
+router.get('/', authRequired, async function(req: Request, res: Response) {
   const limit = parseInt(req.query.limit) || 10
   const skip = parseInt(req.query.skip) || 0
   const sort = req.query.sort || 'name'
   const descending = req.query.desc === 'true'
   const search = req.query.search || ''
   const securityType = req.query.securityType || ''
-  let staged
+  let staged = false
   if (req.query.staged) {
     staged = req.query.staged === 'true'
   }
@@ -109,7 +118,7 @@ router.get('/', authRequired, async function(req, res) {
 /**
  * Create single entry, i.e. security
  */
-router.post('/', authRequired, async function(req, res) {
+router.post('/', authRequired, async function(req: Request, res: Response) {
   function createUuid() {
     let dt = new Date().getTime()
     return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -131,19 +140,30 @@ router.post('/', authRequired, async function(req, res) {
 /**
  * Update single entry, i.e. security
  */
-router.patch('/:id', authRequired, async function(req, res) {
+router.patch('/:id', authRequired, async function(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const id = req.params.id
   log(`Updating entry ${id}`)
   const security = await Security.findOne({ where: { id } })
-  Object.assign(security, req.body)
-  await security.save()
-  res.json({ status: 'ok' })
+  if (security) {
+    Object.assign(security, req.body)
+    await security.save()
+    res.json({ status: 'ok' })
+  } else {
+    return next(new HttpError(404, 'Security not found'))
+  }
 })
 
 /**
  * Delete single entry, i.e. security
  */
-router.delete('/:id', authRequired, async function(req, res) {
+router.delete('/:id', authRequired, async function(
+  req: Request,
+  res: Response
+) {
   const id = req.params.id
   log(`Deleting entry ${id}`)
   await Security.destroy({ where: { id } })
@@ -153,10 +173,10 @@ router.delete('/:id', authRequired, async function(req, res) {
 /**
  * Get single security (public)
  */
-router.route('/uuid/:uuid').get(async function(req, res) {
+router.route('/uuid/:uuid').get(async function(req: Request, res: Response) {
   const uuid = req.params.uuid
 
-  const findOptions = {
+  const findOptions: Sequelize.FindOptions = {
     where: {
       staged: false,
       uuid,
@@ -192,34 +212,37 @@ router.route('/uuid/:uuid').get(async function(req, res) {
 /**
  * Search securities (public)
  */
-router.route('/search/:search').get(async function(req, res, next) {
-  const search = req.params.search || ''
-  const securityType = req.query.securityType || ''
+router
+  .route('/search/:search')
+  .get(function(req: Request, res: Response, next: NextFunction) {
+    const search = req.params.search || ''
+    const securityType = req.query.securityType || ''
 
-  const fts = getSecuritiesFts()
+    const fts = getSecuritiesFts()
 
-  // Send error message if full text search index is not ready yet
-  if (!fts) {
-    const err = new Error('Service Unavailable')
-    err.statusCode = 503
-    return next(err)
-  }
+    // Send error message if full text search index is not ready yet
+    if (!fts) {
+      return next(new HttpError(503, 'Service Unavailable'))
+    }
 
-  let entries = await fts.search(search)
+    let entries = fts.search(search) as Array<Security>
 
-  // Filter by securityType
-  if (securityType) {
-    entries = entries.filter(e => e.securityType === securityType)
-  }
+    // Filter by securityType
+    if (securityType) {
+      entries = entries.filter(e => e.securityType === securityType)
+    }
 
-  // Return 10 results
-  res.json(entries.slice(0, 10))
-})
+    // Return 10 results
+    res.json(entries.slice(0, 10))
+  })
 
 /**
  * Endpoint to update full text search index from current database content
  */
-router.post('/search/update', authRequired, function(_req, res) {
+router.post('/search/update', authRequired, function(
+  _req: Request,
+  res: Response
+) {
   updateSecuritiesFts()
   res.json({ status: 'ok' })
 })
@@ -228,9 +251,9 @@ router.post('/search/update', authRequired, function(_req, res) {
  * Create/update market and prices
  */
 router.patch('/:securityId/markets/:marketCode', authRequired, async function(
-  req,
-  res,
-  next
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) {
   const { securityId, marketCode } = req.params
 
@@ -280,8 +303,8 @@ router.patch('/:securityId/markets/:marketCode', authRequired, async function(
  * Delete market and prices
  */
 router.delete('/:securityId/markets/:marketCode', authRequired, async function(
-  req,
-  res
+  req: Request,
+  res: Response
 ) {
   const { securityId, marketCode } = req.params
   log(`Deleting market ${securityId}/${marketCode}`)
@@ -292,53 +315,55 @@ router.delete('/:securityId/markets/:marketCode', authRequired, async function(
 /**
  * Get security prices (public)
  */
-router.route('/uuid/:uuid/markets/:marketCode').get(async function(req, res) {
-  const uuid = req.params.uuid
-  const marketCode = req.params.marketCode
+router
+  .route('/uuid/:uuid/markets/:marketCode')
+  .get(async function(req: Request, res: Response) {
+    const uuid = req.params.uuid
+    const marketCode = req.params.marketCode
 
-  function getDefaultFromDate() {
-    const d = new Date()
-    d.setDate(d.getDate() - 14) // 14 days in the past
-    return d.toISOString().substring(0, 10)
-  }
+    function getDefaultFromDate() {
+      const d = new Date()
+      d.setDate(d.getDate() - 14) // 14 days in the past
+      return d.toISOString().substring(0, 10)
+    }
 
-  const fromDate = req.query.from || getDefaultFromDate()
+    const fromDate = req.query.from || getDefaultFromDate()
 
-  const where = {
-    staged: false,
-    uuid,
-  }
-  const security = await Security.findOne({
-    where,
-    attributes: publicSecurityAttributes,
-    include: [
-      {
-        model: Market,
-        attributes: [
-          'marketCode',
-          'currencyCode',
-          'firstPriceDate',
-          'lastPriceDate',
-        ],
-        where: { marketCode },
-        include: [
-          {
-            model: Price,
-            attributes: ['date', 'close'],
-            where: { date: { [Sequelize.Op.gte]: fromDate } },
-            required: false,
-          },
-        ],
-      },
-    ],
+    const where = {
+      staged: false,
+      uuid,
+    }
+    const security = await Security.findOne({
+      where,
+      attributes: publicSecurityAttributes,
+      include: [
+        {
+          model: Market,
+          attributes: [
+            'marketCode',
+            'currencyCode',
+            'firstPriceDate',
+            'lastPriceDate',
+          ],
+          where: { marketCode },
+          include: [
+            {
+              model: Price,
+              attributes: ['date', 'close'],
+              where: { date: { [Sequelize.Op.gte]: fromDate } },
+              required: false,
+            },
+          ],
+        },
+      ],
+    })
+
+    if (!security?.markets) {
+      res.status(404).json({ message: 'Not found.' })
+      return
+    }
+
+    res.json(security.markets[0])
   })
-
-  if (!security) {
-    res.status(404).json({ message: 'Not found.' })
-    return
-  }
-
-  res.json(security.markets[0])
-})
 
 export default router

@@ -1,9 +1,9 @@
 import util from 'util'
-import express from 'express'
+import express, { Request, Response } from 'express'
 import nodemailer from 'nodemailer'
 import { check, validationResult } from 'express-validator'
 import Debug from 'debug'
-import config from './config.js'
+import config from './config'
 const log = Debug('api:contact')
 
 const router = express.Router()
@@ -11,7 +11,7 @@ const router = express.Router()
 // Parse JSON payloads
 router.use(express.json())
 
-router.get('/', function(_req, res) {
+router.get('/', function(_req: Request, res: Response) {
   res.json({ status: 'ok' })
 })
 
@@ -38,7 +38,7 @@ router.post(
       .isLength({ min: 1 })
       .trim(),
   ],
-  async function(req, res) {
+  async function(req: Request, res: Response) {
     const validationErrors = validationResult(req)
     if (!validationErrors.isEmpty()) {
       log('Error validating input: ' + util.inspect(validationErrors.array()))

@@ -1,9 +1,9 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import Debug from 'debug'
 import Sequelize from 'sequelize'
-import { getCountryFromIp } from './inc/geoip.js'
-import { authRequired } from './auth.js'
-import { ClientUpdate } from './inc/sequelize.js'
+import { getCountryFromIp } from './inc/geoip'
+import { authRequired } from './auth'
+import { ClientUpdate } from './inc/sequelize'
 const log = Debug('api:stats')
 
 const router = express.Router()
@@ -14,7 +14,7 @@ router.use(express.json({ limit: '50mb' }))
 /**
  * Get all entries, i.e. stats data
  */
-router.get('/', authRequired, async function(req, res) {
+router.get('/', authRequired, async function(req: Request, res: Response) {
   const limit = parseInt(req.query.limit) || 10
   const skip = parseInt(req.query.skip) || 0
   const sort = req.query.sort || 'timestamp'
@@ -47,7 +47,10 @@ router.get('/', authRequired, async function(req, res) {
 /**
  * Delete single entry
  */
-router.delete('/:id', authRequired, async function(req, res) {
+router.delete('/:id', authRequired, async function(
+  req: Request,
+  res: Response
+) {
   const id = req.params.id
   log(`Deleting entry ${id}`)
   await ClientUpdate.destroy({ where: { id } })
@@ -57,8 +60,8 @@ router.delete('/:id', authRequired, async function(req, res) {
 /**
  * Get statistics on updates
  */
-router.route('/updates').get(async function(_req, res) {
-  let versions = await ClientUpdate.findAll({
+router.route('/updates').get(async function(_req, res: Response) {
+  const versionsObj = await ClientUpdate.findAll({
     attributes: [
       'version',
       [Sequelize.fn('count', Sequelize.col('*')), 'count'],
@@ -69,7 +72,7 @@ router.route('/updates').get(async function(_req, res) {
   })
 
   // Convert to plain objects
-  versions = versions.map(v => v.toJSON())
+  const versions: Array<any> = versionsObj.map(v => v.toJSON())
 
   for (const version of versions) {
     // Add updates per day
@@ -102,7 +105,7 @@ router.route('/updates').get(async function(_req, res) {
  */
 router
   .route('/update/name.abuchen.portfolio/:version')
-  .get(async function(req, res) {
+  .get(async function(req: Request, res: Response) {
     // Resolve IP to country
     const country = getCountryFromIp(req.ip)
 

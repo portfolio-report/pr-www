@@ -1,12 +1,13 @@
-import express from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 import Debug from 'debug'
-import auth from './auth.js'
-import backups from './backups.js'
-import contact from './contact.js'
-import currencies from './currencies.js'
-import securities from './securities.js'
-import securitiesStaging from './securities-staging.js'
-import stats from './stats.js'
+import auth from './auth'
+import backups from './backups'
+import contact from './contact'
+import currencies from './currencies'
+import securities from './securities'
+import securitiesStaging from './securities-staging'
+import stats from './stats'
+import { HttpError } from './inc/HttpError'
 const log = Debug('api:index')
 
 const app = express()
@@ -37,35 +38,35 @@ app.use('/currencies', currencies)
 app.use('/securities', securities)
 app.use('/securities-staging', securitiesStaging)
 app.use('/stats', stats)
-app.use('/test', test)
 
 /**
  * Return 404 if nothing has matched so far.
  */
-app.use(function(_req, _res, next) {
-  const err = new Error('Page not found')
-  err.statusCode = 404
-  next(err)
+app.use(function(_req: Request, _res: Response, next: NextFunction) {
+  next(new HttpError(404, 'Page not found'))
 })
 
 /**
  * Generic error handler
  */
-app.use(function(err, _req, res) {
-  if (!err.statusCode) err.statusCode = 500
+app.use(function(
+  err: HttpError,
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) {
+  const status = err.status || 500
 
-  if (err.statusCode >= 500) {
+  if (status >= 500) {
     log(err.stack)
   }
 
   // Be verbose in development mode
   if (process.env.NODE_ENV !== 'production') {
-    return res
-      .status(err.statusCode)
-      .json({ message: err.message, stack: err.stack })
+    return res.status(status).json({ message: err.message, stack: err.stack })
   }
 
-  res.status(err.statusCode).json({ message: err.message })
+  res.status(err.status).json({ message: err.message })
 })
 
 export default {

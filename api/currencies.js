@@ -2,7 +2,7 @@ import express from 'express'
 import axios from 'axios'
 import xmljs from 'xml-js'
 import Debug from 'debug'
-import { currenciesDb as db } from './inc/db.js'
+import { currenciesDb as db } from './inc/db'
 const log = Debug('api:currencies')
 
 const router = express.Router()
