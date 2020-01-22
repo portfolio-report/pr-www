@@ -95,8 +95,14 @@ module.exports = {
      */
     // extend(config, ctx) {},
   },
+
   /*
    ** Express middleware
    */
   serverMiddleware: ['~/server/express-session.js', '~/api/index.js'],
+
+  /**
+   * Watch files/folders for changes (and restart server)
+   */
+  watch: ['~/server', '~/api'],
 }

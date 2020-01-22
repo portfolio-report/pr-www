@@ -5,7 +5,7 @@
   "author": "Thomas Fabritius",
   "private": true,
   "scripts": {
-    "dev": "nodemon --watch server --watch api -e js,json,ts --exec nuxt-ts",
+    "dev": "nuxt-ts",
     "devapi": "nodemon --watch server --watch api -e js,json,ts --exec nuxt-ts start",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",

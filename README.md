@@ -38,8 +38,8 @@ $ node_modules\.bin\sequelize-cli db:migrate:status
 ``` bash
 # serve with hot reload at localhost:3000
 $ npm run dev
-# Unfortunately changes in /api force a full server restart (https://github.com/nuxt/nuxt.js/issues/4301)
-# Workaround: fast server restart on changes in /api without nuxt reload
+
+# run nuxt in production mode and restart on changes in /api
 $ npm run build
 $ npm run devapi
 
