@@ -58,6 +58,7 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
+    '@nuxt/typescript-build',
   ],
   /*
    ** Nuxt.js modules

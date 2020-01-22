@@ -5,13 +5,13 @@
   "author": "Thomas Fabritius",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server --watch api",
-    "devapi": "cross-env NODE_ENV=production nodemon server/index.js --watch server --watch api",
-    "build": "nuxt build",
-    "start": "cross-env NODE_ENV=production node server/index.js",
+    "dev": "nodemon --watch server --watch api -e js,json,ts --exec nuxt-ts",
+    "devapi": "nodemon --watch server --watch api -e js,json,ts --exec nuxt-ts start",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts start",
     "migrations": "sequelize-cli db:migrate",
-    "generate": "nuxt generate",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+    "generate": "nuxt-ts generate",
+    "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore ."
   },
   "husky": {
     "hooks": {
@@ -19,6 +19,7 @@
     }
   },
   "dependencies": {
+    "@nuxt/typescript-runtime": "^0.3.8",
     "@nuxtjs/axios": "^5.9.0",
     "@nuxtjs/vuetify": "^1.9.1",
     "axios": "^0.19.0",
@@ -41,8 +42,12 @@
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
+    "@nuxt/typescript-build": "^0.5.6",
     "@nuxtjs/eslint-config": "^2.0.0",
+    "@nuxtjs/eslint-config-typescript": "^1.0.0",
     "@nuxtjs/eslint-module": "^1.1.0",
+    "@types/bluebird": "^3.5.29",
+    "@types/validator": "^12.0.1",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
