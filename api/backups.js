@@ -15,7 +15,7 @@ const backupPath = path.resolve('db/backups/')
 /**
  * List all backups
  */
-router.get('/', authRequired, async function(req, res) {
+router.get('/', authRequired, async function(_req, res) {
   await fs.mkdir(backupPath, { recursive: true })
 
   const fileNames = await fs.readdir(backupPath)
@@ -34,7 +34,7 @@ router.get('/', authRequired, async function(req, res) {
 /**
  * Create backups
  */
-router.post('/', authRequired, async function(req, res) {
+router.post('/', authRequired, async function(_req, res) {
   await fs.mkdir(backupPath, { recursive: true })
 
   const timestamp = new Date().toISOString().replace(/:/g, '_')

@@ -57,7 +57,7 @@ router.delete('/:id', authRequired, async function(req, res) {
 /**
  * Get statistics on updates
  */
-router.route('/updates').get(async function(req, res) {
+router.route('/updates').get(async function(_req, res) {
   let versions = await ClientUpdate.findAll({
     attributes: [
       'version',

@@ -219,7 +219,7 @@ router.route('/search/:search').get(async function(req, res, next) {
 /**
  * Endpoint to update full text search index from current database content
  */
-router.post('/search/update', authRequired, function(req, res) {
+router.post('/search/update', authRequired, function(_req, res) {
   updateSecuritiesFts()
   res.json({ status: 'ok' })
 })

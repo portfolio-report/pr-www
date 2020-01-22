@@ -1,5 +1,5 @@
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface, _Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.renameColumn('prices', 'value', 'close', {
@@ -23,7 +23,7 @@ module.exports = {
     }
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface, _Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.renameColumn('prices', 'close', 'value', {

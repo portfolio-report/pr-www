@@ -420,7 +420,7 @@ export default {
       this.uploadProgress = 0
 
       function readAsTextAsync(file) {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
           const fr = new FileReader()
           fr.onload = e => resolve(e.target.result)
           fr.readAsText(file)

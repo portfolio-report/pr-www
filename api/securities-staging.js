@@ -90,13 +90,13 @@ router.post('/', authRequired, async function(req, res, next) {
 /**
  * Delete all entries, i.e. staged securities
  */
-router.delete('/', authRequired, async function(req, res) {
+router.delete('/', authRequired, async function(_req, res) {
   const count = await Security.destroy({ where: { staged: true } })
   log(`Deleted ${count} entries`)
   res.send()
 })
 
-router.get('/stats', authRequired, async function(req, res) {
+router.get('/stats', authRequired, async function(_req, res) {
   // Count securities
   const countSecurities = await Security.count({ where: { staged: false } })
   const countStagedSecurities = await Security.count({
@@ -172,7 +172,7 @@ router.post('/match/:key', authRequired, async function(req, res, next) {
 /**
  * Remove matches of unstaged securities
  */
-router.delete('/match/', authRequired, async function(req, res, next) {
+router.delete('/match/', authRequired, async function(_req, res) {
   log(`Delete matches of staged securities`)
 
   await sequelize.query(

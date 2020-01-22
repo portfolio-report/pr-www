@@ -71,7 +71,7 @@ router.post('/login', function(req, res, next) {
 /**
  * Express middleware function to protect api requests from unauthenticated access
  */
-export const authRequired = (req, res, next) => {
+export const authRequired = (req, _res, next) => {
   // If the user is not authenticated
   if (!isAuthenticated(req)) {
     const err = new Error('Unauthorized')
@@ -98,7 +98,7 @@ router.get('/me', authRequired, function(req, res) {
 /**
  * Destroy session
  */
-router.post('/logout', authRequired, function(req, res, next) {
+router.post('/logout', authRequired, function(req, res) {
   log(`Destroying session for '${req.session.user.username}'`)
 
   // Remove the session

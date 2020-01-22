@@ -7,7 +7,7 @@ const log = Debug('api:currencies')
 
 const router = express.Router()
 
-router.route('/').get(async function(req, res) {
+router.route('/').get(async function(_req, res) {
   const prices = await db.find({})
 
   res.json(

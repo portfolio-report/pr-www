@@ -26,7 +26,7 @@ app.set('json spaces', 2)
  */
 app.set('trust proxy', true)
 
-app.get('/', function(req, res) {
+app.get('/', function(_req, res) {
   res.json({ status: 'ok' })
 })
 
@@ -37,11 +37,12 @@ app.use('/currencies', currencies)
 app.use('/securities', securities)
 app.use('/securities-staging', securitiesStaging)
 app.use('/stats', stats)
+app.use('/test', test)
 
 /**
  * Return 404 if nothing has matched so far.
  */
-app.use(function(req, res, next) {
+app.use(function(_req, _res, next) {
   const err = new Error('Page not found')
   err.statusCode = 404
   next(err)
@@ -50,7 +51,7 @@ app.use(function(req, res, next) {
 /**
  * Generic error handler
  */
-app.use(function(err, req, res, next) {
+app.use(function(err, _req, res) {
   if (!err.statusCode) err.statusCode = 500
 
   if (err.statusCode >= 500) {

@@ -11,7 +11,7 @@ const router = express.Router()
 // Parse JSON payloads
 router.use(express.json())
 
-router.get('/', function(req, res) {
+router.get('/', function(_req, res) {
   res.json({ status: 'ok' })
 })
 
