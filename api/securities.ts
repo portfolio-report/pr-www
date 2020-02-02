@@ -257,6 +257,10 @@ router.patch('/:securityId/markets/:marketCode', authRequired, async function(
 ) {
   const { securityId, marketCode } = req.params
 
+  // Disable timeouts
+  req.setTimeout(0)
+  res.setTimeout(0)
+
   const entry = req.body
   // Overwrite attributes if given
   entry.securityId = securityId
