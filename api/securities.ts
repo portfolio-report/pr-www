@@ -261,7 +261,12 @@ router.patch('/:securityId/markets/:marketCode', authRequired, async function(
   req.setTimeout(0)
   res.setTimeout(0)
 
-  const entry = req.body
+  const entry: {
+    securityId: string
+    marketCode: string
+    prices: Array<{ date: string; close: number }>
+  } = req.body
+
   // Overwrite attributes if given
   entry.securityId = securityId
   entry.marketCode = marketCode
@@ -276,13 +281,14 @@ router.patch('/:securityId/markets/:marketCode', authRequired, async function(
 
     // Create/update the associated prices
     if (entry.prices) {
-      for (const newPrice of entry.prices) {
-        const [price] = await Price.findOrBuild({
-          where: { marketId: market.id, date: newPrice.date },
-        })
-        price.close = newPrice.close
-        await price.save()
-      }
+      await sequelize.query(
+        'INSERT INTO prices (marketId, date, close) ' +
+          'VALUES ' +
+          entry.prices
+            .map(price => `(${market.id}, '${price.date}', ${price.close})`)
+            .join(',') +
+          'ON CONFLICT(marketId, date) DO UPDATE SET close=excluded.close'
+      )
     }
 
     // Keep firstPriceDate and lastPriceDate up-to-date
