@@ -21,20 +21,31 @@ router.post('/login', function(
   const { username, password } = req.body
 
   if (
-    config.auth.admin.username === undefined ||
-    config.auth.admin.password === undefined ||
-    config.auth.admin.username === '' ||
-    config.auth.admin.password === ''
+    username === undefined ||
+    password === undefined ||
+    username === '' ||
+    password === ''
   ) {
-    log('Configuration for authentication missing')
+    log(`Username or password missing.`)
+    return next(new HttpError(401, 'Unauthorized'))
+  }
+
+  const adminUsers = config.auth.adminUsers.filter(
+    user => user.username === username
+  )
+
+  if (adminUsers.length === 0) {
+    log(`User ${username} unknown`)
 
     return next(new HttpError(401, 'Unauthorized'))
   }
 
+  const configPassword = adminUsers[0].password
+
   let passwordCompare
-  if (config.auth.admin.password.startsWith('plain:')) {
+  if (configPassword.startsWith('plain:')) {
     passwordCompare = 'plain:' + password
-  } else if (config.auth.admin.password.startsWith('sha256:')) {
+  } else if (configPassword.startsWith('sha256:')) {
     passwordCompare =
       'sha256:' +
       crypto
@@ -42,16 +53,12 @@ router.post('/login', function(
         .update(password)
         .digest('hex')
   } else {
-    log('Configuration for authentication invalid, unknown cipher')
-
+    log(`Password for ${username} uses unknown cipher`)
     return next(new HttpError(401, 'Unauthorized'))
   }
 
-  if (
-    username === config.auth.admin.username &&
-    passwordCompare === config.auth.admin.password
-  ) {
-    log(`Creating session for '${username}'`)
+  if (passwordCompare === configPassword) {
+    log(`Creating session for ${username}`)
 
     const user = { username }
 
@@ -63,8 +70,7 @@ router.post('/login', function(
     // Return user back to client
     res.json(user)
   } else {
-    log('Invalid username/password')
-
+    log(`Invalid password for ${username}`)
     return next(new HttpError(401, 'Unauthorized'))
   }
 })

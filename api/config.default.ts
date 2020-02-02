@@ -1,10 +1,12 @@
 export default {
   auth: {
     secret: 'change_me',
-    admin: {
-      username: '',
-      password: '', // plain:secret || sha256:2bb80d53...
-    },
+    adminUsers: [
+      {
+        username: '',
+        password: '', // plain:secret || sha256:2bb80d53...
+      },
+    ],
   },
   contact: {
     recipientEmailAddress: '',
