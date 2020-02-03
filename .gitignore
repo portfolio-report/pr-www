@@ -6,3 +6,8 @@ node_modules/
 
 # pr-www
 db/
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
