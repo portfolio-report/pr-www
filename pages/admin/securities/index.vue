@@ -142,8 +142,9 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
 import DialogConfirm from '../../../components/dialog-confirm'
+import debounce from 'lodash/debounce'
+
 export default {
   layout: 'admin',
   components: { DialogConfirm },

@@ -1,9 +1,9 @@
-import express, { Request, Response } from 'express'
-import Debug from 'debug'
-import Sequelize from 'sequelize'
 import { getCountryFromIp } from './inc/geoip'
 import { authRequired } from './auth'
 import { ClientUpdate } from './inc/sequelize'
+import express, { Request, Response } from 'express'
+import Debug from 'debug'
+import Sequelize from 'sequelize'
 const log = Debug('api:stats')
 
 const router = express.Router()

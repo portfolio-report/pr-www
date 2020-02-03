@@ -9,6 +9,7 @@ const app = express()
 app.disable('x-powered-by')
 
 // Import and Set Nuxt.js options
+// eslint-disable-next-line import/order
 const config = require('../nuxt.config.js')
 config.dev = !(process.env.NODE_ENV === 'production')
 

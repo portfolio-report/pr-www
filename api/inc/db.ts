@@ -1,8 +1,8 @@
+import { Security } from './sequelize'
+import { publicSecurityAttributes } from './../securities'
 import NeDB from 'nedb-promises'
 import Fuse, { FuseOptions } from 'fuse.js'
 import Debug from 'debug'
-import { Security } from './sequelize'
-import { publicSecurityAttributes } from './../securities'
 const log = Debug('api:db')
 
 log('Loading databases...')

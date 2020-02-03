@@ -1,10 +1,10 @@
-import express, { Request, Response, NextFunction } from 'express'
-import Debug from 'debug'
-import Sequelize from 'sequelize'
 import { authRequired, isAuthenticated } from './auth'
 import { getSecuritiesFts, updateSecuritiesFts } from './inc/db'
 import { Security, Market, Price, sequelize } from './inc/sequelize'
 import { HttpError } from './inc/HttpError'
+import Debug from 'debug'
+import Sequelize from 'sequelize'
+import express, { Request, Response, NextFunction } from 'express'
 const log = Debug('api:securities')
 
 const router = express.Router()

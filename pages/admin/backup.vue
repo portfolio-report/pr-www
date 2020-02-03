@@ -59,9 +59,10 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
 import DialogConfirm from '../../components/dialog-confirm'
 import BtnLoading from '../../components/btn-loading'
+import debounce from 'lodash/debounce'
+
 export default {
   layout: 'admin',
   components: { DialogConfirm, BtnLoading },

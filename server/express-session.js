@@ -4,10 +4,10 @@
  */
 
 import fs from 'fs'
+import config from '../api/config'
 import session from 'express-session'
 import CSS from 'connect-session-sequelize'
 import Sequelize from 'sequelize'
-import config from '../api/config'
 
 /**
  * Check if directory exists

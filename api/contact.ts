@@ -1,9 +1,9 @@
 import util from 'util'
+import config from './config'
 import express, { Request, Response } from 'express'
 import nodemailer from 'nodemailer'
 import { check, validationResult } from 'express-validator'
 import Debug from 'debug'
-import config from './config'
 const log = Debug('api:contact')
 
 const router = express.Router()

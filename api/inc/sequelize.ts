@@ -1,6 +1,6 @@
+import dbConfig from '../sequelize-config.json'
 import { Sequelize, Model, DataTypes, Options } from 'sequelize'
 import Debug from 'debug'
-import dbConfig from '../sequelize-config.json'
 const log = Debug('api:sequelize')
 
 export const sequelize = new Sequelize({

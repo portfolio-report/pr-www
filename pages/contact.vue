@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import isEmail from 'validator/lib/isEmail'
 import BtnLoading from '../components/btn-loading'
+import isEmail from 'validator/lib/isEmail'
 
 export default {
   components: { BtnLoading },

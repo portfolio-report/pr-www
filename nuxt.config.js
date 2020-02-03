@@ -1,5 +1,5 @@
-const colors = require('vuetify/es5/util/colors').default
 const pkg = require('./package')
+const colors = require('vuetify/es5/util/colors').default
 
 module.exports = {
   mode: 'universal',

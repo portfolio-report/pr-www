@@ -216,10 +216,10 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
 import DialogConfirm from '../../../components/dialog-confirm'
 import BtnLoading from '../../../components/btn-loading'
 import CompareText from '../../../components/compare-text'
+import debounce from 'lodash/debounce'
 
 export default {
   layout: 'admin',
