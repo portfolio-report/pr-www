@@ -81,85 +81,83 @@
   </v-layout>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      searchFormValid: false,
-      searchTerm: '',
-      searchRules: [v => !!v || 'Required'],
-      securityType: 'share',
-      securityTypeItems: [
-        { text: 'share', value: 'share' },
-        { text: 'fund', value: 'fund' },
-        { text: 'bond', value: 'bond' },
-        { text: 'index', value: 'index' },
-        { text: '[all]', value: '' },
-      ],
-      results: [],
-      noResults: false,
-      searching: false,
-      error: false,
-      errorText: '',
-    }
-  },
-  computed: {
-    resultsLimited: {
-      get() {
-        return this.results.length === 10
-      },
-    },
-  },
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator'
+
+@Component
+export default class SearchPage extends Vue {
+  searchFormValid = false
+  searchTerm = ''
+  searchRules = [(v: string) => !!v || 'Required']
+  securityType = 'share'
+  securityTypeItems = [
+    { text: 'share', value: 'share' },
+    { text: 'fund', value: 'fund' },
+    { text: 'bond', value: 'bond' },
+    { text: 'index', value: 'index' },
+    { text: '[all]', value: '' },
+  ]
+
+  results = []
+  noResults = false
+  searching = false
+  error = false
+  errorText = ''
+
+  get resultsLimited() {
+    return this.results.length === 10
+  }
+
   mounted() {
     // Read query parameters from URL
     const q = this.$route.query.q
     const securityType = this.$route.query.securityType || ''
 
     if (q) {
-      this.searchTerm = q
-      this.securityType = securityType
+      this.searchTerm = q as string
+      this.securityType = securityType as string
       this.search()
     }
-  },
-  methods: {
-    async search() {
-      this.searching = true
+  }
+
+  async search() {
+    this.searching = true
+    this.noResults = false
+    this.error = false
+
+    // Update query parameter in URL
+    const query = { q: this.searchTerm } as { q: string; securityType: string }
+    if (this.securityType) {
+      query.securityType = this.securityType
+    }
+    this.$router.push({
+      path: this.$route.path,
+      query,
+    })
+
+    try {
+      const res = await this.$axios.$get(
+        `/api/securities/search/${encodeURIComponent(
+          this.searchTerm.trim()
+        )}?securityType=${encodeURIComponent(this.securityType)}`
+      )
+
+      this.searching = false
+      this.results = res
+      this.noResults = this.results.length === 0
+    } catch (error) {
+      this.searching = false
+      this.results = []
       this.noResults = false
-      this.error = false
+      this.error = true
+      this.errorText = error.message
+    }
+  }
 
-      // Update query parameter in URL
-      const query = { q: this.searchTerm }
-      if (this.securityType) {
-        query.securityType = this.securityType
-      }
-      this.$router.push({
-        path: this.$route.path,
-        query,
-      })
-
-      try {
-        const res = await this.$axios.$get(
-          `/api/securities/search/${encodeURIComponent(
-            this.searchTerm.trim()
-          )}?securityType=${encodeURIComponent(this.securityType)}`
-        )
-
-        this.searching = false
-        this.results = res
-        this.noResults = this.results.length === 0
-      } catch (error) {
-        this.searching = false
-        this.results = []
-        this.noResults = false
-        this.error = true
-        this.errorText = error.message
-      }
-    },
-  },
   head() {
     return {
-      title: 'Portfolio Report',
+      title: 'Portfolio Report Search',
     }
-  },
+  }
 }
 </script>
