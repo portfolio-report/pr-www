@@ -49,7 +49,9 @@
 
       <v-card v-for="result in results" :key="result.uuid" class="mt-4">
         <v-card-title>
-          <span>{{ result.name }}</span>
+          <nuxt-link :to="'securities/' + result.uuid">
+            {{ result.name }}
+          </nuxt-link>
           <v-chip small color="primary" text-color="white">
             {{ result.securityType }}
           </v-chip>
