@@ -27,10 +27,6 @@
             <v-alert v-model="error" type="error" outlined>
               Sorry, there was an error:<br />{{ errorText }}
             </v-alert>
-
-            <v-alert v-model="resultsLimited" type="warning" outlined>
-              Output limited to 10 results.
-            </v-alert>
           </v-card-text>
           <v-card-actions>
             <v-btn to="/contact" x-small>Get in contact</v-btn>
@@ -47,36 +43,31 @@
         </v-form>
       </v-card>
 
-      <v-card v-for="result in results" :key="result.uuid" class="mt-4">
-        <v-card-title>
-          <nuxt-link :to="'securities/' + result.uuid">
-            {{ result.name }}
-          </nuxt-link>
-          <v-chip small color="primary" text-color="white">
-            {{ result.securityType }}
-          </v-chip>
-        </v-card-title>
+      <v-card v-if="results.length > 0" class="mt-4">
+        <v-card-title>Results</v-card-title>
         <v-card-text>
-          <ul>
-            <li>
-              ISIN: <b>{{ result.isin }}</b>
-            </li>
-            <li>
-              WKN: <b>{{ result.wkn }}</b>
-            </li>
-            <li v-if="result.symbolXfra">
-              Symbol (Frankfurt):
-              <b>{{ result.symbolXfra }}</b>
-            </li>
-            <li v-if="result.symbolXnas">
-              Symbol (NASDAQ):
-              <b>{{ result.symbolXnas }}</b>
-            </li>
-            <li v-if="result.symbolXnys">
-              Symbol (New York):
-              <b>{{ result.symbolXnys }}</b>
-            </li>
-          </ul>
+          <div v-for="result in results" :key="result.uuid" class="mb-3">
+            <div>
+              <nuxt-link :to="'securities/' + result.uuid">
+                <span class="subtitle-1">{{ result.name }}</span>
+              </nuxt-link>
+              <v-chip small color="primary" text-color="white">
+                {{ result.securityType }}
+              </v-chip>
+            </div>
+            ISIN: <b>{{ result.isin }}</b> | WKN: <b>{{ result.wkn }}</b> |
+            Symbol(s):
+            <span v-for="(symbol, idx) in getUniqueSymbols(result)" :key="idx">
+              <span v-if="idx != 0">, </span>
+              <span>
+                <b>{{ symbol }}</b>
+              </span>
+            </span>
+          </div>
+
+          <v-alert v-model="resultsLimited" type="warning" outlined>
+            Output limited to 10 results.
+          </v-alert>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -154,6 +145,16 @@ export default class SearchPage extends Vue {
       this.error = true
       this.errorText = error.message
     }
+  }
+
+  getUniqueSymbols(result: {
+    symbolXfra?: string
+    symbolXnas?: string
+    symbolXnys?: string
+  }) {
+    return Array.from(
+      new Set([result.symbolXfra, result.symbolXnas, result.symbolXnys])
+    ).filter(s => !!s)
   }
 
   head() {
