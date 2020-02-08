@@ -232,6 +232,12 @@ router
       entries = entries.filter(e => e.securityType === securityType)
     }
 
+    // If there is an exact match on ISIN only return one result
+    const exactMatchByIsin = entries.find(e => e.isin === search)
+    if (exactMatchByIsin) {
+      return res.json([exactMatchByIsin])
+    }
+
     // Return 10 results
     res.json(entries.slice(0, 10))
   })
