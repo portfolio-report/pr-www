@@ -3,7 +3,8 @@
 	"recommendations": [
     "editorconfig.editorconfig",
     "dbaeumer.vscode-eslint",
-    "octref.vetur"
+    "octref.vetur",
+    "lukas-tr.materialdesignicons-intellisense"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [
