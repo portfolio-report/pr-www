@@ -34,6 +34,7 @@ async function readSecurities({
   search,
   securityType,
   staged,
+  includeMarkets,
 }: {
   limit: number
   skip: number
@@ -42,6 +43,7 @@ async function readSecurities({
   search: string
   securityType: string
   staged: boolean
+  includeMarkets: boolean
 }) {
   const filters = []
 
@@ -72,10 +74,25 @@ async function readSecurities({
 
   const where = { [Sequelize.Op.and]: filters }
 
+  const include = []
+
+  if (includeMarkets) {
+    include.push({
+      model: Market,
+      attributes: [
+        'marketCode',
+        'currencyCode',
+        'firstPriceDate',
+        'lastPriceDate',
+      ],
+    })
+  }
+
   const result = await Security.findAndCountAll({
     where,
     order: [[sort, descending ? 'DESC' : 'ASC']],
     limit,
+    include,
     offset: skip,
   })
 
@@ -92,6 +109,7 @@ router.get('/', authRequired, async function(req: Request, res: Response) {
   const descending = req.query.desc === 'true'
   const search = req.query.search || ''
   const securityType = req.query.securityType || ''
+  const include = req.query.include || ''
   let staged = false
   if (req.query.staged) {
     staged = req.query.staged === 'true'
@@ -100,7 +118,8 @@ router.get('/', authRequired, async function(req: Request, res: Response) {
   log(
     `Getting entries, limit: ${limit}, skip: ${skip}, ` +
       `sort: ${sort}, desc: ${descending}, search: ${search}, ` +
-      `securityType: ${securityType}, staged: ${staged}`
+      `securityType: ${securityType}, staged: ${staged}, ` +
+      `include: ${include}`
   )
 
   const result = await readSecurities({
@@ -111,6 +130,7 @@ router.get('/', authRequired, async function(req: Request, res: Response) {
     search,
     securityType,
     staged,
+    includeMarkets: include === 'markets',
   })
   res.json(result)
 })
