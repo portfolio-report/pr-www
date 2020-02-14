@@ -136,6 +136,39 @@ router.get('/', authRequired, async function(req: Request, res: Response) {
 })
 
 /**
+ * Get single security
+ */
+router.get('/:id', authRequired, async function(req: Request, res: Response) {
+  const id = req.params.id
+
+  const findOptions: Sequelize.FindOptions = {
+    where: {
+      id,
+    },
+    include: [
+      {
+        model: Market,
+        attributes: [
+          'marketCode',
+          'currencyCode',
+          'firstPriceDate',
+          'lastPriceDate',
+        ],
+      },
+    ],
+  }
+
+  const security = await Security.findOne(findOptions)
+
+  if (!security) {
+    res.status(404).json({ message: 'Security not found.' })
+    return
+  }
+
+  res.json(security)
+})
+
+/**
  * Create single entry, i.e. security
  */
 router.post('/', authRequired, async function(req: Request, res: Response) {

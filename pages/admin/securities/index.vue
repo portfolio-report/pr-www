@@ -119,12 +119,10 @@
         :footer-props="footerProps"
         :loading="loading"
       >
-        <template v-slot:items="props">
-          <td>{{ props.item.uuid }}</td>
-          <td>{{ props.item.name }}</td>
-          <td>{{ props.item.isin }}</td>
-          <td>{{ props.item.wkn }}</td>
-          <td>{{ props.item.securityType }}</td>
+        <template v-slot:item.name="{ item }">
+          <nuxt-link :to="'/admin/securities/' + item.id">
+            {{ item.name }}
+          </nuxt-link>
         </template>
         <template v-slot:item.action="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
