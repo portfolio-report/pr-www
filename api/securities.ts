@@ -242,6 +242,7 @@ router.route('/uuid/:uuid').get(async function(req: Request, res: Response) {
           'currencyCode',
           'firstPriceDate',
           'lastPriceDate',
+          'symbol',
         ],
       },
     ],

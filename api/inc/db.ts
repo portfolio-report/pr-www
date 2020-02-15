@@ -1,4 +1,4 @@
-import { Security } from './sequelize'
+import { Security, Market } from './sequelize'
 import { publicSecurityAttributes } from './../securities'
 import NeDB from 'nedb-promises'
 import Fuse, { FuseOptions } from 'fuse.js'
@@ -33,6 +33,7 @@ export async function updateSecuritiesFts() {
 
   const entries: Array<Security> = await Security.findAll({
     where: { staged: false },
+    include: [{ model: Market, attributes: ['marketCode', 'symbol'] }],
     attributes: publicSecurityAttributes,
   })
 
@@ -40,7 +41,15 @@ export async function updateSecuritiesFts() {
     shouldSort: true,
     maxPatternLength: 32,
     minMatchCharLength: 2,
-    keys: ['name', 'isin', 'wkn', 'symbolXfra', 'symbolXnas', 'symbolXnys'],
+    keys: [
+      'name',
+      'isin',
+      'wkn',
+      'symbolXfra',
+      'symbolXnas',
+      'symbolXnys',
+      'markets.symbol',
+    ],
   }
   const fts = new Fuse(entries, options)
 
