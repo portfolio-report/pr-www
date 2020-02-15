@@ -3,7 +3,7 @@ import { HttpError } from './inc/HttpError'
 import config from './config'
 import express, { Request, Response, NextFunction } from 'express'
 import Debug from 'debug'
-const log = Debug('api:auth')
+const log = Debug('pr-www:auth')
 
 const router = express.Router()
 

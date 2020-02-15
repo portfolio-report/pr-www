@@ -8,7 +8,7 @@ import stats from './stats'
 import { HttpError } from './inc/HttpError'
 import Debug from 'debug'
 import express, { Request, Response, NextFunction } from 'express'
-const log = Debug('api:index')
+const log = Debug('pr-www:index')
 
 const app = express()
 

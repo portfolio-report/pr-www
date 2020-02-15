@@ -3,7 +3,7 @@ import { publicSecurityAttributes } from './../securities'
 import NeDB from 'nedb-promises'
 import Fuse, { FuseOptions } from 'fuse.js'
 import Debug from 'debug'
-const log = Debug('api:db')
+const log = Debug('pr-www:db')
 
 log('Loading databases...')
 

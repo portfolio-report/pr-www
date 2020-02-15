@@ -4,7 +4,7 @@ import { ClientUpdate } from './inc/sequelize'
 import express, { Request, Response } from 'express'
 import Debug from 'debug'
 import Sequelize from 'sequelize'
-const log = Debug('api:stats')
+const log = Debug('pr-www:stats')
 
 const router = express.Router()
 

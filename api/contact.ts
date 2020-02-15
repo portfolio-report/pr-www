@@ -4,7 +4,7 @@ import express, { Request, Response } from 'express'
 import nodemailer from 'nodemailer'
 import { check, validationResult } from 'express-validator'
 import Debug from 'debug'
-const log = Debug('api:contact')
+const log = Debug('pr-www:contact')
 
 const router = express.Router()
 

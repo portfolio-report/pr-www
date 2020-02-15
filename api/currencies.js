@@ -3,7 +3,7 @@ import express from 'express'
 import axios from 'axios'
 import xmljs from 'xml-js'
 import Debug from 'debug'
-const log = Debug('api:currencies')
+const log = Debug('pr-www:currencies')
 
 const router = express.Router()
 

@@ -1,6 +1,6 @@
 import ip2loc from 'ip2location-nodejs'
 import Debug from 'debug'
-const log = Debug('api:geoip')
+const log = Debug('pr-www:geoip')
 
 let initialized = false
 

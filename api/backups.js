@@ -4,8 +4,7 @@ import { authRequired } from './auth'
 import { Security, ClientUpdate, Market, Price } from './inc/sequelize'
 import express from 'express'
 import Debug from 'debug'
-
-const log = Debug('api:backups')
+const log = Debug('pr-www:backups')
 
 const router = express.Router()
 export default router

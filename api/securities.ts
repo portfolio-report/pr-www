@@ -5,7 +5,7 @@ import { HttpError } from './inc/HttpError'
 import Debug from 'debug'
 import Sequelize from 'sequelize'
 import express, { Request, Response, NextFunction } from 'express'
-const log = Debug('api:securities')
+const log = Debug('pr-www:securities')
 
 const router = express.Router()
 

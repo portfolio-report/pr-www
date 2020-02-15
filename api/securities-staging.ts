@@ -5,7 +5,7 @@ import express, { Request, Response, NextFunction } from 'express'
 import bodyParser from 'body-parser'
 import Debug from 'debug'
 import { QueryTypes } from 'sequelize'
-const log = Debug('api:securities-staging')
+const log = Debug('pr-www:securities-staging')
 
 const router = express.Router()
 
