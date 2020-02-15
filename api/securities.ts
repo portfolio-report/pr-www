@@ -153,6 +153,7 @@ router.get('/:id', authRequired, async function(req: Request, res: Response) {
           'currencyCode',
           'firstPriceDate',
           'lastPriceDate',
+          'symbol',
         ],
       },
     ],
