@@ -36,6 +36,9 @@
             Code: <b>{{ market.marketCode }}</b>
           </li>
           <li>
+            Symbol: <b>{{ market.symbol }}</b>
+          </li>
+          <li>
             Currency: <b>{{ market.currencyCode || '-' }}</b>
           </li>
           <li>

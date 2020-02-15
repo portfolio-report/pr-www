@@ -148,12 +148,18 @@ export default class SearchPage extends Vue {
   }
 
   getUniqueSymbols(result: {
-    symbolXfra?: string
-    symbolXnas?: string
-    symbolXnys?: string
+    symbolXfra: string | null
+    symbolXnas: string | null
+    symbolXnys: string | null
+    markets: Array<{ symbol: string | null }>
   }) {
     return Array.from(
-      new Set([result.symbolXfra, result.symbolXnas, result.symbolXnys])
+      new Set([
+        result.symbolXfra,
+        result.symbolXnas,
+        result.symbolXnys,
+        ...result.markets?.map(m => m.symbol),
+      ])
     ).filter(s => !!s)
   }
 
