@@ -84,6 +84,7 @@ async function readSecurities({
         'currencyCode',
         'firstPriceDate',
         'lastPriceDate',
+        'symbol',
       ],
     })
   }
@@ -363,7 +364,7 @@ router.patch('/:securityId/markets/:marketCode', authRequired, async function(
       return res.status(404).json({ message: 'Security not found.' })
 
     // Unkown error
-    log(err)
+    console.log(err)
     return next(err)
   }
 
