@@ -68,6 +68,7 @@ export class Market extends Model {
   public firstPriceDate!: Date | null
   public lastPriceDate!: Date | null
   public symbol!: string | null
+  public updatePrices!: boolean
 
   public securityId!: number
   public readonly prices?: Array<Price>
@@ -86,6 +87,10 @@ Market.init(
     firstPriceDate: DataTypes.DATEONLY,
     lastPriceDate: DataTypes.DATEONLY,
     symbol: DataTypes.STRING(10),
+    updatePrices: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
   },
   {
     sequelize,

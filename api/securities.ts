@@ -85,6 +85,7 @@ async function readSecurities({
         'firstPriceDate',
         'lastPriceDate',
         'symbol',
+        'updatePrices',
       ],
     })
   }
@@ -155,6 +156,7 @@ router.get('/:id', authRequired, async function(req: Request, res: Response) {
           'firstPriceDate',
           'lastPriceDate',
           'symbol',
+          'updatePrices',
         ],
       },
     ],
