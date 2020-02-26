@@ -90,6 +90,7 @@ Market.init(
     updatePrices: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: true,
     },
   },
   {

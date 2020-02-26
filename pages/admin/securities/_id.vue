@@ -68,6 +68,9 @@
               Prices available: <b>{{ market.firstPriceDate }}</b> -
               <b>{{ market.lastPriceDate }}</b>
             </li>
+            <li>
+              Update prices: <b>{{ market.updatePrices }}</b>
+            </li>
           </ul>
         </v-card-text>
       </v-card>
@@ -86,6 +89,12 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
                   <v-text-field v-model="editedMarket.symbol" label="Symbol" />
+                </v-col>
+                <v-col cols="12" sm="12" md="6">
+                  <v-checkbox
+                    v-model="editedMarket.updatePrices"
+                    label="Update prices"
+                  />
                 </v-col>
               </v-row>
             </v-container>
@@ -152,6 +161,7 @@ export default class SecurityPage extends Vue {
     marketCode: '',
     currencyCode: '',
     symbol: '',
+    updatePrices: false,
   }
 
   async getSecurity() {
