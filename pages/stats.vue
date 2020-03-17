@@ -3,7 +3,7 @@
     <h1>Statistics</h1>
     <h2>Client Updates</h2>
 
-    <GChart type="ColumnChart" :data="chartData" />
+    <bar-chart :chartdata="chartData" :options="chartOptions" />
 
     <v-data-table
       :headers="headers"
@@ -37,16 +37,18 @@
   </div>
 </template>
 
-<script>
-import { GChart } from 'vue-google-charts'
-import DateView from '~/components/stats-date'
-import CountryView from '~/components/stats-country'
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator'
 
-export default {
+import BarChart from '~/components/bar-chart.vue'
+import DateView from '~/components/stats-date.vue'
+import CountryView from '~/components/stats-country.vue'
+
+@Component({
   components: {
     DateView,
     CountryView,
-    GChart,
+    BarChart,
   },
   async asyncData({ $axios }) {
     const stats = await $axios.$get('/api/stats/updates')
@@ -65,51 +67,73 @@ export default {
 
     return { stats }
   },
-  data() {
+})
+export default class StatsPage extends Vue {
+  // asyncData
+  stats!: {
+    versions: Array<{
+      version: string
+      count: number
+      // eslint-disable-next-line camelcase
+      dt_first_update: string
+      // eslint-disable-next-line camelcase
+      dt_last_update: string
+      dates: Array<{ date: string; count: number }>
+      countries: Array<{ country: string; count: number }>
+    }>
+  }
+
+  selectedVersion: string | null = null
+  headers = [
+    {
+      text: 'Version',
+      align: 'left',
+      sortable: true,
+      value: 'version',
+    },
+    {
+      text: 'From',
+      align: 'left',
+      sortable: true,
+      value: 'sort_first_update',
+    },
+    {
+      text: 'To',
+      align: 'left',
+      sortable: true,
+      value: 'sort_last_update',
+    },
+    {
+      text: 'Count',
+      align: 'right',
+      sortable: true,
+      value: 'count',
+    },
+    { text: 'Show details', value: '' },
+  ]
+
+  get chartData() {
     return {
-      selectedVersion: null,
-      headers: [
+      labels: this.stats.versions.map(e => e.version),
+      datasets: [
         {
-          text: 'Version',
-          align: 'left',
-          sortable: true,
-          value: 'version',
+          label: 'count',
+          backgroundColor: '#006e90',
+          data: this.stats.versions.map(e => e.count),
         },
-        {
-          text: 'From',
-          align: 'left',
-          sortable: true,
-          value: 'sort_first_update',
-        },
-        {
-          text: 'To',
-          align: 'left',
-          sortable: true,
-          value: 'sort_last_update',
-        },
-        {
-          text: 'Count',
-          align: 'right',
-          sortable: true,
-          value: 'count',
-        },
-        { text: 'Show details', value: '' },
       ],
     }
-  },
-  computed: {
-    chartData() {
-      return [['Version', 'Count']].concat(
-        this.stats.versions
-          .map(e => [e.version, e.count])
-          .sort((a, b) => a[0].localeCompare(b[0]))
-      )
-    },
-  },
+  }
+
+  chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+  }
+
   head() {
     return {
       title: 'Portfolio Report',
     }
-  },
+  }
 }
 </script>
