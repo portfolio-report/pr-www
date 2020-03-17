@@ -6,6 +6,10 @@
           {{ showStagedEntries ? 'Staged' : '' }} Securities
         </v-toolbar-title>
         <v-spacer></v-spacer>
+        <v-btn icon @click="createItem()">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+
         <v-menu bottom left offset-y :close-on-content-click="false">
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on">
@@ -46,6 +50,61 @@
         label="Staged entries"
         color="primary"
       />
+
+      <v-dialog v-model="showCreateDialog" max-width="600">
+        <v-card>
+          <v-card-title>Create security</v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <v-checkbox v-model="createdItem.staged" label="Staged" />
+                </v-col>
+                <v-col cols="12" sm="12" md="8">
+                  <v-text-field v-model="createdItem.name" label="Name" />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field v-model="createdItem.isin" label="ISIN" />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field v-model="createdItem.wkn" label="WKN" />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="createdItem.symbolXfra"
+                    label="Symbol Frankfurt"
+                  />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="createdItem.symbolXnas"
+                    label="Symbol NASDAQ"
+                  />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="createdItem.symbolXnys"
+                    label="Symbol New York"
+                  />
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="createdItem.securityType"
+                    label="Type"
+                  />
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="closeCreateDialog">
+              Cancel
+            </v-btn>
+            <v-btn color="primary" text @click="saveCreateDialog">Create</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
       <v-dialog v-model="showEditDialog" max-width="600">
         <v-card>
@@ -148,7 +207,18 @@ export default {
   components: { DialogConfirm },
   data() {
     return {
+      showCreateDialog: false,
       showEditDialog: false,
+      createdItem: {
+        name: '',
+        isin: '',
+        wkn: '',
+        securityType: '',
+        symbolXfra: '',
+        symbolXnas: '',
+        symbolXnys: '',
+        staged: false,
+      },
       editedItem: {
         id: null,
         uuid: null,
@@ -235,11 +305,38 @@ export default {
 
       this.loading = false
     }, 300), // debounce 300ms
+
+    createItem() {
+      this.createdItem = {
+        name: '',
+        isin: '',
+        wkn: '',
+        securityType: '',
+        symbolXfra: '',
+        symbolXnas: '',
+        symbolXnys: '',
+        staged: false,
+      }
+      this.showCreateDialog = true
+    },
+
     editItem(item) {
       // Edit a copy of the object
       this.editedItem = Object.assign({}, item)
       this.showEditDialog = true
     },
+
+    async saveCreateDialog() {
+      const sec = await this.$axios.$post(`/api/securities/`, this.createdItem)
+
+      // Update to reflect changes
+      this.getSecurities()
+
+      this.showCreateDialog = false
+
+      this.editItem(sec)
+    },
+
     async saveEditDialog() {
       await this.$axios.$patch(
         `/api/securities/${this.editedItem.id}`,
@@ -251,9 +348,15 @@ export default {
 
       this.showEditDialog = false
     },
+
+    closeCreateDialog() {
+      this.showCreateDialog = false
+    },
+
     closeEditDialog() {
       this.showEditDialog = false
     },
+
     async deleteItem(item) {
       if (
         await this.$refs.confirm.open({
@@ -267,6 +370,7 @@ export default {
       }
     },
   },
+
   head() {
     return {
       title: 'Portfolio Report Admin',
