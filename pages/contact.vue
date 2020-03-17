@@ -48,52 +48,52 @@
   </v-layout>
 </template>
 
-<script>
-import BtnLoading from '../components/btn-loading'
+<script lang="ts">
+import BtnLoading from '../components/btn-loading.vue'
+import { Component, Vue } from 'nuxt-property-decorator'
 import isEmail from 'validator/lib/isEmail'
 
-export default {
+@Component({
   components: { BtnLoading },
-  data() {
-    return {
-      contactFormValid: false,
-      showErrorMessage: false,
-      name: '',
-      nameRules: [v => !!v || 'Required'],
-      email: '',
-      emailRules: [
-        v => !!v || 'Required',
-        v => (!!v && isEmail(v)) || 'Valid email required',
-      ],
-      subject: '',
-      subjectRules: [v => !!v || 'Required'],
-      message: '',
-      messageRules: [v => !!v || 'Required'],
+})
+export default class ContactPage extends Vue {
+  contactFormValid = false
+  showErrorMessage = false
+  name = ''
+  nameRules = [(v: string) => !!v || 'Required']
+  email = ''
+  emailRules = [
+    (v: string) => !!v || 'Required',
+    (v: string) => (!!v && isEmail(v)) || 'Valid email required',
+  ]
+
+  subject = ''
+  subjectRules = [(v: string) => !!v || 'Required']
+  message = ''
+  messageRules = [(v: string) => !!v || 'Required']
+
+  async send() {
+    this.showErrorMessage = false
+    const data = {
+      name: this.name,
+      email: this.email,
+      subject: this.subject,
+      message: this.message,
     }
-  },
-  methods: {
-    async send() {
-      this.showErrorMessage = false
-      const data = {
-        name: this.name,
-        email: this.email,
-        subject: this.subject,
-        message: this.message,
-      }
-      try {
-        await this.$axios.post('/api/contact', data)
-        this.$refs.form.reset()
-      } catch (err) {
-        this.showErrorMessage = true
-        // eslint-disable-next-line no-console
-        console.log(err)
-      }
-    },
-  },
+    try {
+      await this.$axios.post('/api/contact', data)
+      await (this.$refs.form as any).reset()
+    } catch (err) {
+      this.showErrorMessage = true
+      // eslint-disable-next-line no-console
+      console.log(err)
+    }
+  }
+
   head() {
     return {
       title: 'Portfolio Report - Contact',
     }
-  },
+  }
 }
 </script>

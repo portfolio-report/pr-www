@@ -9,24 +9,26 @@
   </v-btn>
 </template>
 
-<script>
-export default {
-  props: {
-    action: { type: Function, default: () => {} },
-    color: { type: String, default: '' },
-    disabled: { type: Boolean, default: false },
-  },
+<script lang="ts">
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
-  data: () => ({
-    loading: false,
-  }),
+@Component
+export default class BtnLoading extends Vue {
+  @Prop({ default: () => {} })
+  action!: Function
 
-  methods: {
-    async click() {
-      this.loading = true
-      await this.action()
-      this.loading = false
-    },
-  },
+  @Prop({ default: '' })
+  color!: string
+
+  @Prop({ default: false })
+  disabled!: Boolean
+
+  loading = false
+
+  async click() {
+    this.loading = true
+    await this.action()
+    this.loading = false
+  }
 }
 </script>
