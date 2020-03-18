@@ -37,44 +37,40 @@
   </v-layout>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator'
 
-export default {
-  data() {
-    return {
-      formUsername: '',
-      formPassword: '',
-      errorMessage: null,
+@Component
+export default class LoginPage extends Vue {
+  formUsername = ''
+  formPassword = ''
+  errorMessage: string | null = null
+
+  get authenticated() {
+    return this.$store.getters['auth/isAuthenticated']
+  }
+
+  async login() {
+    try {
+      this.errorMessage = null
+      await this.$store.dispatch('auth/login', {
+        username: this.formUsername,
+        password: this.formPassword,
+      })
+      this.formUsername = ''
+      this.formPassword = ''
+      this.$router.push({
+        path: '/admin/',
+      })
+    } catch (err) {
+      this.errorMessage = err.message
     }
-  },
-  computed: {
-    ...mapGetters({
-      authenticated: 'auth/isAuthenticated',
-    }),
-  },
-  methods: {
-    async login() {
-      try {
-        this.errorMessage = null
-        await this.$store.dispatch('auth/login', {
-          username: this.formUsername,
-          password: this.formPassword,
-        })
-        this.formUsername = ''
-        this.formPassword = ''
-        this.$router.push({
-          path: '/admin/',
-        })
-      } catch (err) {
-        this.errorMessage = err.message
-      }
-    },
-  },
+  }
+
   head() {
     return {
       title: 'Portfolio Report',
     }
-  },
+  }
 }
 </script>

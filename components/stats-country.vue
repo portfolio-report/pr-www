@@ -17,35 +17,32 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    countries: {
-      type: Array,
-      required: true,
+<script lang="ts">
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
+
+@Component
+export default class StatsCountry extends Vue {
+  @Prop({ required: true })
+  countries!: Array<{ country: string; count: number }>
+
+  headers = [
+    {
+      text: 'Country',
+      align: 'left',
+      sortable: true,
+      value: 'country',
     },
-  },
-  data() {
-    return {
-      headers: [
-        {
-          text: 'Country',
-          align: 'left',
-          sortable: true,
-          value: 'country',
-        },
-        {
-          text: 'Count',
-          align: 'right',
-          sortable: true,
-          value: 'count',
-        },
-      ],
-      pagination: {
-        sortBy: ['count'],
-        sortDesc: [true],
-      },
-    }
-  },
+    {
+      text: 'Count',
+      align: 'right',
+      sortable: true,
+      value: 'count',
+    },
+  ]
+
+  pagination = {
+    sortBy: ['count'],
+    sortDesc: [true],
+  }
 }
 </script>

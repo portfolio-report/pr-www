@@ -1,6 +1,6 @@
 <template>
   <div>
-    <GChart type="LineChart" :data="chartData" :options="chartOptions" />
+    <line-chart :chartdata="chartData" :options="chartOptions" />
 
     <v-data-table
       :headers="headers"
@@ -19,48 +19,51 @@
   </div>
 </template>
 
-<script>
-import { GChart } from 'vue-google-charts'
+<script lang="ts">
+import LineChart from '~/components/line-chart.vue'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
-export default {
-  components: {
-    GChart,
-  },
-  props: {
-    dates: {
-      type: Array,
-      required: true,
+@Component({ components: { LineChart } })
+export default class StatsDate extends Vue {
+  @Prop({ required: true })
+  dates!: Array<{ date: string; count: number }>
+
+  headers = [
+    {
+      text: 'Date',
+      align: 'left',
+      sortable: true,
+      value: 'date',
     },
-  },
-  data() {
+    {
+      text: 'Count',
+      align: 'right',
+      sortable: true,
+      value: 'count',
+    },
+  ]
+
+  chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+  }
+
+  get chartData() {
+    const datesSorted = [...this.dates].sort((a, b) =>
+      a.date.localeCompare(b.date)
+    )
+
     return {
-      headers: [
+      labels: datesSorted.map(e => e.date),
+      datasets: [
         {
-          text: 'Date',
-          align: 'left',
-          sortable: true,
-          value: 'date',
-        },
-        {
-          text: 'Count',
-          align: 'right',
-          sortable: true,
-          value: 'count',
+          label: 'count',
+          backgroundColor: '#006e90',
+          fill: false,
+          data: datesSorted.map(e => e.count),
         },
       ],
-      chartOptions: {
-        curveType: 'function',
-      },
     }
-  },
-  computed: {
-    chartData() {
-      return [['Date', 'Count']].concat(
-        this.dates
-          .map(e => [e.date, e.count])
-          .sort((a, b) => a[0].localeCompare(b[0]))
-      )
-    },
-  },
+  }
 }
 </script>
