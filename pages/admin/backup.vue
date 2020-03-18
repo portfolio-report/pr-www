@@ -58,85 +58,93 @@
   </v-layout>
 </template>
 
-<script>
-import DialogConfirm from '../../components/dialog-confirm'
-import BtnLoading from '../../components/btn-loading'
+<script lang="ts">
+import DialogConfirm from '../../components/dialog-confirm.vue'
+import BtnLoading from '../../components/btn-loading.vue'
+import { Component, Vue } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
 
-export default {
-  layout: 'admin',
-  components: { DialogConfirm, BtnLoading },
-  data() {
-    return {
-      loadingRestore: false,
-      entries: [],
-      loading: false,
-      headers: [
-        {
-          text: 'Name',
-          value: 'name',
-        },
-        {
-          text: 'Size',
-          value: 'size',
-        },
-        { text: 'Actions', value: 'action', sortable: false },
-      ],
-    }
-  },
+interface BackupFile {
+  name: string
+  size: number
+}
+
+@Component({ layout: 'admin', components: { DialogConfirm, BtnLoading } })
+export default class BackupPage extends Vue {
+  loadingRestore = false
+  entries: Array<BackupFile> = []
+  loading = false
+  headers = [
+    {
+      text: 'Name',
+      value: 'name',
+    },
+    {
+      text: 'Size',
+      value: 'size',
+    },
+    { text: 'Actions', value: 'action', sortable: false },
+  ]
+
   mounted() {
     this.getEntries()
-  },
-  methods: {
-    getEntries: debounce(async function() {
-      this.loading = true
-      this.entries = await this.$axios.$get('/api/backups/')
-      this.loading = false
-    }, 300), // debounce 300ms
-    downloadItem(item) {
-      const link = document.createElement('a')
-      link.href = `/api/backups/${item.name}`
-      document.body.appendChild(link)
-      link.click()
-    },
-    async createBackups() {
-      await this.$axios.$post(`/api/backups/`)
-      this.getEntries()
-    },
-    async deleteItem(item) {
-      if (
-        await this.$refs.confirm.open({
-          title: 'Delete backup file',
-          message: `Are you sure you want to delete the backup file "${item.name}"?`,
-          color: 'secondary',
-        })
-      ) {
-        await this.$axios.$delete(`/api/backups/${item.name}`)
-        this.getEntries()
-      }
-    },
-    async restoreItem(item) {
-      this.loadingRestore = true
-      if (
-        await this.$refs.confirm.open({
-          title: 'Restore backup file',
-          message: `Are you sure you want to restore the backup file "${item.name}"?`,
-          color: 'secondary',
-        })
-      ) {
-        await this.$axios.$post(`/api/backups/${item.name}/restore`)
-      }
-      this.loadingRestore = false
-    },
+  }
 
-    updateFts() {
-      this.$axios.post('/api/securities/search/update')
-    },
-  },
+  async getEntriesRaw() {
+    this.loading = true
+    this.entries = await this.$axios.$get('/api/backups/')
+    this.loading = false
+  }
+
+  getEntries = debounce(this.getEntriesRaw, 300)
+
+  downloadItem(item: BackupFile) {
+    const link = document.createElement('a')
+    link.href = `/api/backups/${item.name}`
+    document.body.appendChild(link)
+    link.click()
+  }
+
+  async createBackups() {
+    await this.$axios.$post(`/api/backups/`)
+    this.getEntries()
+  }
+
+  async deleteItem(item: BackupFile) {
+    if (
+      await (this.$refs.confirm as any).open({
+        title: 'Delete backup file',
+        message: `Are you sure you want to delete the backup file "${item.name}"?`,
+        color: 'secondary',
+      })
+    ) {
+      await this.$axios.$delete(`/api/backups/${item.name}`)
+      this.getEntries()
+    }
+  }
+
+  async restoreItem(item: BackupFile) {
+    this.loadingRestore = true
+    if (
+      await (this.$refs.confirm as any).open({
+        title: 'Restore backup file',
+        message: `Are you sure you want to restore the backup file "${item.name}"?`,
+        color: 'secondary',
+      })
+    ) {
+      await this.$axios.$post(`/api/backups/${item.name}/restore`)
+    }
+    this.loadingRestore = false
+  }
+
+  updateFts() {
+    this.$axios.post('/api/securities/search/update')
+  }
+
   head() {
     return {
       title: 'Portfolio Report Admin',
     }
-  },
+  }
 }
 </script>

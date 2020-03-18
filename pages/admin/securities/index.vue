@@ -198,183 +198,201 @@
   </v-layout>
 </template>
 
-<script>
-import DialogConfirm from '../../../components/dialog-confirm'
+<script lang="ts">
+import DialogConfirm from '../../../components/dialog-confirm.vue'
 import debounce from 'lodash/debounce'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 
-export default {
-  layout: 'admin',
-  components: { DialogConfirm },
-  data() {
-    return {
-      showCreateDialog: false,
-      showEditDialog: false,
-      createdItem: {
-        name: '',
-        isin: '',
-        wkn: '',
-        securityType: '',
-        symbolXfra: '',
-        symbolXnas: '',
-        symbolXnys: '',
-        staged: false,
+interface Security {
+  id?: number
+  uuid?: string | null
+  name: string | null
+  isin: string | null
+  wkn: string | null
+  symbolXfra: string | null
+  symbolXnas: string | null
+  symbolXnys: string | null
+  securityType: string | null
+  staged: boolean
+}
+
+@Component({ components: { DialogConfirm }, layout: 'admin' })
+export default class SecuritiesPage extends Vue {
+  showCreateDialog = false
+  showEditDialog = false
+  createdItem: Security = {
+    name: '',
+    isin: '',
+    wkn: '',
+    securityType: '',
+    symbolXfra: '',
+    symbolXnas: '',
+    symbolXnys: '',
+    staged: false,
+  }
+
+  editedItem: Security = {
+    id: undefined,
+    uuid: null,
+    name: null,
+    isin: null,
+    wkn: null,
+    securityType: null,
+    symbolXfra: null,
+    symbolXnas: null,
+    symbolXnys: null,
+    staged: false,
+  }
+
+  showStagedEntries = false
+  headers = [
+    {
+      text: 'UUID',
+      value: 'uuid',
+    },
+    {
+      text: 'Name',
+      align: 'left',
+      sortable: true,
+      value: 'name',
+    },
+    { text: 'ISIN', value: 'isin' },
+    { text: 'WKN', value: 'wkn' },
+    { text: 'Type', value: 'securityType' },
+    { text: 'Actions', value: 'action', sortable: false },
+  ]
+
+  entries: Array<Security> = []
+  securityTypeItems = [
+    { text: '', value: '' },
+    { text: 'share', value: 'share' },
+    { text: 'bond', value: 'bond' },
+  ]
+
+  searchQuery = ''
+  pagination = {
+    itemsPerPage: 10,
+    sortBy: ['name'],
+    sortDesc: [false],
+    page: 1,
+  }
+
+  securitySearch = ''
+  securityType = ''
+  totalItems = 0
+  loading = false
+  footerProps = { 'items-per-page-options': [10, 25, 50, 100] }
+
+  @Watch('pagination', { deep: true })
+  onPaginationChanged() {
+    this.getSecurities()
+  }
+
+  @Watch('securitySearch')
+  onSecuritySearchChanged() {
+    this.getSecurities()
+  }
+
+  @Watch('securityType')
+  onSecurityTypeChanged() {
+    this.getSecurities()
+  }
+
+  @Watch('showStagedEntries')
+  onShowStagedEntriesChanged() {
+    this.getSecurities()
+  }
+
+  async getSecuritiesRaw() {
+    this.loading = true
+
+    const res = await this.$axios.$get('/api/securities', {
+      params: {
+        sort: this.pagination.sortBy[0],
+        skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
+        limit: this.pagination.itemsPerPage,
+        desc: this.pagination.sortDesc[0],
+        search: this.securitySearch,
+        securityType: this.securityType,
+        staged: this.showStagedEntries,
       },
-      editedItem: {
-        id: null,
-        uuid: null,
-        name: null,
-        isin: null,
-        wkn: null,
-        securityType: null,
-        symbolXfra: null,
-        symbolXnas: null,
-        symbolXnys: null,
-        staged: null,
-      },
-      showStagedEntries: false,
-      headers: [
-        {
-          text: 'UUID',
-          value: 'uuid',
-        },
-        {
-          text: 'Name',
-          align: 'left',
-          sortable: true,
-          value: 'name',
-        },
-        { text: 'ISIN', value: 'isin' },
-        { text: 'WKN', value: 'wkn' },
-        { text: 'Type', value: 'securityType' },
-        { text: 'Actions', value: 'action', sortable: false },
-      ],
-      entries: [],
-      securityTypeItems: [
-        { text: '', value: '' },
-        { text: 'share', value: 'share' },
-        { text: 'bond', value: 'bond' },
-      ],
-      searchQuery: '',
-      pagination: {
-        itemsPerPage: 10,
-        sortBy: ['name'],
-        sortDesc: [false],
-        page: 1,
-      },
-      securitySearch: '',
+    })
+    this.entries = res.entries
+    this.totalItems = res.params.totalCount
+
+    this.loading = false
+  }
+
+  getSecurities = debounce(this.getSecuritiesRaw, 300)
+
+  createItem() {
+    this.createdItem = {
+      name: '',
+      isin: '',
+      wkn: '',
       securityType: '',
-      totalItems: 0,
-      loading: false,
-      footerProps: { 'items-per-page-options': [10, 25, 50, 100] },
+      symbolXfra: '',
+      symbolXnas: '',
+      symbolXnys: '',
+      staged: false,
     }
-  },
-  watch: {
-    pagination: {
-      handler() {
-        this.getSecurities()
-      },
-      deep: true,
-    },
-    securitySearch() {
-      this.getSecurities()
-    },
-    securityType() {
-      this.getSecurities()
-    },
-    showStagedEntries() {
-      this.getSecurities()
-    },
-  },
-  methods: {
-    getSecurities: debounce(async function() {
-      this.loading = true
+    this.showCreateDialog = true
+  }
 
-      const res = await this.$axios.$get('/api/securities', {
-        params: {
-          sort: this.pagination.sortBy[0],
-          skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
-          limit: this.pagination.itemsPerPage,
-          desc: this.pagination.sortDesc[0],
-          search: this.securitySearch,
-          securityType: this.securityType,
-          staged: this.showStagedEntries,
-        },
+  editItem(item: Security) {
+    // Edit a copy of the object
+    this.editedItem = Object.assign({}, item)
+    this.showEditDialog = true
+  }
+
+  async saveCreateDialog() {
+    const sec = await this.$axios.$post(`/api/securities/`, this.createdItem)
+
+    // Update to reflect changes
+    this.getSecurities()
+
+    this.showCreateDialog = false
+
+    this.editItem(sec)
+  }
+
+  async saveEditDialog() {
+    await this.$axios.$patch(
+      `/api/securities/${this.editedItem.id}`,
+      this.editedItem
+    )
+
+    // Update to reflect changes
+    this.getSecurities()
+
+    this.showEditDialog = false
+  }
+
+  closeCreateDialog() {
+    this.showCreateDialog = false
+  }
+
+  closeEditDialog() {
+    this.showEditDialog = false
+  }
+
+  async deleteItem(item: Security) {
+    if (
+      await (this.$refs.confirm as any).open({
+        title: 'Delete security',
+        message: `Are you sure you want to delete "${item.name}"?`,
+        color: 'secondary',
       })
-      this.entries = res.entries
-      this.totalItems = res.params.totalCount
-
-      this.loading = false
-    }, 300), // debounce 300ms
-
-    createItem() {
-      this.createdItem = {
-        name: '',
-        isin: '',
-        wkn: '',
-        securityType: '',
-        symbolXfra: '',
-        symbolXnas: '',
-        symbolXnys: '',
-        staged: false,
-      }
-      this.showCreateDialog = true
-    },
-
-    editItem(item) {
-      // Edit a copy of the object
-      this.editedItem = Object.assign({}, item)
-      this.showEditDialog = true
-    },
-
-    async saveCreateDialog() {
-      const sec = await this.$axios.$post(`/api/securities/`, this.createdItem)
-
-      // Update to reflect changes
+    ) {
+      await this.$axios.$delete(`/api/securities/${item.id}`)
       this.getSecurities()
-
-      this.showCreateDialog = false
-
-      this.editItem(sec)
-    },
-
-    async saveEditDialog() {
-      await this.$axios.$patch(
-        `/api/securities/${this.editedItem.id}`,
-        this.editedItem
-      )
-
-      // Update to reflect changes
-      this.getSecurities()
-
-      this.showEditDialog = false
-    },
-
-    closeCreateDialog() {
-      this.showCreateDialog = false
-    },
-
-    closeEditDialog() {
-      this.showEditDialog = false
-    },
-
-    async deleteItem(item) {
-      if (
-        await this.$refs.confirm.open({
-          title: 'Delete security',
-          message: `Are you sure you want to delete "${item.name}"?`,
-          color: 'secondary',
-        })
-      ) {
-        await this.$axios.$delete(`/api/securities/${item.id}`)
-        this.getSecurities()
-      }
-    },
-  },
+    }
+  }
 
   head() {
     return {
       title: 'Portfolio Report Admin',
     }
-  },
+  }
 }
 </script>

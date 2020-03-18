@@ -89,103 +89,116 @@
   </v-layout>
 </template>
 
-<script>
-import DialogConfirm from '../../components/dialog-confirm'
+<script lang="ts">
+import DialogConfirm from '../../components/dialog-confirm.vue'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
 
-export default {
-  layout: 'admin',
-  components: { DialogConfirm },
-  data() {
-    return {
-      filterVersion: null,
-      showEditDialog: false,
-      editedItem: {
-        id: null,
-        version: null,
-        timestamp: null,
-        useragent: null,
-      },
-      headers: [
-        {
-          text: 'Timestamp',
-          value: 'timestamp',
-        },
-        {
-          text: 'Version',
-          align: 'left',
-          sortable: true,
-          value: 'version',
-        },
-        { text: 'Country', value: 'country' },
-        { text: 'Actions', value: 'action', sortable: false },
-      ],
-      entries: [],
-      pagination: {
-        itemsPerPage: 10,
-        sortBy: ['timestamp'],
-        sortDesc: [false],
-        page: 1,
-      },
-      totalItems: 0,
-      loading: false,
-      footerProps: { 'items-per-page-options': [10, 25, 50, 100] },
-    }
-  },
-  watch: {
-    pagination: {
-      handler() {
-        this.getEntries()
-      },
-      deep: true,
-    },
-    filterVersion() {
-      this.getEntries()
-    },
-  },
-  methods: {
-    getEntries: debounce(async function() {
-      this.loading = true
+interface ClientUpdate {
+  id: number
+  timestamp: string
+  version: string
+  country: string | null
+  useragent: string | null
+}
 
-      const res = await this.$axios.$get('/api/stats/', {
-        params: {
-          sort: this.pagination.sortBy[0],
-          skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
-          limit: this.pagination.itemsPerPage,
-          desc: this.pagination.sortDesc[0],
-          version: this.filterVersion,
-        },
+@Component({ components: { DialogConfirm }, layout: 'admin' })
+export default class StatsPage extends Vue {
+  filterVersion: string | null = null
+  showEditDialog = false
+  editedItem: ClientUpdate = {
+    id: 0,
+    timestamp: '',
+    version: '',
+    country: '',
+    useragent: '',
+  }
+
+  headers = [
+    {
+      text: 'Timestamp',
+      value: 'timestamp',
+    },
+    {
+      text: 'Version',
+      align: 'left',
+      sortable: true,
+      value: 'version',
+    },
+    { text: 'Country', value: 'country' },
+    { text: 'Actions', value: 'action', sortable: false },
+  ]
+
+  entries: Array<ClientUpdate> = []
+
+  pagination = {
+    itemsPerPage: 10,
+    sortBy: ['timestamp'],
+    sortDesc: [false],
+    page: 1,
+  }
+
+  totalItems = 0
+  loading = false
+  footerProps = { 'items-per-page-options': [10, 25, 50, 100] }
+
+  @Watch('pagination', { deep: true })
+  onPaginationChanged() {
+    this.getEntries()
+  }
+
+  @Watch('filterVersion')
+  onFilterVersionChanged() {
+    this.getEntries()
+  }
+
+  async getEntriesRaw() {
+    this.loading = true
+
+    const res = await this.$axios.$get('/api/stats/', {
+      params: {
+        sort: this.pagination.sortBy[0],
+        skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
+        limit: this.pagination.itemsPerPage,
+        desc: this.pagination.sortDesc[0],
+        version: this.filterVersion,
+      },
+    })
+    this.entries = res.entries
+    this.totalItems = res.params.totalCount
+
+    this.loading = false
+  }
+
+  getEntries = debounce(this.getEntriesRaw, 300)
+
+  editItem(item: ClientUpdate) {
+    // Edit a copy of the object
+    this.editedItem = Object.assign({}, item)
+    this.showEditDialog = true
+  }
+
+  closeEditDialog() {
+    this.showEditDialog = false
+  }
+
+  async deleteItem(item: ClientUpdate) {
+    if (
+      await (this.$refs.confirm as any).open({
+        title: 'Delete entry',
+        message: `Are you sure you want to delete this entry (${item.timestamp})?`,
+        color: 'secondary',
       })
-      this.entries = res.entries
-      this.totalItems = res.params.totalCount
+    ) {
+      await this.$axios.$delete(`/api/stats/${item.id}`)
+      this.getEntries()
+    }
+  }
 
-      this.loading = false
-    }, 300), // debounce 300ms
-    editItem(item) {
-      // Edit a copy of the object
-      this.editedItem = Object.assign({}, item)
-      this.showEditDialog = true
-    },
-    closeEditDialog() {
-      this.showEditDialog = false
-    },
-    async deleteItem(item) {
-      if (
-        await this.$refs.confirm.open({
-          title: 'Delete entry',
-          message: `Are you sure you want to delete this entry (${item.timestamp})?`,
-          color: 'secondary',
-        })
-      ) {
-        await this.$axios.$delete(`/api/stats/${item.id}`)
-        this.getEntries()
-      }
-    },
-  },
   head() {
     return {
       title: 'Portfolio Report Admin',
     }
-  },
+  }
 }
 </script>

@@ -47,55 +47,54 @@
   </v-app>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator'
 
-export default {
-  middleware: 'auth',
-  data() {
-    return {
-      title: 'Portfolio Report Admin',
-      leftDrawerOpen: false,
-      menuItems: [
-        { name: 'Home', icon: 'mdi-home', to: '/admin/' },
-        {
-          name: 'Securities',
-          icon: 'mdi-currency-usd',
-          to: '/admin/securities',
-        },
-        {
-          name: 'Update securities',
-          icon: 'mdi-download',
-          to: '/admin/securities/staging',
-        },
-        {
-          name: 'Client updates',
-          icon: 'mdi-poll',
-          to: '/admin/stats',
-        },
-        {
-          name: 'Backup & Restore',
-          icon: 'mdi-backup-restore',
-          to: '/admin/backup',
-        },
-        { name: 'Public site', icon: 'mdi-earth', to: '/' },
-        { name: 'Statistics', icon: 'mdi-poll', to: '/stats' },
-      ],
-    }
-  },
-  computed: {
-    ...mapGetters({
-      authenticated: 'auth/isAuthenticated',
-      username: 'auth/username',
-    }),
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch('auth/logout')
-      this.$router.push({
-        path: '/admin/login',
-      })
+@Component({ middleware: 'auth' })
+export default class AdminLayout extends Vue {
+  // middleware: 'auth',
+
+  title = 'Portfolio Report Admin'
+  leftDrawerOpen = false
+  menuItems = [
+    { name: 'Home', icon: 'mdi-home', to: '/admin/' },
+    {
+      name: 'Securities',
+      icon: 'mdi-currency-usd',
+      to: '/admin/securities',
     },
-  },
+    {
+      name: 'Update securities',
+      icon: 'mdi-download',
+      to: '/admin/securities/staging',
+    },
+    {
+      name: 'Client updates',
+      icon: 'mdi-poll',
+      to: '/admin/stats',
+    },
+    {
+      name: 'Backup & Restore',
+      icon: 'mdi-backup-restore',
+      to: '/admin/backup',
+    },
+    { name: 'Public site', icon: 'mdi-earth', to: '/' },
+    { name: 'Statistics', icon: 'mdi-poll', to: '/stats' },
+  ]
+
+  get authenticated() {
+    return this.$store.getters['auth/isAuthenticated']
+  }
+
+  get username() {
+    return this.$store.getters['auth/username']
+  }
+
+  logout() {
+    this.$store.dispatch('auth/logout')
+    this.$router.push({
+      path: '/admin/login',
+    })
+  }
 }
 </script>

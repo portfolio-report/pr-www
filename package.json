@@ -52,6 +52,7 @@
     "@types/chart.js": "^2.9.15",
     "@types/debug": "^4.1.5",
     "@types/express-session": "^1.17.0",
+    "@types/lodash": "^4.14.149",
     "@types/nodemailer": "^6.4.0",
     "@types/validator": "^12.0.1",
     "babel-eslint": "^10.1.0",

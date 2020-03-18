@@ -6,14 +6,18 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { Component, Prop, Vue } from 'nuxt-property-decorator'
+
+@Component
+export default class ErrorLayout extends Vue {
   head() {
     return {
       title: 'Portfolio Report',
     }
-  },
-  // eslint-disable-next-line
-  props: { error: Object }
+  }
+
+  @Prop()
+  error!: Object
 }
 </script>

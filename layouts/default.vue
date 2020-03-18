@@ -30,12 +30,11 @@
 }
 </style>
 
-<script>
-export default {
-  data() {
-    return {
-      title: 'Portfolio Report',
-    }
-  },
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator'
+
+@Component
+export default class DefaultLayout extends Vue {
+  title = 'Portfolio Report'
 }
 </script>
