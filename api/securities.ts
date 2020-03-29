@@ -366,6 +366,7 @@ router.patch('/:securityId/markets/:marketCode', authRequired, async function(
       return res.status(404).json({ message: 'Security not found.' })
 
     // Unkown error
+    // eslint-disable-next-line no-console
     console.log(err)
     return next(err)
   }
