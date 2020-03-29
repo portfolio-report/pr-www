@@ -82,13 +82,13 @@ export default class SearchPage extends Vue {
   searchFormValid = false
   searchTerm = ''
   searchRules = [(v: string) => !!v || 'Required']
-  securityType = 'share'
+  securityType = ''
   securityTypeItems = [
+    { text: '*', value: '' },
     { text: 'share', value: 'share' },
     { text: 'fund', value: 'fund' },
     { text: 'bond', value: 'bond' },
     { text: 'index', value: 'index' },
-    { text: '[all]', value: '' },
   ]
 
   results = []
