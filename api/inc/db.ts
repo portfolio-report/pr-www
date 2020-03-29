@@ -33,7 +33,12 @@ export async function updateSecuritiesFts() {
 
   const entries: Array<Security> = await Security.findAll({
     where: { staged: false },
-    include: [{ model: Market, attributes: ['marketCode', 'symbol'] }],
+    include: [
+      {
+        model: Market,
+        attributes: ['marketCode', 'symbol', 'firstPriceDate', 'lastPriceDate'],
+      },
+    ],
     attributes: publicSecurityAttributes,
   })
 
