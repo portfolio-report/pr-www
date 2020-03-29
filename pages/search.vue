@@ -48,6 +48,13 @@
         <v-card-text>
           <div v-for="result in results" :key="result.uuid" class="mb-3">
             <div>
+              <v-tooltip v-if="getPricesAvailable(result)" left>
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on">mdi-chart-line</v-icon>
+                </template>
+                <span>Prices available</span>
+              </v-tooltip>
+
               <nuxt-link :to="'securities/' + result.uuid">
                 <span class="subtitle-1">{{ result.name }}</span>
               </nuxt-link>
@@ -145,6 +152,14 @@ export default class SearchPage extends Vue {
       this.error = true
       this.errorText = error.message
     }
+  }
+
+  getPricesAvailable(result: {
+    markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
+  }): boolean {
+    return result.markets.some(
+      market => market.firstPriceDate && market.lastPriceDate
+    )
   }
 
   getUniqueSymbols(result: {
