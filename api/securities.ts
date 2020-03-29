@@ -291,9 +291,13 @@ router
     }
 
     // If there is an exact match on ISIN only return one result
-    const exactMatchByIsin = entries.find(e => e.isin === search)
-    if (exactMatchByIsin) {
-      return res.json([exactMatchByIsin])
+    const exactMatch = entries.find(
+      e =>
+        e.isin?.toUpperCase() === search.toUpperCase() ||
+        e.wkn?.toUpperCase() === search.toUpperCase()
+    )
+    if (exactMatch) {
+      return res.json([exactMatch])
     }
 
     // Return 10 results
