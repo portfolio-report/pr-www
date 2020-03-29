@@ -29,7 +29,27 @@
             </v-alert>
           </v-card-text>
           <v-card-actions>
-            <v-btn to="/contact" x-small>Get in contact</v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  href="https://forum.portfolio-performance.info/"
+                  icon
+                  v-on="on"
+                >
+                  <v-icon>mdi-forum</v-icon>
+                </v-btn>
+              </template>
+              <span>Get help and discuss</span>
+            </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn to="/contact" icon v-on="on">
+                  <v-icon>mdi-email</v-icon>
+                </v-btn>
+              </template>
+              <span>Get in contact</span>
+            </v-tooltip>
+
             <v-spacer />
             <v-btn
               type="submit"

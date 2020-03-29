@@ -7,6 +7,14 @@
         </v-card-title>
 
         <v-card-text>
+          Please use the
+          <a href="https://forum.portfolio-performance.info/">
+            discussion forum</a
+          >
+          for all matters that can be discussed publicly.<br />
+          This contact form can be used to establish direct contact with the
+          operators for all matters that cannot be discussed publicly.
+
           <v-form ref="form" v-model="contactFormValid">
             <v-text-field v-model="name" :rules="nameRules" label="Your name" />
             <v-text-field
