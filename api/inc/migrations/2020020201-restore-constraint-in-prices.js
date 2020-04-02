@@ -34,7 +34,9 @@ module.exports = {
 
       await queryInterface.sequelize.query(
         `INSERT INTO prices_new SELECT id, marketId, date, close FROM prices`,
-        { transaction }
+        {
+          transaction,
+        }
       )
 
       await queryInterface.dropTable('prices', { transaction })

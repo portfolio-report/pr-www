@@ -54,13 +54,13 @@ export default class StatsDate extends Vue {
     )
 
     return {
-      labels: datesSorted.map(e => e.date),
+      labels: datesSorted.map((e) => e.date),
       datasets: [
         {
           label: 'count',
           backgroundColor: '#006e90',
           fill: false,
-          data: datesSorted.map(e => e.count),
+          data: datesSorted.map((e) => e.count),
         },
       ],
     }

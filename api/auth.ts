@@ -13,7 +13,7 @@ router.use(express.json())
 /**
  * Check credentials and create session
  */
-router.post('/login', function(
+router.post('/login', function (
   req: Request,
   res: Response,
   next: NextFunction
@@ -31,7 +31,7 @@ router.post('/login', function(
   }
 
   const adminUsers = config.auth.adminUsers.filter(
-    user => user.username === username
+    (user) => user.username === username
   )
 
   if (adminUsers.length === 0) {
@@ -47,11 +47,7 @@ router.post('/login', function(
     passwordCompare = 'plain:' + password
   } else if (configPassword.startsWith('sha256:')) {
     passwordCompare =
-      'sha256:' +
-      crypto
-        .createHash('sha256')
-        .update(password)
-        .digest('hex')
+      'sha256:' + crypto.createHash('sha256').update(password).digest('hex')
   } else {
     log(`Password for ${username} uses unknown cipher`)
     return next(new HttpError(401, 'Unauthorized'))
@@ -100,14 +96,14 @@ export const isAuthenticated = (req: Request) => {
 /**
  * Show details about the user from the session
  */
-router.get('/me', authRequired, function(req: Request, res: Response) {
+router.get('/me', authRequired, function (req: Request, res: Response) {
   return res.json(req.session?.user)
 })
 
 /**
  * Destroy session
  */
-router.post('/logout', authRequired, function(req: Request, res: Response) {
+router.post('/logout', authRequired, function (req: Request, res: Response) {
   log(`Destroying session for '${req.session?.user.username}'`)
 
   // Remove the session

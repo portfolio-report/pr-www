@@ -27,7 +27,7 @@ app.set('json spaces', 2)
  */
 app.set('trust proxy', true)
 
-app.get('/', function(_req, res) {
+app.get('/', function (_req, res) {
   res.json({ status: 'ok' })
 })
 
@@ -42,14 +42,14 @@ app.use('/stats', stats)
 /**
  * Return 404 if nothing has matched so far.
  */
-app.use(function(_req: Request, _res: Response, next: NextFunction) {
+app.use(function (_req: Request, _res: Response, next: NextFunction) {
   next(new HttpError(404, 'Page not found'))
 })
 
 /**
  * Generic error handler
  */
-app.use(function(
+app.use(function (
   err: HttpError,
   _req: Request,
   res: Response,

@@ -11,7 +11,7 @@ const router = express.Router()
 // Parse JSON payloads
 router.use(express.json())
 
-router.get('/', function(_req: Request, res: Response) {
+router.get('/', function (_req: Request, res: Response) {
   res.json({ status: 'ok' })
 })
 
@@ -19,26 +19,12 @@ router.post(
   '/',
   [
     // Validate and sanitize input values
-    check('name')
-      .isString()
-      .isLength({ min: 1 })
-      .trim()
-      .escape(),
-    check('email')
-      .isEmail()
-      .trim()
-      .normalizeEmail(),
-    check('subject')
-      .isString()
-      .isLength({ min: 1 })
-      .trim()
-      .escape(),
-    check('message')
-      .isString()
-      .isLength({ min: 1 })
-      .trim(),
+    check('name').isString().isLength({ min: 1 }).trim().escape(),
+    check('email').isEmail().trim().normalizeEmail(),
+    check('subject').isString().isLength({ min: 1 }).trim().escape(),
+    check('message').isString().isLength({ min: 1 }).trim(),
   ],
-  async function(req: Request, res: Response) {
+  async function (req: Request, res: Response) {
     const validationErrors = validationResult(req)
     if (!validationErrors.isEmpty()) {
       log('Error validating input: ' + util.inspect(validationErrors.array()))

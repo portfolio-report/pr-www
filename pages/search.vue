@@ -178,7 +178,7 @@ export default class SearchPage extends Vue {
     markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
   }): boolean {
     return result.markets.some(
-      market => market.firstPriceDate && market.lastPriceDate
+      (market) => market.firstPriceDate && market.lastPriceDate
     )
   }
 
@@ -193,9 +193,9 @@ export default class SearchPage extends Vue {
         result.symbolXfra,
         result.symbolXnas,
         result.symbolXnys,
-        ...result.markets?.map(m => m.symbol),
+        ...result.markets?.map((m) => m.symbol),
       ])
-    ).filter(s => !!s)
+    ).filter((s) => !!s)
   }
 
   head() {

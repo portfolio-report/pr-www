@@ -104,7 +104,7 @@ async function readSecurities({
 /**
  * Get list of securities
  */
-router.get('/', authRequired, async function(req: Request, res: Response) {
+router.get('/', authRequired, async function (req: Request, res: Response) {
   const limit = parseInt(req.query.limit) || 10
   const skip = parseInt(req.query.skip) || 0
   const sort = req.query.sort || 'name'
@@ -140,7 +140,7 @@ router.get('/', authRequired, async function(req: Request, res: Response) {
 /**
  * Get single security
  */
-router.get('/:id', authRequired, async function(req: Request, res: Response) {
+router.get('/:id', authRequired, async function (req: Request, res: Response) {
   const id = req.params.id
 
   const findOptions: Sequelize.FindOptions = {
@@ -175,10 +175,10 @@ router.get('/:id', authRequired, async function(req: Request, res: Response) {
 /**
  * Create single entry, i.e. security
  */
-router.post('/', authRequired, async function(req: Request, res: Response) {
+router.post('/', authRequired, async function (req: Request, res: Response) {
   function createUuid() {
     let dt = new Date().getTime()
-    return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       const r = (dt + Math.random() * 16) % 16 | 0
       dt = Math.floor(dt / 16)
       return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16)
@@ -197,7 +197,7 @@ router.post('/', authRequired, async function(req: Request, res: Response) {
 /**
  * Update single entry, i.e. security
  */
-router.patch('/:id', authRequired, async function(
+router.patch('/:id', authRequired, async function (
   req: Request,
   res: Response,
   next: NextFunction
@@ -217,7 +217,7 @@ router.patch('/:id', authRequired, async function(
 /**
  * Delete single entry, i.e. security
  */
-router.delete('/:id', authRequired, async function(
+router.delete('/:id', authRequired, async function (
   req: Request,
   res: Response
 ) {
@@ -230,7 +230,7 @@ router.delete('/:id', authRequired, async function(
 /**
  * Get single security (public)
  */
-router.route('/uuid/:uuid').get(async function(req: Request, res: Response) {
+router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
   const uuid = req.params.uuid
 
   const findOptions: Sequelize.FindOptions = isAuthenticated(req)
@@ -280,7 +280,7 @@ router.route('/uuid/:uuid').get(async function(req: Request, res: Response) {
  */
 router
   .route('/search/:search')
-  .get(function(req: Request, res: Response, next: NextFunction) {
+  .get(function (req: Request, res: Response, next: NextFunction) {
     const search = req.params.search || ''
     const securityType = req.query.securityType || ''
 
@@ -295,12 +295,12 @@ router
 
     // Filter by securityType
     if (securityType) {
-      entries = entries.filter(e => e.securityType === securityType)
+      entries = entries.filter((e) => e.securityType === securityType)
     }
 
     // If there is an exact match on ISIN only return one result
     const exactMatch = entries.find(
-      e =>
+      (e) =>
         e.isin?.toUpperCase() === search.toUpperCase() ||
         e.wkn?.toUpperCase() === search.toUpperCase()
     )
@@ -315,7 +315,7 @@ router
 /**
  * Endpoint to update full text search index from current database content
  */
-router.post('/search/update', authRequired, function(
+router.post('/search/update', authRequired, function (
   _req: Request,
   res: Response
 ) {
@@ -326,7 +326,7 @@ router.post('/search/update', authRequired, function(
 /**
  * Create/update market and prices
  */
-router.patch('/:securityId/markets/:marketCode', authRequired, async function(
+router.patch('/:securityId/markets/:marketCode', authRequired, async function (
   req: Request,
   res: Response,
   next: NextFunction
@@ -361,7 +361,7 @@ router.patch('/:securityId/markets/:marketCode', authRequired, async function(
         'INSERT INTO prices (marketId, date, close) ' +
           'VALUES ' +
           entry.prices
-            .map(price => `(${market.id}, '${price.date}', ${price.close})`)
+            .map((price) => `(${market.id}, '${price.date}', ${price.close})`)
             .join(',') +
           'ON CONFLICT(marketId, date) DO UPDATE SET close=excluded.close'
       )
@@ -389,7 +389,7 @@ router.patch('/:securityId/markets/:marketCode', authRequired, async function(
 /**
  * Delete market and prices
  */
-router.delete('/:securityId/markets/:marketCode', authRequired, async function(
+router.delete('/:securityId/markets/:marketCode', authRequired, async function (
   req: Request,
   res: Response
 ) {
@@ -404,7 +404,7 @@ router.delete('/:securityId/markets/:marketCode', authRequired, async function(
  */
 router
   .route('/uuid/:uuid/markets/:marketCode')
-  .get(async function(req: Request, res: Response) {
+  .get(async function (req: Request, res: Response) {
     const uuid = req.params.uuid
     const marketCode = req.params.marketCode
 

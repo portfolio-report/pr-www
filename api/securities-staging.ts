@@ -18,7 +18,7 @@ router.use(express.json({ limit: '20mb' }))
 /**
  * Create entries, i.e. staged securities
  */
-router.post('/', authRequired, async function(
+router.post('/', authRequired, async function (
   req: Request,
   res: Response,
   next: NextFunction
@@ -101,13 +101,13 @@ router.post('/', authRequired, async function(
 /**
  * Delete all entries, i.e. staged securities
  */
-router.delete('/', authRequired, async function(_req: Request, res: Response) {
+router.delete('/', authRequired, async function (_req: Request, res: Response) {
   const count = await Security.destroy({ where: { staged: true } })
   log(`Deleted ${count} entries`)
   res.send()
 })
 
-router.get('/stats', authRequired, async function(
+router.get('/stats', authRequired, async function (
   _req: Request,
   res: Response
 ) {
@@ -128,7 +128,7 @@ router.get('/stats', authRequired, async function(
     ] = ((await sequelize.query(
       `SELECT isin FROM securities WHERE staged = :staged GROUP BY isin HAVING COUNT(*) > 1`,
       { type: QueryTypes.SELECT, replacements: { staged } }
-    )) as Array<{ isin: string }>).map(e => e.isin)
+    )) as Array<{ isin: string }>).map((e) => e.isin)
   }
 
   res.json({
@@ -143,7 +143,7 @@ router.get('/stats', authRequired, async function(
 /**
  * Match staged with unstaged securities based on key field (exact match)
  */
-router.post('/match/:key', authRequired, async function(
+router.post('/match/:key', authRequired, async function (
   req: Request,
   res: Response,
   next: NextFunction
@@ -186,7 +186,7 @@ router.post('/match/:key', authRequired, async function(
 /**
  * Remove matches of unstaged securities
  */
-router.delete('/match/', authRequired, async function(
+router.delete('/match/', authRequired, async function (
   _req: Request,
   res: Response
 ) {
@@ -206,7 +206,7 @@ router.delete('/match/', authRequired, async function(
 /**
  * Get all changes comparing staged and unstaged security (with same UUID)
  */
-router.get('/compare/changes', authRequired, async function(
+router.get('/compare/changes', authRequired, async function (
   req: Request,
   res: Response
 ) {
@@ -256,7 +256,7 @@ router.get('/compare/changes', authRequired, async function(
 /**
  * Get added/removed securities, i.e. securities only/not in staging
  */
-router.get('/compare/added-removed', authRequired, async function(
+router.get('/compare/added-removed', authRequired, async function (
   req: Request,
   res: Response
 ) {
@@ -304,7 +304,7 @@ router.get('/compare/added-removed', authRequired, async function(
     symbolXfra: string
     securityType: string
     type: string // Not in SQL but will be added soon
-  }>).map(e => {
+  }>).map((e) => {
     if (e.staged === 1) {
       e.type = 'added'
     } else {

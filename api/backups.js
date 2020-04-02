@@ -14,7 +14,7 @@ const backupPath = path.resolve('db/backups/')
 /**
  * List all backups
  */
-router.get('/', authRequired, async function(_req, res) {
+router.get('/', authRequired, async function (_req, res) {
   await fs.mkdir(backupPath, { recursive: true })
 
   const fileNames = await fs.readdir(backupPath)
@@ -33,7 +33,7 @@ router.get('/', authRequired, async function(_req, res) {
 /**
  * Create backups
  */
-router.post('/', authRequired, async function(_req, res) {
+router.post('/', authRequired, async function (_req, res) {
   await fs.mkdir(backupPath, { recursive: true })
 
   const timestamp = new Date().toISOString().replace(/:/g, '_')
@@ -58,7 +58,7 @@ router.post('/', authRequired, async function(_req, res) {
 /**
  * Middleware to check if file exists and store full file path in request
  */
-router.use('/:file', authRequired, async function(req, res, next) {
+router.use('/:file', authRequired, async function (req, res, next) {
   req.filePath = path.join(backupPath, req.params.file)
   try {
     await fs.stat(req.filePath)
@@ -71,14 +71,14 @@ router.use('/:file', authRequired, async function(req, res, next) {
 /**
  * Download backup
  */
-router.get('/:file', authRequired, function(req, res) {
+router.get('/:file', authRequired, function (req, res) {
   res.download(req.filePath)
 })
 
 /**
  * Restore backup
  */
-router.post('/:file/restore', authRequired, async function(req, res, next) {
+router.post('/:file/restore', authRequired, async function (req, res, next) {
   log(`Restoring ${req.filePath}...`)
   const fileContent = await fs.readFile(req.filePath)
   const backup = JSON.parse(fileContent)
@@ -109,7 +109,7 @@ router.post('/:file/restore', authRequired, async function(req, res, next) {
 /**
  * Delete backup
  */
-router.delete('/:file', authRequired, async function(req, res) {
+router.delete('/:file', authRequired, async function (req, res) {
   await fs.unlink(req.filePath)
   res.json({ status: 'ok' })
 })

@@ -10,7 +10,7 @@ export const state = () => ({
 })
 
 export const getters = {
-  isAuthenticated: state => {
+  isAuthenticated: (state) => {
     return state.user && state.user.username
   },
   username: (state, getters) => {

@@ -114,12 +114,12 @@ export default class StatsPage extends Vue {
 
   get chartData() {
     return {
-      labels: this.stats.versions.map(e => e.version),
+      labels: this.stats.versions.map((e) => e.version),
       datasets: [
         {
           label: 'count',
           backgroundColor: '#006e90',
-          data: this.stats.versions.map(e => e.count),
+          data: this.stats.versions.map((e) => e.count),
         },
       ],
     }

@@ -7,11 +7,11 @@ const log = Debug('pr-www:currencies')
 
 const router = express.Router()
 
-router.route('/').get(async function(_req, res) {
+router.route('/').get(async function (_req, res) {
   const prices = await db.find({})
 
   res.json(
-    prices.map(p => {
+    prices.map((p) => {
       return {
         currencyCode: p.currencyCode,
         priceCurrencyCode: p.priceCurrencyCode,
@@ -57,7 +57,7 @@ const ecbCurrencies = [
 
 router
   .route('/:currencyCode/price/:priceCurrencyCode')
-  .get(async function(req, res) {
+  .get(async function (req, res) {
     const currencyCode = req.params.currencyCode
     const priceCurrencyCode = req.params.priceCurrencyCode
 
@@ -107,7 +107,7 @@ router
         '.xml'
       const response = await axios.get(url)
       const foo = JSON.parse(xmljs.xml2json(response.data, { compact: true }))
-      const prices = foo.CompactData.DataSet.Series.Obs.map(el => {
+      const prices = foo.CompactData.DataSet.Series.Obs.map((el) => {
         return {
           date: el._attributes.TIME_PERIOD,
           value: Number(el._attributes.OBS_VALUE),

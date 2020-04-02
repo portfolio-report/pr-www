@@ -210,7 +210,10 @@ export default class SecurityPage extends Vue {
   async addMarket() {
     await this.$axios.$patch(
       `/api/securities/${this.security.id}/markets/${this.newMarketCode}`,
-      { currencyCode: this.newCurrencyCode, symbol: this.newSymbol }
+      {
+        currencyCode: this.newCurrencyCode,
+        symbol: this.newSymbol,
+      }
     )
 
     await this.getSecurity()

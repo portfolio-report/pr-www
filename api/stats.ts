@@ -14,7 +14,7 @@ router.use(express.json({ limit: '50mb' }))
 /**
  * Get all entries, i.e. stats data
  */
-router.get('/', authRequired, async function(req: Request, res: Response) {
+router.get('/', authRequired, async function (req: Request, res: Response) {
   const limit = parseInt(req.query.limit) || 10
   const skip = parseInt(req.query.skip) || 0
   const sort = req.query.sort || 'timestamp'
@@ -47,7 +47,7 @@ router.get('/', authRequired, async function(req: Request, res: Response) {
 /**
  * Delete single entry
  */
-router.delete('/:id', authRequired, async function(
+router.delete('/:id', authRequired, async function (
   req: Request,
   res: Response
 ) {
@@ -60,7 +60,7 @@ router.delete('/:id', authRequired, async function(
 /**
  * Get statistics on updates
  */
-router.route('/updates').get(async function(_req, res: Response) {
+router.route('/updates').get(async function (_req, res: Response) {
   const versionsObj = await ClientUpdate.findAll({
     attributes: [
       'version',
@@ -72,7 +72,7 @@ router.route('/updates').get(async function(_req, res: Response) {
   })
 
   // Convert to plain objects
-  const versions: Array<any> = versionsObj.map(v => v.toJSON())
+  const versions: Array<any> = versionsObj.map((v) => v.toJSON())
 
   for (const version of versions) {
     // Add updates per day
@@ -105,7 +105,7 @@ router.route('/updates').get(async function(_req, res: Response) {
  */
 router
   .route('/update/name.abuchen.portfolio/:version')
-  .get(async function(req: Request, res: Response) {
+  .get(async function (req: Request, res: Response) {
     // Resolve IP to country
     const country = getCountryFromIp(req.ip)
 

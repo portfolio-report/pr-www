@@ -310,7 +310,7 @@ export default {
     this.updateStats()
   },
   methods: {
-    updateChangedEntries: debounce(async function() {
+    updateChangedEntries: debounce(async function () {
       this.changedLoading = true
 
       const res = await this.$axios.$get(
@@ -332,7 +332,7 @@ export default {
       this.changedLoading = false
     }, 300), // debounce 300ms
 
-    updateAddedRemovedEntries: debounce(async function() {
+    updateAddedRemovedEntries: debounce(async function () {
       this.addedRemovedLoading = true
 
       const res = await this.$axios.$get(
@@ -420,9 +420,9 @@ export default {
       this.uploadProgress = 0
 
       function readAsTextAsync(file) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           const fr = new FileReader()
-          fr.onload = e => resolve(e.target.result)
+          fr.onload = (e) => resolve(e.target.result)
           fr.readAsText(file)
         })
       }
@@ -441,7 +441,7 @@ export default {
           params: {
             sourceFormat: 'xetra',
           },
-          onUploadProgress: progressEvent => {
+          onUploadProgress: (progressEvent) => {
             this.uploadProgress =
               (progressEvent.loaded / progressEvent.total) * 100
           },
