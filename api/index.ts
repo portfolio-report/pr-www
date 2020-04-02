@@ -5,7 +5,6 @@ import backups from './backups'
 import contact from './contact'
 import currencies from './currencies'
 import securities from './securities'
-import securitiesStaging from './securities-staging'
 import stats from './stats'
 import { HttpError } from './inc/HttpError'
 const log = Debug('pr-www:index')
@@ -36,7 +35,6 @@ app.use('/backups', backups)
 app.use('/contact', contact)
 app.use('/currencies', currencies)
 app.use('/securities', securities)
-app.use('/securities-staging', securitiesStaging)
 app.use('/stats', stats)
 
 /**

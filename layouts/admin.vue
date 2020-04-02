@@ -64,11 +64,6 @@ export default class AdminLayout extends Vue {
       to: '/admin/securities',
     },
     {
-      name: 'Update securities',
-      icon: 'mdi-download',
-      to: '/admin/securities/staging',
-    },
-    {
       name: 'Client updates',
       icon: 'mdi-poll',
       to: '/admin/stats',
