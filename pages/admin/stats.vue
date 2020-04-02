@@ -90,9 +90,9 @@
 </template>
 
 <script lang="ts">
-import DialogConfirm from '../../components/dialog-confirm.vue'
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
+import DialogConfirm from '../../components/dialog-confirm.vue'
 
 interface ClientUpdate {
   id: number

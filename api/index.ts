@@ -1,3 +1,5 @@
+import Debug from 'debug'
+import express, { Request, Response, NextFunction } from 'express'
 import auth from './auth'
 import backups from './backups'
 import contact from './contact'
@@ -6,8 +8,6 @@ import securities from './securities'
 import securitiesStaging from './securities-staging'
 import stats from './stats'
 import { HttpError } from './inc/HttpError'
-import Debug from 'debug'
-import express, { Request, Response, NextFunction } from 'express'
 const log = Debug('pr-www:index')
 
 const app = express()

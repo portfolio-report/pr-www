@@ -1,8 +1,8 @@
 import crypto from 'crypto'
-import { HttpError } from './inc/HttpError'
-import config from './config'
 import express, { Request, Response, NextFunction } from 'express'
 import Debug from 'debug'
+import { HttpError } from './inc/HttpError'
+import config from './config'
 const log = Debug('pr-www:auth')
 
 const router = express.Router()

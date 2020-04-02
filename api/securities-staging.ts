@@ -1,10 +1,10 @@
-import { authRequired } from './auth'
-import { sequelize, Security } from './inc/sequelize'
-import { HttpError } from './inc/HttpError'
 import express, { Request, Response, NextFunction } from 'express'
 import bodyParser from 'body-parser'
 import Debug from 'debug'
 import { QueryTypes } from 'sequelize'
+import { HttpError } from './inc/HttpError'
+import { sequelize, Security } from './inc/sequelize'
+import { authRequired } from './auth'
 const log = Debug('pr-www:securities-staging')
 
 const router = express.Router()

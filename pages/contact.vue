@@ -57,9 +57,9 @@
 </template>
 
 <script lang="ts">
-import BtnLoading from '../components/btn-loading.vue'
 import { Component, Vue } from 'nuxt-property-decorator'
 import isEmail from 'validator/lib/isEmail'
+import BtnLoading from '../components/btn-loading.vue'
 
 @Component({
   components: { BtnLoading },

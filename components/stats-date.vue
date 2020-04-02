@@ -20,8 +20,8 @@
 </template>
 
 <script lang="ts">
-import LineChart from '~/components/line-chart.vue'
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import LineChart from '~/components/line-chart.vue'
 
 @Component({ components: { LineChart } })
 export default class StatsDate extends Vue {

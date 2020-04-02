@@ -199,9 +199,9 @@
 </template>
 
 <script lang="ts">
-import DialogConfirm from '../../../components/dialog-confirm.vue'
 import debounce from 'lodash/debounce'
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import DialogConfirm from '../../../components/dialog-confirm.vue'
 
 interface Security {
   id?: number

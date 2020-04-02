@@ -59,10 +59,10 @@
 </template>
 
 <script lang="ts">
-import DialogConfirm from '../../components/dialog-confirm.vue'
-import BtnLoading from '../../components/btn-loading.vue'
 import { Component, Vue } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
+import DialogConfirm from '../../components/dialog-confirm.vue'
+import BtnLoading from '../../components/btn-loading.vue'
 
 interface BackupFile {
   name: string

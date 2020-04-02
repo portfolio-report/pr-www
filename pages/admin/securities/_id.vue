@@ -132,9 +132,9 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator'
 import BtnLoading from '../../../components/btn-loading.vue'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
-import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({
   async asyncData({ $axios, params, error }): Promise<any> {
