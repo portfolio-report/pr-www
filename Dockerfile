@@ -10,7 +10,6 @@ RUN npm ci
 COPY . .
 
 # Build Nuxt
-ARG API_URL
 RUN npm run build
 
 VOLUME /app/db
@@ -18,8 +17,5 @@ VOLUME /app/db
 EXPOSE 3000
 
 ENV NUXT_HOST=0.0.0.0
-
-# Set ENV value from ARG
-ENV API_URL=${API_URL}
 
 CMD npm run migrations && npm start

@@ -51,14 +51,11 @@ $ npm start
 ## Docker
 
 ``` bash
-# Use API_URL to override Axios BaseURL
-$ BASE_URL=http://www.example.com/
-
 # Create config
 $ vim pr-www/api/config.ts
 
 # Build image
-$ docker build -t <my-image-name> --build-arg API_URL=$API_URL pr-www/
+$ docker build -t <my-image-name> pr-www/
 
 # Create shared folder
 $ mkdir -p shared/www-db-prod
