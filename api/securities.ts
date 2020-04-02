@@ -233,29 +233,37 @@ router.delete('/:id', authRequired, async function(
 router.route('/uuid/:uuid').get(async function(req: Request, res: Response) {
   const uuid = req.params.uuid
 
-  const findOptions: Sequelize.FindOptions = {
-    where: {
-      staged: false,
-      uuid,
-    },
-    include: [
-      {
-        model: Market,
-        attributes: [
-          'marketCode',
-          'currencyCode',
-          'firstPriceDate',
-          'lastPriceDate',
-          'symbol',
+  const findOptions: Sequelize.FindOptions = isAuthenticated(req)
+    ? {
+        where: {
+          staged: false,
+          uuid,
+        },
+        include: [
+          {
+            model: Market,
+          },
         ],
-      },
-    ],
-  }
-
-  // Limit output if request is not authenticated
-  if (!isAuthenticated(req)) {
-    findOptions.attributes = publicSecurityAttributes
-  }
+      }
+    : {
+        attributes: publicSecurityAttributes,
+        where: {
+          staged: false,
+          uuid,
+        },
+        include: [
+          {
+            model: Market,
+            attributes: [
+              'marketCode',
+              'currencyCode',
+              'firstPriceDate',
+              'lastPriceDate',
+              'symbol',
+            ],
+          },
+        ],
+      }
 
   const security = await Security.findOne(findOptions)
 
