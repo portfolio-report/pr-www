@@ -63,7 +63,12 @@ module.exports = {
   /*
    ** Nuxt.js modules
    */
-  modules: [['@nuxtjs/axios', { baseURL: '/' }]],
+  modules: [
+    [
+      '@nuxtjs/axios',
+      { baseURL: 'http://localhost:3000', browserBaseURL: '/' },
+    ],
+  ],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module

@@ -63,6 +63,5 @@ $ mkdir -p shared/www-db-prod
 # Run container
 $ docker run -d --name pr-www-prod \
   --volume "$(pwd)"/shared/www-db-prod:/app/db \
-  -e API_URL=https://www.example.com/ \
   --publish 127.0.0.1:3001:3000 <my-image-name>
 ```
