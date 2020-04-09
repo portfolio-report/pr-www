@@ -30,7 +30,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "express-validator": "^6.4.0",
-    "fuse.js": "^3.6.1",
+    "fuse.js": "^5.1.0",
     "ip2location-nodejs": "^8.3.0",
     "lodash": "^4.17.15",
     "nedb-promises": "^4.0.1",

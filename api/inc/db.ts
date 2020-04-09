@@ -1,5 +1,5 @@
 import NeDB from 'nedb-promises'
-import Fuse, { FuseOptions } from 'fuse.js'
+import Fuse, { IFuseOptions } from 'fuse.js'
 import Debug from 'debug'
 import { publicSecurityAttributes } from './../securities'
 import { Security, Market } from './sequelize'
@@ -15,13 +15,13 @@ export const currenciesDb = NeDB.create({
 /**
  * Placeholder for full text search for securities
  */
-let securitiesFts: Fuse<Security, FuseOptions<Security>>
+let securitiesFts: Fuse<Security, IFuseOptions<Security>>
 
 /**
  * Returns full text search index for securities
  * Can return undefined if index is not ready (yet)
  */
-export function getSecuritiesFts(): Fuse<Security, FuseOptions<Security>> {
+export function getSecuritiesFts(): Fuse<Security, IFuseOptions<Security>> {
   return securitiesFts
 }
 
@@ -42,9 +42,8 @@ export async function updateSecuritiesFts() {
     attributes: publicSecurityAttributes,
   })
 
-  const options: FuseOptions<Security> = {
+  const options: IFuseOptions<Security> = {
     shouldSort: true,
-    maxPatternLength: 32,
     minMatchCharLength: 2,
     keys: [
       'name',

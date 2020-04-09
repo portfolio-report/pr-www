@@ -291,7 +291,7 @@ router
       return next(new HttpError(503, 'Service Unavailable'))
     }
 
-    let entries = fts.search(search) as Array<Security>
+    let entries: Array<Security> = fts.search(search).map((e) => e.item)
 
     // Filter by securityType
     if (securityType) {
