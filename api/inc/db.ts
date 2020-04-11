@@ -43,6 +43,7 @@ export async function updateSecuritiesFts() {
   })
 
   const options: IFuseOptions<Security> = {
+    includeScore: true,
     shouldSort: true,
     minMatchCharLength: 2,
     keys: [

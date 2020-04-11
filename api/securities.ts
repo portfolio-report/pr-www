@@ -291,25 +291,37 @@ router
       return next(new HttpError(503, 'Service Unavailable'))
     }
 
-    let entries: Array<Security> = fts.search(search).map((e) => e.item)
+    const searchResults = fts.search(search)
 
-    // Filter by securityType
-    if (securityType) {
-      entries = entries.filter((e) => e.securityType === securityType)
+    const securities: Array<Security> = [] // Array to be returned
+
+    const minResults = 3
+    const maxScore = 0.001
+
+    for (const searchResult of searchResults) {
+      // Return this search result immediately if there is an exact match on ISIN or WKN
+      if (
+        searchResult.item.isin?.toLocaleUpperCase() === search.toUpperCase() ||
+        searchResult.item.wkn?.toLocaleUpperCase() === search.toUpperCase()
+      ) {
+        return res.json([searchResult.item])
+      }
+
+      // Stop looping through list of results, if...
+      if (
+        (!searchResult.score || searchResult.score > maxScore) && // no more results below threshold score
+        securities.length >= minResults // and minimum number of results is reached
+      ) {
+        break
+      }
+
+      // Add search result if filter on security matches (if given)
+      if (!securityType || searchResult.item.securityType === securityType) {
+        securities.push(searchResult.item)
+      }
     }
 
-    // If there is an exact match on ISIN only return one result
-    const exactMatch = entries.find(
-      (e) =>
-        e.isin?.toUpperCase() === search.toUpperCase() ||
-        e.wkn?.toUpperCase() === search.toUpperCase()
-    )
-    if (exactMatch) {
-      return res.json([exactMatch])
-    }
-
-    // Return 10 results
-    res.json(entries.slice(0, 10))
+    return res.json(securities)
   })
 
 /**
