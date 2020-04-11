@@ -46,15 +46,7 @@ export async function updateSecuritiesFts() {
     includeScore: true,
     shouldSort: true,
     minMatchCharLength: 2,
-    keys: [
-      'name',
-      'isin',
-      'wkn',
-      'symbolXfra',
-      'symbolXnas',
-      'symbolXnys',
-      'markets.symbol',
-    ],
+    keys: ['name', 'isin', 'wkn', 'symbolXnas', 'symbolXnys', 'markets.symbol'],
   }
   const fts = new Fuse(entries, options)
 
