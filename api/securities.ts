@@ -2,7 +2,7 @@ import Debug from 'debug'
 import Sequelize from 'sequelize'
 import express, { Request, Response, NextFunction } from 'express'
 import { authRequired, isAuthenticated } from './auth'
-import { getSecuritiesFts, updateSecuritiesFts } from './inc/db'
+import { getSecuritiesFts, updateSecuritiesFts } from './inc/fts'
 import { Security, Market, Price, sequelize } from './inc/sequelize'
 import { HttpError } from './inc/HttpError'
 const log = Debug('pr-www:securities')
