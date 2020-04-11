@@ -91,10 +91,6 @@
               </span>
             </span>
           </div>
-
-          <v-alert v-model="resultsLimited" type="warning" outlined>
-            Output limited to 10 results.
-          </v-alert>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -123,10 +119,6 @@ export default class SearchPage extends Vue {
   searching = false
   error = false
   errorText = ''
-
-  get resultsLimited() {
-    return this.results.length === 10
-  }
 
   mounted() {
     // Read query parameters from URL
