@@ -7,7 +7,6 @@ import fs from 'fs'
 import session from 'express-session'
 import CSS from 'connect-session-sequelize'
 import Sequelize from 'sequelize'
-import config from '../api/config'
 
 /**
  * Check if directory exists
@@ -55,7 +54,7 @@ if (pathExists('./db/')) {
 }
 
 export default session({
-  secret: config.auth.secret,
+  secret: process.env.SESSION_SECRET || Math.random().toString(36).substr(2),
   name: 'sid',
   resave: false,
   saveUninitialized: false,

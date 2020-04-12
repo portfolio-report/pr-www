@@ -1,6 +1,5 @@
 export default {
   auth: {
-    secret: 'change_me',
     adminUsers: [
       {
         username: '',

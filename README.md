@@ -18,6 +18,7 @@ $ npm install
 ## Configuration
 
 - Update `api/config.ts`
+- Environment variable `SESSION_SECRET` should contain unique, random string to sign session ID cookie
 
 ## Database
 
@@ -63,5 +64,6 @@ $ mkdir -p shared/www-db-prod
 # Run container
 $ docker run -d --name pr-www-prod \
   --volume "$(pwd)"/shared/www-db-prod:/app/db \
+  -e SESSION_SECRET=change_me \
   --publish 127.0.0.1:3001:3000 <my-image-name>
 ```
