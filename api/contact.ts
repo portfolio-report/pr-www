@@ -3,7 +3,8 @@ import express, { Request, Response } from 'express'
 import nodemailer from 'nodemailer'
 import { check, validationResult } from 'express-validator'
 import Debug from 'debug'
-import config from './config'
+import { getContactConfig } from './configReader'
+
 const log = Debug('pr-www:contact')
 
 const router = express.Router()
@@ -31,12 +32,14 @@ router.post(
       return res.status(400).json({ status: 'error' })
     }
 
+    const config = getContactConfig()
+
     if (
-      !config.contact ||
-      !config.contact.recipientEmailAddress ||
-      config.contact.recipientEmailAddress === '' ||
-      !config.contact.nodemailerTransportOptions ||
-      JSON.stringify(config.contact.nodemailerTransportOptions) === '{}'
+      !config ||
+      !config.recipientEmailAddress ||
+      config.recipientEmailAddress === '' ||
+      !config.nodemailerTransportOptions ||
+      JSON.stringify(config.nodemailerTransportOptions) === '{}'
     ) {
       log('Cannot send email, missing configuration.')
       return res.status(500).json({ status: 'error' })
@@ -44,10 +47,10 @@ router.post(
 
     try {
       const info = await nodemailer
-        .createTransport(config.contact.nodemailerTransportOptions)
+        .createTransport(config.nodemailerTransportOptions)
         .sendMail({
           from: `"${req.body.name}" <${req.body.email}>`,
-          to: config.contact.recipientEmailAddress,
+          to: config.recipientEmailAddress,
           headers: { 'X-Remote-IP': req.ip },
           subject: 'Message via www.portfolio-report.net: ' + req.body.subject,
           text: req.body.message,

@@ -17,7 +17,34 @@ $ npm install
 
 ## Configuration
 
-- Update `api/config.ts`
+- Create `api/config.json`, e.g.
+  ```json
+  {
+    "auth": {
+      "adminUsers": [
+        {
+          "username": "...",
+          "password": "plain:secret"
+        },
+        {
+          "username": "...",
+          "password": "sha256:2bb80d53..."
+        }
+      ]
+    },
+    "contact": {
+      "recipientEmailAddress": "me@example.com",
+      "nodemailerTransportOptions": {}
+    }
+  }
+  ```
+  - For `nodemailerTransportOptions` see https://nodemailer.com/smtp/, e.g.
+    ```json
+    {
+      host: 'localhost',
+      port: 25
+    }
+    ```
 - Environment variable `SESSION_SECRET` should contain unique, random string to sign session ID cookie
 
 ## Database
@@ -63,7 +90,8 @@ $ mkdir -p shared/www-db-prod
 
 # Run container
 $ docker run -d --name pr-www-prod \
-  --volume "$(pwd)"/shared/www-db-prod:/app/db \
+  --mount type=bind,source="$(pwd)"/shared/www-db-prod,target=/app/db \
+  --mount type=bind,source="$(pwd)"/config.prod.json,target=/app/api/config.json \
   -e SESSION_SECRET=change_me \
   --publish 127.0.0.1:3001:3000 <my-image-name>
 ```

@@ -12,7 +12,7 @@ COPY . .
 # Build Nuxt
 RUN npm run build
 
-VOLUME /app/db
+RUN mkdir /app/db
 
 EXPOSE 3000
 

@@ -2,7 +2,8 @@ import crypto from 'crypto'
 import express, { Request, Response, NextFunction } from 'express'
 import Debug from 'debug'
 import { HttpError } from './inc/HttpError'
-import config from './config'
+import { getAdminUsers } from './configReader'
+
 const log = Debug('pr-www:auth')
 
 const router = express.Router()
@@ -30,7 +31,7 @@ router.post('/login', function (
     return next(new HttpError(401, 'Unauthorized'))
   }
 
-  const adminUsers = config.auth.adminUsers.filter(
+  const adminUsers = getAdminUsers().filter(
     (user) => user.username === username
   )
 

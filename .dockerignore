@@ -6,3 +6,4 @@ node_modules/
 
 # pr-www
 db/
+api/config.json

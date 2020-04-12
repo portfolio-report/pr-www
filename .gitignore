@@ -6,6 +6,7 @@ node_modules/
 
 # pr-www
 db/
+api/config.json
 
 # Visual Studio Code
 .vscode/*
