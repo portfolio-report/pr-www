@@ -148,10 +148,13 @@ export default class SearchPage extends Vue {
     })
 
     try {
+      const params = {} as { securityType: string }
+      if (this.securityType) {
+        params.securityType = this.securityType
+      }
       const res = await this.$axios.$get(
-        `/api/securities/search/${encodeURIComponent(
-          this.searchTerm.trim()
-        )}?securityType=${encodeURIComponent(this.securityType)}`
+        `/api/securities/search/${encodeURIComponent(this.searchTerm.trim())}`,
+        { params }
       )
 
       this.searching = false
