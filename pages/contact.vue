@@ -1,6 +1,6 @@
 <template>
-  <v-layout justify-center align-center>
-    <v-flex xs12 sm8 md6>
+  <v-row align="center" justify="center">
+    <v-col cols="12" sm="8" md="6">
       <v-card>
         <v-card-title class="headline lighten-2" primary-title>
           Contact
@@ -52,8 +52,8 @@
           </btn-loading>
         </v-card-actions>
       </v-card>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">

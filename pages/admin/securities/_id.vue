@@ -1,6 +1,6 @@
 <template>
-  <v-layout justify-center align-center>
-    <v-flex xs12 sm8 md6>
+  <v-row align="center" justify="center">
+    <v-col cols="12" sm="8" md="6">
       <span class="headline">Security: {{ security.name }}</span>
       <v-card>
         <v-card-title>Master data</v-card-title>
@@ -127,8 +127,8 @@
           </v-card-actions>
         </v-form>
       </v-card>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">

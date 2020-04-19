@@ -1,6 +1,6 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
+  <v-row align="center" justify="center">
+    <v-col cols="12">
       <v-toolbar color="primary" dark>
         <v-toolbar-title>
           {{ showStagedEntries ? 'Staged' : '' }} Securities
@@ -194,8 +194,8 @@
       </v-data-table>
 
       <DialogConfirm ref="confirm" />
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">

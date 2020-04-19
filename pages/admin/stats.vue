@@ -1,6 +1,6 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
+  <v-row align="center" justify="center">
+    <v-col cols="12" sm="8" md="6">
       <v-toolbar color="primary" dark>
         <v-toolbar-title>
           Client Updates
@@ -85,8 +85,8 @@
       </v-data-table>
 
       <DialogConfirm ref="confirm" />
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">

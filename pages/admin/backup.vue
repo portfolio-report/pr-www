@@ -1,6 +1,6 @@
 <template>
-  <v-layout column justify-center>
-    <v-flex xs12 sm8 md6>
+  <v-row align="center" justify="center">
+    <v-col cols="12">
       <v-tabs background-color="primary" dark slider-color="secondary" grow>
         <v-tab key="database">Database</v-tab>
         <v-tab key="fts">Full text search</v-tab>
@@ -54,8 +54,8 @@
           </v-card>
         </v-tab-item>
       </v-tabs>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
