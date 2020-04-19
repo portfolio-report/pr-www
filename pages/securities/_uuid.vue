@@ -29,6 +29,28 @@
         </li>
       </ul>
 
+      <v-tooltip right>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            color="primary"
+            max-width="400"
+            nuxt
+            :to="$route.path"
+            class="mt-2"
+            style="cursor: move;"
+            v-on="on"
+          >
+            <v-icon>mdi-drag-variant</v-icon> Add to Portfolio Performance
+          </v-btn>
+        </template>
+        <div>
+          <div class="title">Drag and drop!</div>
+          To add this security in Portfolio<br />
+          Performance, drag and drop it to<br />
+          securities list or statement of assets.
+        </div>
+      </v-tooltip>
+
       <div v-for="market in markets" :key="market.marketCode" class="mt-4">
         <span class="title">{{ market.name }}</span>
         <ul>
