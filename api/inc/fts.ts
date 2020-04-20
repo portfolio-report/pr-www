@@ -1,4 +1,4 @@
-import Fuse, { IFuseOptions } from 'fuse.js'
+import Fuse from 'fuse.js'
 import Debug from 'debug'
 import { Security, Market } from './sequelize'
 import { publicSecurityAttributes } from './../securities'
@@ -8,13 +8,16 @@ const log = Debug('pr-www:fts')
 /**
  * Placeholder for full text search for securities
  */
-let securitiesFts: Fuse<Security, IFuseOptions<Security>>
+let securitiesFts: Fuse<Security, Fuse.IFuseOptions<Security>>
 
 /**
  * Returns full text search index for securities
  * Can return undefined if index is not ready (yet)
  */
-export function getSecuritiesFts(): Fuse<Security, IFuseOptions<Security>> {
+export function getSecuritiesFts(): Fuse<
+  Security,
+  Fuse.IFuseOptions<Security>
+> {
   return securitiesFts
 }
 
@@ -35,7 +38,7 @@ export async function updateSecuritiesFts() {
     attributes: publicSecurityAttributes,
   })
 
-  const options: IFuseOptions<Security> = {
+  const options: Fuse.IFuseOptions<Security> = {
     includeScore: true,
     shouldSort: true,
     minMatchCharLength: 2,
