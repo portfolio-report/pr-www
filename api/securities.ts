@@ -3,7 +3,7 @@ import Sequelize from 'sequelize'
 import express, { Request, Response, NextFunction } from 'express'
 import { authRequired, isAuthenticated } from './auth'
 import { getSecuritiesFts, updateSecuritiesFts } from './inc/fts'
-import { Security, Market, Price, sequelize } from './inc/sequelize'
+import { Security, Market, Price, Event, sequelize } from './inc/sequelize'
 import { HttpError } from './inc/HttpError'
 const log = Debug('pr-www:securities')
 
@@ -35,6 +35,7 @@ async function readSecurities({
   securityType,
   staged,
   includeMarkets,
+  includeEvents,
 }: {
   limit: number
   skip: number
@@ -44,6 +45,7 @@ async function readSecurities({
   securityType: string
   staged: boolean
   includeMarkets: boolean
+  includeEvents: boolean
 }) {
   const filters = []
 
@@ -90,6 +92,14 @@ async function readSecurities({
     })
   }
 
+  if (includeEvents) {
+    include.push({
+      model: Event,
+      attributes: ['date', 'type', 'amount', 'currencyCode'],
+      where: { type: 'dividend' },
+    })
+  }
+
   const result = await Security.findAndCountAll({
     where,
     order: [[sort, descending ? 'DESC' : 'ASC']],
@@ -133,6 +143,7 @@ router.get('/', authRequired, async function (req: Request, res: Response) {
     securityType,
     staged,
     includeMarkets: include === 'markets',
+    includeEvents: true,
   })
   res.json(result)
 })
@@ -243,6 +254,7 @@ router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
           {
             model: Market,
           },
+          { model: Event },
         ],
       }
     : {
@@ -261,6 +273,11 @@ router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
               'lastPriceDate',
               'symbol',
             ],
+          },
+          {
+            model: Event,
+            attributes: ['date', 'type', 'amount', 'currencyCode'],
+            where: { type: 'dividend' },
           },
         ],
       }
@@ -464,5 +481,53 @@ router
 
     res.json(security.markets[0])
   })
+
+/**
+ * Create event
+ */
+router.post('/uuid/:uuid/events', authRequired, async function (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { uuid } = req.params
+
+  const findOptions: Sequelize.FindOptions = {
+    where: {
+      staged: false,
+      uuid,
+    },
+  }
+
+  const security = await Security.findOne(findOptions)
+
+  if (!security) {
+    return res.status(404).json({ message: 'Security not found.' })
+  }
+
+  const event: {
+    securityId: number
+    date: string
+    type: string
+    amount: number
+    currencyCode: string
+    ratio: string
+  } = req.body
+
+  // Overwrite attributes if given
+  event.securityId = security.id
+
+  log(`Creating event @ ${uuid}/${security.id}: ${event.type}/${event.date}`)
+  try {
+    await Event.create(event)
+  } catch (err) {
+    // Unkown error
+    // eslint-disable-next-line no-console
+    console.log(err)
+    return next(err)
+  }
+
+  return res.json({ status: 'ok' })
+})
 
 export default router
