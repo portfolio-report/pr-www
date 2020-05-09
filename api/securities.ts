@@ -97,6 +97,7 @@ async function readSecurities({
       model: Event,
       attributes: ['date', 'type', 'amount', 'currencyCode'],
       where: { type: 'dividend' },
+      required: false,
     })
   }
 
@@ -278,6 +279,7 @@ router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
             model: Event,
             attributes: ['date', 'type', 'amount', 'currencyCode'],
             where: { type: 'dividend' },
+            required: false,
           },
         ],
       }
