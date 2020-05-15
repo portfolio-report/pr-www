@@ -135,6 +135,10 @@ router.get('/', authRequired, async function (req: Request, res: Response) {
       `include: ${include}`
   )
 
+  // Disable timeouts
+  req.setTimeout(0)
+  res.setTimeout(0)
+
   const result = await readSecurities({
     limit,
     skip,
