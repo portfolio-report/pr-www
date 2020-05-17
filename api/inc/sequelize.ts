@@ -212,3 +212,65 @@ ClientUpdate.init(
     timestamps: false,
   }
 )
+
+export class ExchangeRate extends Model {
+  public id!: number
+  public baseCurrencyCode!: string
+  public quoteCurrencyCode!: string
+
+  public readonly prices?: Array<ExchangeRatePrice>
+}
+
+ExchangeRate.init(
+  {
+    baseCurrencyCode: {
+      type: DataTypes.STRING(3),
+      allowNull: false,
+    },
+    quoteCurrencyCode: {
+      type: DataTypes.STRING(3),
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'exchangeRate',
+    timestamps: false,
+  }
+)
+
+export class ExchangeRatePrice extends Model {
+  public id!: number
+  public date!: Date
+  public value!: number
+
+  public exchangeRateId!: number
+}
+
+ExchangeRatePrice.init(
+  {
+    date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    value: {
+      type: DataTypes.DECIMAL(12, 6),
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'exchangeRatePrice',
+    timestamps: false,
+  }
+)
+
+ExchangeRatePrice.belongsTo(ExchangeRate, {
+  foreignKey: 'exchangeRateId',
+  onDelete: 'cascade',
+})
+ExchangeRate.hasMany(ExchangeRatePrice, {
+  as: 'prices',
+  foreignKey: 'exchangeRateId',
+  onDelete: 'cascade',
+})

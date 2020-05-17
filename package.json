@@ -33,7 +33,6 @@
     "fuse.js": "^5.2.3",
     "ip2location-nodejs": "^8.3.0",
     "lodash": "^4.17.15",
-    "nedb-promises": "^4.0.3",
     "nodemailer": "^6.4.6",
     "nuxt": "^2.12.2",
     "nuxt-property-decorator": "^2.7.2",
