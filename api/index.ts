@@ -1,5 +1,7 @@
 import Debug from 'debug'
 import express, { Request, Response, NextFunction } from 'express'
+import cors from 'cors'
+
 import auth from './auth'
 import backups from './backups'
 import contact from './contact'
@@ -26,6 +28,11 @@ app.set('json spaces', 2)
  * Trust reverse proxy (e.g. use IP address from X-Forwarded-For)
  */
 app.set('trust proxy', true)
+
+/**
+ * Allow all CORS requests
+ */
+app.use(cors())
 
 app.get('/', function (_req, res) {
   res.json({ status: 'ok' })

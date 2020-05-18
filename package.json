@@ -50,6 +50,7 @@
     "@nuxtjs/eslint-module": "^1.2.0",
     "@types/bluebird": "^3.5.30",
     "@types/chart.js": "^2.9.20",
+    "@types/cors": "^2.8.6",
     "@types/debug": "^4.1.5",
     "@types/express-session": "^1.17.0",
     "@types/lodash": "^4.14.150",
