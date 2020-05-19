@@ -1,8 +1,6 @@
 {
   "development": {
     "dialect": "sqlite",
-    "storage": "db/database.sqlite",
-    "migrationStorage": "json",
-    "migrationStoragePath": "db/sequelize-meta.json"
+    "storage": "db/database.sqlite"
   }
 }
