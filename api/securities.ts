@@ -361,31 +361,40 @@ router.post('/search/update', authRequired, function (
 /**
  * Create/update market and prices
  */
-router.patch('/:securityId/markets/:marketCode', authRequired, async function (
+router.patch('/uuid/:uuid/markets/:marketCode', authRequired, async function (
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const { securityId, marketCode } = req.params
+  const { uuid, marketCode } = req.params
+
+  log(`Creating/updating market ${uuid}/${marketCode}`)
 
   // Disable timeouts
   req.setTimeout(0)
   res.setTimeout(0)
 
+  const security = await Security.findOne({
+    attributes: ['id'],
+    where: { staged: false, uuid },
+  })
+  if (!security || !security.id) {
+    return res.status(404).json({ message: 'Security not found.' })
+  }
+
   const entry: {
-    securityId: string
+    securityId: number
     marketCode: string
     prices: Array<{ date: string; close: number }>
   } = req.body
 
   // Overwrite attributes if given
-  entry.securityId = securityId
+  entry.securityId = security.id
   entry.marketCode = marketCode
 
-  log(`Creating/updating market ${securityId}/${marketCode}`)
   try {
     const [market] = await Market.findOrBuild({
-      where: { marketCode, securityId },
+      where: { marketCode, securityId: security.id },
     })
     Object.assign(market, entry)
     await market.save()
@@ -408,11 +417,6 @@ router.patch('/:securityId/markets/:marketCode', authRequired, async function (
     lastPriceDate =  (SELECT MAX(date) FROM prices WHERE marketId = ${market.id})
     WHERE id = ${market.id}`)
   } catch (err) {
-    // Most likely problem: foreign key constraint failed
-    if (!(await Security.findOne({ where: { id: securityId } })))
-      return res.status(404).json({ message: 'Security not found.' })
-
-    // Unkown error
     // eslint-disable-next-line no-console
     console.log(err)
     return next(err)
@@ -422,15 +426,20 @@ router.patch('/:securityId/markets/:marketCode', authRequired, async function (
 })
 
 /**
- * Delete market and prices
+ * Delete market (and prices)
  */
-router.delete('/:securityId/markets/:marketCode', authRequired, async function (
+router.delete('/uuid/:uuid/markets/:marketCode', authRequired, async function (
   req: Request,
   res: Response
 ) {
-  const { securityId, marketCode } = req.params
-  log(`Deleting market ${securityId}/${marketCode}`)
-  await Market.destroy({ where: { securityId, marketCode } })
+  const { uuid, marketCode } = req.params
+  log(`Deleting market ${uuid}/${marketCode}`)
+
+  await sequelize.query(
+    'DELETE FROM markets WHERE marketCode = :marketCode AND securityId IN (SELECT id FROM securities WHERE uuid = :uuid)',
+    { replacements: { uuid, marketCode } }
+  )
+
   res.json({ status: 'ok' })
 })
 

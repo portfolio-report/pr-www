@@ -201,7 +201,7 @@ export default class SecurityPage extends Vue {
       })
     ) {
       await this.$axios.$delete(
-        `/api/securities/${this.security.id}/markets/${market.marketCode}`
+        `/api/securities/uuid/${this.security.uuid}/markets/${market.marketCode}`
       )
       this.getSecurity()
     }
@@ -209,7 +209,7 @@ export default class SecurityPage extends Vue {
 
   async addMarket() {
     await this.$axios.$patch(
-      `/api/securities/${this.security.id}/markets/${this.newMarketCode}`,
+      `/api/securities/uuid/${this.security.uuid}/markets/${this.newMarketCode}`,
       {
         currencyCode: this.newCurrencyCode,
         symbol: this.newSymbol,
