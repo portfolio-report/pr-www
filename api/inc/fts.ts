@@ -28,7 +28,6 @@ export async function updateSecuritiesFts() {
   log('Creating/updating full text search index...')
 
   const entries: Array<Security> = await Security.findAll({
-    where: { staged: false },
     include: [
       {
         model: Market,

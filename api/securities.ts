@@ -33,7 +33,6 @@ async function readSecurities({
   descending,
   search,
   securityType,
-  staged,
   includeMarkets,
   includeEvents,
 }: {
@@ -43,7 +42,6 @@ async function readSecurities({
   descending: boolean
   search: string
   securityType: string
-  staged: boolean
   includeMarkets: boolean
   includeEvents: boolean
 }) {
@@ -67,11 +65,6 @@ async function readSecurities({
   // Add filter based on securityType
   if (securityType) {
     filters.push({ securityType })
-  }
-
-  // Add filter based on staged
-  if (staged !== undefined) {
-    filters.push({ staged })
   }
 
   const where = { [Sequelize.Op.and]: filters }
@@ -123,16 +116,11 @@ router.get('/', authRequired, async function (req: Request, res: Response) {
   const search = req.query.search || ''
   const securityType = req.query.securityType || ''
   const include = req.query.include || ''
-  let staged = false
-  if (req.query.staged) {
-    staged = req.query.staged === 'true'
-  }
 
   log(
     `Getting entries, limit: ${limit}, skip: ${skip}, ` +
       `sort: ${sort}, desc: ${descending}, search: ${search}, ` +
-      `securityType: ${securityType}, staged: ${staged}, ` +
-      `include: ${include}`
+      `securityType: ${securityType}, include: ${include}`
   )
 
   // Disable timeouts
@@ -146,7 +134,6 @@ router.get('/', authRequired, async function (req: Request, res: Response) {
     descending,
     search,
     securityType,
-    staged,
     includeMarkets: include === 'markets',
     includeEvents: true,
   })
@@ -202,7 +189,7 @@ router.post('/', authRequired, async function (req: Request, res: Response) {
   }
 
   const entry = req.body
-  if (entry.staged === false && !entry.uuid) {
+  if (!entry.uuid) {
     entry.uuid = createUuid()
   }
   log(`Creating entry ${entry.uuid}`)
@@ -251,10 +238,7 @@ router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
 
   const findOptions: Sequelize.FindOptions = isAuthenticated(req)
     ? {
-        where: {
-          staged: false,
-          uuid,
-        },
+        where: { uuid },
         include: [
           {
             model: Market,
@@ -264,10 +248,7 @@ router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
       }
     : {
         attributes: publicSecurityAttributes,
-        where: {
-          staged: false,
-          uuid,
-        },
+        where: { uuid },
         include: [
           {
             model: Market,
@@ -376,7 +357,7 @@ router.patch('/uuid/:uuid/markets/:marketCode', authRequired, async function (
 
   const security = await Security.findOne({
     attributes: ['id'],
-    where: { staged: false, uuid },
+    where: { uuid },
   })
   if (!security || !security.id) {
     return res.status(404).json({ message: 'Security not found.' })
@@ -460,10 +441,7 @@ router
 
     const fromDate = req.query.from || getDefaultFromDate()
 
-    const where = {
-      staged: false,
-      uuid,
-    }
+    const where = { uuid }
     const security = await Security.findOne({
       where,
       attributes: publicSecurityAttributes,
@@ -508,10 +486,7 @@ router.post('/uuid/:uuid/events', authRequired, async function (
   const { uuid } = req.params
 
   const findOptions: Sequelize.FindOptions = {
-    where: {
-      staged: false,
-      uuid,
-    },
+    where: { uuid },
   }
 
   const security = await Security.findOne(findOptions)

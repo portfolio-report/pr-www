@@ -3,7 +3,7 @@
     <v-col cols="12">
       <v-toolbar color="primary" dark>
         <v-toolbar-title>
-          {{ showStagedEntries ? 'Staged' : '' }} Securities
+          Securities
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="createItem()">
@@ -45,21 +45,12 @@
         </v-menu>
       </v-toolbar>
 
-      <v-switch
-        v-model="showStagedEntries"
-        label="Staged entries"
-        color="primary"
-      />
-
       <v-dialog v-model="showCreateDialog" max-width="600">
         <v-card>
           <v-card-title>Create security</v-card-title>
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <v-checkbox v-model="createdItem.staged" label="Staged" />
-                </v-col>
                 <v-col cols="12" sm="12" md="8">
                   <v-text-field v-model="createdItem.name" label="Name" />
                 </v-col>
@@ -112,13 +103,6 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <v-checkbox
-                    v-model="editedItem.staged"
-                    label="Staged"
-                    disabled
-                  />
-                </v-col>
                 <v-col cols="12" sm="12" md="8">
                   <v-text-field
                     v-model="editedItem.uuid"
@@ -213,7 +197,6 @@ interface Security {
   symbolXnas: string | null
   symbolXnys: string | null
   securityType: string | null
-  staged: boolean
 }
 
 @Component({ components: { DialogConfirm }, layout: 'admin' })
@@ -228,7 +211,6 @@ export default class SecuritiesPage extends Vue {
     symbolXfra: '',
     symbolXnas: '',
     symbolXnys: '',
-    staged: false,
   }
 
   editedItem: Security = {
@@ -241,10 +223,8 @@ export default class SecuritiesPage extends Vue {
     symbolXfra: null,
     symbolXnas: null,
     symbolXnys: null,
-    staged: false,
   }
 
-  showStagedEntries = false
   headers = [
     {
       text: 'UUID',
@@ -298,11 +278,6 @@ export default class SecuritiesPage extends Vue {
     this.getSecurities()
   }
 
-  @Watch('showStagedEntries')
-  onShowStagedEntriesChanged() {
-    this.getSecurities()
-  }
-
   async getSecuritiesRaw() {
     this.loading = true
 
@@ -314,7 +289,6 @@ export default class SecuritiesPage extends Vue {
         desc: this.pagination.sortDesc[0],
         search: this.securitySearch,
         securityType: this.securityType,
-        staged: this.showStagedEntries,
       },
     })
     this.entries = res.entries
@@ -334,7 +308,6 @@ export default class SecuritiesPage extends Vue {
       symbolXfra: '',
       symbolXnas: '',
       symbolXnys: '',
-      staged: false,
     }
     this.showCreateDialog = true
   }

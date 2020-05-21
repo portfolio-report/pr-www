@@ -18,7 +18,6 @@ export class Security extends Model {
   public symbolXnas!: string | null
   public symbolXnys!: string | null
   public securityType!: 'share' | 'fund' | 'bond' | 'index' | null
-  public staged!: boolean
 
   public readonly markets?: Array<Market>
   public readonly events?: Array<Event>
@@ -49,10 +48,6 @@ Security.init(
     },
     securityType: {
       type: DataTypes.ENUM('share', 'fund', 'bond', 'index'),
-    },
-    staged: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
     },
   },
   {
