@@ -23,7 +23,6 @@
     "@nuxt/typescript-runtime": "^0.4.6",
     "@nuxtjs/axios": "^5.10.3",
     "@nuxtjs/vuetify": "^1.11.2",
-    "axios": "^0.19.2",
     "chart.js": "^2.9.3",
     "connect-session-sequelize": "^6.1.1",
     "cors": "^2.8.5",
