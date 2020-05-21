@@ -299,8 +299,8 @@ router
 
     const securities: Array<Security> = [] // Array to be returned
 
-    const minResults = 3
-    const maxScore = 0.001
+    const minResults = Number(process.env.SEARCH_MIN_RESULTS) || 3
+    const maxScore = Number(process.env.SEARCH_MAX_SCORE) || 0.001
 
     for (const searchResult of searchResults) {
       // Return this search result immediately if there is an exact match on ISIN or WKN

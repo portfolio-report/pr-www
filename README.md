@@ -46,6 +46,7 @@ $ npm install
     }
     ```
 - Environment variable `SESSION_SECRET` should contain unique, random string to sign session ID cookie
+- Environment variables `SEARCH_MIN_RESULTS` and `SEARCH_MAX_SCORE` can be used to fine tune search results
 
 ## Database
 
