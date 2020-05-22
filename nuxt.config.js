@@ -45,7 +45,7 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['typeface-roboto'],
 
   /*
    ** Plugins to load before mounting the App
@@ -75,6 +75,8 @@ module.exports = {
    */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    defaultAssets: { font: false },
+    treeShake: true,
     theme: {
       dark: false,
       themes: {

@@ -39,6 +39,7 @@
     "sequelize": "^5.21.7",
     "sequelize-cli": "^5.5.1",
     "sqlite3": "^4.2.0",
+    "typeface-roboto": "0.0.75",
     "validator": "^13.0.0",
     "vue-chartjs": "^3.5.0",
     "xml-js": "^1.6.11"
