@@ -25,14 +25,14 @@
       <v-menu open-on-hover bottom offset-y>
         <template v-slot:activator="{ on }">
           <v-btn color="primary" text v-on="on">
-            <v-icon>mdi-account</v-icon>
+            <v-icon>{{ mdiAccount }}</v-icon>
             {{ username }}
           </v-btn>
         </template>
         <v-list>
           <v-list-item @click="logout">
             <v-list-item-avatar>
-              <v-icon>mdi-logout-variant</v-icon>
+              <v-icon>{{ mdiLogoutVariant }}</v-icon>
             </v-list-item-avatar>
             <v-list-item-title>Logout</v-list-item-title>
           </v-list-item>
@@ -49,32 +49,43 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import {
+  mdiAccount,
+  mdiLogoutVariant,
+  mdiHome,
+  mdiCurrencyUsd,
+  mdiPoll,
+  mdiBackupRestore,
+  mdiEarth,
+} from '@mdi/js'
 
 @Component({ middleware: 'auth' })
 export default class AdminLayout extends Vue {
   // middleware: 'auth',
+  mdiAccount = mdiAccount
+  mdiLogoutVariant = mdiLogoutVariant
 
   title = 'Portfolio Report Admin'
   leftDrawerOpen = false
   menuItems = [
-    { name: 'Home', icon: 'mdi-home', to: '/admin/' },
+    { name: 'Home', icon: mdiHome, to: '/admin/' },
     {
       name: 'Securities',
-      icon: 'mdi-currency-usd',
+      icon: mdiCurrencyUsd,
       to: '/admin/securities',
     },
     {
       name: 'Client updates',
-      icon: 'mdi-poll',
+      icon: mdiPoll,
       to: '/admin/stats',
     },
     {
       name: 'Backup & Restore',
-      icon: 'mdi-backup-restore',
+      icon: mdiBackupRestore,
       to: '/admin/backup',
     },
-    { name: 'Public site', icon: 'mdi-earth', to: '/' },
-    { name: 'Statistics', icon: 'mdi-poll', to: '/stats' },
+    { name: 'Public site', icon: mdiEarth, to: '/' },
+    { name: 'Statistics', icon: mdiPoll, to: '/stats' },
   ]
 
   get authenticated() {

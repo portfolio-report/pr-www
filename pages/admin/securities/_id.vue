@@ -47,10 +47,10 @@
           {{ market.marketCode }}
           <v-spacer />
           <v-icon @click="editMarket(market)">
-            mdi-pencil
+            {{ mdiPencil }}
           </v-icon>
           <v-icon @click="deleteMarket(market)">
-            mdi-delete
+            {{ mdiDelete }}
           </v-icon>
         </v-card-title>
         <v-card-text>
@@ -133,6 +133,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { mdiPencil, mdiDelete } from '@mdi/js'
 import BtnLoading from '../../../components/btn-loading.vue'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
 
@@ -149,6 +150,9 @@ import DialogConfirm from '../../../components/dialog-confirm.vue'
   components: { BtnLoading, DialogConfirm },
 })
 export default class SecurityPage extends Vue {
+  mdiPencil = mdiPencil
+  mdiDelete = mdiDelete
+
   // asyncData
   security: any
 

@@ -20,6 +20,7 @@
     }
   },
   "dependencies": {
+    "@mdi/js": "^5.2.45",
     "@nuxt/typescript-runtime": "^0.4.6",
     "@nuxtjs/axios": "^5.10.3",
     "@nuxtjs/vuetify": "^1.11.2",

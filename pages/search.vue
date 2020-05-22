@@ -12,7 +12,7 @@
               :rules="searchRules"
               label="ISIN/WKN/Symbol/Name"
               clearable
-              append-icon="mdi-magnify"
+              :append-icon="mdiMagnify"
             />
             <v-select
               v-model="securityType"
@@ -36,7 +36,7 @@
                   icon
                   v-on="on"
                 >
-                  <v-icon>mdi-forum</v-icon>
+                  <v-icon>{{ mdiForum }}</v-icon>
                 </v-btn>
               </template>
               <span>Get help and discuss</span>
@@ -44,7 +44,7 @@
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-btn to="/contact" icon v-on="on">
-                  <v-icon>mdi-email</v-icon>
+                  <v-icon>{{ mdiEmail }}</v-icon>
                 </v-btn>
               </template>
               <span>Get in contact</span>
@@ -70,7 +70,7 @@
             <div>
               <v-tooltip v-if="getPricesAvailable(result)" left>
                 <template v-slot:activator="{ on }">
-                  <v-icon v-on="on">mdi-chart-line</v-icon>
+                  <v-icon v-on="on">{{ mdiChartLine }}</v-icon>
                 </template>
                 <span>Prices available</span>
               </v-tooltip>
@@ -84,7 +84,7 @@
                     {{ result.securityType }}
                   </v-chip>
                   <span v-if="hover">
-                    <v-icon>mdi-drag-variant</v-icon> Drag me to Portfolio
+                    <v-icon>{{ mdiDragVariant }}</v-icon> Drag me to Portfolio
                     Performance!
                   </span>
                 </span>
@@ -107,9 +107,22 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import {
+  mdiMagnify,
+  mdiForum,
+  mdiEmail,
+  mdiChartLine,
+  mdiDragVariant,
+} from '@mdi/js'
 
 @Component
 export default class SearchPage extends Vue {
+  mdiMagnify = mdiMagnify
+  mdiForum = mdiForum
+  mdiEmail = mdiEmail
+  mdiChartLine = mdiChartLine
+  mdiDragVariant = mdiDragVariant
+
   searchFormValid = false
   searchTerm = ''
   searchRules = [(v: string) => !!v || 'Required']

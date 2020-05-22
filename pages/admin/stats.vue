@@ -10,7 +10,7 @@
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on">
               <v-icon>{{
-                filterVersion ? 'mdi-filter' : 'mdi-filter-outline'
+                filterVersion ? mdiFilter : mdiFilterOutline
               }}</v-icon>
             </v-btn>
           </template>
@@ -76,10 +76,10 @@
         </template>
         <template v-slot:item.action="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
-            mdi-pencil
+            {{ mdiPencil }}
           </v-icon>
           <v-icon small @click="deleteItem(item)">
-            mdi-delete
+            {{ mdiDelete }}
           </v-icon>
         </template>
       </v-data-table>
@@ -92,6 +92,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
+import { mdiFilter, mdiFilterOutline, mdiPencil, mdiDelete } from '@mdi/js'
 import DialogConfirm from '../../components/dialog-confirm.vue'
 
 interface ClientUpdate {
@@ -104,6 +105,11 @@ interface ClientUpdate {
 
 @Component({ components: { DialogConfirm }, layout: 'admin' })
 export default class StatsPage extends Vue {
+  mdiFilter = mdiFilter
+  mdiFilterOutline = mdiFilterOutline
+  mdiPencil = mdiPencil
+  mdiDelete = mdiDelete
+
   filterVersion: string | null = null
   showEditDialog = false
   editedItem: ClientUpdate = {

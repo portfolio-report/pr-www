@@ -7,16 +7,14 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="createItem()">
-          <v-icon>mdi-plus</v-icon>
+          <v-icon>{{ mdiPlus }}</v-icon>
         </v-btn>
 
         <v-menu bottom left offset-y :close-on-content-click="false">
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on">
               <v-icon>{{
-                securitySearch || securityType
-                  ? 'mdi-filter'
-                  : 'mdi-filter-outline'
+                securitySearch || securityType ? mdiFilter : mdiFilterOutline
               }}</v-icon>
             </v-btn>
           </template>
@@ -27,7 +25,7 @@
                 <v-list-item-content>
                   <v-text-field
                     v-model="securitySearch"
-                    append-icon="mdi-magnify"
+                    :append-icon="mdiMagnify"
                     clearable
                     single-line
                   />
@@ -169,10 +167,10 @@
         </template>
         <template v-slot:item.action="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
-            mdi-pencil
+            {{ mdiPencil }}
           </v-icon>
           <v-icon small @click="deleteItem(item)">
-            mdi-delete
+            {{ mdiDelete }}
           </v-icon>
         </template>
       </v-data-table>
@@ -185,6 +183,14 @@
 <script lang="ts">
 import debounce from 'lodash/debounce'
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import {
+  mdiPlus,
+  mdiFilter,
+  mdiFilterOutline,
+  mdiMagnify,
+  mdiPencil,
+  mdiDelete,
+} from '@mdi/js'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
 
 interface Security {
@@ -201,6 +207,13 @@ interface Security {
 
 @Component({ components: { DialogConfirm }, layout: 'admin' })
 export default class SecuritiesPage extends Vue {
+  mdiPlus = mdiPlus
+  mdiFilter = mdiFilter
+  mdiFilterOutline = mdiFilterOutline
+  mdiMagnify = mdiMagnify
+  mdiPencil = mdiPencil
+  mdiDelete = mdiDelete
+
   showCreateDialog = false
   showEditDialog = false
   createdItem: Security = {

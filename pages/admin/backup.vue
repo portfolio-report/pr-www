@@ -22,13 +22,13 @@
             </template>
             <template v-slot:item.action="{ item }">
               <v-icon small class="mr-2" @click="downloadItem(item)">
-                mdi-download
+                {{ mdiDownload }}
               </v-icon>
               <v-icon small class="mr-2" @click="restoreItem(item)">
-                mdi-backup-restore
+                {{ mdiBackupRestore }}
               </v-icon>
               <v-icon small @click="deleteItem(item)">
-                mdi-delete
+                {{ mdiDelete }}
               </v-icon>
             </template>
           </v-data-table>
@@ -61,6 +61,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
+import { mdiDownload, mdiBackupRestore, mdiDelete } from '@mdi/js'
 import DialogConfirm from '../../components/dialog-confirm.vue'
 import BtnLoading from '../../components/btn-loading.vue'
 
@@ -71,6 +72,10 @@ interface BackupFile {
 
 @Component({ layout: 'admin', components: { DialogConfirm, BtnLoading } })
 export default class BackupPage extends Vue {
+  mdiDownload = mdiDownload
+  mdiBackupRestore = mdiBackupRestore
+  mdiDelete = mdiDelete
+
   loadingRestore = false
   entries: Array<BackupFile> = []
   loading = false

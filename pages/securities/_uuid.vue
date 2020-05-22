@@ -40,7 +40,7 @@
             style="cursor: move;"
             v-on="on"
           >
-            <v-icon>mdi-drag-variant</v-icon> Add to Portfolio Performance
+            <v-icon>{{ mdiDragVariant }}</v-icon> Add to Portfolio Performance
           </v-btn>
         </template>
         <div>
@@ -75,6 +75,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { mdiDragVariant } from '@mdi/js'
 
 @Component({
   async asyncData({ $axios, params, error }): Promise<any> {
@@ -87,6 +88,8 @@ import { Component, Vue } from 'nuxt-property-decorator'
   },
 })
 export default class SecurityPage extends Vue {
+  mdiDragVariant = mdiDragVariant
+
   // asyncData
   security: any
 

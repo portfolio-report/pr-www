@@ -17,13 +17,13 @@
               <v-text-field
                 v-model="formUsername"
                 label="Username"
-                prepend-icon="mdi-account"
+                :prepend-icon="mdiAccount"
               />
               <v-text-field
                 v-model="formPassword"
                 label="Password"
                 type="password"
-                prepend-icon="mdi-lock"
+                :prepend-icon="mdiLock"
               />
             </v-card-text>
             <v-card-actions>
@@ -39,9 +39,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { mdiAccount, mdiLock } from '@mdi/js'
 
 @Component
 export default class LoginPage extends Vue {
+  mdiAccount = mdiAccount
+  mdiLock = mdiLock
+
   formUsername = ''
   formPassword = ''
   errorMessage: string | null = null
