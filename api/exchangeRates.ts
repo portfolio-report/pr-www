@@ -103,19 +103,15 @@ router
   .route('/:baseCurrencyCode/:quoteCurrencyCode/prices')
   .get(async function (req: Request, res: Response) {
     const { baseCurrencyCode, quoteCurrencyCode } = req.params
-
-    function getDefaultFromDate() {
-      const d = new Date()
-      d.setDate(d.getDate() - 14) // 14 days in the past
-      return d.toISOString().substring(0, 10)
-    }
-
-    const fromDate = req.query.from || getDefaultFromDate()
+    const { from } = req.query
 
     const where = {
       quoteCurrencyCode,
       baseCurrencyCode,
     }
+    const dateFilter: Sequelize.WhereAttributeHash = from
+      ? { date: { [Sequelize.Op.gte]: from } }
+      : {}
     const exchangeRate = await ExchangeRate.findOne({
       where,
       include: [
@@ -123,7 +119,7 @@ router
           model: ExchangeRatePrice,
           as: 'prices',
           attributes: ['date', 'value'],
-          where: { date: { [Sequelize.Op.gte]: fromDate } },
+          where: dateFilter,
           required: false,
         },
       ],
