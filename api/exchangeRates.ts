@@ -11,6 +11,17 @@ const router = express.Router()
 router.use(express.json({ limit: '20mb' }))
 
 /**
+ * Get exchange rates (public)
+ */
+router.route('/').get(async function (_req: Request, res: Response) {
+  const exchangeRates = await ExchangeRate.findAll({
+    attributes: ['baseCurrencyCode', 'quoteCurrencyCode'],
+  })
+
+  res.json(exchangeRates)
+})
+
+/**
  * Create/update exchangeRate and prices
  */
 router.patch(
