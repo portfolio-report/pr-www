@@ -31,7 +31,13 @@ export async function updateSecuritiesFts() {
     include: [
       {
         model: Market,
-        attributes: ['marketCode', 'symbol', 'firstPriceDate', 'lastPriceDate'],
+        attributes: [
+          'marketCode',
+          'symbol',
+          'firstPriceDate',
+          'lastPriceDate',
+          'currencyCode',
+        ],
       },
     ],
     attributes: publicSecurityAttributes,
