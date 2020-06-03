@@ -12,7 +12,6 @@
               :rules="searchRules"
               label="ISIN/WKN/Symbol/Name"
               clearable
-              :append-icon="mdiMagnify"
             />
             <v-select
               v-model="securityType"
@@ -107,17 +106,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import {
-  mdiMagnify,
-  mdiForum,
-  mdiEmail,
-  mdiChartLine,
-  mdiDragVariant,
-} from '@mdi/js'
+import { mdiForum, mdiEmail, mdiChartLine, mdiDragVariant } from '@mdi/js'
 
 @Component
 export default class SearchPage extends Vue {
-  mdiMagnify = mdiMagnify
   mdiForum = mdiForum
   mdiEmail = mdiEmail
   mdiChartLine = mdiChartLine
