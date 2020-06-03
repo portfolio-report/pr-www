@@ -1,8 +1,8 @@
 import Debug from 'debug'
 import Sequelize from 'sequelize'
-import express, { Request, Response, NextFunction } from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import { authRequired, isAuthenticated } from './auth'
-import { ExchangeRate, sequelize, ExchangeRatePrice } from './inc/sequelize'
+import { ExchangeRate, ExchangeRatePrice, sequelize } from './inc/sequelize'
 const log = Debug('pr-www:exchangeRates')
 
 const router = express.Router()

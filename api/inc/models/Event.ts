@@ -1,5 +1,5 @@
-import { Model, DataTypes } from 'sequelize'
-import { sequelize, Security } from '../sequelize'
+import { DataTypes, Model } from 'sequelize'
+import { Security, sequelize } from '../sequelize'
 
 export class Event extends Model {
   public id!: number

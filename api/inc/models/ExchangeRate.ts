@@ -1,5 +1,5 @@
-import { Model, DataTypes } from 'sequelize'
-import { sequelize, ExchangeRatePrice } from '../sequelize'
+import { DataTypes, Model } from 'sequelize'
+import { ExchangeRatePrice, sequelize } from '../sequelize'
 
 export class ExchangeRate extends Model {
   public id!: number

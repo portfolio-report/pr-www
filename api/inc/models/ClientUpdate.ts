@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize'
+import { DataTypes, Model } from 'sequelize'
 import { sequelize } from '../sequelize'
 
 export class ClientUpdate extends Model {

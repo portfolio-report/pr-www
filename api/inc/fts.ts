@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js'
 import Debug from 'debug'
-import { Security, Market } from './sequelize'
+import { Market, Security } from './sequelize'
 import { publicSecurityAttributes } from './../securities'
 
 const log = Debug('pr-www:fts')

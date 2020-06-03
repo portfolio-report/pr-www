@@ -17,5 +17,8 @@ module.exports = {
   rules: {
     'nuxt/no-cjs-in-config': 'off',
     'no-console': 'warn',
+
+    // sort imports
+    'sort-imports': ['warn', { ignoreDeclarationSort: true }],
   },
 }

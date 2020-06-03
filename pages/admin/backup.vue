@@ -61,7 +61,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
-import { mdiDownload, mdiBackupRestore, mdiDelete } from '@mdi/js'
+import { mdiBackupRestore, mdiDelete, mdiDownload } from '@mdi/js'
 import DialogConfirm from '../../components/dialog-confirm.vue'
 import BtnLoading from '../../components/btn-loading.vue'
 

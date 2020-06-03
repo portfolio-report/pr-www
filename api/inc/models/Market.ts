@@ -1,5 +1,5 @@
-import { Model, DataTypes } from 'sequelize'
-import { sequelize, Security, Price } from '../sequelize'
+import { DataTypes, Model } from 'sequelize'
+import { Price, Security, sequelize } from '../sequelize'
 
 export class Market extends Model {
   public id!: number

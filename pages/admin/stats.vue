@@ -92,7 +92,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
-import { mdiFilter, mdiFilterOutline, mdiPencil, mdiDelete } from '@mdi/js'
+import { mdiDelete, mdiFilter, mdiFilterOutline, mdiPencil } from '@mdi/js'
 import DialogConfirm from '../../components/dialog-confirm.vue'
 
 interface ClientUpdate {

@@ -3,7 +3,7 @@ import path from 'path'
 import express from 'express'
 import Debug from 'debug'
 import { authRequired } from './auth'
-import { Security, ClientUpdate, Market, Price } from './inc/sequelize'
+import { ClientUpdate, Market, Price, Security } from './inc/sequelize'
 const log = Debug('pr-www:backups')
 
 const router = express.Router()

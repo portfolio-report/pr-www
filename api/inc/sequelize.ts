@@ -1,4 +1,4 @@
-import { Sequelize, Options } from 'sequelize'
+import { Options, Sequelize } from 'sequelize'
 import Debug from 'debug'
 import dbConfig from '../sequelize-config.json'
 import { Security, initSecurity } from './models/Security'

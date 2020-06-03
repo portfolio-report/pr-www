@@ -106,7 +106,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { mdiForum, mdiEmail, mdiChartLine, mdiDragVariant } from '@mdi/js'
+import { mdiChartLine, mdiDragVariant, mdiEmail, mdiForum } from '@mdi/js'
 
 @Component
 export default class SearchPage extends Vue {

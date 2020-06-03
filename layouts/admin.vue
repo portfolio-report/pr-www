@@ -51,12 +51,12 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import {
   mdiAccount,
-  mdiLogoutVariant,
-  mdiHome,
-  mdiCurrencyUsd,
-  mdiPoll,
   mdiBackupRestore,
+  mdiCurrencyUsd,
   mdiEarth,
+  mdiHome,
+  mdiLogoutVariant,
+  mdiPoll,
 } from '@mdi/js'
 
 @Component({ middleware: 'auth' })

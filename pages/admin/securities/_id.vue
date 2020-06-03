@@ -133,7 +133,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { mdiPencil, mdiDelete } from '@mdi/js'
+import { mdiDelete, mdiPencil } from '@mdi/js'
 import BtnLoading from '../../../components/btn-loading.vue'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
 

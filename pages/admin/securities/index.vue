@@ -184,12 +184,12 @@
 import debounce from 'lodash/debounce'
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import {
-  mdiPlus,
+  mdiDelete,
   mdiFilter,
   mdiFilterOutline,
   mdiMagnify,
   mdiPencil,
-  mdiDelete,
+  mdiPlus,
 } from '@mdi/js'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
 
