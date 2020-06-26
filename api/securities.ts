@@ -109,12 +109,12 @@ async function readSecurities({
  * Get list of securities
  */
 router.get('/', authRequired, async function (req: Request, res: Response) {
-  const limit = parseInt(req.query.limit) || 10
-  const skip = parseInt(req.query.skip) || 0
-  const sort = req.query.sort || 'name'
+  const limit = parseInt(String(req.query.limit)) || 10
+  const skip = parseInt(String(req.query.skip)) || 0
+  const sort = String(req.query.sort || 'name')
   const descending = req.query.desc === 'true'
-  const search = req.query.search || ''
-  const securityType = req.query.securityType || ''
+  const search = String(req.query.search || '')
+  const securityType = String(req.query.securityType || '')
   const include = req.query.include || ''
 
   log(

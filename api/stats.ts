@@ -15,9 +15,9 @@ router.use(express.json({ limit: '50mb' }))
  * Get all entries, i.e. stats data
  */
 router.get('/', authRequired, async function (req: Request, res: Response) {
-  const limit = parseInt(req.query.limit) || 10
-  const skip = parseInt(req.query.skip) || 0
-  const sort = req.query.sort || 'timestamp'
+  const limit = parseInt(String(req.query.limit)) || 10
+  const skip = parseInt(String(req.query.skip)) || 0
+  const sort = String(req.query.sort || 'timestamp')
   const descending = req.query.desc === 'true'
   const version = req.query.version
 
