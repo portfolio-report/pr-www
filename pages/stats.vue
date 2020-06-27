@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Statistics</h1>
+    Last update: {{ lastUpdate.toISOString() }}
     <h2>Client Updates</h2>
 
     <bar-chart :chartdata="chartData" :options="chartOptions" />
@@ -51,6 +52,7 @@ import CountryView from '~/components/stats-country.vue'
     BarChart,
   },
   async asyncData({ $axios }) {
+    const lastUpdate = new Date()
     const stats = await $axios.$get('/api/stats/updates')
 
     /* Convert datetime strings to objects and numerical */
@@ -65,11 +67,12 @@ import CountryView from '~/components/stats-country.vue'
       }
     }
 
-    return { stats }
+    return { lastUpdate, stats }
   },
 })
 export default class StatsPage extends Vue {
   // asyncData
+  lastUpdate!: Date
   stats!: {
     versions: Array<{
       version: string
