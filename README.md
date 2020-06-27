@@ -41,8 +41,8 @@ $ npm install
   - For `nodemailerTransportOptions` see https://nodemailer.com/smtp/, e.g.
     ```json
     {
-      host: 'localhost',
-      port: 25
+      "host": "localhost",
+      "port": 25
     }
     ```
 - Environment variable `SESSION_SECRET` should contain unique, random string to sign session ID cookie
@@ -81,7 +81,7 @@ $ npm start
 
 ``` bash
 # Create config
-$ vim pr-www/api/config.ts
+$ vim pr-www/api/config.json
 
 # Build image
 $ docker build -t <my-image-name> pr-www/
