@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@mdi/js": "^5.3.45",
-    "@nuxt/typescript-runtime": "^0.4.10",
+    "@nuxt/typescript-runtime": "^1.0.0",
     "@nuxtjs/axios": "^5.12.0",
     "@nuxtjs/vuetify": "^1.11.2",
     "chart.js": "^2.9.3",
@@ -46,7 +46,8 @@
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
-    "@nuxt/typescript-build": "^1.0.3",
+    "@nuxt/types": "^2.13.3",
+    "@nuxt/typescript-build": "^2.0.0",
     "@nuxtjs/eslint-config": "^3.0.0",
     "@nuxtjs/eslint-config-typescript": "^2.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
