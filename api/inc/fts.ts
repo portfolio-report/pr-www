@@ -11,14 +11,17 @@ const log = Debug('pr-www:fts')
 let securitiesFts: Fuse<Security, Fuse.IFuseOptions<Security>>
 
 /**
- * Returns full text search index for securities
- * Can return undefined if index is not ready (yet)
+ * Search full text search index for securities
+ * Returns null if index is not ready (yet)
  */
-export function getSecuritiesFts(): Fuse<
-  Security,
-  Fuse.IFuseOptions<Security>
-> {
-  return securitiesFts
+export function searchSecuritiesFts(
+  query: string
+): Array<Fuse.FuseResult<Security>> | null {
+  if (!securitiesFts) {
+    return null
+  }
+
+  return securitiesFts.search(query)
 }
 
 /**

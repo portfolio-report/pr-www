@@ -2,7 +2,7 @@ import Debug from 'debug'
 import Sequelize from 'sequelize'
 import express, { NextFunction, Request, Response } from 'express'
 import { authRequired, isAuthenticated } from './auth'
-import { getSecuritiesFts, updateSecuritiesFts } from './inc/fts'
+import { searchSecuritiesFts, updateSecuritiesFts } from './inc/fts'
 import { Event, Market, Price, Security, sequelize } from './inc/sequelize'
 import { HttpError } from './inc/HttpError'
 const log = Debug('pr-www:securities')
@@ -283,19 +283,17 @@ router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
  * Search securities (public)
  */
 router
-  .route('/search/:search')
+  .route('/search/:query')
   .get(function (req: Request, res: Response, next: NextFunction) {
-    const search = req.params.search || ''
+    const query = req.params.query || ''
     const securityType = req.query.securityType || ''
 
-    const fts = getSecuritiesFts()
+    const searchResults = searchSecuritiesFts(query)
 
     // Send error message if full text search index is not ready yet
-    if (!fts) {
+    if (!searchResults) {
       return next(new HttpError(503, 'Service Unavailable'))
     }
-
-    const searchResults = fts.search(search)
 
     const securities: Array<Security> = [] // Array to be returned
 
@@ -305,8 +303,8 @@ router
     for (const searchResult of searchResults) {
       // Return this search result immediately if there is an exact match on ISIN or WKN
       if (
-        searchResult.item.isin?.toLocaleUpperCase() === search.toUpperCase() ||
-        searchResult.item.wkn?.toLocaleUpperCase() === search.toUpperCase()
+        searchResult.item.isin?.toLocaleUpperCase() === query.toUpperCase() ||
+        searchResult.item.wkn?.toLocaleUpperCase() === query.toUpperCase()
       ) {
         return res.json([searchResult.item])
       }
