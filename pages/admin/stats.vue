@@ -2,9 +2,7 @@
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="6">
       <v-toolbar color="primary" dark>
-        <v-toolbar-title>
-          Client Updates
-        </v-toolbar-title>
+        <v-toolbar-title>Client Updates</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-menu bottom left offset-y :close-on-content-click="false">
           <template v-slot:activator="{ on }">

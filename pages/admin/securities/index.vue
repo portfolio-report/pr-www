@@ -2,9 +2,7 @@
   <v-row align="center" justify="center">
     <v-col cols="12">
       <v-toolbar color="primary" dark>
-        <v-toolbar-title>
-          Securities
-        </v-toolbar-title>
+        <v-toolbar-title>Securities</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="createItem()">
           <v-icon>{{ mdiPlus }}</v-icon>

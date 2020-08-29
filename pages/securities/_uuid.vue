@@ -37,7 +37,7 @@
             nuxt
             :to="$route.path"
             class="mt-2"
-            style="cursor: move;"
+            style="cursor: move"
             v-on="on"
           >
             <v-icon>{{ mdiDragVariant }}</v-icon> Add to Portfolio Performance

@@ -47,9 +47,7 @@
               Update full text search index to reflect database changes
             </v-card-text>
             <v-card-actions>
-              <v-btn color="primary" @click="updateFts">
-                Update index
-              </v-btn>
+              <v-btn color="primary" @click="updateFts">Update index</v-btn>
             </v-card-actions>
           </v-card>
         </v-tab-item>

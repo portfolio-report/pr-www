@@ -2,9 +2,7 @@
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="6">
       <v-card>
-        <v-card-title class="headline">
-          Security search
-        </v-card-title>
+        <v-card-title class="headline">Security search</v-card-title>
         <v-form v-model="searchFormValid" @submit.prevent="search">
           <v-card-text>
             <v-text-field
