@@ -88,8 +88,8 @@ async function readSecurities({
   if (includeEvents) {
     include.push({
       model: Event,
-      attributes: ['date', 'type', 'amount', 'currencyCode'],
-      where: { type: 'dividend' },
+      attributes: ['date', 'type', 'amount', 'currencyCode', 'ratio'],
+      where: { type: ['dividend', 'split'] },
       required: false,
     })
   }
@@ -262,8 +262,8 @@ router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
           },
           {
             model: Event,
-            attributes: ['date', 'type', 'amount', 'currencyCode'],
-            where: { type: 'dividend' },
+            attributes: ['date', 'type', 'amount', 'currencyCode', 'ratio'],
+            where: { type: ['dividend', 'split'] },
             required: false,
           },
         ],
