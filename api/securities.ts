@@ -451,6 +451,7 @@ router
             'currencyCode',
             'firstPriceDate',
             'lastPriceDate',
+            'symbol',
           ],
           where: { marketCode },
           include: [
