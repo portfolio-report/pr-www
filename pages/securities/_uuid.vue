@@ -38,6 +38,21 @@
             <li>
               WKN: <b>{{ security.wkn }}</b>
             </li>
+            <li v-for="market in markets" :key="market.marketCode">
+              Market: <b>{{ market.name }}</b>
+              <ul>
+                <li>
+                  Currency: <b>{{ market.currencyCode || '-' }}</b>
+                </li>
+                <li>
+                  Symbol: <b>{{ market.symbol }}</b>
+                </li>
+                <li>
+                  Prices available: <b>{{ market.firstPriceDate }}</b> -
+                  <b>{{ market.lastPriceDate }}</b>
+                </li>
+              </ul>
+            </li>
             <li v-if="security.symbolXfra">
               Symbol (Frankfurt):
               <b>{{ security.symbolXfra }}</b>
@@ -60,23 +75,35 @@
         </v-tab-item>
 
         <v-tab-item key="prices">
-          <div v-for="market in markets" :key="market.marketCode" class="mt-4">
-            <span class="title">{{ market.name }}</span>
+          <v-select
+            v-model="selectedMarketcode"
+            label="Market"
+            :items="markets"
+            item-value="marketCode"
+          >
+            <template slot="selection" slot-scope="{ item }">
+              {{ item.name }} - {{ item.marketCode }}
+            </template>
+            <template slot="item" slot-scope="{ item }">
+              {{ item.name }} - {{ item.marketCode }}
+            </template>
+          </v-select>
+
+          <div v-if="selectedMarket">
             <ul>
               <li>
-                Code: <b>{{ market.marketCode }}</b>
+                Symbol: <b>{{ selectedMarket.symbol }}</b>
               </li>
               <li>
-                Symbol: <b>{{ market.symbol }}</b>
+                Currency: <b>{{ selectedMarket.currencyCode || '-' }}</b>
               </li>
               <li>
-                Currency: <b>{{ market.currencyCode || '-' }}</b>
-              </li>
-              <li>
-                Prices available: <b>{{ market.firstPriceDate }}</b> -
-                <b>{{ market.lastPriceDate }}</b>
+                Prices available: <b>{{ selectedMarket.firstPriceDate }}</b> -
+                <b>{{ selectedMarket.lastPriceDate }}</b>
               </li>
             </ul>
+
+            <prices-table :prices="selectedMarket.prices" />
           </div>
         </v-tab-item>
 
@@ -121,8 +148,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import { mdiDragVariant } from '@mdi/js'
+import PricesTable from '@/components/prices-table.vue'
 
 @Component({
   async asyncData({ $axios, params, error }): Promise<any> {
@@ -133,12 +161,25 @@ import { mdiDragVariant } from '@mdi/js'
       error({ statusCode: 404, message: 'This page could not be found' })
     }
   },
+
+  components: { PricesTable },
 })
 export default class SecurityPage extends Vue {
   mdiDragVariant = mdiDragVariant
 
   // asyncData
   security: any
+
+  selectedMarketcode: string = ''
+  selectedMarket: any = null
+
+  @Watch('selectedMarketcode')
+  async onSelectedMarketcodeChange() {
+    this.selectedMarket = await this.$axios.$get(
+      `/api/securities/uuid/${this.$route.params.uuid}/markets/${this.selectedMarketcode}`,
+      { params: { from: '2000-01-01' } }
+    )
+  }
 
   head() {
     return {
