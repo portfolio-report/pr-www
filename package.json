@@ -31,6 +31,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "express-validator": "^6.7.0",
+    "fontsource-roboto": "^3.0.3",
     "fuse.js": "^6.4.3",
     "ip2location-nodejs": "^8.4.0",
     "lodash": "^4.17.20",
@@ -40,7 +41,6 @@
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
     "sqlite3": "^5.0.0",
-    "typeface-roboto": "0.0.75",
     "validator": "^13.1.17",
     "vue-chartjs": "^3.5.1",
     "xml-js": "^1.6.11"
