@@ -23,7 +23,7 @@
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <v-menu open-on-hover bottom offset-y>
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <v-btn color="primary" text v-on="on">
             <v-icon>{{ mdiAccount }}</v-icon>
             {{ username }}

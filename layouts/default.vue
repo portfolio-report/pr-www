@@ -23,7 +23,7 @@
     <v-footer>
       <v-spacer />
       <v-tooltip top>
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <v-btn
             href="https://forum.portfolio-performance.info/"
             icon
@@ -35,7 +35,7 @@
         <span>Get help and discuss</span>
       </v-tooltip>
       <v-tooltip top>
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <v-btn to="/contact" icon v-on="on">
             <v-icon>{{ mdiEmail }}</v-icon>
           </v-btn>
@@ -43,7 +43,7 @@
         <span>Get in contact</span>
       </v-tooltip>
       <v-tooltip top>
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <v-btn
             href="https://www.github.com/tfabritius/pr-www"
             target="_blank"
@@ -60,13 +60,6 @@
   </v-app>
 </template>
 
-<style scoped>
-.title {
-  color: inherit;
-  text-decoration: inherit;
-}
-</style>
-
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mdiEmail, mdiForum, mdiSourceRepository } from '@mdi/js'
@@ -80,3 +73,10 @@ export default class DefaultLayout extends Vue {
   mdiSourceRepository = mdiSourceRepository
 }
 </script>
+
+<style scoped>
+.title {
+  color: inherit;
+  text-decoration: inherit;
+}
+</style>

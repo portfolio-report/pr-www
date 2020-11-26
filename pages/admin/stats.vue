@@ -5,7 +5,7 @@
         <v-toolbar-title>Client Updates</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-menu bottom left offset-y :close-on-content-click="false">
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn icon v-on="on">
               <v-icon>{{
                 filterVersion ? mdiFilter : mdiFilterOutline
@@ -67,12 +67,12 @@
         :footer-props="footerProps"
         :loading="loading"
       >
-        <template v-slot:items="props">
+        <template #items="props">
           <td>{{ props.item.timestamp }}</td>
           <td>{{ props.item.version }}</td>
           <td>{{ props.item.country }}</td>
         </template>
-        <template v-slot:item.action="{ item }">
+        <template #[`item.action`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             {{ mdiPencil }}
           </v-icon>

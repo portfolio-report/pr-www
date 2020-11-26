@@ -4,7 +4,7 @@
       <div class="headline">{{ security.name }}</div>
 
       <v-tooltip right>
-        <template v-slot:activator="{ on }">
+        <template #activator="{ on }">
           <v-btn
             color="primary"
             max-width="400"
@@ -109,7 +109,7 @@
 
         <v-tab-item key="events">
           <v-simple-table>
-            <template v-slot:default>
+            <template #default>
               <thead>
                 <tr>
                   <th class="text-left">Date</th>

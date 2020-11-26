@@ -9,7 +9,7 @@
         </v-btn>
 
         <v-menu bottom left offset-y :close-on-content-click="false">
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-btn icon v-on="on">
               <v-icon>{{
                 securitySearch || securityType ? mdiFilter : mdiFilterOutline
@@ -158,12 +158,12 @@
         :footer-props="footerProps"
         :loading="loading"
       >
-        <template v-slot:item.name="{ item }">
+        <template #[`item.name`]="{ item }">
           <nuxt-link :to="'/admin/securities/' + item.id">
             {{ item.name }}
           </nuxt-link>
         </template>
-        <template v-slot:item.action="{ item }">
+        <template #[`item.action`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             {{ mdiPencil }}
           </v-icon>

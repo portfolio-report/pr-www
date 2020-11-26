@@ -9,7 +9,7 @@
       sort-by="date"
       :items-per-page="-1"
     >
-      <template v-slot:item="props">
+      <template #item="props">
         <tr>
           <td>{{ props.item.date }}</td>
           <td class="text-right">{{ props.item.count }}</td>

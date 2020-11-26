@@ -45,13 +45,13 @@
           <div v-for="result in results" :key="result.uuid" class="mb-3">
             <div>
               <v-tooltip v-if="getPricesAvailable(result)" left>
-                <template v-slot:activator="{ on }">
+                <template #activator="{ on }">
                   <v-icon v-on="on">{{ mdiChartLine }}</v-icon>
                 </template>
                 <span>Prices available</span>
               </v-tooltip>
 
-              <v-hover v-slot:default="{ hover }">
+              <v-hover v-slot="{ hover }">
                 <span>
                   <nuxt-link :to="'securities/' + result.uuid">
                     <span class="subtitle-1">{{ result.name }}</span>

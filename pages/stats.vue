@@ -13,7 +13,7 @@
       sort-by="version"
       :items-per-page="-1"
     >
-      <template v-slot:item="props">
+      <template #item="props">
         <tr @click="selectedVersion = props.item">
           <td>{{ props.item.version }}</td>
           <td>

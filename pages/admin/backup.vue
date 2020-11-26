@@ -16,11 +16,11 @@
           </v-card>
 
           <v-data-table :headers="headers" :items="entries" :loading="loading">
-            <template v-slot:items="props">
+            <template #items="props">
               <td>{{ props.item.name }}</td>
               <td>{{ props.item.size }}</td>
             </template>
-            <template v-slot:item.action="{ item }">
+            <template #[`item.action`]="{ item }">
               <v-icon small class="mr-2" @click="downloadItem(item)">
                 {{ mdiDownload }}
               </v-icon>
