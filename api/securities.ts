@@ -200,35 +200,36 @@ router.post('/', authRequired, async function (req: Request, res: Response) {
 /**
  * Update single entry, i.e. security
  */
-router.patch('/:id', authRequired, async function (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const id = req.params.id
-  log(`Updating entry ${id}`)
-  const security = await Security.findOne({ where: { id } })
-  if (security) {
-    Object.assign(security, req.body)
-    await security.save()
-    res.json({ status: 'ok' })
-  } else {
-    return next(new HttpError(404, 'Security not found'))
+router.patch(
+  '/:id',
+  authRequired,
+  async function (req: Request, res: Response, next: NextFunction) {
+    const id = req.params.id
+    log(`Updating entry ${id}`)
+    const security = await Security.findOne({ where: { id } })
+    if (security) {
+      Object.assign(security, req.body)
+      await security.save()
+      res.json({ status: 'ok' })
+    } else {
+      return next(new HttpError(404, 'Security not found'))
+    }
   }
-})
+)
 
 /**
  * Delete single entry, i.e. security
  */
-router.delete('/:id', authRequired, async function (
-  req: Request,
-  res: Response
-) {
-  const id = req.params.id
-  log(`Deleting entry ${id}`)
-  await Security.destroy({ where: { id } })
-  res.json({ status: 'ok' })
-})
+router.delete(
+  '/:id',
+  authRequired,
+  async function (req: Request, res: Response) {
+    const id = req.params.id
+    log(`Deleting entry ${id}`)
+    await Security.destroy({ where: { id } })
+    res.json({ status: 'ok' })
+  }
+)
 
 /**
  * Get single security (public)
@@ -329,98 +330,100 @@ router
 /**
  * Endpoint to update full text search index from current database content
  */
-router.post('/search/update', authRequired, function (
-  _req: Request,
-  res: Response
-) {
-  updateSecuritiesFts()
-  res.json({ status: 'ok' })
-})
+router.post(
+  '/search/update',
+  authRequired,
+  function (_req: Request, res: Response) {
+    updateSecuritiesFts()
+    res.json({ status: 'ok' })
+  }
+)
 
 /**
  * Create/update market and prices
  */
-router.patch('/uuid/:uuid/markets/:marketCode', authRequired, async function (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const { uuid, marketCode } = req.params
+router.patch(
+  '/uuid/:uuid/markets/:marketCode',
+  authRequired,
+  async function (req: Request, res: Response, next: NextFunction) {
+    const { uuid, marketCode } = req.params
 
-  log(`Creating/updating market ${uuid}/${marketCode}`)
+    log(`Creating/updating market ${uuid}/${marketCode}`)
 
-  // Disable timeouts
-  req.setTimeout(0)
-  res.setTimeout(0)
+    // Disable timeouts
+    req.setTimeout(0)
+    res.setTimeout(0)
 
-  const security = await Security.findOne({
-    attributes: ['id'],
-    where: { uuid },
-  })
-  if (!security || !security.id) {
-    return res.status(404).json({ message: 'Security not found.' })
-  }
-
-  const entry: {
-    securityId: number
-    marketCode: string
-    prices: Array<{ date: string; close: number }>
-  } = req.body
-
-  // Overwrite attributes if given
-  entry.securityId = security.id
-  entry.marketCode = marketCode
-
-  try {
-    const [market] = await Market.findOrBuild({
-      where: { marketCode, securityId: security.id },
+    const security = await Security.findOne({
+      attributes: ['id'],
+      where: { uuid },
     })
-    Object.assign(market, entry)
-    await market.save()
-
-    // Create/update the associated prices
-    if (entry.prices) {
-      await sequelize.query(
-        'INSERT INTO prices (marketId, date, close) ' +
-          'VALUES ' +
-          entry.prices
-            .map((price) => `(${market.id}, '${price.date}', ${price.close})`)
-            .join(',') +
-          'ON CONFLICT(marketId, date) DO UPDATE SET close=excluded.close'
-      )
+    if (!security || !security.id) {
+      return res.status(404).json({ message: 'Security not found.' })
     }
 
-    // Keep firstPriceDate and lastPriceDate up-to-date
-    await sequelize.query(`UPDATE markets SET
+    const entry: {
+      securityId: number
+      marketCode: string
+      prices: Array<{ date: string; close: number }>
+    } = req.body
+
+    // Overwrite attributes if given
+    entry.securityId = security.id
+    entry.marketCode = marketCode
+
+    try {
+      const [market] = await Market.findOrBuild({
+        where: { marketCode, securityId: security.id },
+      })
+      Object.assign(market, entry)
+      await market.save()
+
+      // Create/update the associated prices
+      if (entry.prices) {
+        await sequelize.query(
+          'INSERT INTO prices (marketId, date, close) ' +
+            'VALUES ' +
+            entry.prices
+              .map((price) => `(${market.id}, '${price.date}', ${price.close})`)
+              .join(',') +
+            'ON CONFLICT(marketId, date) DO UPDATE SET close=excluded.close'
+        )
+      }
+
+      // Keep firstPriceDate and lastPriceDate up-to-date
+      await sequelize.query(`UPDATE markets SET
     firstPriceDate = (SELECT MIN(date) FROM prices WHERE marketId = ${market.id}),
     lastPriceDate =  (SELECT MAX(date) FROM prices WHERE marketId = ${market.id})
     WHERE id = ${market.id}`)
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.log(err)
-    return next(err)
-  }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err)
+      return next(err)
+    }
 
-  return res.json({ status: 'ok' })
-})
+    return res.json({ status: 'ok' })
+  }
+)
 
 /**
  * Delete market (and prices)
  */
-router.delete('/uuid/:uuid/markets/:marketCode', authRequired, async function (
-  req: Request,
-  res: Response
-) {
-  const { uuid, marketCode } = req.params
-  log(`Deleting market ${uuid}/${marketCode}`)
+router.delete(
+  '/uuid/:uuid/markets/:marketCode',
+  authRequired,
+  async function (req: Request, res: Response) {
+    const { uuid, marketCode } = req.params
+    log(`Deleting market ${uuid}/${marketCode}`)
 
-  await sequelize.query(
-    'DELETE FROM markets WHERE marketCode = :marketCode AND securityId IN (SELECT id FROM securities WHERE uuid = :uuid)',
-    { replacements: { uuid, marketCode } }
-  )
+    await sequelize.query(
+      'DELETE FROM markets WHERE marketCode = :marketCode AND securityId IN (SELECT id FROM securities WHERE uuid = :uuid)',
+      { replacements: { uuid, marketCode } }
+    )
 
-  res.json({ status: 'ok' })
-})
+    res.json({ status: 'ok' })
+  }
+)
 
 /**
  * Get security prices (public)
@@ -477,46 +480,46 @@ router
 /**
  * Create event
  */
-router.post('/uuid/:uuid/events', authRequired, async function (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const { uuid } = req.params
+router.post(
+  '/uuid/:uuid/events',
+  authRequired,
+  async function (req: Request, res: Response, next: NextFunction) {
+    const { uuid } = req.params
 
-  const findOptions: Sequelize.FindOptions = {
-    where: { uuid },
+    const findOptions: Sequelize.FindOptions = {
+      where: { uuid },
+    }
+
+    const security = await Security.findOne(findOptions)
+
+    if (!security) {
+      return res.status(404).json({ message: 'Security not found.' })
+    }
+
+    const event: {
+      securityId: number
+      date: string
+      type: string
+      amount: number
+      currencyCode: string
+      ratio: string
+    } = req.body
+
+    // Overwrite attributes if given
+    event.securityId = security.id
+
+    log(`Creating event @ ${uuid}/${security.id}: ${event.type}/${event.date}`)
+    try {
+      await Event.create(event)
+    } catch (err) {
+      // Unkown error
+      // eslint-disable-next-line no-console
+      console.log(err)
+      return next(err)
+    }
+
+    return res.json({ status: 'ok' })
   }
-
-  const security = await Security.findOne(findOptions)
-
-  if (!security) {
-    return res.status(404).json({ message: 'Security not found.' })
-  }
-
-  const event: {
-    securityId: number
-    date: string
-    type: string
-    amount: number
-    currencyCode: string
-    ratio: string
-  } = req.body
-
-  // Overwrite attributes if given
-  event.securityId = security.id
-
-  log(`Creating event @ ${uuid}/${security.id}: ${event.type}/${event.date}`)
-  try {
-    await Event.create(event)
-  } catch (err) {
-    // Unkown error
-    // eslint-disable-next-line no-console
-    console.log(err)
-    return next(err)
-  }
-
-  return res.json({ status: 'ok' })
-})
+)
 
 export default router

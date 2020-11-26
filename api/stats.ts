@@ -47,15 +47,16 @@ router.get('/', authRequired, async function (req: Request, res: Response) {
 /**
  * Delete single entry
  */
-router.delete('/:id', authRequired, async function (
-  req: Request,
-  res: Response
-) {
-  const id = req.params.id
-  log(`Deleting entry ${id}`)
-  await ClientUpdate.destroy({ where: { id } })
-  res.json({ status: 'ok' })
-})
+router.delete(
+  '/:id',
+  authRequired,
+  async function (req: Request, res: Response) {
+    const id = req.params.id
+    log(`Deleting entry ${id}`)
+    await ClientUpdate.destroy({ where: { id } })
+    res.json({ status: 'ok' })
+  }
+)
 
 /**
  * Get statistics on updates
