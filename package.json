@@ -76,6 +76,6 @@
     "nodemon": "^2.0.6",
     "prettier": "^2.2.0",
     "stylus": "^0.54.8",
-    "stylus-loader": "^3.0.2"
+    "stylus-loader": "^4.3.0"
   }
 }
