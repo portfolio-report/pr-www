@@ -1,12 +1,7 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    :max-width="options.width"
-    persistent
-    @keydown.esc="no"
-  >
+  <v-dialog v-model="dialog" :max-width="width" persistent @keydown.esc="no">
     <v-card>
-      <v-toolbar dark :color="options.color" dense flat>
+      <v-toolbar dark :color="color" dense flat>
         <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
       </v-toolbar>
       <v-card-text v-show="!!message">{{ message }}</v-card-text>
@@ -19,38 +14,49 @@
   </v-dialog>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    dialog: false,
-    resolve: null,
-    reject: null,
-    message: null,
-    title: null,
-    options: {
-      color: 'primary',
-      width: 300,
-    },
-  }),
-  methods: {
-    open({ title, message, ...options }) {
-      this.dialog = true
-      this.title = title
-      this.message = message
-      Object.assign(this.options, options)
-      return new Promise((resolve, reject) => {
-        this.resolve = resolve
-        this.reject = reject
-      })
-    },
-    yes() {
-      this.resolve(true)
-      this.dialog = false
-    },
-    no() {
-      this.resolve(false)
-      this.dialog = false
-    },
-  },
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator'
+
+@Component
+export default class DialogConfirm extends Vue {
+  dialog = false
+  resolve: any
+  reject: any
+  message = ''
+  title = ''
+  color = 'primary'
+  width = 300
+
+  public open({
+    title,
+    message,
+    color = 'primary',
+    width = 300,
+  }: {
+    title: string
+    message: string
+    color: string
+    width: number
+  }) {
+    this.dialog = true
+    this.title = title
+    this.message = message
+    this.color = color
+    this.width = width
+    return new Promise((resolve, reject) => {
+      this.resolve = resolve
+      this.reject = reject
+    })
+  }
+
+  yes() {
+    this.resolve(true)
+    this.dialog = false
+  }
+
+  no() {
+    this.resolve(false)
+    this.dialog = false
+  }
 }
 </script>
