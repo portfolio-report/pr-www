@@ -11,11 +11,7 @@
               label="ISIN/WKN/Symbol/Name"
               clearable
             />
-            <v-select
-              v-model="securityType"
-              :items="securityTypeItems"
-              label="Security type"
-            />
+            <select-security-type v-model="securityType" />
 
             <v-alert v-model="noResults" type="info" outlined>
               Sorry, no results were found.
@@ -85,7 +81,11 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mdiChartLine, mdiDragVariant } from '@mdi/js'
 
-@Component
+import SelectSecurityType from '@/components/select-security-type.vue'
+
+@Component({
+  components: { SelectSecurityType },
+})
 export default class SearchPage extends Vue {
   mdiChartLine = mdiChartLine
   mdiDragVariant = mdiDragVariant
@@ -94,13 +94,6 @@ export default class SearchPage extends Vue {
   searchTerm = ''
   searchRules = [(v: string) => !!v || 'Required']
   securityType = ''
-  securityTypeItems = [
-    { text: '*', value: '' },
-    { text: 'share', value: 'share' },
-    { text: 'fund', value: 'fund' },
-    { text: 'bond', value: 'bond' },
-    { text: 'index', value: 'index' },
-  ]
 
   results = []
   noResults = false

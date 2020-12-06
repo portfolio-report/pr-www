@@ -19,6 +19,7 @@
           <v-card>
             <v-list>
               <v-subheader>Search</v-subheader>
+
               <v-list-item>
                 <v-list-item-content>
                   <v-text-field
@@ -30,10 +31,9 @@
                 </v-list-item-content>
               </v-list-item>
               <v-divider />
-              <v-subheader>Security type</v-subheader>
               <v-list-item>
                 <v-list-item-content>
-                  <v-select v-model="securityType" :items="securityTypeItems" />
+                  <select-security-type v-model="securityType" />
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -189,6 +189,7 @@ import {
   mdiPencil,
   mdiPlus,
 } from '@mdi/js'
+import SelectSecurityType from '@/components/select-security-type.vue'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
 
 interface Security {
@@ -203,7 +204,10 @@ interface Security {
   securityType: string | null
 }
 
-@Component({ components: { DialogConfirm }, layout: 'admin' })
+@Component({
+  components: { DialogConfirm, SelectSecurityType },
+  layout: 'admin',
+})
 export default class SecuritiesPage extends Vue {
   mdiPlus = mdiPlus
   mdiFilter = mdiFilter
@@ -254,11 +258,6 @@ export default class SecuritiesPage extends Vue {
   ]
 
   entries: Array<Security> = []
-  securityTypeItems = [
-    { text: '', value: '' },
-    { text: 'share', value: 'share' },
-    { text: 'bond', value: 'bond' },
-  ]
 
   searchQuery = ''
   pagination = {
