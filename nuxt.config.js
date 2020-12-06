@@ -55,7 +55,17 @@ module.exports = {
    */
   render: {
     csp: {
-      reportOnly: false,
+      policies: {
+        'base-uri': ["'self'"],
+        'connect-src': ["'self'"],
+        'default-src': ["'none'"],
+        'font-src': ["'self'"],
+        'form-action': ["'self'"],
+        'frame-ancestors': ["'none'"],
+        'img-src': ["'self'"],
+        'object-src': ["'none'"],
+        'style-src': ["'self'", "'unsafe-inline'"],
+      },
     },
   },
 
