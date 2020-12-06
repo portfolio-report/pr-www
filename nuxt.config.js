@@ -49,6 +49,16 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [],
+
+  /*
+   ** Options for rendering pages
+   */
+  render: {
+    csp: {
+      reportOnly: false,
+    },
+  },
+
   /*
    ** Nuxt.js dev-modules
    */
