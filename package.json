@@ -22,7 +22,7 @@
   "dependencies": {
     "@mdi/js": "^5.8.55",
     "@nuxt/typescript-runtime": "^2.0.0",
-    "@nuxtjs/axios": "^5.12.2",
+    "@nuxtjs/axios": "^5.12.4",
     "@nuxtjs/vuetify": "^1.11.2",
     "chart.js": "^2.9.4",
     "connect-session-sequelize": "^7.0.4",
