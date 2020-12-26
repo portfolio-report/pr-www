@@ -41,7 +41,7 @@
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
     "sqlite3": "^5.0.0",
-    "validator": "^13.1.17",
+    "validator": "^13.5.2",
     "vue-chartjs": "^3.5.1",
     "xml-js": "^1.6.11"
   },
