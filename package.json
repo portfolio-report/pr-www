@@ -30,7 +30,7 @@
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "express-validator": "^6.7.0",
+    "express-validator": "^6.9.0",
     "fontsource-roboto": "^3.0.3",
     "fuse.js": "^6.4.3",
     "ip2location-nodejs": "^8.4.0",
