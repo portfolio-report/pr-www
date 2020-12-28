@@ -43,7 +43,7 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['fontsource-roboto'],
+  css: ['@fontsource/roboto'],
 
   /*
    ** Plugins to load before mounting the App
