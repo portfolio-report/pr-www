@@ -20,7 +20,7 @@
     }
   },
   "dependencies": {
-    "@fontsource/roboto": "^4.0.1",
+    "@fontsource/roboto": "^4.1.0",
     "@mdi/js": "^5.8.55",
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/axios": "^5.12.4",
