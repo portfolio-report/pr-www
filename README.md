@@ -12,7 +12,7 @@ git config --global core.autocrlf false
 $ git clone ...
 
 # Install dependencies
-$ npm install
+$ yarn install --frozen-lockfile
 ```
 
 ## Configuration
