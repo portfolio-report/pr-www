@@ -73,6 +73,33 @@
           </div>
         </v-card-text>
       </v-card>
+
+      <v-card class="mt-4">
+        <v-card-title>Your contribution is needed 💪</v-card-title>
+        <v-card-text>
+          Your help is needed to keep this website up and running. Have you
+          thought about contributing? You could:
+          <ul>
+            <li>
+              Actively maintain and develop the
+              <a href="https://www.github.com/tfabritius/pr-www"
+                >source code on Github</a
+              >.
+            </li>
+            <li>
+              Become member of the
+              <a href="https://forum.portfolio-performance.info">forum</a> and
+              help other users.
+            </li>
+            <li>
+              Cover monthly costs for server operation and licence fees. Become
+              sponsor on
+              <a href="https://github.com/sponsors/tfabritius">Github</a> or via
+              <a href="https://www.paypal.me/portfolioreport">Paypal</a>.
+            </li>
+          </ul>
+        </v-card-text>
+      </v-card>
     </v-col>
   </v-row>
 </template>
