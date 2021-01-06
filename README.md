@@ -52,7 +52,7 @@ $ npm install
 
 ``` bash
 # Initialize/update database
-$ npm run migrations
+$ yarn migrations
 
 # Get status of migrations
 $ node_modules\.bin\sequelize-cli db:migrate:status
@@ -66,15 +66,15 @@ $ node_modules\.bin\sequelize-cli db:migrate:status
 
 ``` bash
 # serve with hot reload at localhost:3000
-$ npm run dev
+$ yarn dev
 
 # run nuxt in production mode and restart on changes in /api
-$ npm run build
-$ npm run devapi
+$ yarn build
+$ yarn devapi
 
 # build for production and launch server
-$ npm run build
-$ npm start
+$ yarn build
+$ yarn start
 ```
 
 ## Docker
