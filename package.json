@@ -40,7 +40,7 @@
     "nuxt-property-decorator": "^2.8.8",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
-    "sqlite3": "^5.0.0",
+    "sqlite3": "^5.0.1",
     "validator": "^13.5.2",
     "vue-chartjs": "^3.5.1",
     "xml-js": "^1.6.11"
