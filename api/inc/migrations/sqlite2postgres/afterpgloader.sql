@@ -78,37 +78,37 @@ ALTER TABLE "exchangerates_prices" ALTER COLUMN "value" SET NOT NULL;
 
 -- primary keys & sequences
 ALTER TABLE "clientupdates" ADD CONSTRAINT "clientupdates_pkey" PRIMARY KEY (id);
-CREATE SEQUENCE "clientupdates_id_seq" OWNED BY "clientupdates".id;
+CREATE SEQUENCE "clientupdates_id_seq" AS INTEGER OWNED BY "clientupdates".id;
 SELECT setval('clientupdates_id_seq', coalesce(max(id), 0) + 1, false) FROM "clientupdates";
 ALTER TABLE "clientupdates" ALTER COLUMN id SET DEFAULT nextval('clientupdates_id_seq');
 
 ALTER TABLE "events" ADD CONSTRAINT "events_pkey" PRIMARY KEY (id);
-CREATE SEQUENCE "events_id_seq" OWNED BY events.id;
+CREATE SEQUENCE "events_id_seq" AS INTEGER OWNED BY events.id;
 SELECT setval('events_id_seq', coalesce(max(id), 0) + 1, false) FROM "events";
 ALTER TABLE "events" ALTER COLUMN id SET DEFAULT nextval('events_id_seq');
 
 ALTER TABLE "markets" ADD CONSTRAINT "markets_pkey" PRIMARY KEY (id);
-CREATE SEQUENCE "markets_id_seq" OWNED BY "markets".id;
+CREATE SEQUENCE "markets_id_seq" AS INTEGER OWNED BY "markets".id;
 SELECT setval('markets_id_seq', coalesce(max(id), 0) + 1, false) FROM "markets";
 ALTER TABLE "markets" ALTER COLUMN id SET DEFAULT nextval('markets_id_seq');
 
 ALTER TABLE "prices" ADD CONSTRAINT "prices_pkey" PRIMARY KEY (id);
-CREATE SEQUENCE "prices_id_seq" OWNED BY "prices".id;
+CREATE SEQUENCE "prices_id_seq" AS INTEGER OWNED BY "prices".id;
 SELECT setval('prices_id_seq', coalesce(max(id), 0) + 1, false) FROM "prices";
 ALTER TABLE "prices" ALTER COLUMN id SET DEFAULT nextval('prices_id_seq');
 
 ALTER TABLE "securities" ADD CONSTRAINT "securities_pkey" PRIMARY KEY (id);
-CREATE SEQUENCE "securities_id_seq" OWNED BY "securities".id;
+CREATE SEQUENCE "securities_id_seq" AS INTEGER OWNED BY "securities".id;
 SELECT setval('securities_id_seq', coalesce(max(id), 0) + 1, false) FROM "securities";
 ALTER TABLE "securities" ALTER COLUMN id SET DEFAULT nextval('securities_id_seq');
 
 ALTER TABLE "exchangerates" ADD CONSTRAINT "exchangerates_pkey" PRIMARY KEY (id);
-CREATE SEQUENCE "exchangerates_id_seq" OWNED BY "exchangerates".id;
+CREATE SEQUENCE "exchangerates_id_seq" AS INTEGER OWNED BY "exchangerates".id;
 SELECT setval('exchangerates_id_seq', coalesce(max(id), 0) + 1, false) FROM "exchangerates";
 ALTER TABLE "exchangerates" ALTER COLUMN id SET DEFAULT nextval('exchangerates_id_seq');
 
 ALTER TABLE "exchangerates_prices" ADD CONSTRAINT "exchangerates_prices_pkey" PRIMARY KEY (id);
-CREATE SEQUENCE "exchangerates_prices_id_seq" OWNED BY "exchangerates_prices".id;
+CREATE SEQUENCE "exchangerates_prices_id_seq" AS INTEGER OWNED BY "exchangerates_prices".id;
 SELECT setval('exchangerates_prices_id_seq', coalesce(max(id), 0) + 1, false) FROM "exchangerates_prices";
 ALTER TABLE "exchangerates_prices" ALTER COLUMN id SET DEFAULT nextval('exchangerates_prices_id_seq');
 
