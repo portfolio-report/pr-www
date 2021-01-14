@@ -115,7 +115,7 @@ router
       timestamp: new Date(),
       version: req.params.version,
       country,
-      useragent: req.headers['user-agent'],
+      useragent: req.headers['user-agent']?.slice(0, 60),
     }
 
     await ClientUpdate.create(entry)
