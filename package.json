@@ -9,7 +9,7 @@
     "devapi": "nodemon --watch server --watch api -e js,json,ts --exec nuxt-ts start",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
-    "migrations": "sequelize-cli db:migrate",
+    "migrate": "db-migrate",
     "generate": "nuxt-ts generate",
     "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .ts,.js,.vue --ignore-path .gitignore ."
@@ -29,6 +29,8 @@
     "connect-session-sequelize": "^7.0.4",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
+    "db-migrate": "^0.11.12",
+    "db-migrate-pg": "^1.2.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "express-validator": "^6.9.2",
