@@ -145,3 +145,11 @@ ALTER TABLE "exchangerates_prices" ADD CONSTRAINT "exchangerates_prices_exchange
 
 -- delete old migration table
 DROP TABLE "SequelizeMeta";
+
+-- create new migration table
+CREATE TABLE "migrations" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL,
+  "run_on" TIMESTAMP NOT NULL
+);
+INSERT INTO migrations (name, run_on) VALUES ('/20210118200000-init', NOW());
