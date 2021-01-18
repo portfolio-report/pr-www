@@ -142,3 +142,6 @@ ALTER TABLE "events" ADD CONSTRAINT "events_security_id_fkey" FOREIGN KEY ("secu
 ALTER TABLE "markets" ADD CONSTRAINT "markets_security_id_fkey" FOREIGN KEY ("security_id") REFERENCES "securities" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "prices" ADD CONSTRAINT "prices_market_id_fkey" FOREIGN KEY ("market_id") REFERENCES "markets" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "exchangerates_prices" ADD CONSTRAINT "exchangerates_prices_exchangerate_id_fkey" FOREIGN KEY ("exchangerate_id") REFERENCES "exchangerates" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- delete old migration table
+DROP TABLE "SequelizeMeta";
