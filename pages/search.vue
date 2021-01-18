@@ -94,8 +94,7 @@
             <li>
               Cover monthly costs for server operation and licence fees. Become
               sponsor on
-              <a href="https://github.com/sponsors/tfabritius">Github</a> or via
-              <a href="https://www.paypal.me/portfolioreport">Paypal</a>.
+              <a href="https://github.com/sponsors/tfabritius">Github</a>.
             </li>
           </ul>
         </v-card-text>
