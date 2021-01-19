@@ -5,9 +5,6 @@
 ## Getting started
 
 ``` bash
-# Disable conversion of line endings (in Windows)
-git config --global core.autocrlf false
-
 # Clone repository
 $ git clone ...
 
