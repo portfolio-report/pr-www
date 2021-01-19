@@ -61,16 +61,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mdiEmail, mdiForum, mdiSourceRepository } from '@mdi/js'
+import { Component, Vue, mixins } from 'nuxt-property-decorator'
+
+import { IconsMixin } from '@/components/icons-mixin'
 
 @Component
-export default class DefaultLayout extends Vue {
+export default class DefaultLayout extends mixins(Vue, IconsMixin) {
   title = 'Portfolio Report'
-
-  mdiForum = mdiForum
-  mdiEmail = mdiEmail
-  mdiSourceRepository = mdiSourceRepository
 }
 </script>
 

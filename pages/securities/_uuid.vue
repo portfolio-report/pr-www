@@ -148,8 +148,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
-import { mdiDragVariant } from '@mdi/js'
+import { Component, Vue, Watch, mixins } from 'nuxt-property-decorator'
+
+import { IconsMixin } from '@/components/icons-mixin'
 import PricesTable from '@/components/prices-table.vue'
 
 @Component({
@@ -164,9 +165,7 @@ import PricesTable from '@/components/prices-table.vue'
 
   components: { PricesTable },
 })
-export default class SecurityPage extends Vue {
-  mdiDragVariant = mdiDragVariant
-
+export default class SecurityPage extends mixins(Vue, IconsMixin) {
   // asyncData
   security: any
 

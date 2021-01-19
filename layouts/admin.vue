@@ -48,39 +48,32 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import {
-  mdiAccount,
-  mdiCurrencyUsd,
-  mdiEarth,
-  mdiHome,
-  mdiLogoutVariant,
-  mdiPoll,
-} from '@mdi/js'
+import { Component, Vue, mixins } from 'nuxt-property-decorator'
+
+import { IconsMixin } from '@/components/icons-mixin'
 
 @Component({ middleware: 'auth' })
-export default class AdminLayout extends Vue {
-  // middleware: 'auth',
-  mdiAccount = mdiAccount
-  mdiLogoutVariant = mdiLogoutVariant
-
+export default class AdminLayout extends mixins(Vue, IconsMixin) {
   title = 'Portfolio Report Admin'
   leftDrawerOpen = false
-  menuItems = [
-    { name: 'Home', icon: mdiHome, to: '/admin/' },
-    {
-      name: 'Securities',
-      icon: mdiCurrencyUsd,
-      to: '/admin/securities',
-    },
-    {
-      name: 'Client updates',
-      icon: mdiPoll,
-      to: '/admin/stats',
-    },
-    { name: 'Public site', icon: mdiEarth, to: '/' },
-    { name: 'Statistics', icon: mdiPoll, to: '/stats' },
-  ]
+
+  get menuItems() {
+    return [
+      { name: 'Home', icon: this.mdiHome, to: '/admin/' },
+      {
+        name: 'Securities',
+        icon: this.mdiCurrencyUsd,
+        to: '/admin/securities',
+      },
+      {
+        name: 'Client updates',
+        icon: this.mdiPoll,
+        to: '/admin/stats',
+      },
+      { name: 'Public site', icon: this.mdiEarth, to: '/' },
+      { name: 'Statistics', icon: this.mdiPoll, to: '/stats' },
+    ]
+  }
 
   get authenticated() {
     return this.$store.getters['auth/isAuthenticated']

@@ -88,9 +88,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Watch, mixins } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
-import { mdiDelete, mdiFilter, mdiFilterOutline, mdiPencil } from '@mdi/js'
+
+import { IconsMixin } from '@/components/icons-mixin'
 import DialogConfirm from '../../components/dialog-confirm.vue'
 
 interface ClientUpdate {
@@ -102,12 +103,7 @@ interface ClientUpdate {
 }
 
 @Component({ components: { DialogConfirm }, layout: 'admin' })
-export default class StatsPage extends Vue {
-  mdiFilter = mdiFilter
-  mdiFilterOutline = mdiFilterOutline
-  mdiPencil = mdiPencil
-  mdiDelete = mdiDelete
-
+export default class StatsPage extends mixins(Vue, IconsMixin) {
   filterVersion: string | null = null
   showEditDialog = false
   editedItem: ClientUpdate = {

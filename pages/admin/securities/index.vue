@@ -182,15 +182,9 @@
 
 <script lang="ts">
 import debounce from 'lodash/debounce'
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
-import {
-  mdiDelete,
-  mdiFilter,
-  mdiFilterOutline,
-  mdiMagnify,
-  mdiPencil,
-  mdiPlus,
-} from '@mdi/js'
+import { Component, Vue, Watch, mixins } from 'nuxt-property-decorator'
+
+import { IconsMixin } from '@/components/icons-mixin'
 import SelectSecurityType from '@/components/select-security-type.vue'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
 
@@ -210,14 +204,7 @@ interface Security {
   components: { DialogConfirm, SelectSecurityType },
   layout: 'admin',
 })
-export default class SecuritiesPage extends Vue {
-  mdiPlus = mdiPlus
-  mdiFilter = mdiFilter
-  mdiFilterOutline = mdiFilterOutline
-  mdiMagnify = mdiMagnify
-  mdiPencil = mdiPencil
-  mdiDelete = mdiDelete
-
+export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
   showCreateDialog = false
   showEditDialog = false
   createdItem: Security = {

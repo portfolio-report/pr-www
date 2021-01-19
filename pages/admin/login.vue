@@ -38,14 +38,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mdiAccount, mdiLock } from '@mdi/js'
+import { Component, Vue, mixins } from 'nuxt-property-decorator'
+
+import { IconsMixin } from '@/components/icons-mixin'
 
 @Component
-export default class LoginPage extends Vue {
-  mdiAccount = mdiAccount
-  mdiLock = mdiLock
-
+export default class LoginPage extends mixins(Vue, IconsMixin) {
   formUsername = ''
   formPassword = ''
   errorMessage: string | null = null

@@ -132,8 +132,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mdiDelete, mdiPencil } from '@mdi/js'
+import { Component, Vue, mixins } from 'nuxt-property-decorator'
+
+import { IconsMixin } from '@/components/icons-mixin'
 import BtnLoading from '../../../components/btn-loading.vue'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
 
@@ -149,10 +150,7 @@ import DialogConfirm from '../../../components/dialog-confirm.vue'
   layout: 'admin',
   components: { BtnLoading, DialogConfirm },
 })
-export default class SecurityPage extends Vue {
-  mdiPencil = mdiPencil
-  mdiDelete = mdiDelete
-
+export default class SecurityPage extends mixins(Vue, IconsMixin) {
   // asyncData
   security: any
 

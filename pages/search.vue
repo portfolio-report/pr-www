@@ -104,18 +104,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mdiChartLine, mdiDragVariant } from '@mdi/js'
+import { Component, Vue, mixins } from 'nuxt-property-decorator'
 
+import { IconsMixin } from '@/components/icons-mixin'
 import SelectSecurityType from '@/components/select-security-type.vue'
 
 @Component({
   components: { SelectSecurityType },
 })
-export default class SearchPage extends Vue {
-  mdiChartLine = mdiChartLine
-  mdiDragVariant = mdiDragVariant
-
+export default class SearchPage extends mixins(Vue, IconsMixin) {
   searchFormValid = false
   searchTerm = ''
   searchRules = [(v: string) => !!v || 'Required']
