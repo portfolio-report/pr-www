@@ -474,7 +474,11 @@ router
       return
     }
 
-    res.json(security.markets[0])
+    const market = security.markets[0].toJSON() as Market
+    res.json({
+      ...market,
+      prices: market.prices?.map((p) => ({ ...p, close: Number(p.close) })),
+    })
   })
 
 /**

@@ -4,7 +4,7 @@ import { ExchangeRate, sequelize } from '../sequelize'
 export class ExchangeRatePrice extends Model {
   public id!: number
   public date!: Date
-  public value!: number
+  public value!: string
 
   public exchangeRateId!: number
 }

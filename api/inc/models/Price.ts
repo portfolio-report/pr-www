@@ -4,7 +4,7 @@ import { Market, sequelize } from '../sequelize'
 export class Price extends Model {
   public id!: number
   public date!: Date
-  public close!: number
+  public close!: string
 
   public marketId!: number
 }
