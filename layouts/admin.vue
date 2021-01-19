@@ -51,7 +51,6 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import {
   mdiAccount,
-  mdiBackupRestore,
   mdiCurrencyUsd,
   mdiEarth,
   mdiHome,
@@ -78,11 +77,6 @@ export default class AdminLayout extends Vue {
       name: 'Client updates',
       icon: mdiPoll,
       to: '/admin/stats',
-    },
-    {
-      name: 'Backup & Restore',
-      icon: mdiBackupRestore,
-      to: '/admin/backup',
     },
     { name: 'Public site', icon: mdiEarth, to: '/' },
     { name: 'Statistics', icon: mdiPoll, to: '/stats' },

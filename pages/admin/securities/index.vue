@@ -173,6 +173,8 @@
         </template>
       </v-data-table>
 
+      <v-btn color="primary" @click="updateFts">Update FTS index</v-btn>
+
       <DialogConfirm ref="confirm" />
     </v-col>
   </v-row>
@@ -370,6 +372,10 @@ export default class SecuritiesPage extends Vue {
       await this.$axios.$delete(`/api/securities/${item.id}`)
       this.getSecurities()
     }
+  }
+
+  updateFts() {
+    this.$axios.post('/api/securities/search/update')
   }
 
   head() {

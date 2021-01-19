@@ -3,7 +3,6 @@ import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 
 import auth from './auth'
-import backups from './backups'
 import contact from './contact'
 import currencies from './currencies'
 import exchangeRates from './exchangeRates'
@@ -39,7 +38,6 @@ app.get('/', function (_req, res) {
 })
 
 app.use('/auth', auth)
-app.use('/backups', backups)
 app.use('/contact', contact)
 app.use('/currencies', currencies)
 app.use('/exchangeRates', exchangeRates)
