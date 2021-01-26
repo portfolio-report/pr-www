@@ -4,7 +4,7 @@
 
 ## Getting started
 
-``` bash
+```bash
 # Clone repository
 $ git clone ...
 
@@ -32,18 +32,6 @@ SEARCH_MAX_SCORE=0.1
 Create `api/config.json`, e.g.:
 ```json
 {
-  "auth": {
-    "adminUsers": [
-      {
-        "username": "...",
-        "password": "plain:secret"
-      },
-      {
-        "username": "...",
-        "password": "sha256:2bb80d53..."
-      }
-    ]
-  },
   "contact": {
     "recipientEmailAddress": "me@example.com",
     "nodemailerTransportOptions": {}
@@ -63,6 +51,15 @@ For `nodemailerTransportOptions` see https://nodemailer.com/smtp/, e.g.
 ``` bash
 # Initialize/update database
 $ yarn migrate up
+
+# Generate prisma client
+$ npx prisma generate
+
+# Create user in database
+$ npx prisma studio
+# or
+$ psql "$DATABASE_URL" -c "INSERT INTO users (username, password) VALUES ('admin','plain:secret')"
+# password can be 'plain:...' or 'sha256:2bb80d53...'
 ```
 
 ## GeoIP lookups

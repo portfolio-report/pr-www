@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import express, { NextFunction, Request, Response } from 'express'
 import Debug from 'debug'
 import { HttpError } from './inc/HttpError'
-import { getAdminUsers } from './configReader'
+import { prisma } from './inc/prisma'
 
 const log = Debug('pr-www:auth')
 
@@ -11,12 +11,18 @@ const router = express.Router()
 // Parse JSON payloads
 router.use(express.json())
 
+declare module 'express-session' {
+  interface SessionData {
+    user?: { username: string }
+  }
+}
+
 /**
  * Check credentials and create session
  */
 router.post(
   '/login',
-  function (req: Request, res: Response, next: NextFunction) {
+  async function (req: Request, res: Response, next: NextFunction) {
     const { username, password } = req.body
 
     if (
@@ -29,22 +35,20 @@ router.post(
       return next(new HttpError(401, 'Unauthorized'))
     }
 
-    const adminUsers = getAdminUsers().filter(
-      (user) => user.username === username
-    )
+    const adminUser = await prisma.user.findFirst({ where: { username } })
 
-    if (adminUsers.length === 0) {
+    if (!adminUser) {
       log(`User ${username} unknown`)
 
       return next(new HttpError(401, 'Unauthorized'))
     }
 
-    const configPassword = adminUsers[0].password
+    const passwordHash = adminUser.password
 
-    let passwordCompare
-    if (configPassword.startsWith('plain:')) {
+    let passwordCompare: string
+    if (passwordHash?.startsWith('plain:')) {
       passwordCompare = 'plain:' + password
-    } else if (configPassword.startsWith('sha256:')) {
+    } else if (passwordHash?.startsWith('sha256:')) {
       passwordCompare =
         'sha256:' + crypto.createHash('sha256').update(password).digest('hex')
     } else {
@@ -52,7 +56,7 @@ router.post(
       return next(new HttpError(401, 'Unauthorized'))
     }
 
-    if (passwordCompare === configPassword) {
+    if (passwordCompare === passwordHash) {
       log(`Creating session for ${username}`)
 
       const user = { username }
@@ -104,12 +108,12 @@ router.get('/me', authRequired, function (req: Request, res: Response) {
  * Destroy session
  */
 router.post('/logout', authRequired, function (req: Request, res: Response) {
-  log(`Destroying session for '${req.session?.user.username}'`)
+  log(`Destroying session for '${req.session?.user?.username}'`)
 
   // Remove the session
-  delete req.session
-
-  res.json({ status: 'ok' })
+  req.session.destroy(() => {
+    res.json({ status: 'ok' })
+  })
 })
 
 /**

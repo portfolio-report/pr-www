@@ -9,6 +9,8 @@ RUN yarn install --frozen-lockfile
 # Copy the rest of the app
 COPY . .
 
+RUN npx prisma generate
+
 # Build Nuxt
 RUN yarn build
 
