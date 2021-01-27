@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express'
 import Debug from 'debug'
-import Sequelize from 'sequelize'
+import { Prisma } from '@prisma/client'
+
 import { getCountryFromIp } from './inc/geoip'
 import { authRequired } from './auth'
-import { ClientUpdate } from './inc/sequelize'
+import { prisma } from './inc/prisma'
+
 const log = Debug('pr-www:stats')
 
 const router = express.Router()
@@ -26,22 +28,22 @@ router.get('/', authRequired, async function (req: Request, res: Response) {
       `sort: ${sort}, desc: ${descending}, version: ${version}`
   )
 
-  const filters = []
+  const where: Prisma.ClientupdateWhereInput = {}
 
-  if (version) {
-    filters.push({ version })
+  if (version && typeof version === 'string') {
+    where.version = version
   }
 
-  const where = { [Sequelize.Op.and]: filters }
-
-  const result = await ClientUpdate.findAndCountAll({
+  const entries = await prisma.clientupdate.findMany({
     where,
-    order: [[sort, descending ? 'DESC' : 'ASC']],
-    limit,
-    offset: skip,
+    orderBy: { [sort]: descending ? 'desc' : 'asc' },
+    take: limit,
+    skip,
   })
 
-  res.json({ entries: result.rows, params: { totalCount: result.count } })
+  const totalCount = await prisma.clientupdate.count()
+
+  res.json({ entries, params: { totalCount } })
 })
 
 /**
@@ -51,9 +53,9 @@ router.delete(
   '/:id',
   authRequired,
   async function (req: Request, res: Response) {
-    const id = req.params.id
+    const id = Number(req.params.id)
     log(`Deleting entry ${id}`)
-    await ClientUpdate.destroy({ where: { id } })
+    await prisma.clientupdate.delete({ where: { id } })
     res.json({ status: 'ok' })
   }
 )
@@ -62,43 +64,43 @@ router.delete(
  * Get statistics on updates
  */
 router.route('/updates').get(async function (_req, res: Response) {
-  const versionsObj = await ClientUpdate.findAll({
-    attributes: [
-      'version',
-      [Sequelize.fn('count', Sequelize.col('*')), 'count'],
-      [Sequelize.fn('max', Sequelize.col('timestamp')), 'dt_last_update'],
-      [Sequelize.fn('min', Sequelize.col('timestamp')), 'dt_first_update'],
-    ],
-    group: ['version'],
+  const versions = await prisma.clientupdate.groupBy({
+    by: ['version'],
+    count: true,
+    min: { timestamp: true },
+    max: { timestamp: true },
   })
 
-  // Convert to plain objects
-  const versions: Array<any> = versionsObj.map((v) => v.toJSON())
-
-  for (const version of versions) {
-    // Add updates per day
-    version.dates = await ClientUpdate.findAll({
-      attributes: [
-        [Sequelize.fn('date', Sequelize.col('timestamp')), 'date'],
-        [Sequelize.fn('count', Sequelize.col('*')), 'count'],
-      ],
-      group: ['date'],
-      where: { version: version.version },
-    })
-
-    // Add updates per country
-    version.countries = await ClientUpdate.findAll({
-      attributes: [
-        [Sequelize.fn('COALESCE', Sequelize.col('country'), ''), 'country'],
-        [Sequelize.fn('count', Sequelize.col('*')), 'count'],
-      ],
-      group: Sequelize.fn('COALESCE', Sequelize.col('country'), ''),
-      where: { version: version.version },
-    })
-  }
-
-  res.json({ versions })
+  return res.json(
+    versions.map((el) => ({
+      version: el.version,
+      count: el.count,
+      firstUpdate: el.min.timestamp,
+      lastUpdate: el.max.timestamp,
+    }))
+  )
 })
+
+router
+  .route('/updates/:version')
+  .get(async function (req: Request, res: Response) {
+    const version = req.params.version
+
+    const byDate = await prisma.$queryRaw`
+      SELECT date(timestamp) AS date, count(*) AS count
+      FROM clientupdates
+      WHERE version = ${version}
+      GROUP BY date
+      ORDER BY date ASC;`
+
+    const byCountry = await prisma.$queryRaw`
+      SELECT COALESCE(country, '') AS country, count(*) AS count
+      FROM clientupdates
+      WHERE version = ${version}
+      GROUP BY country;`
+
+    return res.json({ byDate, byCountry })
+  })
 
 /**
  * Count requests (GET or HEAD) as
@@ -111,14 +113,14 @@ router
     const country = getCountryFromIp(req.ip)
 
     // Log the update to database
-    const entry = {
+    const data = {
       timestamp: new Date(),
-      version: req.params.version,
+      version: req.params.version.slice(0, 20),
       country,
       useragent: req.headers['user-agent']?.slice(0, 60),
     }
 
-    await ClientUpdate.create(entry)
+    await prisma.clientupdate.create({ data })
 
     // Send answer to client
     res.send('ok')

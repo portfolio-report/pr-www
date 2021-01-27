@@ -3,7 +3,6 @@ import Debug from 'debug'
 import { Security, initSecurity } from './models/Security'
 import { Market, initMarket } from './models/Market'
 import { Price, initPrice } from './models/Price'
-import { ClientUpdate, initClientUpdate } from './models/ClientUpdate'
 import { Event, initEvent } from './models/Event'
 const log = Debug('pr-www:sequelize')
 
@@ -14,7 +13,6 @@ export const sequelize = new Sequelize(process.env.DATABASE_URL || '', {
 initSecurity()
 initMarket()
 initPrice()
-initClientUpdate()
 initEvent()
 
-export { Security, Market, Price, ClientUpdate, Event }
+export { Security, Market, Price, Event }

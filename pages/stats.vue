@@ -8,19 +8,19 @@
 
     <v-data-table
       :headers="headers"
-      :items="stats.versions"
+      :items="versions"
       :hide-default-footer="true"
       sort-by="version"
       :items-per-page="-1"
     >
       <template #item="props">
-        <tr @click="selectedVersion = props.item">
+        <tr @click="selectVersion(props.item.version)">
           <td>{{ props.item.version }}</td>
           <td>
-            {{ props.item.dt_first_update.toLocaleString('de-DE') }}
+            {{ props.item.firstUpdate.toLocaleString('de-DE') }}
           </td>
           <td>
-            {{ props.item.dt_last_update.toLocaleString('de-DE') }}
+            {{ props.item.lastUpdate.toLocaleString('de-DE') }}
           </td>
           <td class="text-right">{{ props.item.count }}</td>
           <td><v-btn>Details</v-btn></td>
@@ -29,11 +29,11 @@
     </v-data-table>
 
     <div v-if="selectedVersion !== null">
-      <h3>Version {{ selectedVersion.version }}</h3>
+      <h3>Version {{ selectedVersion }}</h3>
       <h4>Updates by date</h4>
-      <date-view :dates="selectedVersion.dates" />
+      <date-view :dates="selectedVersionByDate" />
       <h4>Updates by country</h4>
-      <country-view :countries="selectedVersion.countries" />
+      <country-view :countries="selectedVersionByCountry" />
     </div>
   </div>
 </template>
@@ -53,40 +53,39 @@ import CountryView from '~/components/stats-country.vue'
   },
   async asyncData({ $axios }) {
     const lastUpdate = new Date()
-    const stats = await $axios.$get('/api/stats/updates')
+    const versions = await $axios.$get('/api/stats/updates')
 
     /* Convert datetime strings to objects and numerical */
-    for (const v of stats.versions) {
-      if (v.dt_first_update) {
-        v.dt_first_update = new Date(v.dt_first_update)
-        v.sort_first_update = v.dt_first_update.getTime()
+    for (const v of versions) {
+      if (v.firstUpdate) {
+        v.firstUpdate = new Date(v.firstUpdate)
+        v.firstUpdateInt = v.firstUpdate.getTime()
       }
-      if (v.dt_last_update) {
-        v.dt_last_update = new Date(v.dt_last_update)
-        v.sort_last_update = v.dt_last_update.getTime()
+      if (v.lastUpdate) {
+        v.lastUpdate = new Date(v.lastUpdate)
+        v.lastUpdateInt = v.lastUpdate.getTime()
       }
     }
 
-    return { lastUpdate, stats }
+    return { lastUpdate, versions }
   },
 })
 export default class StatsPage extends Vue {
   // asyncData
   lastUpdate!: Date
-  stats!: {
-    versions: Array<{
-      version: string
-      count: number
-      // eslint-disable-next-line camelcase
-      dt_first_update: string
-      // eslint-disable-next-line camelcase
-      dt_last_update: string
-      dates: Array<{ date: string; count: number }>
-      countries: Array<{ country: string; count: number }>
-    }>
-  }
+  versions!: Array<{
+    version: string
+    count: number
+    firstUpdate: Date
+    firstUpdateInt: number
+    lastUpdate: Date
+    lastUpdateInt: number
+  }>
 
   selectedVersion: string | null = null
+  selectedVersionByDate: Array<{ date: string; count: number }> = []
+  selectedVersionByCountry: Array<{ country: string; count: number }> = []
+
   headers = [
     {
       text: 'Version',
@@ -98,13 +97,13 @@ export default class StatsPage extends Vue {
       text: 'From',
       align: 'left',
       sortable: true,
-      value: 'sort_first_update',
+      value: 'firstUpdateInt',
     },
     {
       text: 'To',
       align: 'left',
       sortable: true,
-      value: 'sort_last_update',
+      value: 'lastUpdateInt',
     },
     {
       text: 'Count',
@@ -117,12 +116,12 @@ export default class StatsPage extends Vue {
 
   get chartData() {
     return {
-      labels: this.stats.versions.map((e) => e.version),
+      labels: this.versions.map((e) => e.version),
       datasets: [
         {
           label: 'count',
           backgroundColor: '#006e90',
-          data: this.stats.versions.map((e) => e.count),
+          data: this.versions.map((e) => e.count),
         },
       ],
     }
@@ -131,6 +130,15 @@ export default class StatsPage extends Vue {
   chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+  }
+
+  async selectVersion(version: string) {
+    const { byDate, byCountry } = await this.$axios.$get(
+      `/api/stats/updates/${version}`
+    )
+    this.selectedVersion = version
+    this.selectedVersionByDate = byDate
+    this.selectedVersionByCountry = byCountry
   }
 
   head() {

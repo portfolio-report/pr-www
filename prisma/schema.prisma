@@ -1,11 +1,21 @@
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["nativeTypes"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["nativeTypes", "groupBy"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Clientupdate {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime
+  version   String
+  country   String?
+  useragent String?
+
+  @@map("clientupdates")
 }
 
 model Exchangerate {
