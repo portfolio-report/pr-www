@@ -1,7 +1,6 @@
-import Sequelize from 'sequelize'
 import express, { Request, Response } from 'express'
-import { isAuthenticated } from './auth'
-import { ExchangeRate, sequelize } from './inc/sequelize'
+
+import { prisma } from './inc/prisma'
 
 const router = express.Router()
 
@@ -9,9 +8,9 @@ const router = express.Router()
  * Get currencies (public)
  */
 router.route('/').get(async function (_req: Request, res: Response) {
-  const currencies = await sequelize.query(
-    'SELECT base_currency_code as "currencyCode" from exchangeRates UNION SELECT quote_currency_code as "currencyCode" from exchangeRates',
-    { type: Sequelize.QueryTypes.SELECT }
+  const currencies = await prisma.$queryRaw(
+    'SELECT DISTINCT base_currency_code as "currencyCode" from exchangerates ' +
+      'UNION SELECT DISTINCT quote_currency_code as "currencyCode" from exchangerates'
   )
 
   res.json(currencies)
@@ -25,23 +24,21 @@ router
   .get(async function (req: Request, res: Response) {
     const { currencyCode } = req.params
 
-    const exchangeRates = await ExchangeRate.findAll({
-      attributes: isAuthenticated(req)
-        ? undefined
-        : ['baseCurrencyCode', 'quoteCurrencyCode'],
+    const exchangerates = await prisma.exchangerate.findMany({
+      select: { baseCurrencyCode: true, quoteCurrencyCode: true },
       where: {
-        [Sequelize.Op.or]: [
+        OR: [
           { baseCurrencyCode: currencyCode },
           { quoteCurrencyCode: currencyCode },
         ],
       },
     })
 
-    if (exchangeRates.length === 0) {
+    if (exchangerates.length === 0) {
       return res.status(404).json({ message: 'Not found.' })
     }
 
-    const currency = { currencyCode, exchangeRates }
+    const currency = { currencyCode, exchangerates }
 
     res.json(currency)
   })

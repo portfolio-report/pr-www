@@ -1,8 +1,9 @@
 import Debug from 'debug'
-import Sequelize from 'sequelize'
 import express, { NextFunction, Request, Response } from 'express'
-import { authRequired, isAuthenticated } from './auth'
-import { ExchangeRate, ExchangeRatePrice, sequelize } from './inc/sequelize'
+import { Prisma } from '@prisma/client'
+import { authRequired } from './auth'
+import { prisma } from './inc/prisma'
+
 const log = Debug('pr-www:exchangeRates')
 
 const router = express.Router()
@@ -14,11 +15,11 @@ router.use(express.json({ limit: '20mb' }))
  * Get exchange rates (public)
  */
 router.route('/').get(async function (_req: Request, res: Response) {
-  const exchangeRates = await ExchangeRate.findAll({
-    attributes: ['baseCurrencyCode', 'quoteCurrencyCode'],
+  const exchangerates = await prisma.exchangerate.findMany({
+    select: { baseCurrencyCode: true, quoteCurrencyCode: true },
   })
 
-  res.json(exchangeRates)
+  res.json(exchangerates)
 })
 
 /**
@@ -34,25 +35,29 @@ router.patch(
     req.setTimeout(0)
     res.setTimeout(0)
 
-    const prices: Array<{ date: string; value: number }> = req.body
+    const prices: Array<{ date: string; value: string }> = req.body
 
     log(
       `Creating/updating exchangeRate ${baseCurrencyCode}/${quoteCurrencyCode}`
     )
     try {
-      const [exchangeRate] = await ExchangeRate.findOrCreate({
+      const exchangerate = await prisma.exchangerate.findFirst({
         where: { baseCurrencyCode, quoteCurrencyCode },
       })
 
+      if (!exchangerate) {
+        return res.status(404).json({ message: 'Not found.' })
+      }
+
       // Create/update the associated prices
       if (prices) {
-        await sequelize.query(
+        await prisma.$executeRaw(
           'INSERT INTO exchangerates_prices (exchangerate_id, date, value) ' +
             'VALUES ' +
             prices
               .map(
                 (price) =>
-                  `(${exchangeRate.id}, '${price.date}', ${price.value})`
+                  `(${exchangerate.id}, '${price.date}', ${price.value})`
               )
               .join(',') +
             ' ON CONFLICT(exchangerate_id, date) DO UPDATE SET value=excluded.value'
@@ -81,19 +86,17 @@ router
       quoteCurrencyCode,
       baseCurrencyCode,
     }
-    const exchangeRate = await ExchangeRate.findOne({
+    const exchangerate = await prisma.exchangerate.findFirst({
+      select: { baseCurrencyCode: true, quoteCurrencyCode: true },
       where,
-      attributes: isAuthenticated(req)
-        ? undefined
-        : ['baseCurrencyCode', 'quoteCurrencyCode'],
     })
 
-    if (!exchangeRate) {
+    if (!exchangerate) {
       res.status(404).json({ message: 'Not found.' })
       return
     }
 
-    res.json(exchangeRate)
+    res.json(exchangerate)
   })
 
 /**
@@ -109,28 +112,34 @@ router
       quoteCurrencyCode,
       baseCurrencyCode,
     }
-    const dateFilter: Sequelize.WhereAttributeHash = from
-      ? { date: { [Sequelize.Op.gte]: from } }
-      : {}
-    const exchangeRate = await ExchangeRate.findOne({
+
+    let priceWhere: Prisma.ExchangeratePriceWhereInput = {}
+    if (typeof from === 'string') {
+      priceWhere = { date: { gte: new Date(from) } }
+    }
+
+    const exchangerate = await prisma.exchangerate.findFirst({
       where,
-      include: [
-        {
-          model: ExchangeRatePrice,
-          as: 'prices',
-          attributes: ['date', 'value'],
-          where: dateFilter,
-          required: false,
+      include: {
+        prices: {
+          select: { date: true, value: true },
+          orderBy: { date: 'asc' },
+          where: priceWhere,
         },
-      ],
+      },
     })
 
-    if (!exchangeRate) {
+    if (!exchangerate) {
       res.status(404).json({ message: 'Not found.' })
       return
     }
 
-    res.json(exchangeRate.prices)
+    res.json(
+      exchangerate.prices.map((el) => ({
+        date: el.date.toISOString().substring(0, 10),
+        value: el.value,
+      }))
+    )
   })
 
 export default router

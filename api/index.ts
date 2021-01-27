@@ -5,7 +5,7 @@ import cors from 'cors'
 import auth from './auth'
 import contact from './contact'
 import currencies from './currencies'
-import exchangeRates from './exchangeRates'
+import exchangerates from './exchangerates'
 import securities from './securities'
 import stats from './stats'
 import { HttpError } from './inc/HttpError'
@@ -40,7 +40,7 @@ app.get('/', function (_req, res) {
 app.use('/auth', auth)
 app.use('/contact', contact)
 app.use('/currencies', currencies)
-app.use('/exchangeRates', exchangeRates)
+app.use('/exchangerates', exchangerates)
 app.use('/securities', securities)
 app.use('/stats', stats)
 

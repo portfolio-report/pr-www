@@ -1,10 +1,30 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["nativeTypes"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Exchangerate {
+  id                Int                 @id @default(autoincrement())
+  baseCurrencyCode  String              @map("base_currency_code")
+  quoteCurrencyCode String              @map("quote_currency_code")
+  prices            ExchangeratePrice[]
+
+  @@map("exchangerates")
+}
+
+model ExchangeratePrice {
+  id             Int           @id @default(autoincrement())
+  exchangerateId Int?          @map("exchangerate_id")
+  date           DateTime
+  value          Decimal
+  exchangerate   Exchangerate? @relation(fields: [exchangerateId], references: [id])
+
+  @@map("exchangerates_prices")
 }
 
 model User {
