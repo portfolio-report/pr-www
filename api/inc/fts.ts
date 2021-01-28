@@ -8,7 +8,7 @@ const log = Debug('pr-www:fts')
 /**
  * Placeholder for full text search for securities
  */
-let securitiesFts: Fuse<Security, Fuse.IFuseOptions<Security>>
+let securitiesFts: Fuse<Security>
 
 /**
  * Search full text search index for securities
