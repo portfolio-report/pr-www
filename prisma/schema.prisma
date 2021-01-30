@@ -18,6 +18,19 @@ model Clientupdate {
   @@map("clientupdates")
 }
 
+model Event {
+  id           Int       @id @default(autoincrement())
+  securityId   Int?      @map("security_id")
+  date         DateTime
+  type         String
+  amount       Decimal?
+  currencyCode String?   @map("currency_code")
+  ratio        String?
+  security     Security? @relation(fields: [securityId], references: [id])
+
+  @@map("events")
+}
+
 model Exchangerate {
   id                Int                 @id @default(autoincrement())
   baseCurrencyCode  String              @map("base_currency_code")
@@ -37,6 +50,49 @@ model ExchangeratePrice {
 
   @@unique([exchangerateId, date])
   @@map("exchangerates_prices")
+}
+
+model Market {
+  id             Int       @id @default(autoincrement())
+  securityId     Int?      @map("security_id")
+  marketCode     String    @map("market_code")
+  currencyCode   String?   @map("currency_code")
+  firstPriceDate DateTime? @map("first_price_date")
+  lastPriceDate  DateTime? @map("last_price_date")
+  symbol         String?   @db.VarChar(10)
+  updatePrices   Boolean   @map("update_prices")
+  security       Security? @relation(fields: [securityId], references: [id])
+  prices         Price[]
+
+  @@unique([securityId, marketCode])
+  @@map("markets")
+}
+
+model Price {
+  id       Int      @id @default(autoincrement())
+  marketId Int?     @map("market_id")
+  date     DateTime
+  close    Decimal
+  market   Market?  @relation(fields: [marketId], references: [id])
+
+  @@unique([marketId, date])
+  @@map("prices")
+}
+
+model Security {
+  id           Int      @id @default(autoincrement())
+  uuid         String?  @unique
+  name         String?
+  isin         String?
+  wkn          String?
+  symbolXfra   String?  @map("symbol_xfra")
+  symbolXnas   String?  @map("symbol_xnas")
+  symbolXnys   String?  @map("symbol_xnys")
+  securityType String?  @map("security_type")
+  events       Event[]
+  markets      Market[]
+
+  @@map("securities")
 }
 
 model User {

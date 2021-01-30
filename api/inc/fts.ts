@@ -1,14 +1,14 @@
 import Fuse from 'fuse.js'
 import Debug from 'debug'
-import { Market, Security } from './sequelize'
-import { publicSecurityAttributes } from './../securities'
+
+import { prisma } from './prisma'
 
 const log = Debug('pr-www:fts')
 
 /**
  * Placeholder for full text search for securities
  */
-let securitiesFts: Fuse<Security>
+let securitiesFts: Fuse<any>
 
 /**
  * Search full text search index for securities
@@ -16,7 +16,7 @@ let securitiesFts: Fuse<Security>
  */
 export function searchSecuritiesFts(
   query: string
-): Array<Fuse.FuseResult<Security>> | null {
+): Array<Fuse.FuseResult<any>> | null {
   if (!securitiesFts) {
     return null
   }
@@ -30,29 +30,44 @@ export function searchSecuritiesFts(
 export async function updateSecuritiesFts() {
   log('Creating/updating full text search index...')
 
-  const entries: Array<Security> = await Security.findAll({
-    include: [
-      {
-        model: Market,
-        attributes: [
-          'marketCode',
-          'symbol',
-          'firstPriceDate',
-          'lastPriceDate',
-          'currencyCode',
-        ],
+  const entries = await prisma.security.findMany({
+    select: {
+      uuid: true,
+      name: true,
+      isin: true,
+      wkn: true,
+      symbolXfra: true,
+      symbolXnas: true,
+      symbolXnys: true,
+      securityType: true,
+      markets: {
+        select: {
+          marketCode: true,
+          symbol: true,
+          firstPriceDate: true,
+          lastPriceDate: true,
+          currencyCode: true,
+        },
       },
-    ],
-    attributes: publicSecurityAttributes,
+    },
   })
 
-  const options: Fuse.IFuseOptions<Security> = {
+  const entriesWithDateOnly = entries.map((s) => ({
+    ...s,
+    markets: s.markets.map((m) => ({
+      ...m,
+      firstPriceDate: m.firstPriceDate?.toISOString().substring(0, 10),
+      lastPriceDate: m.lastPriceDate?.toISOString().substring(0, 10),
+    })),
+  }))
+
+  const options: Fuse.IFuseOptions<any> = {
     includeScore: true,
     shouldSort: true,
     minMatchCharLength: 2,
     keys: ['name', 'isin', 'wkn', 'symbolXnas', 'symbolXnys', 'markets.symbol'],
   }
-  const fts = new Fuse(entries, options)
+  const fts = new Fuse(entriesWithDateOnly, options)
 
   securitiesFts = fts
   log('Full text search index created.')

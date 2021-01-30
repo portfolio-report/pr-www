@@ -1,27 +1,16 @@
 import Debug from 'debug'
-import Sequelize from 'sequelize'
 import express, { NextFunction, Request, Response } from 'express'
+import { Prisma } from '@prisma/client'
 import { authRequired, isAuthenticated } from './auth'
 import { searchSecuritiesFts, updateSecuritiesFts } from './inc/fts'
-import { Event, Market, Price, Security, sequelize } from './inc/sequelize'
 import { HttpError } from './inc/HttpError'
+import { prisma } from './inc/prisma'
 const log = Debug('pr-www:securities')
 
 const router = express.Router()
 
 // Parse (large) JSON payloads
 router.use(express.json({ limit: '20mb' }))
-
-export const publicSecurityAttributes = [
-  'uuid',
-  'name',
-  'isin',
-  'wkn',
-  'symbolXfra',
-  'symbolXnas',
-  'symbolXnys',
-  'securityType',
-]
 
 /**
  * Read securities from db with query parameters
@@ -45,19 +34,19 @@ async function readSecurities({
   includeMarkets: boolean
   includeEvents: boolean
 }) {
-  const filters = []
+  const filters: Prisma.SecurityWhereInput[] = []
 
   // Add filter based on search text
   if (search) {
     filters.push({
-      [Sequelize.Op.or]: [
-        { uuid: { [Sequelize.Op.like]: search } },
-        { name: { [Sequelize.Op.substring]: search } },
-        { isin: { [Sequelize.Op.like]: search } },
-        { wkn: { [Sequelize.Op.like]: search } },
-        { symbolXfra: { [Sequelize.Op.like]: search } },
-        { symbolXnas: { [Sequelize.Op.like]: search } },
-        { symbolXnys: { [Sequelize.Op.like]: search } },
+      OR: [
+        { uuid: { equals: search, mode: 'insensitive' } },
+        { name: { contains: search, mode: 'insensitive' } },
+        { isin: { equals: search, mode: 'insensitive' } },
+        { wkn: { equals: search, mode: 'insensitive' } },
+        { symbolXfra: { equals: search, mode: 'insensitive' } },
+        { symbolXnas: { equals: search, mode: 'insensitive' } },
+        { symbolXnys: { equals: search, mode: 'insensitive' } },
       ],
     })
   }
@@ -67,42 +56,47 @@ async function readSecurities({
     filters.push({ securityType })
   }
 
-  const where = { [Sequelize.Op.and]: filters }
+  const where: Prisma.SecurityWhereInput = { AND: filters }
 
-  const include = []
+  const include: Prisma.SecurityInclude = {}
 
   if (includeMarkets) {
-    include.push({
-      model: Market,
-      attributes: [
-        'marketCode',
-        'currencyCode',
-        'firstPriceDate',
-        'lastPriceDate',
-        'symbol',
-        'updatePrices',
-      ],
-    })
+    include.markets = {
+      select: {
+        marketCode: true,
+        currencyCode: true,
+        firstPriceDate: true,
+        lastPriceDate: true,
+        symbol: true,
+        updatePrices: true,
+      },
+    }
   }
 
   if (includeEvents) {
-    include.push({
-      model: Event,
-      attributes: ['date', 'type', 'amount', 'currencyCode', 'ratio'],
-      where: { type: ['dividend', 'split'] },
-      required: false,
-    })
+    include.events = {
+      select: {
+        date: true,
+        type: true,
+        amount: true,
+        currencyCode: true,
+        ratio: true,
+      },
+      where: { OR: [{ type: 'dividend' }, { type: 'split' }] },
+    }
   }
 
-  const result = await Security.findAndCountAll({
+  const totalCount = await prisma.security.count({ where })
+
+  const entries = await prisma.security.findMany({
     where,
-    order: [[sort, descending ? 'DESC' : 'ASC']],
-    limit,
+    orderBy: { [sort]: descending ? 'desc' : 'asc' },
+    take: limit,
+    skip,
     include,
-    offset: skip,
   })
 
-  return { entries: result.rows, params: { totalCount: result.count } }
+  return { entries, params: { totalCount } }
 }
 
 /**
@@ -144,28 +138,23 @@ router.get('/', authRequired, async function (req: Request, res: Response) {
  * Get single security
  */
 router.get('/:id', authRequired, async function (req: Request, res: Response) {
-  const id = req.params.id
+  const id = Number(req.params.id)
 
-  const findOptions: Sequelize.FindOptions = {
-    where: {
-      id,
-    },
-    include: [
-      {
-        model: Market,
-        attributes: [
-          'marketCode',
-          'currencyCode',
-          'firstPriceDate',
-          'lastPriceDate',
-          'symbol',
-          'updatePrices',
-        ],
+  const security = await prisma.security.findUnique({
+    include: {
+      markets: {
+        select: {
+          marketCode: true,
+          currencyCode: true,
+          firstPriceDate: true,
+          lastPriceDate: true,
+          symbol: true,
+          updatePrices: true,
+        },
       },
-    ],
-  }
-
-  const security = await Security.findOne(findOptions)
+    },
+    where: { id },
+  })
 
   if (!security) {
     res.status(404).json({ message: 'Security not found.' })
@@ -193,7 +182,7 @@ router.post('/', authRequired, async function (req: Request, res: Response) {
     entry.uuid = createUuid()
   }
   log(`Creating entry ${entry.uuid}`)
-  const security = await Security.create(entry)
+  const security = await prisma.security.create({ data: entry })
   res.json(security)
 })
 
@@ -204,12 +193,11 @@ router.patch(
   '/:id',
   authRequired,
   async function (req: Request, res: Response, next: NextFunction) {
-    const id = req.params.id
+    const id = Number(req.params.id)
     log(`Updating entry ${id}`)
-    const security = await Security.findOne({ where: { id } })
+    const security = await prisma.security.findUnique({ where: { id } })
     if (security) {
-      Object.assign(security, req.body)
-      await security.save()
+      await prisma.security.update({ data: req.body, where: { id } })
       res.json({ status: 'ok' })
     } else {
       return next(new HttpError(404, 'Security not found'))
@@ -224,9 +212,9 @@ router.delete(
   '/:id',
   authRequired,
   async function (req: Request, res: Response) {
-    const id = req.params.id
+    const id = Number(req.params.id)
     log(`Deleting entry ${id}`)
-    await Security.destroy({ where: { id } })
+    await prisma.security.delete({ where: { id } })
     res.json({ status: 'ok' })
   }
 )
@@ -237,47 +225,62 @@ router.delete(
 router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
   const uuid = req.params.uuid
 
-  const findOptions: Sequelize.FindOptions = isAuthenticated(req)
-    ? {
-        where: { uuid },
-        include: [
-          {
-            model: Market,
+  let security
+  if (isAuthenticated(req)) {
+    security = await prisma.security.findUnique({
+      where: { uuid },
+      include: { events: true, markets: true },
+    })
+  } else {
+    security = await prisma.security.findUnique({
+      where: { uuid },
+      select: {
+        uuid: true,
+        name: true,
+        isin: true,
+        wkn: true,
+        symbolXfra: true,
+        symbolXnas: true,
+        symbolXnys: true,
+        securityType: true,
+        markets: {
+          select: {
+            marketCode: true,
+            currencyCode: true,
+            firstPriceDate: true,
+            lastPriceDate: true,
+            symbol: true,
           },
-          { model: Event },
-        ],
-      }
-    : {
-        attributes: publicSecurityAttributes,
-        where: { uuid },
-        include: [
-          {
-            model: Market,
-            attributes: [
-              'marketCode',
-              'currencyCode',
-              'firstPriceDate',
-              'lastPriceDate',
-              'symbol',
-            ],
+        },
+        events: {
+          select: {
+            date: true,
+            type: true,
+            amount: true,
+            currencyCode: true,
+            ratio: true,
           },
-          {
-            model: Event,
-            attributes: ['date', 'type', 'amount', 'currencyCode', 'ratio'],
-            where: { type: ['dividend', 'split'] },
-            required: false,
+          where: {
+            OR: [{ type: 'dividend' }, { type: 'split' }],
           },
-        ],
-      }
-
-  const security = await Security.findOne(findOptions)
+        },
+      },
+    })
+  }
 
   if (!security) {
     res.status(404).json({ message: 'Security not found.' })
     return
   }
 
-  res.json(security)
+  res.json({
+    ...security,
+    markets: security.markets.map((m) => ({
+      ...m,
+      firstPriceDate: m.firstPriceDate?.toISOString().substring(0, 10),
+      lastPriceDate: m.lastPriceDate?.toISOString().substring(0, 10),
+    })),
+  })
 })
 
 /**
@@ -296,7 +299,7 @@ router
       return next(new HttpError(503, 'Service Unavailable'))
     }
 
-    const securities: Array<Security> = [] // Array to be returned
+    const securities: Array<any> = [] // Array to be returned
 
     const minResults = Number(process.env.SEARCH_MIN_RESULTS) || 3
     const maxScore = Number(process.env.SEARCH_MAX_SCORE) || 0.001
@@ -354,8 +357,8 @@ router.patch(
     req.setTimeout(0)
     res.setTimeout(0)
 
-    const security = await Security.findOne({
-      attributes: ['id'],
+    const security = await prisma.security.findUnique({
+      select: { id: true },
       where: { uuid },
     })
     if (!security || !security.id) {
@@ -363,9 +366,12 @@ router.patch(
     }
 
     const entry: {
-      securityId: number
-      marketCode: string
-      prices: Array<{ date: string; close: number }>
+      securityId?: number
+      marketCode?: string
+      currencyCode?: string
+      symbol?: string
+      updatePrices?: boolean
+      prices?: Array<{ date?: string; close?: string }>
     } = req.body
 
     // Overwrite attributes if given
@@ -373,17 +379,28 @@ router.patch(
     entry.marketCode = marketCode
 
     try {
-      const [market] = await Market.findOrBuild({
-        where: { marketCode, securityId: security.id },
+      const market = await prisma.market.upsert({
+        create: {
+          securityId: entry.securityId,
+          marketCode: entry.marketCode,
+          currencyCode: entry.currencyCode,
+          symbol: entry.symbol,
+          updatePrices: entry.updatePrices !== false,
+        },
+        update: {
+          updatePrices: entry.updatePrices !== false,
+          currencyCode: entry.currencyCode,
+          symbol: entry.symbol,
+        },
+        where: {
+          securityId_marketCode: { marketCode, securityId: security.id },
+        },
       })
-      Object.assign(market, entry)
-      await market.save()
 
       // Create/update the associated prices
       if (entry.prices) {
-        await sequelize.query(
-          'INSERT INTO prices (market_id, date, close) ' +
-            'VALUES ' +
+        await prisma.$executeRaw(
+          'INSERT INTO prices (market_id, date, close) VALUES' +
             entry.prices
               .map((price) => `(${market.id}, '${price.date}', ${price.close})`)
               .join(',') +
@@ -392,10 +409,11 @@ router.patch(
       }
 
       // Keep firstPriceDate and lastPriceDate up-to-date
-      await sequelize.query(`UPDATE markets SET
+      await prisma.$executeRaw`
+        UPDATE markets SET
         first_price_date = (SELECT MIN(date) FROM prices WHERE market_id = ${market.id}),
         last_price_date =  (SELECT MAX(date) FROM prices WHERE market_id = ${market.id})
-        WHERE id = ${market.id}`)
+        WHERE id = ${market.id}`
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err)
@@ -416,10 +434,9 @@ router.delete(
     const { uuid, marketCode } = req.params
     log(`Deleting market ${uuid}/${marketCode}`)
 
-    await sequelize.query(
-      'DELETE FROM markets WHERE market_code = :marketCode AND security_id IN (SELECT id FROM securities WHERE uuid = :uuid)',
-      { replacements: { uuid, marketCode } }
-    )
+    await prisma.market.deleteMany({
+      where: { marketCode, security: { uuid } },
+    })
 
     res.json({ status: 'ok' })
   }
@@ -440,44 +457,37 @@ router
       return d.toISOString().substring(0, 10)
     }
 
-    const fromDate = req.query.from || getDefaultFromDate()
+    const fromDate =
+      typeof req.query.from === 'string' ? req.query.from : getDefaultFromDate()
 
-    const where = { uuid }
-    const security = await Security.findOne({
-      where,
-      attributes: publicSecurityAttributes,
-      include: [
-        {
-          model: Market,
-          attributes: [
-            'marketCode',
-            'currencyCode',
-            'firstPriceDate',
-            'lastPriceDate',
-            'symbol',
-          ],
-          where: { marketCode },
-          include: [
-            {
-              model: Price,
-              attributes: ['date', 'close'],
-              where: { date: { [Sequelize.Op.gte]: fromDate } },
-              required: false,
-            },
-          ],
+    const market = await prisma.market.findFirst({
+      where: { marketCode, security: { uuid } },
+      select: {
+        marketCode: true,
+        currencyCode: true,
+        firstPriceDate: true,
+        lastPriceDate: true,
+        symbol: true,
+        prices: {
+          select: { date: true, close: true },
+          where: { date: { gte: fromDate + 'T00:00:00Z' } },
         },
-      ],
+      },
     })
 
-    if (!security?.markets) {
+    if (!market) {
       res.status(404).json({ message: 'Not found.' })
       return
     }
 
-    const market = security.markets[0].toJSON() as Market
     res.json({
       ...market,
-      prices: market.prices?.map((p) => ({ ...p, close: Number(p.close) })),
+      firstPriceDate: market.firstPriceDate?.toISOString().substring(0, 10),
+      lastPriceDate: market.lastPriceDate?.toISOString().substring(0, 10),
+      prices: market.prices?.map((p) => ({
+        date: p.date.toISOString().substring(0, 10),
+        close: Number(p.close),
+      })),
     })
   })
 
@@ -490,11 +500,7 @@ router.post(
   async function (req: Request, res: Response, next: NextFunction) {
     const { uuid } = req.params
 
-    const findOptions: Sequelize.FindOptions = {
-      where: { uuid },
-    }
-
-    const security = await Security.findOne(findOptions)
+    const security = await prisma.security.findUnique({ where: { uuid } })
 
     if (!security) {
       return res.status(404).json({ message: 'Security not found.' })
@@ -514,7 +520,7 @@ router.post(
 
     log(`Creating event @ ${uuid}/${security.id}: ${event.type}/${event.date}`)
     try {
-      await Event.create(event)
+      await prisma.event.create({ data: event })
     } catch (err) {
       // Unkown error
       // eslint-disable-next-line no-console
