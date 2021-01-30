@@ -24,7 +24,7 @@
     "@mdi/js": "^5.8.55",
     "@nuxt/typescript-runtime": "^2.0.1",
     "@nuxtjs/axios": "^5.12.5",
-    "@nuxtjs/vuetify": "^1.11.2",
+    "@nuxtjs/vuetify": "^1.11.3",
     "@prisma/cli": "^2.15.0",
     "@prisma/client": "^2.15.0",
     "chart.js": "^2.9.4",
