@@ -57,7 +57,7 @@
     "@nuxtjs/eslint-config-typescript": "^5.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@types/bluebird": "^3.5.33",
-    "@types/chart.js": "^2.9.29",
+    "@types/chart.js": "^2.9.30",
     "@types/cors": "^2.8.9",
     "@types/debug": "^4.1.5",
     "@types/express-session": "^1.17.3",
