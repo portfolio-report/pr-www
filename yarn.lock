@@ -3395,10 +3395,10 @@ configstore@^5.0.1:
     write-file-atomic "^3.0.0"
     xdg-basedir "^4.0.0"
 
-connect-session-sequelize@^7.0.4:
-  version "7.0.4"
-  resolved "https://registry.yarnpkg.com/connect-session-sequelize/-/connect-session-sequelize-7.0.4.tgz#37e0081f395dd4e3fc6bad5acf47a046d647d34a"
-  integrity sha512-PSuupsQ50I8eLJOH/pcBZ7r4V8Z7Hz3TrNZo5G2BXc6NVErbf9bRf5780ypLePWVKAxkly+0U1MVnKjS36JULQ==
+connect-session-sequelize@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/connect-session-sequelize/-/connect-session-sequelize-7.1.0.tgz#0f9eeef1184486db39842e607de3580f92cc359f"
+  integrity sha512-sjzMkAZkUL6sADZbY1CWtEK5R2gMI/9kS5xAB/QRuB0roCFkhw3OAlDDTF7dK+JlerEzpAdz3cgarB9nXRxVCg==
   dependencies:
     debug "^4.1.1"
     deep-equal "^2.0.3"
