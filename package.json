@@ -22,7 +22,7 @@
   "dependencies": {
     "@fontsource/roboto": "^4.1.0",
     "@mdi/js": "^5.8.55",
-    "@nuxt/typescript-runtime": "^2.0.0",
+    "@nuxt/typescript-runtime": "^2.0.1",
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/vuetify": "^1.11.2",
     "@prisma/cli": "^2.15.0",
