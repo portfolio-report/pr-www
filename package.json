@@ -41,7 +41,7 @@
     "lodash": "^4.17.20",
     "nodemailer": "^6.4.17",
     "nuxt": "^2.14.12",
-    "nuxt-property-decorator": "^2.8.8",
+    "nuxt-property-decorator": "^2.9.1",
     "pg": "^8.5.1",
     "sequelize": "^6.5.0",
     "sequelize-cli": "^6.2.0",
