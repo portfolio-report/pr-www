@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@fontsource/roboto": "^4.1.0",
-    "@mdi/js": "^5.8.55",
+    "@mdi/js": "^5.9.55",
     "@nuxt/typescript-runtime": "^2.0.1",
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/vuetify": "^1.11.3",
@@ -41,7 +41,7 @@
     "lodash": "^4.17.20",
     "nodemailer": "^6.4.17",
     "nuxt": "^2.14.12",
-    "nuxt-property-decorator": "^2.8.8",
+    "nuxt-property-decorator": "^2.9.1",
     "pg": "^8.5.1",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
