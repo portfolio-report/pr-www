@@ -35,7 +35,7 @@ router.post(
       return next(new HttpError(401, 'Unauthorized'))
     }
 
-    const adminUser = await prisma.user.findFirst({ where: { username } })
+    const adminUser = await prisma.user.findUnique({ where: { username } })
 
     if (!adminUser) {
       log(`User ${username} unknown`)

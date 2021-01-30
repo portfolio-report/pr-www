@@ -41,8 +41,13 @@ router.patch(
       `Creating/updating exchangeRate ${baseCurrencyCode}/${quoteCurrencyCode}`
     )
     try {
-      const exchangerate = await prisma.exchangerate.findFirst({
-        where: { baseCurrencyCode, quoteCurrencyCode },
+      const exchangerate = await prisma.exchangerate.findUnique({
+        where: {
+          baseCurrencyCode_quoteCurrencyCode: {
+            baseCurrencyCode,
+            quoteCurrencyCode,
+          },
+        },
       })
 
       if (!exchangerate) {
@@ -82,13 +87,14 @@ router
   .get(async function (req: Request, res: Response) {
     const { baseCurrencyCode, quoteCurrencyCode } = req.params
 
-    const where = {
-      quoteCurrencyCode,
-      baseCurrencyCode,
-    }
-    const exchangerate = await prisma.exchangerate.findFirst({
+    const exchangerate = await prisma.exchangerate.findUnique({
       select: { baseCurrencyCode: true, quoteCurrencyCode: true },
-      where,
+      where: {
+        baseCurrencyCode_quoteCurrencyCode: {
+          quoteCurrencyCode,
+          baseCurrencyCode,
+        },
+      },
     })
 
     if (!exchangerate) {
@@ -108,18 +114,18 @@ router
     const { baseCurrencyCode, quoteCurrencyCode } = req.params
     const { from } = req.query
 
-    const where = {
-      quoteCurrencyCode,
-      baseCurrencyCode,
-    }
-
     let priceWhere: Prisma.ExchangeratePriceWhereInput = {}
     if (typeof from === 'string') {
       priceWhere = { date: { gte: new Date(from) } }
     }
 
-    const exchangerate = await prisma.exchangerate.findFirst({
-      where,
+    const exchangerate = await prisma.exchangerate.findUnique({
+      where: {
+        baseCurrencyCode_quoteCurrencyCode: {
+          quoteCurrencyCode,
+          baseCurrencyCode,
+        },
+      },
       include: {
         prices: {
           select: { date: true, value: true },

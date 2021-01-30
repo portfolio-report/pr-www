@@ -24,6 +24,7 @@ model Exchangerate {
   quoteCurrencyCode String              @map("quote_currency_code")
   prices            ExchangeratePrice[]
 
+  @@unique([baseCurrencyCode, quoteCurrencyCode])
   @@map("exchangerates")
 }
 
@@ -34,12 +35,13 @@ model ExchangeratePrice {
   value          Decimal
   exchangerate   Exchangerate? @relation(fields: [exchangerateId], references: [id])
 
+  @@unique([exchangerateId, date])
   @@map("exchangerates_prices")
 }
 
 model User {
   id       Int     @id @default(autoincrement())
-  username String
+  username String  @unique
   password String?
 
   @@map("users")
