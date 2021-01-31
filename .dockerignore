@@ -4,6 +4,9 @@ node_modules/
 # nuxt.js build output
 .nuxt
 
+# Git
+.git
+
 # pr-www
 db/
 api/config.json
