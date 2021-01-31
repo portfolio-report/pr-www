@@ -19,14 +19,14 @@ model Clientupdate {
 }
 
 model Event {
-  id           Int       @id @default(autoincrement())
-  securityId   Int?      @map("security_id")
+  id           Int      @id @default(autoincrement())
+  securityId   Int      @map("security_id")
   date         DateTime
   type         String
   amount       Decimal?
-  currencyCode String?   @map("currency_code")
+  currencyCode String?  @map("currency_code")
   ratio        String?
-  security     Security? @relation(fields: [securityId], references: [id])
+  security     Security @relation(fields: [securityId], references: [id])
 
   @@map("events")
 }
@@ -42,11 +42,11 @@ model Exchangerate {
 }
 
 model ExchangeratePrice {
-  id             Int           @id @default(autoincrement())
-  exchangerateId Int?          @map("exchangerate_id")
+  id             Int          @id @default(autoincrement())
+  exchangerateId Int          @map("exchangerate_id")
   date           DateTime
   value          Decimal
-  exchangerate   Exchangerate? @relation(fields: [exchangerateId], references: [id])
+  exchangerate   Exchangerate @relation(fields: [exchangerateId], references: [id])
 
   @@unique([exchangerateId, date])
   @@map("exchangerates_prices")
@@ -54,14 +54,14 @@ model ExchangeratePrice {
 
 model Market {
   id             Int       @id @default(autoincrement())
-  securityId     Int?      @map("security_id")
+  securityId     Int       @map("security_id")
   marketCode     String    @map("market_code")
   currencyCode   String?   @map("currency_code")
   firstPriceDate DateTime? @map("first_price_date")
   lastPriceDate  DateTime? @map("last_price_date")
   symbol         String?   @db.VarChar(10)
   updatePrices   Boolean   @map("update_prices")
-  security       Security? @relation(fields: [securityId], references: [id])
+  security       Security  @relation(fields: [securityId], references: [id])
   prices         Price[]
 
   @@unique([securityId, marketCode])
@@ -70,10 +70,10 @@ model Market {
 
 model Price {
   id       Int      @id @default(autoincrement())
-  marketId Int?     @map("market_id")
+  marketId Int      @map("market_id")
   date     DateTime
   close    Decimal
-  market   Market?  @relation(fields: [marketId], references: [id])
+  market   Market   @relation(fields: [marketId], references: [id])
 
   @@unique([marketId, date])
   @@map("prices")
