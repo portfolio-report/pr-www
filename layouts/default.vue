@@ -15,11 +15,11 @@
         <v-toolbar-title v-text="title" />
       </nuxt-link>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <v-container>
         <nuxt />
       </v-container>
-    </v-content>
+    </v-main>
     <v-footer>
       <v-spacer />
       <v-tooltip top>
