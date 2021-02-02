@@ -95,6 +95,15 @@ model Security {
   @@map("securities")
 }
 
+model Session {
+  id      String   @id
+  sid     String   @unique
+  data    String
+  expires DateTime
+
+  @@map("sessions")
+}
+
 model User {
   id       Int     @id @default(autoincrement())
   username String  @unique
