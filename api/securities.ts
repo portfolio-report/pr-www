@@ -471,6 +471,7 @@ router
         prices: {
           select: { date: true, close: true },
           where: { date: { gte: fromDate + 'T00:00:00Z' } },
+          orderBy: { date: 'asc' },
         },
       },
     })
