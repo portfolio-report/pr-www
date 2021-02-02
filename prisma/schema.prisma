@@ -43,9 +43,9 @@ model Exchangerate {
 
 model ExchangeratePrice {
   id             Int          @id @default(autoincrement())
-  exchangerateId Int          @map("exchangerate_id")
   date           DateTime
   value          Decimal
+  exchangerateId Int          @map("exchangerate_id")
   exchangerate   Exchangerate @relation(fields: [exchangerateId], references: [id])
 
   @@unique([exchangerateId, date])
