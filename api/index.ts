@@ -8,6 +8,7 @@ import currencies from './currencies'
 import exchangerates from './exchangerates'
 import securities from './securities'
 import stats from './stats'
+import taxonomies from './taxonomies'
 import { HttpError } from './inc/HttpError'
 const log = Debug('pr-www:index')
 
@@ -43,6 +44,7 @@ app.use('/currencies', currencies)
 app.use('/exchangerates', exchangerates)
 app.use('/securities', securities)
 app.use('/stats', stats)
+app.use('/taxonomies', taxonomies)
 
 /**
  * Return 404 if nothing has matched so far.

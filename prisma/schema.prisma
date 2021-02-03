@@ -80,19 +80,31 @@ model Price {
 }
 
 model Security {
-  id           Int      @id @default(autoincrement())
-  uuid         String?  @unique
-  name         String?
-  isin         String?
-  wkn          String?
-  symbolXfra   String?  @map("symbol_xfra")
-  symbolXnas   String?  @map("symbol_xnas")
-  symbolXnys   String?  @map("symbol_xnys")
-  securityType String?  @map("security_type")
-  events       Event[]
-  markets      Market[]
+  id                 Int                @id @default(autoincrement())
+  uuid               String?            @unique
+  name               String?
+  isin               String?
+  wkn                String?
+  symbolXfra         String?            @map("symbol_xfra")
+  symbolXnas         String?            @map("symbol_xnas")
+  symbolXnys         String?            @map("symbol_xnys")
+  securityType       String?            @map("security_type")
+  events             Event[]
+  markets            Market[]
+  securityTaxonomies SecurityTaxonomy[] @relation("securitiesTosecurities_taxonomies")
 
   @@map("securities")
+}
+
+model SecurityTaxonomy {
+  taxonomyUuid String   @map("taxonomy_uuid")
+  securityUuid String   @map("security_uuid")
+  weight       Decimal
+  security     Security @relation("securitiesTosecurities_taxonomies", fields: [securityUuid], references: [uuid])
+  taxonomy     Taxonomy @relation("securities_taxonomiesTotaxonomies", fields: [taxonomyUuid], references: [uuid])
+
+  @@id([taxonomyUuid, securityUuid])
+  @@map("securities_taxonomies")
 }
 
 model Session {
@@ -102,6 +114,21 @@ model Session {
   expires DateTime
 
   @@map("sessions")
+}
+
+model Taxonomy {
+  uuid               String             @id
+  parentUuid         String?            @map("parent_uuid")
+  rootUuid           String?            @map("root_uuid")
+  name               String
+  code               String?
+  parent             Taxonomy?          @relation("taxonomiesTotaxonomies_parent_uuid", fields: [parentUuid], references: [uuid])
+  root               Taxonomy?          @relation("taxonomiesTotaxonomies_root_uuid", fields: [rootUuid], references: [uuid])
+  securityTaxonomies SecurityTaxonomy[] @relation("securities_taxonomiesTotaxonomies")
+  children           Taxonomy[]         @relation("taxonomiesTotaxonomies_parent_uuid")
+  descendants        Taxonomy[]         @relation("taxonomiesTotaxonomies_root_uuid")
+
+  @@map("taxonomies")
 }
 
 model User {

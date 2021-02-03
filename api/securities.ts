@@ -5,6 +5,7 @@ import { authRequired, isAuthenticated } from './auth'
 import { searchSecuritiesFts, updateSecuritiesFts } from './inc/fts'
 import { HttpError } from './inc/HttpError'
 import { prisma } from './inc/prisma'
+import { createUuid } from './inc/uuid'
 const log = Debug('pr-www:securities')
 
 const router = express.Router()
@@ -168,18 +169,6 @@ router.get('/:id', authRequired, async function (req: Request, res: Response) {
  * Create single entry, i.e. security
  */
 router.post('/', authRequired, async function (req: Request, res: Response) {
-  function createUuid() {
-    let dt = new Date().getTime()
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        const r = (dt + Math.random() * 16) % 16 | 0
-        dt = Math.floor(dt / 16)
-        return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16)
-      }
-    )
-  }
-
   const entry = req.body
   if (!entry.uuid) {
     entry.uuid = createUuid()
