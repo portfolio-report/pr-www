@@ -54,6 +54,7 @@ export async function updateSecuritiesFts() {
 
   const entriesWithDateOnly = entries.map((s) => ({
     ...s,
+    uuid: s.uuid?.replace(/-/g, ''),
     markets: s.markets.map((m) => ({
       ...m,
       firstPriceDate: m.firstPriceDate?.toISOString().substring(0, 10),
