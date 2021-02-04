@@ -4,6 +4,8 @@
       :value="value"
       :items="securityTypeItems"
       label="Security Type"
+      dense
+      outlined
       @input="update"
     />
   </div>

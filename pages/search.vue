@@ -10,8 +10,20 @@
               :rules="searchRules"
               label="ISIN/WKN/Symbol/Name"
               clearable
+              outlined
+              dense
             />
             <select-security-type v-model="securityType" />
+
+            <v-btn
+              type="submit"
+              color="primary"
+              :loading="searching"
+              :disabled="!searchFormValid || searching"
+              block
+            >
+              Search
+            </v-btn>
 
             <v-alert v-model="noResults" type="info" outlined>
               Sorry, no results were found.
@@ -21,17 +33,6 @@
               Sorry, there was an error:<br />{{ errorText }}
             </v-alert>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn
-              type="submit"
-              color="primary"
-              :loading="searching"
-              :disabled="!searchFormValid || searching"
-            >
-              Search
-            </v-btn>
-          </v-card-actions>
         </v-form>
       </v-card>
 
