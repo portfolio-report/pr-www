@@ -2,6 +2,8 @@ import { Component, Vue } from 'vue-property-decorator'
 import {
   mdiAccount,
   mdiChartLine,
+  mdiCheck,
+  mdiClose,
   mdiCurrencyUsd,
   mdiDelete,
   mdiDragVariant,
@@ -24,6 +26,8 @@ import {
 export class IconsMixin extends Vue {
   mdiAccount = mdiAccount
   mdiChartLine = mdiChartLine
+  mdiCheck = mdiCheck
+  mdiClose = mdiClose
   mdiCurrencyUsd = mdiCurrencyUsd
   mdiDelete = mdiDelete
   mdiDragVariant = mdiDragVariant
