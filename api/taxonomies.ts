@@ -1,5 +1,5 @@
 import Debug from 'debug'
-import express, { Request, Response } from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import { Prisma } from '@prisma/client'
 import { authRequired } from './auth'
 import { HttpError } from './inc/HttpError'
@@ -37,30 +37,34 @@ router.get('/:uuid', async function (req: Request, res: Response) {
 /**
  * Create taxonomy
  */
-router.post('/', authRequired, async function (req: Request, res: Response) {
-  const parentUuid = req.body.parentUuid || null
+router.post(
+  '/',
+  authRequired,
+  async function (req: Request, res: Response, next: NextFunction) {
+    const parentUuid = req.body.parentUuid || null
 
-  const data: Prisma.TaxonomyCreateInput = {
-    uuid: createUuid(),
-    name: req.body.name,
-  }
-
-  if (parentUuid) {
-    const parent = await prisma.taxonomy.findUnique({
-      where: { uuid: parentUuid },
-    })
-    if (!parent) {
-      throw new HttpError(400, 'parentUuid invalid')
+    const data: Prisma.TaxonomyCreateInput = {
+      uuid: createUuid(),
+      name: req.body.name,
     }
 
-    data.parent = { connect: { uuid: parent.uuid } }
-    data.root = { connect: { uuid: parent.rootUuid || parent.uuid } }
-  }
+    if (parentUuid) {
+      const parent = await prisma.taxonomy.findUnique({
+        where: { uuid: parentUuid },
+      })
+      if (!parent) {
+        return next(new HttpError(400, 'parentUuid invalid'))
+      }
 
-  log(`Creating ${data.uuid}`)
-  const taxonomy = await prisma.taxonomy.create({ data })
-  res.json(taxonomy)
-})
+      data.parent = { connect: { uuid: parent.uuid } }
+      data.root = { connect: { uuid: parent.rootUuid || parent.uuid } }
+    }
+
+    log(`Creating ${data.uuid}`)
+    const taxonomy = await prisma.taxonomy.create({ data })
+    res.json(taxonomy)
+  }
+)
 
 /**
  * Update taxonomy
@@ -68,7 +72,7 @@ router.post('/', authRequired, async function (req: Request, res: Response) {
 router.patch(
   '/:uuid',
   authRequired,
-  async function (req: Request, res: Response) {
+  async function (req: Request, res: Response, next: NextFunction) {
     const uuid = req.params.uuid
 
     const data: Prisma.TaxonomyUpdateInput = {}
@@ -86,11 +90,13 @@ router.patch(
         where: { uuid: req.body.parentUuid },
       })
       if (!parent) {
-        throw new HttpError(400, 'parentUuid invalid')
+        return next(new HttpError(400, 'parentUuid invalid'))
       }
 
       if (parent.uuid.replace(/-/g, '') === uuid.replace(/-/g, '')) {
-        throw new HttpError(400, 'parentUuid must be different from own uuid')
+        return next(
+          new HttpError(400, 'parentUuid must be different from own uuid')
+        )
       }
 
       data.parent = { connect: { uuid: parent.uuid } }
