@@ -20,5 +20,13 @@ module.exports = {
 
     // sort imports
     'sort-imports': ['warn', { ignoreDeclarationSort: true }],
+
+    // Allow <template v-slot:foo.bar> or <template #foo.bar>
+    'vue/valid-v-slot': [
+      'error',
+      {
+        allowModifiers: true,
+      },
+    ],
   },
 }

@@ -158,12 +158,12 @@
         :footer-props="footerProps"
         :loading="loading"
       >
-        <template #[`item.name`]="{ item }">
+        <template #item.name="{ item }">
           <nuxt-link :to="'/admin/securities/' + item.id">
             {{ item.name }}
           </nuxt-link>
         </template>
-        <template #[`item.action`]="{ item }">
+        <template #item.action="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             {{ mdiPencil }}
           </v-icon>

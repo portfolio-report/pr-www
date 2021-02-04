@@ -72,7 +72,7 @@
           <td>{{ props.item.version }}</td>
           <td>{{ props.item.country }}</td>
         </template>
-        <template #[`item.action`]="{ item }">
+        <template #item.action="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             {{ mdiPencil }}
           </v-icon>
