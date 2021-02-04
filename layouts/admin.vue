@@ -66,6 +66,11 @@ export default class AdminLayout extends mixins(Vue, IconsMixin) {
         to: '/admin/securities',
       },
       {
+        name: 'Taxonomies',
+        icon: this.mdiFamilyTree,
+        to: '/admin/taxonomies',
+      },
+      {
         name: 'Client updates',
         icon: this.mdiPoll,
         to: '/admin/stats',

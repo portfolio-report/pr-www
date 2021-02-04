@@ -9,6 +9,7 @@ import {
   mdiDragVariant,
   mdiEarth,
   mdiEmail,
+  mdiFamilyTree,
   mdiFilter,
   mdiFilterOutline,
   mdiForum,
@@ -33,6 +34,7 @@ export class IconsMixin extends Vue {
   mdiDragVariant = mdiDragVariant
   mdiEarth = mdiEarth
   mdiEmail = mdiEmail
+  mdiFamilyTree = mdiFamilyTree
   mdiFilter = mdiFilter
   mdiFilterOutline = mdiFilterOutline
   mdiForum = mdiForum
