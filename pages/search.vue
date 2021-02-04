@@ -6,6 +6,7 @@
         <v-form v-model="searchFormValid" @submit.prevent="search">
           <v-card-text>
             <v-text-field
+              ref="searchTerm"
               v-model="searchTerm"
               :rules="searchRules"
               label="ISIN/WKN/Symbol/Name"
@@ -114,6 +115,10 @@ import SelectSecurityType from '@/components/select-security-type.vue'
   components: { SelectSecurityType },
 })
 export default class SearchPage extends mixins(Vue, IconsMixin) {
+  $refs!: {
+    searchTerm: HTMLInputElement
+  }
+
   searchFormValid = false
   searchTerm = ''
   searchRules = [(v: string) => !!v || 'Required']
@@ -134,6 +139,8 @@ export default class SearchPage extends mixins(Vue, IconsMixin) {
       this.searchTerm = q as string
       this.securityType = securityType as string
       this.search()
+    } else {
+      this.$refs.searchTerm.focus()
     }
   }
 
