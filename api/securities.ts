@@ -39,17 +39,28 @@ async function readSecurities({
 
   // Add filter based on search text
   if (search) {
-    filters.push({
-      OR: [
-        { uuid: { equals: search, mode: 'insensitive' } },
-        { name: { contains: search, mode: 'insensitive' } },
-        { isin: { equals: search, mode: 'insensitive' } },
-        { wkn: { equals: search, mode: 'insensitive' } },
-        { symbolXfra: { equals: search, mode: 'insensitive' } },
-        { symbolXnas: { equals: search, mode: 'insensitive' } },
-        { symbolXnys: { equals: search, mode: 'insensitive' } },
-      ],
-    })
+    if (
+      search.match(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+      )
+    ) {
+      filters.push({
+        uuid: {
+          equals: search,
+        },
+      })
+    } else {
+      filters.push({
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { isin: { equals: search, mode: 'insensitive' } },
+          { wkn: { equals: search, mode: 'insensitive' } },
+          { symbolXfra: { equals: search, mode: 'insensitive' } },
+          { symbolXnas: { equals: search, mode: 'insensitive' } },
+          { symbolXnys: { equals: search, mode: 'insensitive' } },
+        ],
+      })
+    }
   }
 
   // Add filter based on securityType
