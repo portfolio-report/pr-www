@@ -5,33 +5,36 @@
         <v-toolbar dark color="primary">
           <v-toolbar-title>Login</v-toolbar-title>
         </v-toolbar>
-        <v-form @submit.prevent="login">
-          <v-card-text v-if="authenticated">
-            <nuxt-link to="/admin/">You are logged in already.</nuxt-link>
-          </v-card-text>
-          <div v-else>
-            <v-card-text>
+
+        <v-card-text v-if="authenticated">
+          <nuxt-link to="/admin/">You are logged in already.</nuxt-link>
+        </v-card-text>
+        <div v-else>
+          <v-card-text>
+            <v-form @submit.prevent="login">
               <v-alert :value="errorMessage" type="error" outlined>
                 {{ errorMessage }}
               </v-alert>
               <v-text-field
+                ref="username"
                 v-model="formUsername"
                 label="Username"
                 :prepend-icon="mdiAccount"
+                outlined
+                dense
               />
               <v-text-field
                 v-model="formPassword"
                 label="Password"
                 type="password"
                 :prepend-icon="mdiLock"
+                outlined
+                dense
               />
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn type="submit" color="primary">Login</v-btn>
-            </v-card-actions>
-          </div>
-        </v-form>
+              <v-btn type="submit" color="primary" block>Login</v-btn>
+            </v-form>
+          </v-card-text>
+        </div>
       </v-card>
     </v-col>
   </v-row>
@@ -44,12 +47,22 @@ import { IconsMixin } from '@/components/icons-mixin'
 
 @Component
 export default class LoginPage extends mixins(Vue, IconsMixin) {
+  $refs!: {
+    username: HTMLInputElement
+  }
+
   formUsername = ''
   formPassword = ''
   errorMessage: string | null = null
 
   get authenticated() {
     return this.$store.getters['auth/isAuthenticated']
+  }
+
+  mounted(): void {
+    if (this.$refs.username) {
+      this.$refs.username.focus()
+    }
   }
 
   async login() {
