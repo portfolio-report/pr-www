@@ -221,7 +221,11 @@ router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
   if (isAuthenticated(req)) {
     security = await prisma.security.findUnique({
       where: { uuid },
-      include: { events: true, markets: true },
+      include: {
+        events: true,
+        markets: true,
+        securityTaxonomies: { select: { weight: true, taxonomyUuid: true } },
+      },
     })
   } else {
     security = await prisma.security.findUnique({
@@ -242,6 +246,12 @@ router.route('/uuid/:uuid').get(async function (req: Request, res: Response) {
             firstPriceDate: true,
             lastPriceDate: true,
             symbol: true,
+          },
+        },
+        securityTaxonomies: {
+          select: {
+            weight: true,
+            taxonomyUuid: true,
           },
         },
         events: {
@@ -484,6 +494,45 @@ router
       })),
     })
   })
+
+/**
+ * Create/update/delete taxonomy
+ */
+router.patch(
+  '/uuid/:uuid/taxonomies',
+  authRequired,
+  async function (req: Request, res: Response, next: NextFunction) {
+    const securityUuid = req.params.uuid
+    const taxonomyUuid =
+      typeof req.body.taxonomyUuid === 'string' ? req.body.taxonomyUuid : null
+
+    if (!taxonomyUuid) {
+      return next(new HttpError(400, 'taxonomyUuid missing'))
+    }
+
+    if (typeof req.body.weight !== 'string' || req.body.weight === '') {
+      log(`Deleting taxonomy for ${securityUuid}, ${taxonomyUuid}`)
+
+      await prisma.securityTaxonomy.delete({
+        where: { taxonomyUuid_securityUuid: { securityUuid, taxonomyUuid } },
+      })
+
+      return res.json({})
+    } else {
+      log(`Upserting taxonomies for ${securityUuid}, ${taxonomyUuid}`)
+
+      const weight = req.body.weight
+
+      const securityTaxonomy = await prisma.securityTaxonomy.upsert({
+        where: { taxonomyUuid_securityUuid: { securityUuid, taxonomyUuid } },
+        create: { securityUuid, taxonomyUuid, weight },
+        update: { weight },
+      })
+
+      return res.json(securityTaxonomy)
+    }
+  }
+)
 
 /**
  * Create event
