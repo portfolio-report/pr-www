@@ -4,7 +4,7 @@
       <v-toolbar color="primary" dark>
         <v-toolbar-title>Securities</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon @click="createItem()">
+        <v-btn icon @click="newSecurity">
           <v-icon>{{ mdiPlus }}</v-icon>
         </v-btn>
 
@@ -27,6 +27,8 @@
                     :append-icon="mdiMagnify"
                     clearable
                     single-line
+                    dense
+                    outlined
                   />
                 </v-list-item-content>
               </v-list-item>
@@ -41,117 +43,23 @@
         </v-menu>
       </v-toolbar>
 
-      <v-dialog v-model="showCreateDialog" max-width="600">
-        <v-card>
-          <v-card-title>Create security</v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="12" md="8">
-                  <v-text-field v-model="createdItem.name" label="Name" />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="createdItem.isin" label="ISIN" />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="createdItem.wkn" label="WKN" />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="createdItem.symbolXfra"
-                    label="Symbol Frankfurt"
-                  />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="createdItem.symbolXnas"
-                    label="Symbol NASDAQ"
-                  />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="createdItem.symbolXnys"
-                    label="Symbol New York"
-                  />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="createdItem.securityType"
-                    label="Type"
-                  />
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="closeCreateDialog">
-              Cancel
-            </v-btn>
-            <v-btn color="primary" text @click="saveCreateDialog">Create</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog v-model="showEditDialog" max-width="600">
-        <v-card>
-          <v-card-title>Edit security {{ editedItem.id }}</v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="12" md="8">
-                  <v-text-field
-                    v-model="editedItem.uuid"
-                    label="UUID"
-                    disabled
-                  />
-                </v-col>
-                <v-col cols="12" sm="12" md="8">
-                  <v-text-field v-model="editedItem.name" label="Name" />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.isin" label="ISIN" />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.wkn" label="WKN" />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="editedItem.symbolXfra"
-                    label="Symbol Frankfurt"
-                  />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="editedItem.symbolXnas"
-                    label="Symbol NASDAQ"
-                  />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="editedItem.symbolXnys"
-                    label="Symbol New York"
-                  />
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="editedItem.securityType"
-                    label="Type"
-                  />
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="closeEditDialog">Cancel</v-btn>
-            <v-btn color="primary" text @click="saveEditDialog">Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
       <v-data-table
-        :headers="headers"
+        :headers="[
+          {
+            text: 'UUID',
+            value: 'uuid',
+          },
+          {
+            text: 'Name',
+            align: 'left',
+            sortable: true,
+            value: 'name',
+          },
+          { text: 'ISIN', value: 'isin' },
+          { text: 'WKN', value: 'wkn' },
+          { text: 'Type', value: 'securityType' },
+          { text: 'Actions', value: 'action', sortable: false },
+        ]"
         :items="entries"
         :options.sync="pagination"
         :server-items-length="totalItems"
@@ -164,14 +72,87 @@
           </nuxt-link>
         </template>
         <template #item.action="{ item }">
-          <v-icon small class="mr-2" @click="editItem(item)">
-            {{ mdiPencil }}
-          </v-icon>
-          <v-icon small @click="deleteItem(item)">
-            {{ mdiDelete }}
-          </v-icon>
+          <v-btn color="primary" icon text @click="editSecurity(item)">
+            <v-icon>{{ mdiPencil }}</v-icon>
+          </v-btn>
+          <v-btn color="error" icon text @click="deleteSecurity(item)">
+            <v-icon>{{ mdiDelete }}</v-icon>
+          </v-btn>
         </template>
       </v-data-table>
+
+      <v-dialog v-model="securityDialog" width="600">
+        <v-form @submit.prevent="saveSecurity">
+          <v-card>
+            <v-card-title v-if="!!selectedSecurity.id">
+              Edit security {{ selectedSecurity.id }}
+            </v-card-title>
+            <v-card-title v-else>Create security</v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="12" md="8">
+                    <v-text-field
+                      v-if="!!selectedSecurity.id"
+                      v-model="selectedSecurity.uuid"
+                      label="UUID"
+                      disabled
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="12" md="8">
+                    <v-text-field
+                      v-model="selectedSecurity.name"
+                      label="Name"
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="selectedSecurity.isin"
+                      label="ISIN"
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="selectedSecurity.wkn" label="WKN" />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="selectedSecurity.symbolXfra"
+                      label="Symbol Frankfurt"
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="selectedSecurity.symbolXnas"
+                      label="Symbol NASDAQ"
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="selectedSecurity.symbolXnys"
+                      label="Symbol New York"
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="selectedSecurity.securityType"
+                      label="Type"
+                    />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" text @click="securityDialog = false">
+                <v-icon>{{ mdiClose }}</v-icon> Cancel
+              </v-btn>
+              <v-btn type="submit" color="primary" text>
+                <v-icon>{{ mdiCheck }}</v-icon> Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-dialog>
 
       <v-btn color="primary" @click="updateFts">Update FTS index</v-btn>
 
@@ -205,46 +186,14 @@ interface Security {
   layout: 'admin',
 })
 export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
+  $refs!: {
+    confirm: DialogConfirm
+  }
+
   showCreateDialog = false
   showEditDialog = false
-  createdItem: Security = {
-    name: '',
-    isin: '',
-    wkn: '',
-    securityType: '',
-    symbolXfra: '',
-    symbolXnas: '',
-    symbolXnys: '',
-  }
-
-  editedItem: Security = {
-    id: undefined,
-    uuid: null,
-    name: null,
-    isin: null,
-    wkn: null,
-    securityType: null,
-    symbolXfra: null,
-    symbolXnas: null,
-    symbolXnys: null,
-  }
-
-  headers = [
-    {
-      text: 'UUID',
-      value: 'uuid',
-    },
-    {
-      text: 'Name',
-      align: 'left',
-      sortable: true,
-      value: 'name',
-    },
-    { text: 'ISIN', value: 'isin' },
-    { text: 'WKN', value: 'wkn' },
-    { text: 'Type', value: 'securityType' },
-    { text: 'Actions', value: 'action', sortable: false },
-  ]
+  securityDialog = false
+  selectedSecurity: Security = {} as Security
 
   entries: Array<Security> = []
 
@@ -298,8 +247,8 @@ export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
 
   getSecurities = debounce(this.getSecuritiesRaw, 300)
 
-  createItem() {
-    this.createdItem = {
+  newSecurity() {
+    this.selectedSecurity = {
       name: '',
       isin: '',
       wkn: '',
@@ -308,55 +257,49 @@ export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
       symbolXnas: '',
       symbolXnys: '',
     }
-    this.showCreateDialog = true
+    this.securityDialog = true
   }
 
-  editItem(item: Security) {
-    // Edit a copy of the object
-    this.editedItem = Object.assign({}, item)
-    this.showEditDialog = true
+  editSecurity(security: Security) {
+    this.selectedSecurity = { ...security }
+    this.securityDialog = true
   }
 
-  async saveCreateDialog() {
-    const sec = await this.$axios.$post(`/api/securities/`, this.createdItem)
+  async saveSecurity() {
+    if (this.selectedSecurity.id) {
+      await this.$axios.$patch(
+        `/api/securities/${this.selectedSecurity.id}`,
+        this.selectedSecurity
+      )
 
-    // Update to reflect changes
-    this.getSecurities()
+      // Update to reflect changes
+      this.getSecurities()
 
-    this.showCreateDialog = false
+      this.securityDialog = false
+    } else {
+      const sec = await this.$axios.$post(
+        `/api/securities/`,
+        this.selectedSecurity
+      )
 
-    this.editItem(sec)
+      // Update to reflect changes
+      this.getSecurities()
+
+      this.showCreateDialog = false
+
+      this.editSecurity(sec)
+    }
   }
 
-  async saveEditDialog() {
-    await this.$axios.$patch(
-      `/api/securities/${this.editedItem.id}`,
-      this.editedItem
-    )
-
-    // Update to reflect changes
-    this.getSecurities()
-
-    this.showEditDialog = false
-  }
-
-  closeCreateDialog() {
-    this.showCreateDialog = false
-  }
-
-  closeEditDialog() {
-    this.showEditDialog = false
-  }
-
-  async deleteItem(item: Security) {
+  async deleteSecurity(security: Security) {
     if (
-      await (this.$refs.confirm as any).open({
+      await this.$refs.confirm.open({
         title: 'Delete security',
-        message: `Are you sure you want to delete "${item.name}"?`,
+        message: `Are you sure you want to delete "${security.name}"?`,
         color: 'secondary',
       })
     ) {
-      await this.$axios.$delete(`/api/securities/${item.id}`)
+      await this.$axios.$delete(`/api/securities/${security.id}`)
       this.getSecurities()
     }
   }

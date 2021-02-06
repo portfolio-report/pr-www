@@ -1,12 +1,22 @@
 <template>
   <v-row align="center" justify="center">
-    <v-col cols="12" sm="8" md="6">
-      <span class="headline">Security: {{ security.name }}</span>
-      <v-card>
-        <v-card-title>Master data</v-card-title>
-        <v-card-subtitle>ID: {{ security.id }}</v-card-subtitle>
-        <v-card-text>
+    <v-col cols="12">
+      <v-toolbar color="primary" dark>
+        <v-toolbar-title>Security: {{ security.name }} </v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+
+      <v-tabs v-model="tab" grow>
+        <v-tab key="masterdata">Master data</v-tab>
+        <v-tab key="markets">Markets</v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="tab">
+        <v-tab-item key="masterdata">
           <ul>
+            <li>
+              ID: <b>{{ security.id }}</b>
+            </li>
             <li>
               UUID: <b>{{ security.uuid }}</b>
             </li>
@@ -35,98 +45,89 @@
               </v-chip>
             </li>
           </ul>
-        </v-card-text>
-      </v-card>
+        </v-tab-item>
 
-      <v-card
-        v-for="market in security.markets"
-        :key="market.marketCode"
-        class="mt-4"
-      >
-        <v-card-title>
-          {{ market.marketCode }}
-          <v-spacer />
-          <v-icon @click="editMarket(market)">
-            {{ mdiPencil }}
-          </v-icon>
-          <v-icon @click="deleteMarket(market)">
-            {{ mdiDelete }}
-          </v-icon>
-        </v-card-title>
-        <v-card-text>
-          <ul>
-            <li>
-              Market code: <b>{{ market.marketCode }}</b>
-            </li>
-            <li>
-              Currency code: <b>{{ market.currencyCode }}</b>
-            </li>
-            <li>
-              Symbol: <b>{{ market.symbol }}</b>
-            </li>
-            <li>
-              Prices available: <b>{{ market.firstPriceDate }}</b> -
-              <b>{{ market.lastPriceDate }}</b>
-            </li>
-            <li>
-              Update prices: <b>{{ market.updatePrices }}</b>
-            </li>
-          </ul>
-        </v-card-text>
-      </v-card>
+        <v-tab-item key="markets">
+          <v-data-table
+            :items="security.markets"
+            :items-per-page="-1"
+            :headers="[
+              { text: 'Market', value: 'marketCode' },
+              { text: 'Currency', value: 'currencyCode' },
+              { text: 'Symbol', value: 'symbol' },
+              { text: 'First price', value: 'firstPriceDate' },
+              { text: 'Last price', value: 'lastPriceDate' },
+              { text: 'Update', value: 'updatePrices' },
+              { value: 'actions' },
+            ]"
+            hide-default-footer
+          >
+            <template #item.actions="{ item }">
+              <v-btn color="primary" icon text @click="editMarket(item)">
+                <v-icon>{{ mdiPencil }}</v-icon>
+              </v-btn>
+              <v-btn color="error" icon text @click="deleteMarket(item)">
+                <v-icon>{{ mdiDelete }}</v-icon>
+              </v-btn>
+            </template>
+          </v-data-table>
 
-      <v-dialog v-model="showEditMarketDialog" max-width="600">
-        <v-card>
-          <v-card-title>{{ editedMarket.marketCode }}</v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="12" md="6">
-                  <v-text-field
-                    v-model="editedMarket.currencyCode"
-                    label="Currency code"
-                  />
-                </v-col>
-                <v-col cols="12" sm="12" md="6">
-                  <v-text-field v-model="editedMarket.symbol" label="Symbol" />
-                </v-col>
-                <v-col cols="12" sm="12" md="6">
-                  <v-checkbox
-                    v-model="editedMarket.updatePrices"
-                    label="Update prices"
-                  />
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="closeEditMarketDialog">
-              Cancel
-            </v-btn>
-            <v-btn color="primary" @click="saveEditMarketDialog">Save</v-btn>
-          </v-card-actions>
-        </v-card>
+          <v-btn color="primary" @click="newMarket">
+            <v-icon>{{ mdiPlus }}</v-icon> Add market
+          </v-btn>
+        </v-tab-item>
+      </v-tabs-items>
+
+      <v-dialog v-model="marketDialog" width="500">
+        <v-form @submit.prevent="saveMarket">
+          <v-card>
+            <v-card-title v-if="selectedMarketIsNew">New market</v-card-title>
+            <v-card-title v-else>
+              {{ selectedMarket.marketCode }}
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="12" md="6">
+                    <v-text-field
+                      v-model="selectedMarket.marketCode"
+                      label="Market code (MIC)"
+                      :readonly="!selectedMarketIsNew"
+                    />
+                    <v-text-field
+                      v-model="selectedMarket.currencyCode"
+                      label="Currency code"
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="12" md="6">
+                    <v-text-field
+                      v-model="selectedMarket.symbol"
+                      label="Symbol"
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="12" md="6">
+                    <v-checkbox
+                      v-model="selectedMarket.updatePrices"
+                      label="Update prices"
+                    />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" text @click="marketDialog = false">
+                <v-icon>{{ mdiClose }}</v-icon> Cancel
+              </v-btn>
+              <v-btn type="submit" color="primary" text>
+                <v-icon>{{ mdiCheck }}</v-icon> Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
       </v-dialog>
 
       <DialogConfirm ref="confirm" />
-
-      <v-card class="mt-4">
-        <v-form>
-          <v-card-title>Add market</v-card-title>
-          <v-card-text>
-            <v-text-field v-model="newMarketCode" label="Market code (MIC)" />
-            <v-text-field v-model="newCurrencyCode" label="Currency code" />
-            <v-text-field v-model="newSymbol" label="Symbol" />
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <btn-loading type="submit" color="primary" :action="addMarket">
-              Add
-            </btn-loading>
-          </v-card-actions>
-        </v-form>
-      </v-card>
     </v-col>
   </v-row>
 </template>
@@ -154,17 +155,21 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
   // asyncData
   security: any
 
-  newMarketCode: string = ''
-  newCurrencyCode: string = ''
-  newSymbol: string = ''
+  $refs!: {
+    confirm: DialogConfirm
+  }
 
-  showEditMarketDialog = false
-  editedMarket = {
+  tab = 'masterdata'
+
+  marketDialog = false
+  selectedMarket = {
     marketCode: '',
     currencyCode: '',
     symbol: '',
     updatePrices: false,
   }
+
+  selectedMarketIsNew = false
 
   async getSecurity() {
     this.security = await this.$axios.$get(
@@ -172,31 +177,38 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
     )
   }
 
-  editMarket(market: any) {
-    // Edit a copy of the object
-    this.editedMarket = Object.assign({}, market)
-    this.showEditMarketDialog = true
+  newMarket() {
+    this.selectedMarket = {
+      marketCode: '',
+      currencyCode: '',
+      symbol: '',
+      updatePrices: true,
+    }
+    this.selectedMarketIsNew = true
+    this.marketDialog = true
   }
 
-  async saveEditMarketDialog() {
+  editMarket(market: any) {
+    this.selectedMarket = { ...market }
+    this.selectedMarketIsNew = false
+    this.marketDialog = true
+  }
+
+  async saveMarket() {
     await this.$axios.$patch(
-      `/api/securities/uuid/${this.security.uuid}/markets/${this.editedMarket.marketCode}`,
-      this.editedMarket
+      `/api/securities/uuid/${this.security.uuid}/markets/${this.selectedMarket.marketCode}`,
+      this.selectedMarket
     )
 
     // Update to reflect changes
     this.getSecurity()
 
-    this.showEditMarketDialog = false
-  }
-
-  closeEditMarketDialog() {
-    this.showEditMarketDialog = false
+    this.marketDialog = false
   }
 
   async deleteMarket(market: any) {
     if (
-      await (this.$refs.confirm as any).open({
+      await this.$refs.confirm.open({
         title: 'Delete market',
         message: `Are you sure you want to delete the market "${market.marketCode}"?`,
         color: 'secondary',
@@ -207,22 +219,6 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
       )
       this.getSecurity()
     }
-  }
-
-  async addMarket() {
-    await this.$axios.$patch(
-      `/api/securities/uuid/${this.security.uuid}/markets/${this.newMarketCode}`,
-      {
-        currencyCode: this.newCurrencyCode,
-        symbol: this.newSymbol,
-      }
-    )
-
-    await this.getSecurity()
-
-    this.newMarketCode = ''
-    this.newCurrencyCode = ''
-    this.newSymbol = ''
   }
 
   head() {
