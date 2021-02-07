@@ -3,7 +3,7 @@ CREATE TABLE "taxonomies" (
   "parent_uuid" UUID NULL REFERENCES "taxonomies" ("uuid") ON DELETE CASCADE ON UPDATE CASCADE,
   "root_uuid" UUID NULL REFERENCES "taxonomies" ("uuid") ON DELETE CASCADE ON UPDATE CASCADE,
   "name" TEXT NOT NULL,
-  "code" TEXT NULL,
+  "code" TEXT NULL
 );
 
 CREATE INDEX "taxonomies_parent_uuid" ON "taxonomies" ("parent_uuid");
