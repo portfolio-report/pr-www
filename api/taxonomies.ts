@@ -77,12 +77,8 @@ router.patch(
 
     const data: Prisma.TaxonomyUpdateInput = {}
 
-    if (req.body.name) {
+    if (typeof req.body.name === 'string') {
       data.name = req.body.name
-    }
-
-    if (req.body.code) {
-      data.code = req.body.code
     }
 
     if (req.body.parentUuid) {
@@ -101,6 +97,15 @@ router.patch(
 
       data.parent = { connect: { uuid: parent.uuid } }
       data.root = { connect: { uuid: parent.rootUuid || parent.uuid } }
+    }
+
+    if (typeof req.body.code === 'string') {
+      data.code = req.body.code
+    }
+
+    // Null values are only allowed for root nodes
+    if (data.parent && req.body.code === null) {
+      data.code = ''
     }
 
     log(`Updating ${uuid}`)

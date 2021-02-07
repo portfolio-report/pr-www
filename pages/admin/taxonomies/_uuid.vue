@@ -112,6 +112,7 @@ interface Taxonomy {
   uuid?: string
   parentUuid?: string
   name: string | null
+  code: string | null
   children?: Taxonomy[]
 }
 
@@ -168,7 +169,7 @@ export default class TaxonomyPage extends mixins(Vue, IconsMixin) {
   }
 
   newTaxonomy() {
-    this.selectedTaxonomy = { name: '' }
+    this.selectedTaxonomy = { name: '', code: '' }
     this.taxonomyDialog = true
   }
 

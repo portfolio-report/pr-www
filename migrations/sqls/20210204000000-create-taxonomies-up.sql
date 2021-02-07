@@ -8,6 +8,7 @@ CREATE TABLE "taxonomies" (
 
 CREATE INDEX "taxonomies_parent_uuid" ON "taxonomies" ("parent_uuid");
 CREATE INDEX "taxonomies_root_uuid" ON "taxonomies" ("root_uuid");
+CREATE UNIQUE INDEX "taxonomies_root_uuid_code" ON "taxonomies" ("root_uuid", "code");
 
 CREATE TABLE "securities_taxonomies" (
   "taxonomy_uuid" UUID NOT NULL REFERENCES "taxonomies" ("uuid") ON DELETE CASCADE ON UPDATE CASCADE,
