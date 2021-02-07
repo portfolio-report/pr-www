@@ -9,6 +9,7 @@
       <v-tabs v-model="tab" grow>
         <v-tab key="masterdata">Master data</v-tab>
         <v-tab key="markets">Markets</v-tab>
+        <v-tab key="taxonomies">Taxonomies</v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="tab">
@@ -76,6 +77,34 @@
             <v-icon>{{ mdiPlus }}</v-icon> Add market
           </v-btn>
         </v-tab-item>
+
+        <v-tab-item key="taxonomies">
+          <v-card
+            v-for="taxonomy of taxonomies.filter((t) => t.parentUuid === null)"
+            :key="taxonomy.uuid"
+          >
+            <v-card-title>
+              {{ taxonomy.name }}
+              <v-btn color="primary" icon text @click="editTaxonomy(taxonomy)">
+                <v-icon>{{ mdiPencil }}</v-icon>
+              </v-btn></v-card-title
+            >
+            <v-card-subtitle>{{ taxonomy.uuid }}</v-card-subtitle>
+            <v-card-text class="text-body-1">
+              <ul>
+                <li
+                  v-for="st of securityTaxonomies.filter(
+                    (st) => st.taxonomy.rootUuid === taxonomy.uuid
+                  )"
+                  :key="st.taxonomyUuid"
+                >
+                  {{ st.weight }}% {{ st.taxonomy.name }}
+                  {{ st.taxonomy.code }}
+                </li>
+              </ul>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
       </v-tabs-items>
 
       <v-dialog v-model="marketDialog" width="500">
@@ -127,6 +156,86 @@
         </v-form>
       </v-dialog>
 
+      <v-dialog v-model="taxonomyDialog" width="500">
+        <v-form @submit.prevent="saveTaxonomy">
+          <v-card>
+            <v-card-text>
+              <v-data-table
+                :items="selectedSecurityTaxonomies"
+                :items-per-page="-1"
+                :headers="[
+                  { text: 'Weight', value: 'weight' },
+                  { text: 'Name', value: 'taxonomy.name' },
+                  { value: 'actions' },
+                ]"
+                hide-default-footer
+              >
+                <template #item.weight="{ item }">
+                  <v-text-field v-model="item.weight" suffix="%" dense />
+                </template>
+                <template #item.taxonomy.name="{ item }">
+                  <v-select
+                    v-model="item.taxonomyUuid"
+                    dense
+                    item-text="name"
+                    item-value="uuid"
+                    :items="
+                      taxonomies.filter(
+                        (t) => t.rootUuid === selectedTaxonomy.uuid
+                      )
+                    "
+                  />
+                </template>
+                <template #item.actions="{ item }">
+                  <v-btn
+                    color="error"
+                    icon
+                    text
+                    @click="
+                      selectedSecurityTaxonomies = selectedSecurityTaxonomies.filter(
+                        (e) => e !== item
+                      )
+                    "
+                  >
+                    <v-icon>{{ mdiDelete }}</v-icon>
+                  </v-btn>
+                </template>
+              </v-data-table>
+              <v-alert
+                v-if="selectedSecurityTaxonomiesSumWeights !== 100"
+                dense
+                type="warning"
+                outlined
+              >
+                Weights don't sum up to 100%, but:
+                {{ selectedSecurityTaxonomiesSumWeights }}%
+              </v-alert>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                color="success"
+                small
+                fab
+                @click="
+                  selectedSecurityTaxonomies.push({
+                    weight: String(100 - selectedSecurityTaxonomiesSumWeights),
+                  })
+                "
+              >
+                <v-icon>{{ mdiPlus }}</v-icon>
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" text @click="taxonomyDialog = false">
+                <v-icon>{{ mdiClose }}</v-icon> Cancel
+              </v-btn>
+              <v-btn type="submit" color="primary" text>
+                <v-icon>{{ mdiCheck }}</v-icon> Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-dialog>
+
       <DialogConfirm ref="confirm" />
     </v-col>
   </v-row>
@@ -143,7 +252,8 @@ import DialogConfirm from '../../../components/dialog-confirm.vue'
   async asyncData({ $axios, params, error }): Promise<any> {
     try {
       const security = await $axios.$get(`/api/securities/${params.id}`)
-      return { security }
+      const taxonomies = await $axios.$get(`/api/taxonomies/`)
+      return { security, taxonomies }
     } catch (err) {
       error({ statusCode: 404, message: 'This page could not be found' })
     }
@@ -154,6 +264,7 @@ import DialogConfirm from '../../../components/dialog-confirm.vue'
 export default class SecurityPage extends mixins(Vue, IconsMixin) {
   // asyncData
   security: any
+  taxonomies!: any[]
 
   $refs!: {
     confirm: DialogConfirm
@@ -171,10 +282,29 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
 
   selectedMarketIsNew = false
 
+  taxonomyDialog = false
+  selectedTaxonomy: any = {}
+  selectedSecurityTaxonomies: any[] = []
+
+  get selectedSecurityTaxonomiesSumWeights() {
+    return this.selectedSecurityTaxonomies.reduce(
+      (a, b) => a + Number(b.weight),
+      0
+    )
+  }
+
   async getSecurity() {
     this.security = await this.$axios.$get(
       `/api/securities/${this.security.id}`
     )
+  }
+
+  get securityTaxonomies() {
+    // Join taxonomies to securityTaxonomies
+    return this.security.securityTaxonomies.map((st: any) => ({
+      ...st,
+      taxonomy: this.taxonomies.find((t) => t.uuid === st.taxonomyUuid),
+    }))
   }
 
   newMarket() {
@@ -219,6 +349,27 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
       )
       this.getSecurity()
     }
+  }
+
+  editTaxonomy(taxonomy: any) {
+    this.selectedTaxonomy = taxonomy
+    const selectedSecurityTaxonomies = this.securityTaxonomies.filter(
+      (st: any) => st.taxonomy.rootUuid === taxonomy.uuid
+    )
+    this.selectedSecurityTaxonomies = JSON.parse(
+      JSON.stringify(selectedSecurityTaxonomies)
+    )
+
+    this.taxonomyDialog = true
+  }
+
+  async saveTaxonomy() {
+    await this.$axios.put(
+      `/api/securities/uuid/${this.security.uuid}/taxonomies/${this.selectedTaxonomy.uuid}`,
+      this.selectedSecurityTaxonomies
+    )
+    this.getSecurity()
+    this.taxonomyDialog = false
   }
 
   head() {

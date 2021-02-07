@@ -10,7 +10,7 @@
       </v-toolbar>
 
       <v-data-table
-        :items="taxonomies"
+        :items="taxonomies.filter((t) => t.parentUuid === null)"
         :items-per-page="-1"
         :headers="[
           { text: 'Name', value: 'name' },

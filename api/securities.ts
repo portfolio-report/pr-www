@@ -164,6 +164,7 @@ router.get('/:id', authRequired, async function (req: Request, res: Response) {
           updatePrices: true,
         },
       },
+      securityTaxonomies: true,
     },
     where: { id },
   })
@@ -542,6 +543,40 @@ router.patch(
 
       return res.json(securityTaxonomy)
     }
+  }
+)
+
+/**
+ * Create/update/delete taxonomies
+ */
+router.put(
+  '/uuid/:uuid/taxonomies/:rootUuid',
+  authRequired,
+  async function (req: Request, res: Response) {
+    const securityUuid = req.params.uuid
+    const rootUuid = req.params.rootUuid
+
+    // Remove securityTaxonomies which are not present any more
+    await prisma.securityTaxonomy.deleteMany({
+      where: {
+        securityUuid,
+        taxonomy: { rootUuid },
+        taxonomyUuid: { notIn: req.body.map((el: any) => el.taxonomyUuid) },
+      },
+    })
+
+    const ret = []
+
+    for (const { taxonomyUuid, weight } of req.body) {
+      const securityTaxonomy = await prisma.securityTaxonomy.upsert({
+        where: { taxonomyUuid_securityUuid: { securityUuid, taxonomyUuid } },
+        create: { securityUuid, taxonomyUuid, weight },
+        update: { weight },
+      })
+      ret.push(securityTaxonomy)
+    }
+
+    return res.json(ret)
   }
 )
 

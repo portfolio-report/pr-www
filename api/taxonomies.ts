@@ -13,10 +13,10 @@ const router = express.Router()
 router.use(express.json())
 
 /**
- * Get all taxonomy roots
+ * Get all taxonomies
  */
 router.get('/', async function (_req: Request, res: Response) {
-  const result = await prisma.taxonomy.findMany({ where: { parentUuid: null } })
+  const result = await prisma.taxonomy.findMany()
   return res.json(result)
 })
 
