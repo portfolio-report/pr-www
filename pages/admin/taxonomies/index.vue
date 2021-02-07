@@ -77,7 +77,7 @@ interface Taxonomy {
 
 @Component({
   components: { DialogConfirm },
-  layout: 'admin',
+  middleware: 'auth',
 })
 export default class TaxonomiesPage extends mixins(Vue, IconsMixin) {
   $refs!: {

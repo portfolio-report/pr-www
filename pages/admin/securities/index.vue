@@ -183,7 +183,7 @@ interface Security {
 
 @Component({
   components: { DialogConfirm, SelectSecurityType },
-  layout: 'admin',
+  middleware: 'auth',
 })
 export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
   $refs!: {

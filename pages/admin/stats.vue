@@ -102,7 +102,7 @@ interface ClientUpdate {
   useragent: string | null
 }
 
-@Component({ components: { DialogConfirm }, layout: 'admin' })
+@Component({ components: { DialogConfirm }, middleware: 'auth' })
 export default class StatsPage extends mixins(Vue, IconsMixin) {
   filterVersion: string | null = null
   showEditDialog = false

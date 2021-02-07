@@ -125,7 +125,7 @@ interface Taxonomy {
     }
   },
   components: { DialogConfirm },
-  layout: 'admin',
+  middleware: 'auth',
 })
 export default class TaxonomyPage extends mixins(Vue, IconsMixin) {
   $refs!: {

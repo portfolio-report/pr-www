@@ -9,6 +9,6 @@ export default function ({ _req, store, _error, redirect }) {
     !store.state.auth.user ||
     !store.state.auth.user.username
   ) {
-    return redirect('/admin/login')
+    return redirect('/login')
   }
 }

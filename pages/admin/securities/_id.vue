@@ -258,8 +258,8 @@ import DialogConfirm from '../../../components/dialog-confirm.vue'
       error({ statusCode: 404, message: 'This page could not be found' })
     }
   },
-  layout: 'admin',
   components: { BtnLoading, DialogConfirm },
+  middleware: 'auth',
 })
 export default class SecurityPage extends mixins(Vue, IconsMixin) {
   // asyncData

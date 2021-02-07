@@ -7,7 +7,7 @@
         </v-toolbar>
 
         <v-card-text v-if="authenticated">
-          <nuxt-link to="/admin/">You are logged in already.</nuxt-link>
+          <nuxt-link to="/">You are logged in already.</nuxt-link>
         </v-card-text>
         <div v-else>
           <v-card-text>
@@ -75,7 +75,7 @@ export default class LoginPage extends mixins(Vue, IconsMixin) {
       this.formUsername = ''
       this.formPassword = ''
       this.$router.push({
-        path: '/admin/',
+        path: '/',
       })
     } catch (err) {
       this.errorMessage = err.message
