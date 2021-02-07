@@ -46,6 +46,7 @@ router.post(
     const data: Prisma.TaxonomyCreateInput = {
       uuid: createUuid(),
       name: req.body.name,
+      code: req.body.code,
     }
 
     if (parentUuid) {
