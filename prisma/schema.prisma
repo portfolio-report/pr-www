@@ -23,17 +23,15 @@ model Clientupdate {
 
 model Event {
   id           Int      @id @default(autoincrement()) @db.Integer
-  securityId   Int      @map("security_id") @db.Integer
   date         DateTime @db.Date
   type         String   @db.VarChar(10)
   amount       Decimal? @db.Decimal(10, 4)
   currencyCode String?  @map("currency_code") @db.VarChar(3)
   ratio        String?  @db.VarChar(10)
-  security     Security @relation(fields: [securityId], references: [id])
+  securityUuid String   @map("security_uuid") @db.Uuid
+  security     Security @relation(fields: [securityUuid], references: [uuid])
 
-  @@index([securityId], name: "events_security_id")
-  @@index([securityId, date], name: "events_security_id_date")
-  @@index([securityId, type], name: "events_security_id_type")
+  @@index([securityUuid], name: "events_security_uuid")
   @@map("events")
 }
 
@@ -63,36 +61,34 @@ model ExchangeratePrice {
 
 model Market {
   id             Int       @id @default(autoincrement()) @db.Integer
-  securityId     Int       @map("security_id") @db.Integer
   marketCode     String    @map("market_code") @db.VarChar(4)
   currencyCode   String?   @map("currency_code") @db.VarChar(3)
   firstPriceDate DateTime? @map("first_price_date") @db.Date
   lastPriceDate  DateTime? @map("last_price_date") @db.Date
   symbol         String?   @db.VarChar(10)
   updatePrices   Boolean   @map("update_prices") @db.Boolean
-  security       Security  @relation(fields: [securityId], references: [id])
+  securityUuid   String    @map("security_uuid") @db.Uuid
+  security       Security  @relation(fields: [securityUuid], references: [uuid])
   prices         Price[]
 
-  @@unique([securityId, marketCode], name: "markets_security_id_market_code")
-  @@index([securityId], name: "markets_security_id")
+  @@unique([securityUuid, marketCode], name: "markets_security_uuid_market_code")
+  @@index([securityUuid], name: "markets_security_uuid")
   @@map("markets")
 }
 
 model Price {
-  id       Int      @id @default(autoincrement()) @db.Integer
   marketId Int      @map("market_id") @db.Integer
   date     DateTime @db.Date
   close    Decimal  @db.Decimal(10, 4)
   market   Market   @relation(fields: [marketId], references: [id])
 
-  @@unique([marketId, date], name: "prices_market_id_date")
+  @@id([marketId, date])
   @@index([marketId], name: "prices_market_id")
   @@map("prices")
 }
 
 model Security {
-  id                 Int                @id @default(autoincrement()) @db.Integer
-  uuid               String?            @unique @db.Uuid
+  uuid               String             @id @db.Uuid
   name               String?            @db.VarChar(255)
   isin               String?            @db.VarChar(12)
   wkn                String?            @db.VarChar(6)
@@ -154,7 +150,7 @@ model Taxonomy {
 
 model User {
   id       Int     @id @default(autoincrement()) @db.Integer
-  username String  @db.VarChar(50)
+  username String  @unique @db.VarChar(50)
   password String? @db.VarChar(200)
 
   @@map("users")

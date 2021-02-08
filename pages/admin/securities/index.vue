@@ -67,7 +67,7 @@
         :loading="loading"
       >
         <template #item.name="{ item }">
-          <nuxt-link :to="'/admin/securities/' + item.id">
+          <nuxt-link :to="'/admin/securities/' + item.uuid">
             {{ item.name }}
           </nuxt-link>
         </template>
@@ -84,8 +84,8 @@
       <v-dialog v-model="securityDialog" width="600">
         <v-form @submit.prevent="saveSecurity">
           <v-card>
-            <v-card-title v-if="!!selectedSecurity.id">
-              Edit security {{ selectedSecurity.id }}
+            <v-card-title v-if="!!selectedSecurity.uuid">
+              Edit security {{ selectedSecurity.uuid }}
             </v-card-title>
             <v-card-title v-else>Create security</v-card-title>
             <v-card-text>
@@ -93,7 +93,7 @@
                 <v-row>
                   <v-col cols="12" sm="12" md="8">
                     <v-text-field
-                      v-if="!!selectedSecurity.id"
+                      v-if="!!selectedSecurity.uuid"
                       v-model="selectedSecurity.uuid"
                       label="UUID"
                       disabled
@@ -170,7 +170,6 @@ import SelectSecurityType from '@/components/select-security-type.vue'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
 
 interface Security {
-  id?: number
   uuid?: string | null
   name: string | null
   isin: string | null
@@ -266,9 +265,9 @@ export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
   }
 
   async saveSecurity() {
-    if (this.selectedSecurity.id) {
+    if (this.selectedSecurity.uuid) {
       await this.$axios.$patch(
-        `/api/securities/${this.selectedSecurity.id}`,
+        `/api/securities/${this.selectedSecurity.uuid}`,
         this.selectedSecurity
       )
 
@@ -299,7 +298,7 @@ export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
         color: 'secondary',
       })
     ) {
-      await this.$axios.$delete(`/api/securities/${security.id}`)
+      await this.$axios.$delete(`/api/securities/${security.uuid}`)
       this.getSecurities()
     }
   }

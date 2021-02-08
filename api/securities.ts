@@ -149,33 +149,37 @@ router.get('/', authRequired, async function (req: Request, res: Response) {
 /**
  * Get single security
  */
-router.get('/:id', authRequired, async function (req: Request, res: Response) {
-  const id = Number(req.params.id)
+router.get(
+  '/:uuid',
+  authRequired,
+  async function (req: Request, res: Response) {
+    const uuid = req.params.uuid
 
-  const security = await prisma.security.findUnique({
-    include: {
-      markets: {
-        select: {
-          marketCode: true,
-          currencyCode: true,
-          firstPriceDate: true,
-          lastPriceDate: true,
-          symbol: true,
-          updatePrices: true,
+    const security = await prisma.security.findUnique({
+      include: {
+        markets: {
+          select: {
+            marketCode: true,
+            currencyCode: true,
+            firstPriceDate: true,
+            lastPriceDate: true,
+            symbol: true,
+            updatePrices: true,
+          },
         },
+        securityTaxonomies: true,
       },
-      securityTaxonomies: true,
-    },
-    where: { id },
-  })
+      where: { uuid },
+    })
 
-  if (!security) {
-    res.status(404).json({ message: 'Security not found.' })
-    return
+    if (!security) {
+      res.status(404).json({ message: 'Security not found.' })
+      return
+    }
+
+    res.json(security)
   }
-
-  res.json(security)
-})
+)
 
 /**
  * Create single entry, i.e. security
@@ -194,14 +198,14 @@ router.post('/', authRequired, async function (req: Request, res: Response) {
  * Update single entry, i.e. security
  */
 router.patch(
-  '/:id',
+  '/:uuid',
   authRequired,
   async function (req: Request, res: Response, next: NextFunction) {
-    const id = Number(req.params.id)
-    log(`Updating entry ${id}`)
-    const security = await prisma.security.findUnique({ where: { id } })
+    const uuid = req.params.uuid
+    log(`Updating entry ${uuid}`)
+    const security = await prisma.security.findUnique({ where: { uuid } })
     if (security) {
-      await prisma.security.update({ data: req.body, where: { id } })
+      await prisma.security.update({ data: req.body, where: { uuid } })
       res.json({ status: 'ok' })
     } else {
       return next(new HttpError(404, 'Security not found'))
@@ -213,12 +217,12 @@ router.patch(
  * Delete single entry, i.e. security
  */
 router.delete(
-  '/:id',
+  '/:uuid',
   authRequired,
   async function (req: Request, res: Response) {
-    const id = Number(req.params.id)
-    log(`Deleting entry ${id}`)
-    await prisma.security.delete({ where: { id } })
+    const uuid = req.params.uuid
+    log(`Deleting entry ${uuid}`)
+    await prisma.security.delete({ where: { uuid } })
     res.json({ status: 'ok' })
   }
 )
@@ -373,15 +377,15 @@ router.patch(
     res.setTimeout(0)
 
     const security = await prisma.security.findUnique({
-      select: { id: true },
+      select: { uuid: true },
       where: { uuid },
     })
-    if (!security || !security.id) {
+    if (!security) {
       return res.status(404).json({ message: 'Security not found.' })
     }
 
     const entry: {
-      securityId?: number
+      securityUuid?: string
       marketCode?: string
       currencyCode?: string
       symbol?: string
@@ -390,13 +394,13 @@ router.patch(
     } = req.body
 
     // Overwrite attributes if given
-    entry.securityId = security.id
+    entry.securityUuid = security.uuid
     entry.marketCode = marketCode
 
     try {
       const market = await prisma.market.upsert({
         create: {
-          securityId: entry.securityId,
+          securityUuid: entry.securityUuid,
           marketCode: entry.marketCode,
           currencyCode: entry.currencyCode,
           symbol: entry.symbol,
@@ -408,7 +412,10 @@ router.patch(
           symbol: entry.symbol,
         },
         where: {
-          securityId_marketCode: { marketCode, securityId: security.id },
+          markets_security_uuid_market_code: {
+            marketCode,
+            securityUuid: security.uuid,
+          },
         },
       })
 
@@ -596,7 +603,7 @@ router.post(
     }
 
     const event: {
-      securityId: number
+      securityUuid: string
       date: string
       type: string
       amount: number
@@ -605,9 +612,9 @@ router.post(
     } = req.body
 
     // Overwrite attributes if given
-    event.securityId = security.id
+    event.securityUuid = security.uuid
 
-    log(`Creating event @ ${uuid}/${security.id}: ${event.type}/${event.date}`)
+    log(`Creating event @ ${uuid}: ${event.type}/${event.date}`)
     try {
       await prisma.event.create({ data: event })
     } catch (err) {

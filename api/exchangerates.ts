@@ -43,7 +43,7 @@ router.patch(
     try {
       const exchangerate = await prisma.exchangerate.findUnique({
         where: {
-          baseCurrencyCode_quoteCurrencyCode: {
+          exchangerates_base_currency_code_quote_currency_code: {
             baseCurrencyCode,
             quoteCurrencyCode,
           },
@@ -90,7 +90,7 @@ router
     const exchangerate = await prisma.exchangerate.findUnique({
       select: { baseCurrencyCode: true, quoteCurrencyCode: true },
       where: {
-        baseCurrencyCode_quoteCurrencyCode: {
+        exchangerates_base_currency_code_quote_currency_code: {
           quoteCurrencyCode,
           baseCurrencyCode,
         },
@@ -121,7 +121,7 @@ router
 
     const exchangerate = await prisma.exchangerate.findUnique({
       where: {
-        baseCurrencyCode_quoteCurrencyCode: {
+        exchangerates_base_currency_code_quote_currency_code: {
           quoteCurrencyCode,
           baseCurrencyCode,
         },

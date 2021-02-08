@@ -16,9 +16,6 @@
         <v-tab-item key="masterdata">
           <ul>
             <li>
-              ID: <b>{{ security.id }}</b>
-            </li>
-            <li>
               UUID: <b>{{ security.uuid }}</b>
             </li>
             <li>
@@ -251,7 +248,7 @@ import DialogConfirm from '../../../components/dialog-confirm.vue'
 @Component({
   async asyncData({ $axios, params, error }): Promise<any> {
     try {
-      const security = await $axios.$get(`/api/securities/${params.id}`)
+      const security = await $axios.$get(`/api/securities/${params.uuid}`)
       const taxonomies = await $axios.$get(`/api/taxonomies/`)
       return { security, taxonomies }
     } catch (err) {
@@ -295,7 +292,7 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
 
   async getSecurity() {
     this.security = await this.$axios.$get(
-      `/api/securities/${this.security.id}`
+      `/api/securities/${this.security.uuid}`
     )
   }
 
