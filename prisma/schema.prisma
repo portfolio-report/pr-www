@@ -59,7 +59,7 @@ model ExchangeratePrice {
   @@map("exchangerates_prices")
 }
 
-model Market {
+model SecurityMarket {
   id             Int       @id @default(autoincrement()) @db.Integer
   marketCode     String    @map("market_code") @db.VarChar(4)
   currencyCode   String?   @map("currency_code") @db.VarChar(3)
@@ -77,13 +77,13 @@ model Market {
 }
 
 model Price {
-  marketId Int      @map("security_market_id") @db.Integer
-  date     DateTime @db.Date
-  close    Decimal  @db.Decimal(10, 4)
-  market   Market   @relation(fields: [marketId], references: [id])
+  securityMarketId Int            @map("security_market_id") @db.Integer
+  date             DateTime       @db.Date
+  close            Decimal        @db.Decimal(10, 4)
+  securityMarket   SecurityMarket @relation(fields: [securityMarketId], references: [id])
 
-  @@id([marketId, date])
-  @@index([marketId], name: "prices_market_id")
+  @@id([securityMarketId, date])
+  @@index([securityMarketId], name: "prices_market_id")
   @@map("prices")
 }
 
@@ -97,7 +97,7 @@ model Security {
   symbolXnys         String?            @map("symbol_xnys") @db.VarChar(10)
   securityType       String?            @map("security_type") @db.Text
   events             Event[]
-  markets            Market[]
+  markets            SecurityMarket[]
   securityTaxonomies SecurityTaxonomy[] @relation("securitiesTosecurities_taxonomies")
 
   @@index([isin], name: "securities_isin")

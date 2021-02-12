@@ -398,7 +398,7 @@ router.patch(
     entry.marketCode = marketCode
 
     try {
-      const market = await prisma.market.upsert({
+      const market = await prisma.securityMarket.upsert({
         create: {
           securityUuid: entry.securityUuid,
           marketCode: entry.marketCode,
@@ -456,7 +456,7 @@ router.delete(
     const { uuid, marketCode } = req.params
     log(`Deleting market ${uuid}/${marketCode}`)
 
-    await prisma.market.deleteMany({
+    await prisma.securityMarket.deleteMany({
       where: { marketCode, security: { uuid } },
     })
 
@@ -482,7 +482,7 @@ router
     const fromDate =
       typeof req.query.from === 'string' ? req.query.from : getDefaultFromDate()
 
-    const market = await prisma.market.findFirst({
+    const market = await prisma.securityMarket.findFirst({
       where: { marketCode, security: { uuid } },
       select: {
         marketCode: true,
