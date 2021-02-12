@@ -412,7 +412,7 @@ router.patch(
           symbol: entry.symbol,
         },
         where: {
-          markets_security_uuid_market_code: {
+          securities_markets_security_uuid_market_code: {
             marketCode,
             securityUuid: security.uuid,
           },
