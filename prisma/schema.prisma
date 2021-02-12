@@ -60,8 +60,9 @@ model ExchangeratePrice {
 }
 
 model Market {
-  code String @id @db.Text
-  name String @db.Text
+  code            String           @id @db.Text
+  name            String           @db.Text
+  securityMarkets SecurityMarket[]
 
   @@map("markets")
 }
@@ -102,18 +103,19 @@ model Security {
 
 model SecurityMarket {
   id             Int       @id @default(autoincrement()) @db.Integer
-  marketCode     String    @map("market_code") @db.VarChar(4)
+  marketCode     String    @map("market_code") @db.Text
   currencyCode   String?   @map("currency_code") @db.VarChar(3)
   firstPriceDate DateTime? @map("first_price_date") @db.Date
   lastPriceDate  DateTime? @map("last_price_date") @db.Date
   symbol         String?   @db.VarChar(10)
   updatePrices   Boolean   @map("update_prices") @db.Boolean
   securityUuid   String    @map("security_uuid") @db.Uuid
+  markets        Market    @relation(fields: [marketCode], references: [code])
   security       Security  @relation(fields: [securityUuid], references: [uuid])
   prices         Price[]
 
-  @@unique([securityUuid, marketCode], name: "markets_security_uuid_market_code")
-  @@index([securityUuid], name: "markets_security_uuid")
+  @@unique([securityUuid, marketCode], name: "securities_markets_security_uuid_market_code")
+  @@index([securityUuid], name: "securities_markets_security_uuid")
   @@map("securities_markets")
 }
 
