@@ -73,11 +73,11 @@ model Market {
 
   @@unique([securityUuid, marketCode], name: "markets_security_uuid_market_code")
   @@index([securityUuid], name: "markets_security_uuid")
-  @@map("markets")
+  @@map("securities_markets")
 }
 
 model Price {
-  marketId Int      @map("market_id") @db.Integer
+  marketId Int      @map("security_market_id") @db.Integer
   date     DateTime @db.Date
   close    Decimal  @db.Decimal(10, 4)
   market   Market   @relation(fields: [marketId], references: [id])
