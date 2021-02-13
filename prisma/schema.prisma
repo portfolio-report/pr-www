@@ -74,13 +74,13 @@ model Price {
   securityMarket   SecurityMarket @relation(fields: [securityMarketId], references: [id])
 
   @@id([securityMarketId, date])
-  @@index([securityMarketId], name: "prices_market_id")
-  @@map("prices")
+  @@index([securityMarketId], name: "securities_markets_prices_security_market_id")
+  @@map("securities_markets_prices")
 }
 
 model Security {
   uuid               String             @id @db.Uuid
-  name               String?            @db.VarChar(255)
+  name               String?            @db.Text
   isin               String?            @db.VarChar(12)
   wkn                String?            @db.VarChar(6)
   symbolXfra         String?            @map("symbol_xfra") @db.VarChar(10)
@@ -104,7 +104,7 @@ model Security {
 model SecurityMarket {
   id             Int       @id @default(autoincrement()) @db.Integer
   marketCode     String    @map("market_code") @db.Text
-  currencyCode   String?   @map("currency_code") @db.VarChar(3)
+  currencyCode   String    @map("currency_code") @db.VarChar(3)
   firstPriceDate DateTime? @map("first_price_date") @db.Date
   lastPriceDate  DateTime? @map("last_price_date") @db.Date
   symbol         String?   @db.VarChar(10)
