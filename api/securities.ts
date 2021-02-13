@@ -402,7 +402,7 @@ router.patch(
         create: {
           securityUuid: entry.securityUuid,
           marketCode: entry.marketCode,
-          currencyCode: entry.currencyCode,
+          currencyCode: entry.currencyCode || '',
           symbol: entry.symbol,
           updatePrices: entry.updatePrices !== false,
         },
@@ -422,19 +422,19 @@ router.patch(
       // Create/update the associated prices
       if (entry.prices) {
         await prisma.$executeRaw(
-          'INSERT INTO prices (market_id, date, close) VALUES' +
+          'INSERT INTO securities_markets_prices (security_market_id, date, close) VALUES' +
             entry.prices
               .map((price) => `(${market.id}, '${price.date}', ${price.close})`)
               .join(',') +
-            'ON CONFLICT(market_id, date) DO UPDATE SET close=excluded.close'
+            'ON CONFLICT(security_market_id, date) DO UPDATE SET close=excluded.close'
         )
       }
 
       // Keep firstPriceDate and lastPriceDate up-to-date
       await prisma.$executeRaw`
-        UPDATE markets SET
-        first_price_date = (SELECT MIN(date) FROM prices WHERE market_id = ${market.id}),
-        last_price_date =  (SELECT MAX(date) FROM prices WHERE market_id = ${market.id})
+        UPDATE securities_markets SET
+        first_price_date = (SELECT MIN(date) FROM securities_markets_prices WHERE security_market_id = ${market.id}),
+        last_price_date =  (SELECT MAX(date) FROM securities_markets_prices WHERE security_market_id = ${market.id})
         WHERE id = ${market.id}`
     } catch (err) {
       // eslint-disable-next-line no-console
