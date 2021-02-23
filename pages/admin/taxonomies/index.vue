@@ -94,7 +94,7 @@ export default class TaxonomiesPage extends mixins(Vue, IconsMixin) {
   }
 
   async getTaxonomies() {
-    this.taxonomies = await this.$axios.$get('/api/taxonomies')
+    this.taxonomies = await this.$axios.$get('/taxonomies')
   }
 
   newTaxonomy() {
@@ -110,11 +110,11 @@ export default class TaxonomiesPage extends mixins(Vue, IconsMixin) {
   async saveTaxonomy() {
     if (this.selectedTaxonomy.uuid) {
       await this.$axios.$patch(
-        `/api/taxonomies/${this.selectedTaxonomy.uuid}`,
+        `/taxonomies/${this.selectedTaxonomy.uuid}`,
         this.selectedTaxonomy
       )
     } else {
-      await this.$axios.$post(`/api/taxonomies/`, this.selectedTaxonomy)
+      await this.$axios.$post(`/taxonomies/`, this.selectedTaxonomy)
     }
     this.getTaxonomies()
     this.taxonomyDialog = false
@@ -126,7 +126,7 @@ export default class TaxonomiesPage extends mixins(Vue, IconsMixin) {
     })
 
     if (confirmed) {
-      await this.$axios.$delete(`/api/taxonomies/${taxonomy.uuid}`)
+      await this.$axios.$delete(`/taxonomies/${taxonomy.uuid}`)
       this.getTaxonomies()
     }
   }

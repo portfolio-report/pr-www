@@ -34,17 +34,22 @@ app.set('trust proxy', true)
  */
 app.use(cors())
 
-app.get('/', function (_req, res) {
-  res.json({ status: 'ok' })
-})
+// Only enable API if API_URL is not set
+if (!process.env.API_URL) {
+  app.get('/', function (_req, res) {
+    res.json({ status: 'ok' })
+  })
 
-app.use('/auth', auth)
-app.use('/contact', contact)
-app.use('/currencies', currencies)
-app.use('/exchangerates', exchangerates)
-app.use('/securities', securities)
-app.use('/stats', stats)
-app.use('/taxonomies', taxonomies)
+  app.use('/auth', auth)
+  app.use('/contact', contact)
+  app.use('/currencies', currencies)
+  app.use('/exchangerates', exchangerates)
+  app.use('/securities', securities)
+  app.use('/stats', stats)
+  app.use('/taxonomies', taxonomies)
+} else {
+  log(`Internal API is deactivated, in favor of ${process.env.API_URL}`)
+}
 
 /**
  * Return 404 if nothing has matched so far.

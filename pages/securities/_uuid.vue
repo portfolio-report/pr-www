@@ -156,7 +156,7 @@ import PricesTable from '@/components/prices-table.vue'
 @Component({
   async asyncData({ $axios, params, error }): Promise<any> {
     try {
-      const security = await $axios.$get(`/api/securities/uuid/${params.uuid}`)
+      const security = await $axios.$get(`/securities/uuid/${params.uuid}`)
       return { security }
     } catch (err) {
       error({ statusCode: 404, message: 'This page could not be found' })
@@ -175,7 +175,7 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
   @Watch('selectedMarketcode')
   async onSelectedMarketcodeChange() {
     this.selectedMarket = await this.$axios.$get(
-      `/api/securities/uuid/${this.$route.params.uuid}/markets/${this.selectedMarketcode}`,
+      `/securities/uuid/${this.$route.params.uuid}/markets/${this.selectedMarketcode}`,
       { params: { from: '2000-01-01' } }
     )
   }

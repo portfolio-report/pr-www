@@ -27,6 +27,10 @@ SEARCH_MIN_RESULTS=10
 
 # Maximum score of search results shown (optional)
 SEARCH_MAX_SCORE=0.1
+
+# Use this URL as baseUrl for Axios and don't start internal API
+# (will be baked into build)
+API_URL=https://...
 ```
 
 Create `api/config.json`, e.g.:

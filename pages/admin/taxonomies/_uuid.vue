@@ -119,7 +119,7 @@ interface Taxonomy {
 @Component({
   async asyncData({ $axios, params, error }): Promise<any> {
     try {
-      const root = await $axios.$get(`/api/taxonomies/${params.uuid}`)
+      const root = await $axios.$get(`/taxonomies/${params.uuid}`)
       return { root, rootUuid: root.uuid }
     } catch (err) {
       error({ statusCode: 404, message: 'This page could not be found' })
@@ -163,9 +163,7 @@ export default class TaxonomyPage extends mixins(Vue, IconsMixin) {
   }
 
   async getTaxonomies() {
-    this.root = await this.$axios.$get(
-      `/api/taxonomies/${this.$route.params.uuid}`
-    )
+    this.root = await this.$axios.$get(`/taxonomies/${this.$route.params.uuid}`)
   }
 
   newTaxonomy() {
@@ -181,11 +179,11 @@ export default class TaxonomyPage extends mixins(Vue, IconsMixin) {
   async saveTaxonomy() {
     if (this.selectedTaxonomy.uuid) {
       await this.$axios.$patch(
-        `/api/taxonomies/${this.selectedTaxonomy.uuid}`,
+        `/taxonomies/${this.selectedTaxonomy.uuid}`,
         this.selectedTaxonomy
       )
     } else {
-      await this.$axios.$post(`/api/taxonomies/`, this.selectedTaxonomy)
+      await this.$axios.$post(`/taxonomies/`, this.selectedTaxonomy)
     }
     this.getTaxonomies()
     this.taxonomyDialog = false
@@ -197,7 +195,7 @@ export default class TaxonomyPage extends mixins(Vue, IconsMixin) {
     })
 
     if (confirmed) {
-      await this.$axios.$delete(`/api/taxonomies/${taxonomy.uuid}`)
+      await this.$axios.$delete(`/taxonomies/${taxonomy.uuid}`)
       this.getTaxonomies()
     }
 

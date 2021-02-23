@@ -89,7 +89,7 @@ export default class ContactPage extends Vue {
       message: this.message,
     }
     try {
-      await this.$axios.post('/api/contact', data)
+      await this.$axios.post('/contact', data)
       await (this.$refs.form as any).reset()
     } catch (err) {
       this.showErrorMessage = true

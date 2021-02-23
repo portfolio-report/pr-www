@@ -248,8 +248,8 @@ import DialogConfirm from '../../../components/dialog-confirm.vue'
 @Component({
   async asyncData({ $axios, params, error }): Promise<any> {
     try {
-      const security = await $axios.$get(`/api/securities/${params.uuid}`)
-      const taxonomies = await $axios.$get(`/api/taxonomies/`)
+      const security = await $axios.$get(`/securities/${params.uuid}`)
+      const taxonomies = await $axios.$get(`/taxonomies/`)
       return { security, taxonomies }
     } catch (err) {
       error({ statusCode: 404, message: 'This page could not be found' })
@@ -291,9 +291,7 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
   }
 
   async getSecurity() {
-    this.security = await this.$axios.$get(
-      `/api/securities/${this.security.uuid}`
-    )
+    this.security = await this.$axios.$get(`/securities/${this.security.uuid}`)
   }
 
   get securityTaxonomies() {
@@ -323,7 +321,7 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
 
   async saveMarket() {
     await this.$axios.$patch(
-      `/api/securities/uuid/${this.security.uuid}/markets/${this.selectedMarket.marketCode}`,
+      `/securities/uuid/${this.security.uuid}/markets/${this.selectedMarket.marketCode}`,
       this.selectedMarket
     )
 
@@ -342,7 +340,7 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
       })
     ) {
       await this.$axios.$delete(
-        `/api/securities/uuid/${this.security.uuid}/markets/${market.marketCode}`
+        `/securities/uuid/${this.security.uuid}/markets/${market.marketCode}`
       )
       this.getSecurity()
     }
@@ -362,7 +360,7 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
 
   async saveTaxonomy() {
     await this.$axios.put(
-      `/api/securities/uuid/${this.security.uuid}/taxonomies/${this.selectedTaxonomy.uuid}`,
+      `/securities/uuid/${this.security.uuid}/taxonomies/${this.selectedTaxonomy.uuid}`,
       this.selectedSecurityTaxonomies
     )
     this.getSecurity()

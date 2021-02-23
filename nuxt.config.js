@@ -84,7 +84,10 @@ module.exports = {
   modules: [
     [
       '@nuxtjs/axios',
-      { baseURL: 'http://localhost:3000', browserBaseURL: '/' },
+      {
+        baseURL: process.env.API_URL || 'http://localhost:3000/api',
+        browserBaseURL: process.env.API_URL || '/api',
+      },
     ],
   ],
   /*

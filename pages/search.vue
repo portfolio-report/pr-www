@@ -165,7 +165,7 @@ export default class SearchPage extends mixins(Vue, IconsMixin) {
         params.securityType = this.securityType
       }
       const res = await this.$axios.$get(
-        `/api/securities/search/${encodeURIComponent(this.searchTerm.trim())}`,
+        `/securities/search/${encodeURIComponent(this.searchTerm.trim())}`,
         { params }
       )
 

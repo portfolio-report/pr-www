@@ -53,7 +53,7 @@ import CountryView from '~/components/stats-country.vue'
   },
   async asyncData({ $axios }) {
     const lastUpdate = new Date()
-    const versions = await $axios.$get('/api/stats/updates')
+    const versions = await $axios.$get('/stats/updates')
 
     /* Convert datetime strings to objects and numerical */
     for (const v of versions) {
@@ -134,7 +134,7 @@ export default class StatsPage extends Vue {
 
   async selectVersion(version: string) {
     const { byDate, byCountry } = await this.$axios.$get(
-      `/api/stats/updates/${version}`
+      `/stats/updates/${version}`
     )
     this.selectedVersion = version
     this.selectedVersionByDate = byDate

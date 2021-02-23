@@ -228,7 +228,7 @@ export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
   async getSecuritiesRaw() {
     this.loading = true
 
-    const res = await this.$axios.$get('/api/securities', {
+    const res = await this.$axios.$get('/securities', {
       params: {
         sort: this.pagination.sortBy[0],
         skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
@@ -267,7 +267,7 @@ export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
   async saveSecurity() {
     if (this.selectedSecurity.uuid) {
       await this.$axios.$patch(
-        `/api/securities/${this.selectedSecurity.uuid}`,
+        `/securities/${this.selectedSecurity.uuid}`,
         this.selectedSecurity
       )
 
@@ -276,10 +276,7 @@ export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
 
       this.securityDialog = false
     } else {
-      const sec = await this.$axios.$post(
-        `/api/securities/`,
-        this.selectedSecurity
-      )
+      const sec = await this.$axios.$post(`/securities/`, this.selectedSecurity)
 
       // Update to reflect changes
       this.getSecurities()
@@ -298,13 +295,13 @@ export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
         color: 'secondary',
       })
     ) {
-      await this.$axios.$delete(`/api/securities/${security.uuid}`)
+      await this.$axios.$delete(`/securities/${security.uuid}`)
       this.getSecurities()
     }
   }
 
   updateFts() {
-    this.$axios.post('/api/securities/search/update')
+    this.$axios.post('/securities/search/update')
   }
 
   head() {

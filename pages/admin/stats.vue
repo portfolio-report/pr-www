@@ -155,7 +155,7 @@ export default class StatsPage extends mixins(Vue, IconsMixin) {
   async getEntriesRaw() {
     this.loading = true
 
-    const res = await this.$axios.$get('/api/stats/', {
+    const res = await this.$axios.$get('/stats/', {
       params: {
         sort: this.pagination.sortBy[0],
         skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
@@ -190,7 +190,7 @@ export default class StatsPage extends mixins(Vue, IconsMixin) {
         color: 'secondary',
       })
     ) {
-      await this.$axios.$delete(`/api/stats/${item.id}`)
+      await this.$axios.$delete(`/stats/${item.id}`)
       this.getEntries()
     }
   }
