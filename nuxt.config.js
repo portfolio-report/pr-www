@@ -1,6 +1,12 @@
 const colors = require('vuetify/es5/util/colors').default
 const pkg = require('./package')
 
+const cspConnect = ["'self'"]
+if (process.env.API_URL) {
+  const url = new URL(process.env.API_URL)
+  cspConnect.push(url.hostname + (url.port ? ':' + url.port : ''))
+}
+
 module.exports = {
   /*
    ** Headers of the page
@@ -57,7 +63,7 @@ module.exports = {
     csp: {
       policies: {
         'base-uri': ["'self'"],
-        'connect-src': ["'self'"],
+        'connect-src': cspConnect,
         'default-src': ["'none'"],
         'font-src': ["'self'"],
         'form-action': ["'self'"],
