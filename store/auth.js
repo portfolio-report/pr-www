@@ -31,8 +31,13 @@ export const mutations = {
 export const actions = {
   async login({ commit }, credentials) {
     try {
-      const user = await this.$axios.$post('/auth/login', credentials)
-      commit('setUser', user)
+      const response = await this.$axios.$post('/auth/login', credentials)
+      if (response.token) {
+        this.$axios.setHeader('Authorization', 'Bearer ' + response.token)
+        commit('setUser', { username: credentials.username })
+      } else {
+        commit('setUser', response)
+      }
     } catch (err) {
       if (err.response.status === 401) {
         throw new Error('Invalid credentials')
@@ -42,6 +47,7 @@ export const actions = {
   },
   async logout({ commit }) {
     await this.$axios.$post('/auth/logout')
+    this.$axios.setHeader('Authorization', '')
     commit('setUser', null)
   },
 }
