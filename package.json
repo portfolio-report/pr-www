@@ -34,7 +34,7 @@
     "db-migrate-pg": "^1.2.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "express-validator": "^6.9.2",
+    "express-validator": "^6.10.0",
     "fuse.js": "^6.4.6",
     "ip2location-nodejs": "^8.4.0",
     "lodash": "^4.17.20",
