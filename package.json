@@ -38,7 +38,7 @@
     "fuse.js": "^6.4.6",
     "ip2location-nodejs": "^8.4.0",
     "lodash": "^4.17.20",
-    "nodemailer": "^6.4.17",
+    "nodemailer": "^6.5.0",
     "nuxt": "^2.14.12",
     "nuxt-property-decorator": "^2.9.1",
     "pg": "^8.5.1",
