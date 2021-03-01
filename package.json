@@ -79,7 +79,7 @@
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
     "stylus": "^0.54.8",
-    "stylus-loader": "^4.3.3"
+    "stylus-loader": "^5.0.0"
   },
   "lint-staged": {
     "*.{ts,js,vue}": "npm run lint --"
