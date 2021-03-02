@@ -23,7 +23,7 @@
     "@fontsource/roboto": "^4.1.0",
     "@mdi/js": "^5.9.55",
     "@nuxt/typescript-runtime": "^2.0.1",
-    "@nuxtjs/axios": "^5.12.5",
+    "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/vuetify": "^1.11.3",
     "@prisma/client": "^2.16.0",
     "@quixo3/prisma-session-store": "^2.0.0",
