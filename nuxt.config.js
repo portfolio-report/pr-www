@@ -87,15 +87,23 @@ module.exports = {
   /*
    ** Nuxt.js modules
    */
-  modules: [
-    [
-      '@nuxtjs/axios',
-      {
-        baseURL: process.env.API_URL || 'http://localhost:3000/api',
-        browserBaseURL: process.env.API_URL || '/api',
-      },
-    ],
-  ],
+  modules: ['@nuxtjs/axios'],
+
+  axios: {
+    baseURL: '/', // Used as fallback if no runtime config is provided
+  },
+
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: process.env.API_URL,
+    },
+  },
+
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.API_URL,
+    },
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module

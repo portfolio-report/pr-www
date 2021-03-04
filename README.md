@@ -16,8 +16,7 @@ $ yarn install --frozen-lockfile
 
 Create `.env` configuration file or respective environment variables:
 ```ini
-# Use this URL as baseUrl for Axios and don't start internal API
-# (will be baked into build)
+# Use this URL as baseUrl for Axios
 API_URL=https://...
 ```
 
