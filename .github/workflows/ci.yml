@@ -21,5 +21,4 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: yarn install --frozen-lockfile
-    - run: npx prisma generate
     - run: yarn build

@@ -136,10 +136,10 @@ module.exports = {
   /*
    ** Express middleware
    */
-  serverMiddleware: ['~/server/express-session', '~/api'],
+  serverMiddleware: [],
 
   /**
    * Watch files/folders for changes (and restart server)
    */
-  watch: ['~/server', '~/api'],
+  watch: ['~/server'],
 }

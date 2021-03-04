@@ -9,8 +9,6 @@ RUN yarn install --frozen-lockfile
 # Copy the rest of the app
 COPY . .
 
-RUN npx prisma generate
-
 # Build Nuxt
 RUN yarn build
 
@@ -20,4 +18,4 @@ EXPOSE 3000
 
 ENV NUXT_HOST=0.0.0.0
 
-CMD yarn migrate up && yarn start
+CMD yarn start

@@ -27,7 +27,6 @@
       "@types/node",
       "@nuxt/types",
       "@nuxtjs/axios",
-      "./api/@types/ip2location-nodejs",
     ],
     "resolveJsonModule": true,
   },

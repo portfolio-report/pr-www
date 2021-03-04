@@ -6,7 +6,3 @@ node_modules/
 
 # Git
 .git
-
-# pr-www
-db/
-api/config.json
