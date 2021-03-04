@@ -12,8 +12,6 @@ COPY . .
 # Build Nuxt
 RUN yarn build
 
-RUN mkdir /app/db
-
 EXPOSE 3000
 
 ENV NUXT_HOST=0.0.0.0
