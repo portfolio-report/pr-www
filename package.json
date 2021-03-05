@@ -5,10 +5,10 @@
   "author": "Thomas Fabritius",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts",
-    "build": "nuxt-ts build",
-    "start": "nuxt-ts start",
-    "generate": "nuxt-ts generate",
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
     "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .ts,.js,.vue --ignore-path .gitignore ."
   },
@@ -20,7 +20,6 @@
   "dependencies": {
     "@fontsource/roboto": "^4.2.2",
     "@mdi/js": "^5.9.55",
-    "@nuxt/typescript-runtime": "^2.0.2",
     "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/vuetify": "^1.11.3",
     "chart.js": "^2.9.4",
