@@ -16,21 +16,29 @@
           operators for all matters that cannot be discussed publicly.
 
           <v-form ref="form" v-model="contactFormValid">
-            <v-text-field v-model="name" :rules="nameRules" label="Your name" />
+            <v-text-field
+              v-model="name"
+              :rules="nameRules"
+              label="Your name"
+              outlined
+            />
             <v-text-field
               v-model="email"
               :rules="emailRules"
               label="Your email address"
+              outlined
             />
             <v-text-field
               v-model="subject"
               :rules="subjectRules"
               label="Subject"
+              outlined
             />
             <v-textarea
               v-model="message"
               :rules="messageRules"
               label="Your message"
+              outlined
             />
           </v-form>
         </v-card-text>
