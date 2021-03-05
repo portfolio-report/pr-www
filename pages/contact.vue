@@ -15,30 +15,34 @@
           This contact form can be used to establish direct contact with the
           operators for all matters that cannot be discussed publicly.
 
-          <v-form ref="form" v-model="contactFormValid">
+          <v-form ref="form" v-model="contactFormValid" class="mt-4">
             <v-text-field
               v-model="name"
               :rules="nameRules"
               label="Your name"
               outlined
+              dense
             />
             <v-text-field
               v-model="email"
               :rules="emailRules"
               label="Your email address"
               outlined
+              dense
             />
             <v-text-field
               v-model="subject"
               :rules="subjectRules"
               label="Subject"
               outlined
+              dense
             />
             <v-textarea
               v-model="message"
               :rules="messageRules"
               label="Your message"
               outlined
+              dense
             />
           </v-form>
         </v-card-text>
