@@ -27,6 +27,7 @@
       "@types/node",
       "@nuxt/types",
       "@nuxtjs/axios",
+      "@nuxtjs/auth-next"
     ],
     "resolveJsonModule": true,
   },

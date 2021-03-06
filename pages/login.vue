@@ -56,7 +56,7 @@ export default class LoginPage extends mixins(Vue, IconsMixin) {
   errorMessage: string | null = null
 
   get authenticated() {
-    return this.$store.getters['auth/isAuthenticated']
+    return this.$auth.loggedIn && this.$auth.user?.isAdmin
   }
 
   mounted(): void {
@@ -68,15 +68,12 @@ export default class LoginPage extends mixins(Vue, IconsMixin) {
   async login() {
     try {
       this.errorMessage = null
-      await this.$store.dispatch('auth/login', {
-        username: this.formUsername,
-        password: this.formPassword,
+      await this.$auth.loginWith('local', {
+        data: { username: this.formUsername, password: this.formPassword },
       })
+
       this.formUsername = ''
       this.formPassword = ''
-      this.$router.push({
-        path: '/',
-      })
     } catch (err) {
       this.errorMessage = err.message
     }

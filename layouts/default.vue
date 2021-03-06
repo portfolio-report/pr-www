@@ -137,18 +137,15 @@ export default class DefaultLayout extends mixins(Vue, IconsMixin) {
   }
 
   get authenticated() {
-    return this.$store.getters['auth/isAuthenticated']
+    return this.$auth.loggedIn && this.$auth.user?.isAdmin
   }
 
   get username() {
-    return this.$store.getters['auth/username']
+    return this.$auth.user?.username
   }
 
   logout() {
-    this.$store.dispatch('auth/logout')
-    this.$router.push({
-      path: '/',
-    })
+    this.$auth.logout()
   }
 
   title = 'Portfolio Report'

@@ -87,7 +87,7 @@ module.exports = {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/axios'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
 
   axios: {
     baseURL: '/', // Used as fallback if no runtime config is provided
@@ -104,6 +104,28 @@ module.exports = {
       baseURL: process.env.API_URL,
     },
   },
+
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/auth/login', method: 'post', property: 'token' },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: { url: '/auth/users/me', method: 'get' },
+        },
+        user: {
+          property: false,
+          autoFetch: true,
+        },
+        token: {
+          property: 'token',
+          required: true,
+          type: 'Bearer',
+        },
+      },
+    },
+  },
+
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
