@@ -4,5 +4,8 @@ node_modules/
 # nuxt.js build output
 .nuxt
 
+# nuxt.js generate output
+dist
+
 # Git
 .git

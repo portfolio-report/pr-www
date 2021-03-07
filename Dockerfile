@@ -10,7 +10,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Build Nuxt
-RUN yarn build
+RUN yarn generate
 
 EXPOSE 3000
 

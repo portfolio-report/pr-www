@@ -26,7 +26,7 @@ API_URL=https://...
 # serve with hot reload at localhost:3000
 $ yarn dev
 
-# build for production and launch server
-$ yarn build
+# generate files and serve them
+$ yarn generate
 $ yarn start
 ```

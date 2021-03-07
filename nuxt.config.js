@@ -8,6 +8,8 @@ if (process.env.API_URL) {
 }
 
 module.exports = {
+  target: 'static',
+
   /*
    ** Headers of the page
    */
@@ -41,6 +43,10 @@ module.exports = {
     ],
   },
 
+  generate: {
+    exclude: [/^\/admin/, '/stats'],
+  },
+
   /*
    ** Customize the progress-bar color
    */
@@ -59,21 +65,7 @@ module.exports = {
   /*
    ** Options for rendering pages
    */
-  render: {
-    csp: {
-      policies: {
-        'base-uri': ["'self'"],
-        'connect-src': cspConnect,
-        'default-src': ["'none'"],
-        'font-src': ["'self'"],
-        'form-action': ["'self'"],
-        'frame-ancestors': ["'none'"],
-        'img-src': ["'self'"],
-        'object-src': ["'none'"],
-        'style-src': ["'self'", "'unsafe-inline'"],
-      },
-    },
-  },
+  render: {},
 
   /*
    ** Nuxt.js dev-modules
@@ -90,7 +82,7 @@ module.exports = {
   modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
 
   axios: {
-    baseURL: '/', // Used as fallback if no runtime config is provided
+    baseURL: 'https://api.portfolio-report.net/', // Used as fallback if no runtime config is provided
   },
 
   publicRuntimeConfig: {
