@@ -1,7 +1,18 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="6">
-      <div class="headline">{{ security.name }}</div>
+      <div class="headline">
+        {{ security.name }}
+        <v-btn
+          v-if="$auth.loggedIn"
+          color="primary"
+          icon
+          text
+          @click="editSecurity(security)"
+        >
+          <v-icon>{{ mdiPencil }}</v-icon>
+        </v-btn>
+      </div>
 
       <v-tooltip right>
         <template #activator="{ on }">
@@ -32,6 +43,9 @@
 
         <v-tab-item key="overview">
           <ul>
+            <li v-if="$auth.loggedIn">
+              UUID: <b>{{ security.uuid }}</b>
+            </li>
             <li>
               ISIN: <b>{{ security.isin }}</b>
             </li>
@@ -143,6 +157,8 @@
       </v-tabs>
 
       <v-tabs-items> </v-tabs-items>
+
+      <SecurityDialog ref="securityDialog" />
     </v-col>
   </v-row>
 </template>
@@ -152,6 +168,7 @@ import { Component, Vue, Watch, mixins } from 'nuxt-property-decorator'
 
 import { IconsMixin } from '@/components/icons-mixin'
 import PricesTable from '@/components/prices-table.vue'
+import SecurityDialog from '@/components/security-dialog.vue'
 
 @Component({
   async asyncData({ $axios, params, error }): Promise<any> {
@@ -163,11 +180,15 @@ import PricesTable from '@/components/prices-table.vue'
     }
   },
 
-  components: { PricesTable },
+  components: { PricesTable, SecurityDialog },
 })
 export default class SecurityPage extends mixins(Vue, IconsMixin) {
   // asyncData
   security: any
+
+  $refs!: {
+    securityDialog: SecurityDialog
+  }
 
   selectedMarketcode: string = ''
   selectedMarket: any = null
@@ -203,6 +224,13 @@ export default class SecurityPage extends mixins(Vue, IconsMixin) {
         name: marketName,
       }
     })
+  }
+
+  async editSecurity(security: any) {
+    const ret = await this.$refs.securityDialog.edit(security)
+    if (ret) {
+      this.security = { ...this.security, ...ret }
+    }
   }
 }
 </script>

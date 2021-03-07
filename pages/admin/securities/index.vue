@@ -157,6 +157,7 @@
       <v-btn color="primary" @click="updateFts">Update FTS index</v-btn>
 
       <DialogConfirm ref="confirm" />
+      <SecurityDialog ref="securityDialog" />
     </v-col>
   </v-row>
 </template>
@@ -167,26 +168,18 @@ import { Component, Vue, Watch, mixins } from 'nuxt-property-decorator'
 
 import { IconsMixin } from '@/components/icons-mixin'
 import SelectSecurityType from '@/components/select-security-type.vue'
+import { Security } from '@/store/security.model'
+import SecurityDialog from '@/components/security-dialog.vue'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
 
-interface Security {
-  uuid?: string | null
-  name: string | null
-  isin: string | null
-  wkn: string | null
-  symbolXfra: string | null
-  symbolXnas: string | null
-  symbolXnys: string | null
-  securityType: string | null
-}
-
 @Component({
-  components: { DialogConfirm, SelectSecurityType },
+  components: { DialogConfirm, SelectSecurityType, SecurityDialog },
   middleware: 'auth',
 })
 export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
   $refs!: {
     confirm: DialogConfirm
+    securityDialog: SecurityDialog
   }
 
   showCreateDialog = false
@@ -246,44 +239,21 @@ export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
 
   getSecurities = debounce(this.getSecuritiesRaw, 300)
 
-  newSecurity() {
-    this.selectedSecurity = {
-      name: '',
-      isin: '',
-      wkn: '',
-      securityType: '',
-      symbolXfra: '',
-      symbolXnas: '',
-      symbolXnys: '',
+  async newSecurity() {
+    const sec = await this.$refs.securityDialog.create()
+
+    if (sec) {
+      // Update to reflect changes
+      this.getSecurities()
+
+      await this.editSecurity(sec)
     }
-    this.securityDialog = true
   }
 
-  editSecurity(security: Security) {
-    this.selectedSecurity = { ...security }
-    this.securityDialog = true
-  }
-
-  async saveSecurity() {
-    if (this.selectedSecurity.uuid) {
-      await this.$axios.$patch(
-        `/securities/${this.selectedSecurity.uuid}`,
-        this.selectedSecurity
-      )
-
+  async editSecurity(security: Security) {
+    if (await this.$refs.securityDialog.edit(security)) {
       // Update to reflect changes
       this.getSecurities()
-
-      this.securityDialog = false
-    } else {
-      const sec = await this.$axios.$post(`/securities/`, this.selectedSecurity)
-
-      // Update to reflect changes
-      this.getSecurities()
-
-      this.showCreateDialog = false
-
-      this.editSecurity(sec)
     }
   }
 
