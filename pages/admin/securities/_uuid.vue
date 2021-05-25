@@ -189,9 +189,8 @@
                     icon
                     text
                     @click="
-                      selectedSecurityTaxonomies = selectedSecurityTaxonomies.filter(
-                        (e) => e !== item
-                      )
+                      selectedSecurityTaxonomies =
+                        selectedSecurityTaxonomies.filter((e) => e !== item)
                     "
                   >
                     <v-icon>{{ mdiDelete }}</v-icon>
