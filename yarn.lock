@@ -1335,10 +1335,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fontsource/roboto@^4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.3.0.tgz#00f1cceca43eff85bb0e1d424311751ee41f6aa6"
-  integrity sha512-WeFWCWYutLWyEtRmBhn+bLbW4/km0l+HhTpR8wWDxJLiGiMOhVLO/Z0q5w6l20ZOkWnf6Z1rN3o3W2HjvYN6Rg==
+"@fontsource/roboto@^4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.4.2.tgz#538425f02a13baf545eb26de5f104f6697e19542"
+  integrity sha512-sLuV0jwNirm+3QigxDHZC3GQAJks717AHKl2tEHSYfkQh82gc7t3naaELs+Jgz8CpuEfcC7VKlWaCFWm7Qe82w==
 
 "@mdi/js@^5.9.55":
   version "5.9.55"
