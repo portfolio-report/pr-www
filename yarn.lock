@@ -1726,10 +1726,10 @@
     webpack-node-externals "^3.0.0"
     webpackbar "^4.0.0"
 
-"@nuxtjs/auth-next@5.0.0-1613647907.37b1156":
-  version "5.0.0-1613647907.37b1156"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/auth-next/-/auth-next-5.0.0-1613647907.37b1156.tgz#469965d2409a62ecc9cb064d31086375f2a8cd90"
-  integrity sha512-v0Q+ErQlL4YY/XnCjAN2uhDp74oli1mqvU2DT82DMWEAKTH+DJ1xPHQnXlRda+Jq3U3A1JmVND0wcFJcqq9gBg==
+"@nuxtjs/auth-next@5.0.0-1622309801.87126e3":
+  version "5.0.0-1622309801.87126e3"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/auth-next/-/auth-next-5.0.0-1622309801.87126e3.tgz#6340085324f7e5aa422f4016686211188405ac58"
+  integrity sha512-lbOzV0tqqUCATQ62gYI7udcbSMLlVjZtDbQ2j5edmP4Q7e1OAsNebJ6wJANu0IVX2KNPcFkVLFfxEnaO8kRUAg==
   dependencies:
     "@nuxtjs/axios" "^5.13.0"
     axios "^0.21.1"
@@ -4835,7 +4835,7 @@ eslint-plugin-unicorn@^28.0.2:
     safe-regex "^2.1.1"
     semver "^7.3.4"
 
-eslint-plugin-vue@^7.1.0, eslint-plugin-vue@^7.10.0, eslint-plugin-vue@^7.7.0:
+eslint-plugin-vue@^7.1.0, eslint-plugin-vue@^7.10.0, eslint-plugin-vue@^7.7.0, eslint-plugin-vue@^7.9.0:
   version "7.10.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.10.0.tgz#251749aa99e089e085275f011042c6e74189f89a"
   integrity sha512-xdr6e4t/L2moRAeEQ9HKgge/hFq+w9v5Dj+BA54nTAzSFdUyKLiSOdZaRQjCHMY0Pk2WaQBFH9QiWG60xiC+6A==
