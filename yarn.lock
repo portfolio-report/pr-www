@@ -1335,10 +1335,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fontsource/roboto@^4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.3.0.tgz#00f1cceca43eff85bb0e1d424311751ee41f6aa6"
-  integrity sha512-WeFWCWYutLWyEtRmBhn+bLbW4/km0l+HhTpR8wWDxJLiGiMOhVLO/Z0q5w6l20ZOkWnf6Z1rN3o3W2HjvYN6Rg==
+"@fontsource/roboto@^4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.4.2.tgz#538425f02a13baf545eb26de5f104f6697e19542"
+  integrity sha512-sLuV0jwNirm+3QigxDHZC3GQAJks717AHKl2tEHSYfkQh82gc7t3naaELs+Jgz8CpuEfcC7VKlWaCFWm7Qe82w==
 
 "@mdi/js@^5.9.55":
   version "5.9.55"
@@ -4761,6 +4761,27 @@ eslint-plugin-import@^2.22.1, eslint-plugin-import@^2.23.3:
     resolve "^1.20.0"
     tsconfig-paths "^3.9.0"
 
+eslint-plugin-import@^2.23.4:
+  version "2.23.4"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.23.4.tgz#8dceb1ed6b73e46e50ec9a5bb2411b645e7d3d97"
+  integrity sha512-6/wP8zZRsnQFiR3iaPFgh5ImVRM1WN5NUWfTIRqwOdeiGJlBcSk82o1FEVq8yXmy4lkIzTo7YhHCIxlU/2HyEQ==
+  dependencies:
+    array-includes "^3.1.3"
+    array.prototype.flat "^1.2.4"
+    debug "^2.6.9"
+    doctrine "^2.1.0"
+    eslint-import-resolver-node "^0.3.4"
+    eslint-module-utils "^2.6.1"
+    find-up "^2.0.0"
+    has "^1.0.3"
+    is-core-module "^2.4.0"
+    minimatch "^3.0.4"
+    object.values "^1.1.3"
+    pkg-up "^2.0.0"
+    read-pkg-up "^3.0.0"
+    resolve "^1.20.0"
+    tsconfig-paths "^3.9.0"
+
 eslint-plugin-jest@^24.1.7, eslint-plugin-jest@^24.3.6:
   version "24.3.6"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-24.3.6.tgz#5f0ca019183c3188c5ad3af8e80b41de6c8e9173"
@@ -4835,7 +4856,7 @@ eslint-plugin-unicorn@^28.0.2:
     safe-regex "^2.1.1"
     semver "^7.3.4"
 
-eslint-plugin-vue@^7.1.0, eslint-plugin-vue@^7.10.0, eslint-plugin-vue@^7.7.0:
+eslint-plugin-vue@^7.1.0, eslint-plugin-vue@^7.10.0, eslint-plugin-vue@^7.7.0, eslint-plugin-vue@^7.9.0:
   version "7.10.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.10.0.tgz#251749aa99e089e085275f011042c6e74189f89a"
   integrity sha512-xdr6e4t/L2moRAeEQ9HKgge/hFq+w9v5Dj+BA54nTAzSFdUyKLiSOdZaRQjCHMY0Pk2WaQBFH9QiWG60xiC+6A==
