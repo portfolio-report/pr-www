@@ -1320,25 +1320,25 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@eslint/eslintrc@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.4.1.tgz#442763b88cecbe3ee0ec7ca6d6dd6168550cbf14"
-  integrity sha512-5v7TDE9plVhvxQeWLXDTvFvJBdH6pEsdnl2g/dAptmuFEPedQ4Erq5rsDsX+mvAM610IhNaO2W5V1dOOnDKxkQ==
+"@eslint/eslintrc@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.4.2.tgz#f63d0ef06f5c0c57d76c4ab5f63d3835c51b0179"
+  integrity sha512-8nmGq/4ycLpIwzvhI4tNDmQztZ8sp+hI7cyG8i1nQDhkAbRzHpXPidRAHlNvCZQpJTKw5ItIpMw9RSToGF00mg==
   dependencies:
     ajv "^6.12.4"
     debug "^4.1.1"
     espree "^7.3.0"
-    globals "^12.1.0"
+    globals "^13.9.0"
     ignore "^4.0.6"
     import-fresh "^3.2.1"
     js-yaml "^3.13.1"
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fontsource/roboto@^4.4.2":
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.4.2.tgz#538425f02a13baf545eb26de5f104f6697e19542"
-  integrity sha512-sLuV0jwNirm+3QigxDHZC3GQAJks717AHKl2tEHSYfkQh82gc7t3naaELs+Jgz8CpuEfcC7VKlWaCFWm7Qe82w==
+"@fontsource/roboto@^4.4.5":
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.4.5.tgz#9ef1b9288ac4a97b97906da920c63c08dba97c89"
+  integrity sha512-e3s7BF8MDBLpkA2r6lnl5PMnllF0McVvpolK9h2zzvVJw2WPexP1GTgMKHISlglYZRij2lKg/ZjQcIUUYDsAXg==
 
 "@mdi/js@^5.9.55":
   version "5.9.55"
@@ -1726,10 +1726,10 @@
     webpack-node-externals "^3.0.0"
     webpackbar "^4.0.0"
 
-"@nuxtjs/auth-next@5.0.0-1613647907.37b1156":
-  version "5.0.0-1613647907.37b1156"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/auth-next/-/auth-next-5.0.0-1613647907.37b1156.tgz#469965d2409a62ecc9cb064d31086375f2a8cd90"
-  integrity sha512-v0Q+ErQlL4YY/XnCjAN2uhDp74oli1mqvU2DT82DMWEAKTH+DJ1xPHQnXlRda+Jq3U3A1JmVND0wcFJcqq9gBg==
+"@nuxtjs/auth-next@5.0.0-1624817847.21691f1":
+  version "5.0.0-1624817847.21691f1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/auth-next/-/auth-next-5.0.0-1624817847.21691f1.tgz#28b92625ac5817d8083f8b42dd184a88caefbe96"
+  integrity sha512-PsHhLtzglMnwM2o16mgM7zQ3KwTI7AIg2ja3IFYujbs9s1w8HvnRD3byMRj1WZo0vXEBRh3u3nHxKEBIbFe1Xg==
   dependencies:
     "@nuxtjs/axios" "^5.13.0"
     axios "^0.21.1"
@@ -1741,18 +1741,7 @@
     jwt-decode "^3.1.2"
     requrl "^3.0.2"
 
-"@nuxtjs/axios@^5.13.0":
-  version "5.13.5"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/axios/-/axios-5.13.5.tgz#eddea8a6b8cc1e758bdd5adaeaa377104ebe6965"
-  integrity sha512-GyeuiseDCwfRGDQH/gK+lngCseZS3SQm3q6xqiVx5xQnzCqokojN3uJkNB0DdHCowBP1aim+mDhu3spzcCnyBg==
-  dependencies:
-    "@nuxtjs/proxy" "^2.1.0"
-    axios "^0.21.1"
-    axios-retry "^3.1.9"
-    consola "^2.15.3"
-    defu "^5.0.0"
-
-"@nuxtjs/axios@^5.13.6":
+"@nuxtjs/axios@^5.13.0", "@nuxtjs/axios@^5.13.6":
   version "5.13.6"
   resolved "https://registry.yarnpkg.com/@nuxtjs/axios/-/axios-5.13.6.tgz#6f4bbd98a3a7799a5d2c0726c6ad2a98aa111881"
   integrity sha512-XS+pOE0xsDODs1zAIbo95A0LKlilvJi8YW0NoXYuq3/jjxGgWDxizZ6Yx0AIIjZOoGsXJOPc0/BcnSEUQ2mFBA==
@@ -4971,13 +4960,13 @@ eslint-webpack-plugin@^2.4.1:
     micromatch "^4.0.2"
     schema-utils "^3.0.0"
 
-eslint@^7.27.0:
-  version "7.27.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.27.0.tgz#665a1506d8f95655c9274d84bd78f7166b07e9c7"
-  integrity sha512-JZuR6La2ZF0UD384lcbnd0Cgg6QJjiCwhMD6eU4h/VGPcVGwawNNzKU41tgokGXnfjOOyI6QIffthhJTPzzuRA==
+eslint@^7.29.0:
+  version "7.29.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.29.0.tgz#ee2a7648f2e729485e4d0bd6383ec1deabc8b3c0"
+  integrity sha512-82G/JToB9qIy/ArBzIWG9xvvwL3R86AlCjtGw+A29OMZDqhTybz/MByORSukGxeI+YPCR4coYyITKk8BFH9nDA==
   dependencies:
     "@babel/code-frame" "7.12.11"
-    "@eslint/eslintrc" "^0.4.1"
+    "@eslint/eslintrc" "^0.4.2"
     ajv "^6.10.0"
     chalk "^4.0.0"
     cross-spawn "^7.0.2"
@@ -4994,7 +4983,7 @@ eslint@^7.27.0:
     fast-deep-equal "^3.1.3"
     file-entry-cache "^6.0.1"
     functional-red-black-tree "^1.0.1"
-    glob-parent "^5.0.0"
+    glob-parent "^5.1.2"
     globals "^13.6.0"
     ignore "^4.0.6"
     import-fresh "^3.0.0"
@@ -5619,10 +5608,10 @@ glob-parent@^3.1.0:
     is-glob "^3.1.0"
     path-dirname "^1.0.0"
 
-glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@~5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.0.tgz#5f4c1d1e748d30cd73ad2944b3577a81b081e8c2"
-  integrity sha512-qjtRgnIVmOfnKUE3NJAQEdk+lKrxfw8t5ke7SXtfMTHcjsBfOfWXCQfdb30zfDoZQ2IRSIiidmjtbHZPZ++Ihw==
+glob-parent@^5.1.0, glob-parent@^5.1.2, glob-parent@~5.1.0:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
+  integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
   dependencies:
     is-glob "^4.0.1"
 
@@ -5674,17 +5663,10 @@ globals@^11.1.0:
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.11.0.tgz#dcf93757fa2de5486fbeed7118538adf789e9c2e"
   integrity sha512-WHq43gS+6ufNOEqlrDBxVEbb8ntfXrfAUU2ZOpCxrBdGKW3gyv8mCxAfIBD0DroPKGrJ2eSsXsLtY9MPntsyTw==
 
-globals@^12.1.0:
-  version "12.4.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-12.4.0.tgz#a18813576a41b00a24a97e7f815918c2e19925f8"
-  integrity sha512-BWICuzzDvDoH54NHKCseDanAhE3CeDorgDL5MT6LMXXj2WCnd9UC2szdk4AWLfjdgNBCXLUanXYcpBBKOSWGwg==
-  dependencies:
-    type-fest "^0.8.1"
-
-globals@^13.6.0:
-  version "13.7.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-13.7.0.tgz#aed3bcefd80ad3ec0f0be2cf0c895110c0591795"
-  integrity sha512-Aipsz6ZKRxa/xQkZhNg0qIWXT6x6rD46f6x/PCnBomlttdIyAPak4YD9jTmKpZ72uROSMU87qJtcgpgHaVchiA==
+globals@^13.6.0, globals@^13.9.0:
+  version "13.9.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-13.9.0.tgz#4bf2bf635b334a173fb1daf7c5e6b218ecdc06cb"
+  integrity sha512-74/FduwI/JaIrr1H8e71UbDE+5x7pIPs1C2rrwC52SszOo043CsWOZEMW7o2Y58xwm9b+0RBKDxY5n2sUpEFxA==
   dependencies:
     type-fest "^0.20.2"
 
