@@ -51,7 +51,7 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.13.0",
     "lint-staged": "^11.0.0",
-    "nodemon": "^2.0.9",
+    "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
     "stylus": "^0.54.8",
     "stylus-loader": "^6.1.0"
