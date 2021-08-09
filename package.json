@@ -35,7 +35,7 @@
     "@nuxtjs/eslint-module": "^3.0.2",
     "@types/bluebird": "^3.5.36",
     "@types/chart.js": "^2.9.34",
-    "@types/lodash": "^4.14.171",
+    "@types/lodash": "^4.14.172",
     "@types/validator": "^13.6.3",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
