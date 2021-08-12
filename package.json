@@ -28,7 +28,7 @@
     "vue-chart-3": "^0.5.7"
   },
   "devDependencies": {
-    "@nuxt/types": "^2.15.7",
+    "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/composition-api": "^0.26.0",
     "@nuxtjs/eslint-config": "^6.0.1",
