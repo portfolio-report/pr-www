@@ -60,7 +60,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [{ src: '~/plugins/chartjs.js', ssr: false }],
 
   /*
    ** Options for rendering pages
@@ -75,6 +75,7 @@ module.exports = {
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
     '@nuxt/typescript-build',
+    '@nuxtjs/composition-api/module',
   ],
   /*
    ** Nuxt.js modules

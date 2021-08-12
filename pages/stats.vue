@@ -4,7 +4,7 @@
     Last update: {{ lastUpdate.toISOString() }}
     <h2>Client Updates</h2>
 
-    <bar-chart :chartdata="chartData" :options="chartOptions" />
+    <BarChart :chart-data="chartData" :options="chartOptions" />
 
     <v-data-table
       :headers="headers"
@@ -40,8 +40,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { BarChart } from 'vue-chart-3'
 
-import BarChart from '~/components/bar-chart.vue'
 import DateView from '~/components/stats-date.vue'
 import CountryView from '~/components/stats-country.vue'
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <line-chart :chartdata="chartData" :options="chartOptions" />
+    <LineChart :chart-data="chartData" :options="chartOptions" />
 
     <v-data-table
       :headers="headers"
@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator'
-import LineChart from '~/components/line-chart.vue'
+import { LineChart } from 'vue-chart-3'
 
 @Component({ components: { LineChart } })
 export default class StatsDate extends Vue {
