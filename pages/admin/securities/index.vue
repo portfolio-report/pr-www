@@ -166,11 +166,11 @@
 import debounce from 'lodash/debounce'
 import { Component, Vue, Watch, mixins } from 'nuxt-property-decorator'
 
+import DialogConfirm from '../../../components/dialog-confirm.vue'
 import { IconsMixin } from '@/components/icons-mixin'
 import SelectSecurityType from '@/components/select-security-type.vue'
 import { Security } from '@/store/security.model'
 import SecurityDialog from '@/components/security-dialog.vue'
-import DialogConfirm from '../../../components/dialog-confirm.vue'
 
 @Component({
   components: { DialogConfirm, SelectSecurityType, SecurityDialog },

@@ -240,9 +240,9 @@
 <script lang="ts">
 import { Component, Vue, mixins } from 'nuxt-property-decorator'
 
-import { IconsMixin } from '@/components/icons-mixin'
 import BtnLoading from '../../../components/btn-loading.vue'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
+import { IconsMixin } from '@/components/icons-mixin'
 
 @Component({
   async asyncData({ $axios, params, error }): Promise<any> {

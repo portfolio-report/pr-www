@@ -91,8 +91,8 @@
 import { Component, Vue, Watch, mixins } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
 
-import { IconsMixin } from '@/components/icons-mixin'
 import DialogConfirm from '../../components/dialog-confirm.vue'
+import { IconsMixin } from '@/components/icons-mixin'
 
 interface ClientUpdate {
   id: number

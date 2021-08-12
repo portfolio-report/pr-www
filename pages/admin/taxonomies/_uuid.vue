@@ -105,8 +105,8 @@
 <script lang="ts">
 import { Component, Vue, mixins } from 'nuxt-property-decorator'
 
-import { IconsMixin } from '@/components/icons-mixin'
 import DialogConfirm from '../../../components/dialog-confirm.vue'
+import { IconsMixin } from '@/components/icons-mixin'
 
 interface Taxonomy {
   uuid?: string
