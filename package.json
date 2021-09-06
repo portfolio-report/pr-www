@@ -25,7 +25,7 @@
     "nuxt": "^2.15.8",
     "nuxt-property-decorator": "^2.9.1",
     "validator": "^13.6.0",
-    "vue-chart-3": "^0.5.7"
+    "vue-chart-3": "^0.5.8"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.8",
