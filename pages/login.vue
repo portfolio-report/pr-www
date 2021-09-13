@@ -31,7 +31,15 @@
                 outlined
                 dense
               />
-              <v-btn type="submit" color="primary" block>Login</v-btn>
+              <v-btn
+                type="submit"
+                color="primary"
+                :loading="loading"
+                :disabled="loading"
+                block
+              >
+                Login
+              </v-btn>
             </v-form>
           </v-card-text>
         </div>
@@ -55,6 +63,8 @@ export default class LoginPage extends mixins(Vue, IconsMixin) {
   formPassword = ''
   errorMessage: string | null = null
 
+  loading = false
+
   get authenticated() {
     return this.$auth.loggedIn && this.$auth.user?.isAdmin
   }
@@ -66,6 +76,7 @@ export default class LoginPage extends mixins(Vue, IconsMixin) {
   }
 
   async login() {
+    this.loading = true
     try {
       this.errorMessage = null
       await this.$auth.loginWith('local', {
@@ -77,6 +88,7 @@ export default class LoginPage extends mixins(Vue, IconsMixin) {
     } catch (err) {
       this.errorMessage = err.message
     }
+    this.loading = false
   }
 
   head() {
