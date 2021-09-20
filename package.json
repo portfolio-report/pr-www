@@ -53,7 +53,7 @@
     "eslint-plugin-vue": "^7.18.0",
     "lint-staged": "^11.1.2",
     "nodemon": "^2.0.12",
-    "prettier": "^2.4.0",
+    "prettier": "^2.4.1",
     "stylus": "^0.55.0",
     "stylus-loader": "^6.1.0"
   },
