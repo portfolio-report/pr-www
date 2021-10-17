@@ -21,6 +21,7 @@ import {
   mdiPlus,
   mdiPoll,
   mdiSourceRepository,
+  mdiTextBoxPlus,
 } from '@mdi/js'
 
 @Component
@@ -46,4 +47,5 @@ export class IconsMixin extends Vue {
   mdiPlus = mdiPlus
   mdiPoll = mdiPoll
   mdiSourceRepository = mdiSourceRepository
+  mdiTextBoxPlus = mdiTextBoxPlus
 }

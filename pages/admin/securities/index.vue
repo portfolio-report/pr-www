@@ -8,6 +8,10 @@
           <v-icon>{{ mdiPlus }}</v-icon>
         </v-btn>
 
+        <v-btn icon @click="newSecurities">
+          <v-icon>{{ mdiTextBoxPlus }}</v-icon>
+        </v-btn>
+
         <v-menu bottom left offset-y :close-on-content-click="false">
           <template #activator="{ on }">
             <v-btn icon v-on="on">
@@ -158,6 +162,7 @@
 
       <DialogConfirm ref="confirm" />
       <SecurityDialog ref="securityDialog" />
+      <CreateMultipleSecuritiesDialog ref="createMultipleSecuritiesDialog" />
     </v-col>
   </v-row>
 </template>
@@ -171,15 +176,22 @@ import { IconsMixin } from '@/components/icons-mixin'
 import SelectSecurityType from '@/components/select-security-type.vue'
 import { Security } from '@/store/security.model'
 import SecurityDialog from '@/components/security-dialog.vue'
+import CreateMultipleSecuritiesDialog from '@/components/create-multiple-securities-dialog.vue'
 
 @Component({
-  components: { DialogConfirm, SelectSecurityType, SecurityDialog },
+  components: {
+    CreateMultipleSecuritiesDialog,
+    DialogConfirm,
+    SelectSecurityType,
+    SecurityDialog,
+  },
   middleware: 'auth',
 })
 export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
   $refs!: {
     confirm: DialogConfirm
     securityDialog: SecurityDialog
+    createMultipleSecuritiesDialog: CreateMultipleSecuritiesDialog
   }
 
   showCreateDialog = false
@@ -247,6 +259,15 @@ export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
       this.getSecurities()
 
       await this.editSecurity(sec)
+    }
+  }
+
+  async newSecurities() {
+    const ret = await this.$refs.createMultipleSecuritiesDialog.show()
+
+    if (ret) {
+      // Update to reflect changes
+      this.getSecurities()
     }
   }
 
