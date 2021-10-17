@@ -95,10 +95,10 @@
             :items="markets"
             item-value="marketCode"
           >
-            <template slot="selection" slot-scope="{ item }">
+            <template #selection="{ item }">
               {{ item.name }} - {{ item.marketCode }}
             </template>
-            <template slot="item" slot-scope="{ item }">
+            <template #item="{ item }">
               {{ item.name }} - {{ item.marketCode }}
             </template>
           </v-select>
