@@ -44,7 +44,7 @@
     "eslint-config-standard": "^16.0.3",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-jest": "^25.2.2",
+    "eslint-plugin-jest": "^25.2.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-nuxt": "^3.0.0",
     "eslint-plugin-prettier": "^4.0.0",
