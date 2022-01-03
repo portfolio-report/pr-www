@@ -12,7 +12,7 @@
         <div v-else>
           <v-card-text>
             <v-form @submit.prevent="login">
-              <v-alert :value="errorMessage" type="error" outlined>
+              <v-alert :value="!!errorMessage" type="error" outlined>
                 {{ errorMessage }}
               </v-alert>
               <v-text-field
