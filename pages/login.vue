@@ -19,7 +19,7 @@
                 ref="username"
                 v-model="formUsername"
                 label="Username"
-                :prepend-icon="mdiAccount"
+                :prepend-icon="icons.mdiAccount"
                 outlined
                 dense
               />
@@ -27,7 +27,7 @@
                 v-model="formPassword"
                 label="Password"
                 type="password"
-                :prepend-icon="mdiLock"
+                :prepend-icon="icons.mdiLock"
                 outlined
                 dense
               />
@@ -49,52 +49,66 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, mixins } from 'nuxt-property-decorator'
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  ref,
+  useContext,
+} from '@nuxtjs/composition-api'
 
-import { IconsMixin } from '@/components/icons-mixin'
+import icons from '@/components/icons'
 
-@Component
-export default class LoginPage extends mixins(Vue, IconsMixin) {
-  $refs!: {
-    username: HTMLInputElement
-  }
+export default defineComponent({
+  name: 'LoginPage',
 
-  formUsername = ''
-  formPassword = ''
-  errorMessage: string | null = null
+  setup() {
+    const { $auth } = useContext()
 
-  loading = false
+    const username = ref<HTMLInputElement | null>(null)
 
-  get authenticated() {
-    return this.$auth.loggedIn && this.$auth.user?.isAdmin
-  }
+    const formUsername = ref('')
+    const formPassword = ref('')
+    const errorMessage = ref<string | null>(null)
 
-  mounted(): void {
-    if (this.$refs.username) {
-      this.$refs.username.focus()
+    const loading = ref(false)
+
+    const authenticated = computed(() => $auth.loggedIn && $auth.user?.isAdmin)
+
+    onMounted(() => username.value?.focus())
+
+    async function login() {
+      loading.value = true
+      try {
+        errorMessage.value = null
+        await $auth.loginWith('local', {
+          data: { username: formUsername.value, password: formPassword.value },
+        })
+
+        formUsername.value = ''
+        formPassword.value = ''
+      } catch (err) {
+        errorMessage.value = String(err)
+      }
+      loading.value = false
     }
-  }
 
-  async login() {
-    this.loading = true
-    try {
-      this.errorMessage = null
-      await this.$auth.loginWith('local', {
-        data: { username: this.formUsername, password: this.formPassword },
-      })
-
-      this.formUsername = ''
-      this.formPassword = ''
-    } catch (err) {
-      this.errorMessage = err.message
+    return {
+      authenticated,
+      formUsername,
+      formPassword,
+      errorMessage,
+      loading,
+      login,
+      username,
+      icons,
     }
-    this.loading = false
-  }
+  },
 
   head() {
     return {
       title: 'Portfolio Report',
     }
-  }
-}
+  },
+})
 </script>

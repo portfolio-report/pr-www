@@ -69,51 +69,73 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 import isEmail from 'validator/lib/isEmail'
 import BtnLoading from '../components/btn-loading.vue'
 
-@Component({
+export default defineComponent({
+  name: 'ContactPage',
+
   components: { BtnLoading },
-})
-export default class ContactPage extends Vue {
-  contactFormValid = false
-  showErrorMessage = false
-  name = ''
-  nameRules = [(v: string) => !!v || 'Required']
-  email = ''
-  emailRules = [
-    (v: string) => !!v || 'Required',
-    (v: string) => (!!v && isEmail(v)) || 'Valid email required',
-  ]
 
-  subject = ''
-  subjectRules = [(v: string) => !!v || 'Required']
-  message = ''
-  messageRules = [(v: string) => !!v || 'Required']
+  setup() {
+    const { $axios } = useContext()
 
-  async send() {
-    this.showErrorMessage = false
-    const data = {
-      name: this.name,
-      email: this.email,
-      subject: this.subject,
-      message: this.message,
+    const form = ref<HTMLFormElement | null>(null)
+
+    const contactFormValid = ref(false)
+    const showErrorMessage = ref(false)
+    const name = ref('')
+    const nameRules = [(v: string) => !!v || 'Required']
+    const email = ref('')
+    const emailRules = [
+      (v: string) => !!v || 'Required',
+      (v: string) => (!!v && isEmail(v)) || 'Valid email required',
+    ]
+
+    const subject = ref('')
+    const subjectRules = [(v: string) => !!v || 'Required']
+    const message = ref('')
+    const messageRules = [(v: string) => !!v || 'Required']
+
+    async function send() {
+      showErrorMessage.value = false
+      const data = {
+        name: name.value,
+        email: email.value,
+        subject: subject.value,
+        message: message.value,
+      }
+      try {
+        await $axios.post('/contact', data)
+        form.value?.reset()
+      } catch (err) {
+        showErrorMessage.value = true
+        // eslint-disable-next-line no-console
+        console.log(err)
+      }
     }
-    try {
-      await this.$axios.post('/contact', data)
-      await (this.$refs.form as any).reset()
-    } catch (err) {
-      this.showErrorMessage = true
-      // eslint-disable-next-line no-console
-      console.log(err)
+
+    return {
+      form,
+      contactFormValid,
+      showErrorMessage,
+      name,
+      nameRules,
+      email,
+      emailRules,
+      subject,
+      subjectRules,
+      message,
+      messageRules,
+      send,
     }
-  }
+  },
 
   head() {
     return {
       title: 'Portfolio Report - Contact',
     }
-  }
-}
+  },
+})
 </script>

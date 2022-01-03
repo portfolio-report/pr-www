@@ -6,7 +6,7 @@
         <v-form v-model="searchFormValid" @submit.prevent="search">
           <v-card-text>
             <v-text-field
-              ref="searchTerm"
+              ref="searchTermInput"
               v-model="searchTerm"
               :rules="searchRules"
               label="ISIN/WKN/Symbol/Name"
@@ -44,7 +44,7 @@
             <div>
               <v-tooltip v-if="getPricesAvailable(result)" left>
                 <template #activator="{ on }">
-                  <v-icon v-on="on">{{ mdiChartLine }}</v-icon>
+                  <v-icon v-on="on">{{ icons.mdiChartLine }}</v-icon>
                 </template>
                 <span>Prices available</span>
               </v-tooltip>
@@ -58,8 +58,8 @@
                     {{ result.securityType }}
                   </v-chip>
                   <span v-if="hover">
-                    <v-icon>{{ mdiDragVariant }}</v-icon> Drag me to Portfolio
-                    Performance!
+                    <v-icon>{{ icons.mdiDragVariant }}</v-icon> Drag me to
+                    Portfolio Performance!
                   </span>
                 </span>
               </v-hover>
@@ -106,109 +106,156 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, mixins } from 'nuxt-property-decorator'
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  useContext,
+  useRoute,
+  useRouter,
+} from '@nuxtjs/composition-api'
 
-import { IconsMixin } from '@/components/icons-mixin'
+import icons from '@/components/icons'
 import SelectSecurityType from '@/components/select-security-type.vue'
 
-@Component({
+export default defineComponent({
+  name: 'SearchPage',
+
   components: { SelectSecurityType },
-})
-export default class SearchPage extends mixins(Vue, IconsMixin) {
-  $refs!: {
-    searchTerm: HTMLInputElement
-  }
 
-  searchFormValid = false
-  searchTerm = ''
-  searchRules = [(v: string) => !!v || 'Required']
-  securityType = ''
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
+    const { $axios } = useContext()
 
-  results = []
-  noResults = false
-  searching = false
-  error = false
-  errorText = ''
+    const searchTermInput = ref<HTMLInputElement | null>(null)
 
-  mounted() {
-    // Read query parameters from URL
-    const q = this.$route.query.q
-    const securityType = this.$route.query.securityType || ''
+    const searchFormValid = false
+    const searchTerm = ref('')
+    const searchRules = [(v: string) => !!v || 'Required']
+    const securityType = ref('')
 
-    if (q) {
-      this.searchTerm = q as string
-      this.securityType = securityType as string
-      this.search()
-    } else {
-      this.$refs.searchTerm.focus()
-    }
-  }
+    const results = ref<
+      {
+        uuid: string
+        name: string
+        isin: string
+        wkn: string
+        securityType: string
+        symbolXfra: string | null
+        symbolXnas: string | null
+        symbolXnys: string | null
+        markets: Array<{
+          firstPriceDate: string
+          lastPriceDate: string
+          symbol: string | null
+        }>
+      }[]
+    >([])
+    const noResults = ref(false)
+    const searching = ref(false)
+    const error = ref(false)
+    const errorText = ref('')
 
-  async search() {
-    this.searching = true
-    this.noResults = false
-    this.error = false
+    onMounted(() => {
+      // Read query parameters from URL
+      const q = route.value.query.q
 
-    // Update query parameter in URL
-    const query = { q: this.searchTerm } as { q: string; securityType: string }
-    if (this.securityType) {
-      query.securityType = this.securityType
-    }
-    this.$router.push({
-      path: this.$route.path,
-      query,
+      if (q) {
+        searchTerm.value = q as string
+        securityType.value = (route.value.query.securityType || '') as string
+        search()
+      } else {
+        searchTermInput.value?.focus()
+      }
     })
 
-    try {
-      const params = {} as { securityType: string }
-      if (this.securityType) {
-        params.securityType = this.securityType
+    async function search() {
+      searching.value = true
+      noResults.value = false
+      error.value = false
+
+      // Update query parameter in URL
+      const query = { q: searchTerm.value } as {
+        q: string
+        securityType: string
       }
-      const res = await this.$axios.$get(
-        `/securities/search/${encodeURIComponent(this.searchTerm.trim())}`,
-        { params }
-      )
+      if (securityType.value) {
+        query.securityType = securityType.value
+      }
+      router.push({
+        path: route.value.path,
+        query,
+      })
 
-      this.searching = false
-      this.results = res
-      this.noResults = this.results.length === 0
-    } catch (error) {
-      this.searching = false
-      this.results = []
-      this.noResults = false
-      this.error = true
-      this.errorText = error.message
+      try {
+        const params = {} as { securityType: string }
+        if (securityType.value) {
+          params.securityType = securityType.value
+        }
+        const res = await $axios.$get(
+          `/securities/search/${encodeURIComponent(searchTerm.value.trim())}`,
+          { params }
+        )
+
+        searching.value = false
+        results.value = res
+        noResults.value = res.length === 0
+      } catch (err) {
+        searching.value = false
+        results.value = []
+        noResults.value = false
+        error.value = true
+        errorText.value = String(err)
+      }
     }
-  }
 
-  getPricesAvailable(result: {
-    markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
-  }): boolean {
-    return result.markets.some(
-      (market) => market.firstPriceDate && market.lastPriceDate
-    )
-  }
+    function getPricesAvailable(result: {
+      markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
+    }): boolean {
+      return result.markets.some(
+        (market) => market.firstPriceDate && market.lastPriceDate
+      )
+    }
 
-  getUniqueSymbols(result: {
-    symbolXfra: string | null
-    symbolXnas: string | null
-    symbolXnys: string | null
-    markets: Array<{ symbol: string | null }>
-  }) {
-    return Array.from(
-      new Set([
-        result.symbolXfra,
-        result.symbolXnas,
-        result.symbolXnys,
-        ...result.markets?.map((m) => m.symbol),
-      ])
-    ).filter((s) => !!s)
-  }
+    function getUniqueSymbols(result: {
+      symbolXfra: string | null
+      symbolXnas: string | null
+      symbolXnys: string | null
+      markets: Array<{ symbol: string | null }>
+    }) {
+      return Array.from(
+        new Set([
+          result.symbolXfra,
+          result.symbolXnas,
+          result.symbolXnys,
+          ...result.markets?.map((m) => m.symbol),
+        ])
+      ).filter((s) => !!s)
+    }
+
+    return {
+      icons,
+      search,
+      searchTerm,
+      searchTermInput,
+      searchFormValid,
+      searchRules,
+      securityType,
+      searching,
+      noResults,
+      error,
+      errorText,
+      results,
+      getPricesAvailable,
+      getUniqueSymbols,
+    }
+  },
 
   head() {
     return {
       title: 'Portfolio Report Search',
     }
-  }
-}
+  },
+})
 </script>
