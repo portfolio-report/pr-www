@@ -10,7 +10,7 @@
           text
           @click="editSecurity(security)"
         >
-          <v-icon>{{ mdiPencil }}</v-icon>
+          <v-icon>{{ icons.mdiPencil }}</v-icon>
         </v-btn>
       </div>
 
@@ -25,7 +25,8 @@
             style="cursor: move"
             v-on="on"
           >
-            <v-icon>{{ mdiDragVariant }}</v-icon> Add to Portfolio Performance
+            <v-icon>{{ icons.mdiDragVariant }}</v-icon> Add to Portfolio
+            Performance
           </v-btn>
         </template>
         <div>
@@ -157,80 +158,97 @@
       </v-tabs>
 
       <v-tabs-items> </v-tabs-items>
-
-      <SecurityDialog ref="securityDialog" />
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, mixins } from 'nuxt-property-decorator'
+import {
+  computed,
+  defineComponent,
+  ref,
+  useAsync,
+  useContext,
+  useMeta,
+  useRoute,
+  watch,
+} from '@nuxtjs/composition-api'
 
-import { IconsMixin } from '@/components/icons-mixin'
+import icons from '@/components/icons'
 import PricesTable from '@/components/prices-table.vue'
-import SecurityDialog from '@/components/security-dialog.vue'
+import { useSecurityDialog } from '@/components/SecurityDialogProvider.vue'
 
-@Component({
-  async asyncData({ $axios, params, error }): Promise<any> {
-    try {
-      const security = await $axios.$get(`/securities/uuid/${params.uuid}`)
-      return { security }
-    } catch (err) {
-      error({ statusCode: 404, message: 'This page could not be found' })
+export default defineComponent({
+  name: 'SecurityPage',
+
+  components: { PricesTable },
+
+  setup() {
+    const selectedMarketcode = ref('')
+    const selectedMarket = ref<any>(null)
+
+    const createSecurityDialog = useSecurityDialog()
+
+    const route = useRoute()
+
+    const { $axios, error, params } = useContext()
+    const rawSecurity = useAsync(async () => {
+      try {
+        return await $axios.$get(`/securities/uuid/${params.value.uuid}`)
+      } catch (err) {
+        error({ statusCode: 404, message: 'This page could not be found' })
+      }
+    })
+
+    const security = computed(() => rawSecurity.value ?? {})
+
+    async function editSecurity(security: any) {
+      const ret = await createSecurityDialog(security)
+      if (ret) {
+        security.value = { ...security.value, ...ret }
+      }
+    }
+
+    const markets = computed(() => {
+      return security.value?.markets?.map((market: any) => {
+        let marketName
+        if (market.marketCode === 'XETR') {
+          marketName = 'XETRA (Frankfurt)'
+        } else if (market.marketCode === 'XFRA') {
+          marketName = 'Frankfurt'
+        } else if (market.marketCode === 'XNAS') {
+          marketName = 'NASDAQ'
+        } else if (market.marketCode === 'XNYS') {
+          marketName = 'NYSE'
+        }
+        return {
+          ...market,
+          name: marketName,
+        }
+      })
+    })
+
+    watch(selectedMarketcode, async (selectedMarketcode) => {
+      selectedMarket.value = await $axios.$get(
+        `/securities/uuid/${route.value.params.uuid}/markets/${selectedMarketcode}`,
+        { params: { from: '2000-01-01' } }
+      )
+    })
+
+    useMeta(() => ({
+      title: security.value?.name + ' - Portfolio Report',
+    }))
+
+    return {
+      security,
+      markets,
+      selectedMarket,
+      selectedMarketcode,
+      editSecurity,
+      icons,
     }
   },
 
-  components: { PricesTable, SecurityDialog },
+  head: {},
 })
-export default class SecurityPage extends mixins(Vue, IconsMixin) {
-  // asyncData
-  security: any
-
-  $refs!: {
-    securityDialog: SecurityDialog
-  }
-
-  selectedMarketcode: string = ''
-  selectedMarket: any = null
-
-  @Watch('selectedMarketcode')
-  async onSelectedMarketcodeChange() {
-    this.selectedMarket = await this.$axios.$get(
-      `/securities/uuid/${this.$route.params.uuid}/markets/${this.selectedMarketcode}`,
-      { params: { from: '2000-01-01' } }
-    )
-  }
-
-  head() {
-    return {
-      title: this.security.name + ' - Portfolio Report',
-    }
-  }
-
-  get markets() {
-    return this.security.markets.map((market: any) => {
-      let marketName
-      if (market.marketCode === 'XETR') {
-        marketName = 'XETRA (Frankfurt)'
-      } else if (market.marketCode === 'XFRA') {
-        marketName = 'Frankfurt'
-      } else if (market.marketCode === 'XNAS') {
-        marketName = 'NASDAQ'
-      } else if (market.marketCode === 'XNYS') {
-        marketName = 'NYSE'
-      }
-      return {
-        ...market,
-        name: marketName,
-      }
-    })
-  }
-
-  async editSecurity(security: any) {
-    const ret = await this.$refs.securityDialog.edit(security)
-    if (ret) {
-      this.security = { ...this.security, ...ret }
-    }
-  }
-}
 </script>

@@ -10,25 +10,38 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import { defineComponent, ref } from '@nuxtjs/composition-api'
 
-@Component
-export default class BtnLoading extends Vue {
-  @Prop({ default: () => {} })
-  action!: Function
+export default defineComponent({
+  name: 'ErrorLayout',
 
-  @Prop({ default: '' })
-  color!: string
+  props: {
+    action: {
+      type: Function,
+      default: () => {},
+    },
 
-  @Prop({ default: false })
-  disabled!: Boolean
+    color: {
+      type: String,
+      default: '',
+    },
 
-  loading = false
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  async click() {
-    this.loading = true
-    await this.action()
-    this.loading = false
-  }
-}
+  setup(props: { action: Function }) {
+    const loading = ref(false)
+
+    async function click() {
+      loading.value = true
+      await props.action()
+      loading.value = false
+    }
+
+    return { loading, click }
+  },
+})
 </script>

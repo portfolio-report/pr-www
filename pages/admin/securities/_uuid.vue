@@ -62,16 +62,16 @@
           >
             <template #item.actions="{ item }">
               <v-btn color="primary" icon text @click="editMarket(item)">
-                <v-icon>{{ mdiPencil }}</v-icon>
+                <v-icon>{{ icons.mdiPencil }}</v-icon>
               </v-btn>
               <v-btn color="error" icon text @click="deleteMarket(item)">
-                <v-icon>{{ mdiDelete }}</v-icon>
+                <v-icon>{{ icons.mdiDelete }}</v-icon>
               </v-btn>
             </template>
           </v-data-table>
 
           <v-btn color="primary" @click="newMarket">
-            <v-icon>{{ mdiPlus }}</v-icon> Add market
+            <v-icon>{{ icons.mdiPlus }}</v-icon> Add market
           </v-btn>
         </v-tab-item>
 
@@ -83,7 +83,7 @@
             <v-card-title>
               {{ taxonomy.name }}
               <v-btn color="primary" icon text @click="editTaxonomy(taxonomy)">
-                <v-icon>{{ mdiPencil }}</v-icon>
+                <v-icon>{{ icons.mdiPencil }}</v-icon>
               </v-btn></v-card-title
             >
             <v-card-subtitle>{{ taxonomy.uuid }}</v-card-subtitle>
@@ -143,10 +143,10 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="primary" text @click="marketDialog = false">
-                <v-icon>{{ mdiClose }}</v-icon> Cancel
+                <v-icon>{{ icons.mdiClose }}</v-icon> Cancel
               </v-btn>
               <v-btn type="submit" color="primary" text>
-                <v-icon>{{ mdiCheck }}</v-icon> Save
+                <v-icon>{{ icons.mdiCheck }}</v-icon> Save
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -193,7 +193,7 @@
                         selectedSecurityTaxonomies.filter((e) => e !== item)
                     "
                   >
-                    <v-icon>{{ mdiDelete }}</v-icon>
+                    <v-icon>{{ icons.mdiDelete }}</v-icon>
                   </v-btn>
                 </template>
               </v-data-table>
@@ -218,158 +218,185 @@
                   })
                 "
               >
-                <v-icon>{{ mdiPlus }}</v-icon>
+                <v-icon>{{ icons.mdiPlus }}</v-icon>
               </v-btn>
               <v-spacer></v-spacer>
               <v-btn color="primary" text @click="taxonomyDialog = false">
-                <v-icon>{{ mdiClose }}</v-icon> Cancel
+                <v-icon>{{ icons.mdiClose }}</v-icon> Cancel
               </v-btn>
               <v-btn type="submit" color="primary" text>
-                <v-icon>{{ mdiCheck }}</v-icon> Save
+                <v-icon>{{ icons.mdiCheck }}</v-icon> Save
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
       </v-dialog>
-
-      <DialogConfirm ref="confirm" />
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import { Component, Vue, mixins } from 'nuxt-property-decorator'
+import {
+  computed,
+  defineComponent,
+  ref,
+  useAsync,
+  useContext,
+} from '@nuxtjs/composition-api'
 
-import BtnLoading from '../../../components/btn-loading.vue'
-import DialogConfirm from '../../../components/dialog-confirm.vue'
-import { IconsMixin } from '@/components/icons-mixin'
+import { useConfirmDialog } from '@/components/useConfirmDialog'
+import icons from '@/components/icons'
 
-@Component({
-  async asyncData({ $axios, params, error }): Promise<any> {
-    try {
-      const security = await $axios.$get(`/securities/${params.uuid}`)
-      const taxonomies = await $axios.$get(`/taxonomies/`)
-      return { security, taxonomies }
-    } catch (err) {
-      error({ statusCode: 404, message: 'This page could not be found' })
-    }
-  },
-  components: { BtnLoading, DialogConfirm },
+export default defineComponent({
+  name: 'SecurityPage',
+
   middleware: 'auth',
-})
-export default class SecurityPage extends mixins(Vue, IconsMixin) {
-  // asyncData
-  security: any
-  taxonomies!: any[]
 
-  $refs!: {
-    confirm: DialogConfirm
-  }
+  setup() {
+    const { $axios, error, params } = useContext()
 
-  tab = 'masterdata'
+    const showConfirmDialog = useConfirmDialog()
 
-  marketDialog = false
-  selectedMarket = {
-    marketCode: '',
-    currencyCode: '',
-    symbol: '',
-    updatePrices: false,
-  }
+    const rawSecurity = useAsync(async () => {
+      try {
+        return await $axios.$get(`/securities/${params.value.uuid}`)
+      } catch (err) {
+        error({ statusCode: 404, message: 'This page could not be found' })
+      }
+    })
 
-  selectedMarketIsNew = false
-
-  taxonomyDialog = false
-  selectedTaxonomy: any = {}
-  selectedSecurityTaxonomies: any[] = []
-
-  get selectedSecurityTaxonomiesSumWeights() {
-    return this.selectedSecurityTaxonomies.reduce(
-      (a, b) => a + Number(b.weight),
-      0
+    const security = computed(
+      () => rawSecurity.value ?? { securityTaxonomies: [] }
     )
-  }
 
-  async getSecurity() {
-    this.security = await this.$axios.$get(`/securities/${this.security.uuid}`)
-  }
+    const rawTaxonomies = useAsync(async () => {
+      return await $axios.$get<any[]>(`/taxonomies/`)
+    })
 
-  get securityTaxonomies() {
-    // Join taxonomies to securityTaxonomies
-    return this.security.securityTaxonomies.map((st: any) => ({
-      ...st,
-      taxonomy: this.taxonomies.find((t) => t.uuid === st.taxonomyUuid),
-    }))
-  }
+    const taxonomies = computed(() => rawTaxonomies.value ?? [])
 
-  newMarket() {
-    this.selectedMarket = {
+    const tab = ref('masterdata')
+
+    const marketDialog = ref(false)
+    const selectedMarket = ref({
       marketCode: '',
       currencyCode: '',
       symbol: '',
-      updatePrices: true,
-    }
-    this.selectedMarketIsNew = true
-    this.marketDialog = true
-  }
+      updatePrices: false,
+    })
 
-  editMarket(market: any) {
-    this.selectedMarket = { ...market }
-    this.selectedMarketIsNew = false
-    this.marketDialog = true
-  }
+    const selectedMarketIsNew = ref(false)
 
-  async saveMarket() {
-    await this.$axios.$patch(
-      `/securities/uuid/${this.security.uuid}/markets/${this.selectedMarket.marketCode}`,
-      this.selectedMarket
+    const taxonomyDialog = ref(false)
+    const selectedTaxonomy = ref<any>({})
+    const selectedSecurityTaxonomies = ref<any[]>([])
+
+    const selectedSecurityTaxonomiesSumWeights = computed(() =>
+      selectedSecurityTaxonomies.value.reduce((a, b) => a + Number(b.weight), 0)
     )
 
-    // Update to reflect changes
-    this.getSecurity()
-
-    this.marketDialog = false
-  }
-
-  async deleteMarket(market: any) {
-    if (
-      await this.$refs.confirm.open({
-        title: 'Delete market',
-        message: `Are you sure you want to delete the market "${market.marketCode}"?`,
-        color: 'secondary',
-      })
-    ) {
-      await this.$axios.$delete(
-        `/securities/uuid/${this.security.uuid}/markets/${market.marketCode}`
+    async function getSecurity() {
+      rawSecurity.value = await $axios.$get(
+        `/securities/${security.value.uuid}`
       )
-      this.getSecurity()
     }
-  }
 
-  editTaxonomy(taxonomy: any) {
-    this.selectedTaxonomy = taxonomy
-    const selectedSecurityTaxonomies = this.securityTaxonomies.filter(
-      (st: any) => st.taxonomy.rootUuid === taxonomy.uuid
-    )
-    this.selectedSecurityTaxonomies = JSON.parse(
-      JSON.stringify(selectedSecurityTaxonomies)
-    )
+    const securityTaxonomies = computed(() => {
+      // Join taxonomies to securityTaxonomies
+      return security.value.securityTaxonomies.map((st: any) => ({
+        ...st,
+        taxonomy: taxonomies.value?.find((t) => t.uuid === st.taxonomyUuid),
+      }))
+    })
 
-    this.taxonomyDialog = true
-  }
+    function newMarket() {
+      selectedMarket.value = {
+        marketCode: '',
+        currencyCode: '',
+        symbol: '',
+        updatePrices: true,
+      }
+      selectedMarketIsNew.value = true
+      marketDialog.value = true
+    }
 
-  async saveTaxonomy() {
-    await this.$axios.put(
-      `/securities/uuid/${this.security.uuid}/taxonomies/${this.selectedTaxonomy.uuid}`,
-      this.selectedSecurityTaxonomies
-    )
-    this.getSecurity()
-    this.taxonomyDialog = false
-  }
+    function editMarket(market: any) {
+      selectedMarket.value = { ...market }
+      selectedMarketIsNew.value = false
+      marketDialog.value = true
+    }
+
+    async function saveMarket() {
+      await $axios.$patch(
+        `/securities/uuid/${security.value.uuid}/markets/${selectedMarket.value.marketCode}`,
+        selectedMarket.value
+      )
+
+      // Update to reflect changes
+      getSecurity()
+
+      marketDialog.value = false
+    }
+
+    async function deleteMarket(market: any) {
+      if (
+        await showConfirmDialog(
+          `Are you sure you want to delete the market "${market.marketCode}"?`,
+          { title: 'Delete market', color: 'secondary' }
+        )
+      ) {
+        await $axios.$delete(
+          `/securities/uuid/${security.value.uuid}/markets/${market.marketCode}`
+        )
+        getSecurity()
+      }
+    }
+
+    function editTaxonomy(taxonomy: any) {
+      selectedTaxonomy.value = taxonomy
+      const newSelectedSecurityTaxonomies = securityTaxonomies.value.filter(
+        (st: any) => st.taxonomy.rootUuid === taxonomy.uuid
+      )
+      selectedSecurityTaxonomies.value = JSON.parse(
+        JSON.stringify(newSelectedSecurityTaxonomies)
+      )
+
+      taxonomyDialog.value = true
+    }
+
+    async function saveTaxonomy() {
+      await $axios.put(
+        `/securities/uuid/${security.value.uuid}/taxonomies/${selectedTaxonomy.value.uuid}`,
+        selectedSecurityTaxonomies.value
+      )
+      getSecurity()
+      taxonomyDialog.value = false
+    }
+
+    return {
+      security,
+      taxonomies,
+      tab,
+      marketDialog,
+      selectedMarket,
+      selectedMarketIsNew,
+      taxonomyDialog,
+      securityTaxonomies,
+      selectedTaxonomy,
+      selectedSecurityTaxonomies,
+      selectedSecurityTaxonomiesSumWeights,
+      newMarket,
+      editMarket,
+      saveMarket,
+      deleteMarket,
+      editTaxonomy,
+      saveTaxonomy,
+      icons,
+    }
+  },
 
   head() {
-    return {
-      title: 'Portfolio Report Admin',
-    }
-  }
-}
+    return { title: 'Portfolio Report Admin' }
+  },
+})
 </script>

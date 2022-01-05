@@ -18,31 +18,40 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import { PropType, defineComponent } from '@nuxtjs/composition-api'
 
-@Component
-export default class StatsCountry extends Vue {
-  @Prop({ required: true })
-  countries!: Array<{ country: string; count: number }>
+export default defineComponent({
+  name: 'StatsCountry',
 
-  headers = [
-    {
-      text: 'Country',
-      align: 'left',
-      sortable: true,
-      value: 'country',
+  props: {
+    countries: {
+      type: Array as PropType<Array<{ country: string; count: number }>>,
+      required: true,
     },
-    {
-      text: 'Count',
-      align: 'right',
-      sortable: true,
-      value: 'count',
-    },
-  ]
+  },
 
-  pagination = {
-    sortBy: ['count'],
-    sortDesc: [true],
-  }
-}
+  setup() {
+    const headers = [
+      {
+        text: 'Country',
+        align: 'left',
+        sortable: true,
+        value: 'country',
+      },
+      {
+        text: 'Count',
+        align: 'right',
+        sortable: true,
+        value: 'count',
+      },
+    ]
+
+    const pagination = {
+      sortBy: ['count'],
+      sortDesc: [true],
+    }
+
+    return { headers, pagination }
+  },
+})
 </script>

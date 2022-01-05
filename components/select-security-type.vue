@@ -12,23 +12,32 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import { defineComponent } from '@nuxtjs/composition-api'
 
-@Component
-export default class SelectSecurityType extends Vue {
-  @Prop({ default: '' })
-  value!: string
+export default defineComponent({
+  name: 'SelectSecurityType',
 
-  securityTypeItems = [
-    { text: '*', value: '' },
-    { text: 'share', value: 'share' },
-    { text: 'fund', value: 'fund' },
-    { text: 'bond', value: 'bond' },
-    { text: 'index', value: 'index' },
-  ]
+  props: {
+    value: {
+      type: String,
+      default: '',
+    },
+  },
 
-  update(event: string) {
-    this.$emit('input', event)
-  }
-}
+  setup(_props, { emit }) {
+    const securityTypeItems = [
+      { text: '*', value: '' },
+      { text: 'share', value: 'share' },
+      { text: 'fund', value: 'fund' },
+      { text: 'bond', value: 'bond' },
+      { text: 'index', value: 'index' },
+    ]
+
+    function update(event: string) {
+      emit('input', event)
+    }
+
+    return { securityTypeItems, update }
+  },
+})
 </script>

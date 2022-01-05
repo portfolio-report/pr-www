@@ -5,18 +5,20 @@
         <v-toolbar-title>Securities</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="newSecurity">
-          <v-icon>{{ mdiPlus }}</v-icon>
+          <v-icon>{{ icons.mdiPlus }}</v-icon>
         </v-btn>
 
         <v-btn icon @click="newSecurities">
-          <v-icon>{{ mdiTextBoxPlus }}</v-icon>
+          <v-icon>{{ icons.mdiTextBoxPlus }}</v-icon>
         </v-btn>
 
         <v-menu bottom left offset-y :close-on-content-click="false">
           <template #activator="{ on }">
             <v-btn icon v-on="on">
               <v-icon>{{
-                securitySearch || securityType ? mdiFilter : mdiFilterOutline
+                securitySearch || securityType
+                  ? icons.mdiFilter
+                  : icons.mdiFilterOutline
               }}</v-icon>
             </v-btn>
           </template>
@@ -28,7 +30,7 @@
                 <v-list-item-content>
                   <v-text-field
                     v-model="securitySearch"
-                    :append-icon="mdiMagnify"
+                    :append-icon="icons.mdiMagnify"
                     clearable
                     single-line
                     dense
@@ -77,228 +79,164 @@
         </template>
         <template #item.action="{ item }">
           <v-btn color="primary" icon text @click="editSecurity(item)">
-            <v-icon>{{ mdiPencil }}</v-icon>
+            <v-icon>{{ icons.mdiPencil }}</v-icon>
           </v-btn>
           <v-btn color="error" icon text @click="deleteSecurity(item)">
-            <v-icon>{{ mdiDelete }}</v-icon>
+            <v-icon>{{ icons.mdiDelete }}</v-icon>
           </v-btn>
         </template>
       </v-data-table>
 
-      <v-dialog v-model="securityDialog" width="600">
-        <v-form @submit.prevent="saveSecurity">
-          <v-card>
-            <v-card-title v-if="!!selectedSecurity.uuid">
-              Edit security {{ selectedSecurity.uuid }}
-            </v-card-title>
-            <v-card-title v-else>Create security</v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="12" md="8">
-                    <v-text-field
-                      v-if="!!selectedSecurity.uuid"
-                      v-model="selectedSecurity.uuid"
-                      label="UUID"
-                      disabled
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="12" md="8">
-                    <v-text-field
-                      v-model="selectedSecurity.name"
-                      label="Name"
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="selectedSecurity.isin"
-                      label="ISIN"
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="selectedSecurity.wkn" label="WKN" />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="selectedSecurity.symbolXfra"
-                      label="Symbol Frankfurt"
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="selectedSecurity.symbolXnas"
-                      label="Symbol NASDAQ"
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="selectedSecurity.symbolXnys"
-                      label="Symbol New York"
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="selectedSecurity.securityType"
-                      label="Type"
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="securityDialog = false">
-                <v-icon>{{ mdiClose }}</v-icon> Cancel
-              </v-btn>
-              <v-btn type="submit" color="primary" text>
-                <v-icon>{{ mdiCheck }}</v-icon> Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-form>
-      </v-dialog>
-
       <v-btn color="primary" @click="updateFts">Update FTS index</v-btn>
 
-      <DialogConfirm ref="confirm" />
-      <SecurityDialog ref="securityDialog" />
-      <CreateMultipleSecuritiesDialog ref="createMultipleSecuritiesDialog" />
+      <CreateMultipleSecuritiesDialog
+        v-model="showCreateMultipleSecuritiesDialog"
+        @update="getSecurities"
+      />
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
+import {
+  defineComponent,
+  ref,
+  useContext,
+  watch,
+} from '@nuxtjs/composition-api'
 import debounce from 'lodash/debounce'
-import { Component, Vue, Watch, mixins } from 'nuxt-property-decorator'
 
-import DialogConfirm from '../../../components/dialog-confirm.vue'
-import { IconsMixin } from '@/components/icons-mixin'
+import icons from '@/components/icons'
 import SelectSecurityType from '@/components/select-security-type.vue'
 import { Security } from '@/store/security.model'
-import SecurityDialog from '@/components/security-dialog.vue'
+import { useSecurityDialog } from '@/components/SecurityDialogProvider.vue'
+import { useConfirmDialog } from '@/components/useConfirmDialog'
 import CreateMultipleSecuritiesDialog from '@/components/create-multiple-securities-dialog.vue'
 
-@Component({
+export default defineComponent({
+  name: 'SecuritiesPage',
+
   components: {
     CreateMultipleSecuritiesDialog,
-    DialogConfirm,
     SelectSecurityType,
-    SecurityDialog,
   },
+
   middleware: 'auth',
-})
-export default class SecuritiesPage extends mixins(Vue, IconsMixin) {
-  $refs!: {
-    confirm: DialogConfirm
-    securityDialog: SecurityDialog
-    createMultipleSecuritiesDialog: CreateMultipleSecuritiesDialog
-  }
 
-  showCreateDialog = false
-  showEditDialog = false
-  securityDialog = false
-  selectedSecurity: Security = {} as Security
+  setup() {
+    const { $axios } = useContext()
 
-  entries: Array<Security> = []
+    const createSecurityDialog = useSecurityDialog()
+    const showConfirmDialog = useConfirmDialog()
 
-  searchQuery = ''
-  pagination = {
-    itemsPerPage: 10,
-    sortBy: ['name'],
-    sortDesc: [false],
-    page: 1,
-  }
+    const showCreateMultipleSecuritiesDialog = ref(false)
 
-  securitySearch = ''
-  securityType = ''
-  totalItems = 0
-  loading = false
-  footerProps = { 'items-per-page-options': [10, 25, 50, 100] }
+    const selectedSecurity: Security = {} as Security
 
-  @Watch('pagination', { deep: true })
-  onPaginationChanged() {
-    this.getSecurities()
-  }
+    const entries = ref<Security[]>([])
 
-  @Watch('securitySearch')
-  onSecuritySearchChanged() {
-    this.getSecurities()
-  }
-
-  @Watch('securityType')
-  onSecurityTypeChanged() {
-    this.getSecurities()
-  }
-
-  async getSecuritiesRaw() {
-    this.loading = true
-
-    const res = await this.$axios.$get('/securities', {
-      params: {
-        sort: this.pagination.sortBy[0],
-        skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
-        limit: this.pagination.itemsPerPage,
-        desc: this.pagination.sortDesc[0],
-        search: this.securitySearch,
-        securityType: this.securityType,
-      },
+    const searchQuery = ref('')
+    const pagination = ref({
+      itemsPerPage: 10,
+      sortBy: ['name'],
+      sortDesc: [false],
+      page: 1,
     })
-    this.entries = res.entries
-    this.totalItems = res.params.totalCount
 
-    this.loading = false
-  }
+    const securitySearch = ref('')
+    const securityType = ref('')
+    const totalItems = ref(0)
+    const loading = ref(false)
+    const footerProps = { 'items-per-page-options': [10, 25, 50, 100] }
 
-  getSecurities = debounce(this.getSecuritiesRaw, 300)
+    async function getSecuritiesRaw() {
+      loading.value = true
 
-  async newSecurity() {
-    const sec = await this.$refs.securityDialog.create()
-
-    if (sec) {
-      // Update to reflect changes
-      this.getSecurities()
-
-      await this.editSecurity(sec)
-    }
-  }
-
-  async newSecurities() {
-    const ret = await this.$refs.createMultipleSecuritiesDialog.show()
-
-    if (ret) {
-      // Update to reflect changes
-      this.getSecurities()
-    }
-  }
-
-  async editSecurity(security: Security) {
-    if (await this.$refs.securityDialog.edit(security)) {
-      // Update to reflect changes
-      this.getSecurities()
-    }
-  }
-
-  async deleteSecurity(security: Security) {
-    if (
-      await this.$refs.confirm.open({
-        title: 'Delete security',
-        message: `Are you sure you want to delete "${security.name}"?`,
-        color: 'secondary',
+      const res = await $axios.$get('/securities', {
+        params: {
+          sort: pagination.value.sortBy[0],
+          skip: pagination.value.itemsPerPage * (pagination.value.page - 1),
+          limit: pagination.value.itemsPerPage,
+          desc: pagination.value.sortDesc[0],
+          search: securitySearch.value,
+          securityType: securityType.value,
+        },
       })
-    ) {
-      await this.$axios.$delete(`/securities/${security.uuid}`)
-      this.getSecurities()
-    }
-  }
+      entries.value = res.entries
+      totalItems.value = res.params.totalCount
 
-  updateFts() {
-    this.$axios.post('/securities/search/update')
-  }
+      loading.value = false
+    }
+
+    const getSecurities = debounce(getSecuritiesRaw, 300)
+
+    watch(pagination, getSecurities)
+    watch(securitySearch, getSecurities)
+    watch(securityType, getSecurities)
+
+    async function newSecurity() {
+      const sec = await createSecurityDialog()
+
+      if (sec) {
+        // Update to reflect changes
+        getSecurities()
+
+        await editSecurity(sec)
+      }
+    }
+
+    function newSecurities() {
+      showCreateMultipleSecuritiesDialog.value = true
+    }
+
+    async function editSecurity(security: Security) {
+      if (await createSecurityDialog(security)) {
+        // Update to reflect changes
+        getSecurities()
+      }
+    }
+
+    async function deleteSecurity(security: Security) {
+      if (
+        await showConfirmDialog(
+          `Are you sure you want to delete "${security.name}"?`,
+          { title: 'Delete security', color: 'secondary' }
+        )
+      ) {
+        await $axios.$delete(`/securities/${security.uuid}`)
+        getSecurities()
+      }
+    }
+
+    function updateFts() {
+      $axios.post('/securities/search/update')
+    }
+
+    return {
+      showCreateMultipleSecuritiesDialog,
+      selectedSecurity,
+      entries,
+      searchQuery,
+      pagination,
+      securitySearch,
+      securityType,
+      totalItems,
+      loading,
+      footerProps,
+      newSecurity,
+      newSecurities,
+      editSecurity,
+      deleteSecurity,
+      updateFts,
+      getSecurities,
+      icons,
+    }
+  },
 
   head() {
     return {
       title: 'Portfolio Report Admin',
     }
-  }
-}
+  },
+})
 </script>

@@ -1,11 +1,16 @@
-<script lang="ts">
-import { Context } from '@nuxt/types'
-import { Component, Vue } from 'nuxt-property-decorator'
+<template>
+  <div />
+</template>
 
-@Component
-export default class IndexPage extends Vue {
-  fetch({ redirect }: Context) {
-    redirect(303, '/search')
-  }
-}
+<script lang="ts">
+import { defineComponent, useContext, useFetch } from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  name: 'IndexPage',
+
+  setup() {
+    const { redirect } = useContext()
+    useFetch(() => redirect(303, '/search'))
+  },
+})
 </script>

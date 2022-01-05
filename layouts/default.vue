@@ -46,14 +46,14 @@
       <v-menu v-if="authenticated" open-on-hover bottom offset-y>
         <template #activator="{ on }">
           <v-btn color="primary" text v-on="on">
-            <v-icon>{{ mdiAccount }}</v-icon>
+            <v-icon>{{ icons.mdiAccount }}</v-icon>
             {{ username }}
           </v-btn>
         </template>
         <v-list>
           <v-list-item @click="logout">
             <v-list-item-avatar>
-              <v-icon>{{ mdiLogoutVariant }}</v-icon>
+              <v-icon>{{ icons.mdiLogoutVariant }}</v-icon>
             </v-list-item-avatar>
             <v-list-item-title>Logout</v-list-item-title>
           </v-list-item>
@@ -62,7 +62,11 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <nuxt />
+        <ConfirmDialogProvider>
+          <SecurityDialogProvider>
+            <nuxt />
+          </SecurityDialogProvider>
+        </ConfirmDialogProvider>
       </v-container>
     </v-main>
     <v-footer>
@@ -74,7 +78,7 @@
             icon
             v-on="on"
           >
-            <v-icon>{{ mdiForum }}</v-icon>
+            <v-icon>{{ icons.mdiForum }}</v-icon>
           </v-btn>
         </template>
         <span>Get help and discuss</span>
@@ -82,7 +86,7 @@
       <v-tooltip top>
         <template #activator="{ on }">
           <v-btn to="/contact" icon v-on="on">
-            <v-icon>{{ mdiEmail }}</v-icon>
+            <v-icon>{{ icons.mdiEmail }}</v-icon>
           </v-btn>
         </template>
         <span>Get in contact</span>
@@ -95,7 +99,7 @@
             icon
             v-on="on"
           >
-            <v-icon>{{ mdiSourceRepository }}</v-icon>
+            <v-icon>{{ icons.mdiSourceRepository }}</v-icon>
           </v-btn>
         </template>
         <span>Source code</span>
@@ -106,50 +110,70 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, mixins } from 'nuxt-property-decorator'
+import {
+  computed,
+  defineComponent,
+  ref,
+  useContext,
+  useMeta,
+} from '@nuxtjs/composition-api'
 
-import { IconsMixin } from '@/components/icons-mixin'
+import icons from '@/components/icons'
+import SecurityDialogProvider from '@/components/SecurityDialogProvider.vue'
+import ConfirmDialogProvider from '@/components/ConfirmDialogProvider.vue'
 
-@Component
-export default class DefaultLayout extends mixins(Vue, IconsMixin) {
-  leftDrawerOpen = false
+export default defineComponent({
+  name: 'DefaultLayout',
 
-  get menuItems() {
-    return [
-      { name: 'Home', icon: this.mdiHome, to: '/' },
-      { name: 'Statistics', icon: this.mdiPoll, to: '/stats' },
+  components: { SecurityDialogProvider, ConfirmDialogProvider },
+
+  setup() {
+    const { $auth } = useContext()
+
+    const { title } = useMeta()
+    title.value = 'Portfolio Report'
+
+    const leftDrawerOpen = ref(false)
+
+    const menuItems = [
+      { name: 'Home', icon: icons.mdiHome, to: '/' },
+      { name: 'Statistics', icon: icons.mdiPoll, to: '/stats' },
       {
         name: 'Securities',
-        icon: this.mdiCurrencyUsd,
+        icon: icons.mdiCurrencyUsd,
         to: '/admin/securities',
       },
       {
         name: 'Taxonomies',
-        icon: this.mdiFamilyTree,
+        icon: icons.mdiFamilyTree,
         to: '/admin/taxonomies',
       },
       {
         name: 'Statistics (admin)',
-        icon: this.mdiPoll,
+        icon: icons.mdiPoll,
         to: '/admin/stats',
       },
     ]
-  }
 
-  get authenticated() {
-    return this.$auth.loggedIn && this.$auth.user?.isAdmin
-  }
+    const authenticated = computed(() => $auth.loggedIn && $auth.user?.isAdmin)
 
-  get username() {
-    return this.$auth.user?.username
-  }
+    const username = computed(() => $auth.user?.username)
 
-  logout() {
-    this.$auth.logout()
-  }
+    const logout = $auth.logout
 
-  title = 'Portfolio Report'
-}
+    return {
+      leftDrawerOpen,
+      menuItems,
+      authenticated,
+      username,
+      logout,
+      title,
+      icons,
+    }
+  },
+
+  head: {},
+})
 </script>
 
 <style scoped>

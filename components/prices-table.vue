@@ -9,26 +9,33 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import { PropType, defineComponent } from '@nuxtjs/composition-api'
 
-@Component
-export default class PricesTable extends Vue {
-  @Prop({
-    default: () => [],
-  })
-  prices!: Array<{ date: string; close: number }>
+export default defineComponent({
+  name: 'PricesTable',
 
-  headers = [
-    {
-      text: 'Date',
-      value: 'date',
+  props: {
+    prices: {
+      type: Array as PropType<Array<{ date: string; close: number }>>,
+      default: () => [],
     },
-    {
-      text: 'Close',
-      value: 'close',
-    },
-  ]
+  },
 
-  footerProps = { 'items-per-page-options': [10, 30, 100, 300] }
-}
+  setup() {
+    const headers = [
+      {
+        text: 'Date',
+        value: 'date',
+      },
+      {
+        text: 'Close',
+        value: 'close',
+      },
+    ]
+
+    const footerProps = { 'items-per-page-options': [10, 30, 100, 300] }
+
+    return { headers, footerProps }
+  },
+})
 </script>

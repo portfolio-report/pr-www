@@ -20,50 +20,63 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import { PropType, computed, defineComponent } from '@nuxtjs/composition-api'
 import { LineChart } from 'vue-chart-3'
 
-@Component({ components: { LineChart } })
-export default class StatsDate extends Vue {
-  @Prop({ required: true })
-  dates!: Array<{ date: string; count: number }>
+export default defineComponent({
+  name: 'StatsDate',
 
-  headers = [
-    {
-      text: 'Date',
-      align: 'left',
-      sortable: true,
-      value: 'date',
+  components: {
+    LineChart,
+  },
+
+  props: {
+    dates: {
+      type: Array as PropType<Array<{ date: string; count: number }>>,
+      required: true,
     },
-    {
-      text: 'Count',
-      align: 'right',
-      sortable: true,
-      value: 'count',
-    },
-  ]
+  },
 
-  chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-  }
+  setup(props) {
+    const headers = [
+      {
+        text: 'Date',
+        align: 'left',
+        sortable: true,
+        value: 'date',
+      },
+      {
+        text: 'Count',
+        align: 'right',
+        sortable: true,
+        value: 'count',
+      },
+    ]
 
-  get chartData() {
-    const datesSorted = [...this.dates].sort((a, b) =>
-      a.date.localeCompare(b.date)
-    )
-
-    return {
-      labels: datesSorted.map((e) => e.date),
-      datasets: [
-        {
-          label: 'count',
-          backgroundColor: '#006e90',
-          fill: false,
-          data: datesSorted.map((e) => e.count),
-        },
-      ],
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
     }
-  }
-}
+
+    const chartData = computed(() => {
+      const datesSorted = [...props.dates].sort((a, b) =>
+        a.date.localeCompare(b.date)
+      )
+
+      return {
+        labels: datesSorted.map((e) => e.date),
+        datasets: [
+          {
+            label: 'count',
+            backgroundColor: '#006e90',
+            fill: false,
+            data: datesSorted.map((e) => e.count),
+          },
+        ],
+      }
+    })
+
+    return { headers, chartOptions, chartData }
+  },
+})
 </script>

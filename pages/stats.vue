@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div v-if="!!stats">
     <h1>Statistics</h1>
-    Last update: {{ lastUpdate.toISOString() }}
+    Last update: {{ stats.lastUpdate }}
     <h2>Client Updates</h2>
 
     <BarChart :chart-data="chartData" :options="chartOptions" />
 
     <v-data-table
       :headers="headers"
-      :items="versions"
+      :items="stats.versions"
       :hide-default-footer="true"
       sort-by="version"
       :items-per-page="-1"
@@ -39,112 +39,134 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import {
+  computed,
+  defineComponent,
+  ref,
+  useAsync,
+  useContext,
+} from '@nuxtjs/composition-api'
 import { BarChart } from 'vue-chart-3'
 
 import DateView from '~/components/stats-date.vue'
 import CountryView from '~/components/stats-country.vue'
 
-@Component({
+export default defineComponent({
+  name: 'StatsPage',
+
   components: {
     DateView,
     CountryView,
     BarChart,
   },
-  async asyncData({ $axios }) {
-    const lastUpdate = new Date()
-    const versions = await $axios.$get('/stats/updates')
 
-    /* Convert datetime strings to objects and numerical */
-    for (const v of versions) {
-      if (v.firstUpdate) {
-        v.firstUpdate = new Date(v.firstUpdate)
-        v.firstUpdateInt = v.firstUpdate.getTime()
+  setup() {
+    const { $axios } = useContext()
+
+    const selectedVersion = ref<string | null>(null)
+    const selectedVersionByDate = ref<Array<{ date: string; count: number }>>(
+      []
+    )
+    const selectedVersionByCountry = ref<
+      Array<{ country: string; count: number }>
+    >([])
+
+    const stats = useAsync(async () => {
+      const versions = await $axios.$get<
+        Array<{
+          version: string
+          count: number
+          firstUpdate: Date
+          firstUpdateInt: number
+          lastUpdate: Date
+          lastUpdateInt: number
+        }>
+      >('/stats/updates')
+
+      /* Convert datetime strings to objects and numerical */
+      for (const v of versions) {
+        if (v.firstUpdate) {
+          v.firstUpdate = new Date(v.firstUpdate)
+          v.firstUpdateInt = v.firstUpdate.getTime()
+        }
+        if (v.lastUpdate) {
+          v.lastUpdate = new Date(v.lastUpdate)
+          v.lastUpdateInt = v.lastUpdate.getTime()
+        }
       }
-      if (v.lastUpdate) {
-        v.lastUpdate = new Date(v.lastUpdate)
-        v.lastUpdateInt = v.lastUpdate.getTime()
-      }
-    }
 
-    return { lastUpdate, versions }
-  },
-})
-export default class StatsPage extends Vue {
-  // asyncData
-  lastUpdate!: Date
-  versions!: Array<{
-    version: string
-    count: number
-    firstUpdate: Date
-    firstUpdateInt: number
-    lastUpdate: Date
-    lastUpdateInt: number
-  }>
+      return { lastUpdate: new Date().toISOString(), versions }
+    })
 
-  selectedVersion: string | null = null
-  selectedVersionByDate: Array<{ date: string; count: number }> = []
-  selectedVersionByCountry: Array<{ country: string; count: number }> = []
+    const headers = [
+      {
+        text: 'Version',
+        align: 'left',
+        sortable: true,
+        value: 'version',
+      },
+      {
+        text: 'From',
+        align: 'left',
+        sortable: true,
+        value: 'firstUpdateInt',
+      },
+      {
+        text: 'To',
+        align: 'left',
+        sortable: true,
+        value: 'lastUpdateInt',
+      },
+      {
+        text: 'Count',
+        align: 'right',
+        sortable: true,
+        value: 'count',
+      },
+      { text: 'Show details', value: '' },
+    ]
 
-  headers = [
-    {
-      text: 'Version',
-      align: 'left',
-      sortable: true,
-      value: 'version',
-    },
-    {
-      text: 'From',
-      align: 'left',
-      sortable: true,
-      value: 'firstUpdateInt',
-    },
-    {
-      text: 'To',
-      align: 'left',
-      sortable: true,
-      value: 'lastUpdateInt',
-    },
-    {
-      text: 'Count',
-      align: 'right',
-      sortable: true,
-      value: 'count',
-    },
-    { text: 'Show details', value: '' },
-  ]
-
-  get chartData() {
-    return {
-      labels: this.versions.map((e) => e.version),
+    const chartData = computed(() => ({
+      labels: stats.value?.versions.map((e) => e.version),
       datasets: [
         {
           label: 'count',
           backgroundColor: '#006e90',
-          data: this.versions.map((e) => e.count),
+          data: stats.value?.versions.map((e) => e.count),
         },
       ],
+    }))
+
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
     }
-  }
 
-  chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-  }
+    async function selectVersion(version: string) {
+      const { byDate, byCountry } = await $axios.$get(
+        `/stats/updates/${version}`
+      )
+      selectedVersion.value = version
+      selectedVersionByDate.value = byDate
+      selectedVersionByCountry.value = byCountry
+    }
 
-  async selectVersion(version: string) {
-    const { byDate, byCountry } = await this.$axios.$get(
-      `/stats/updates/${version}`
-    )
-    this.selectedVersion = version
-    this.selectedVersionByDate = byDate
-    this.selectedVersionByCountry = byCountry
-  }
+    return {
+      stats,
+      selectedVersion,
+      selectedVersionByDate,
+      selectedVersionByCountry,
+      headers,
+      chartData,
+      chartOptions,
+      selectVersion,
+    }
+  },
 
   head() {
     return {
       title: 'Portfolio Report',
     }
-  }
-}
+  },
+})
 </script>

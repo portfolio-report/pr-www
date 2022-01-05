@@ -8,7 +8,7 @@
           <template #activator="{ on }">
             <v-btn icon v-on="on">
               <v-icon>{{
-                filterVersion ? mdiFilter : mdiFilterOutline
+                filterVersion ? icons.mdiFilter : icons.mdiFilterOutline
               }}</v-icon>
             </v-btn>
           </template>
@@ -74,25 +74,28 @@
         </template>
         <template #item.action="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
-            {{ mdiPencil }}
+            {{ icons.mdiPencil }}
           </v-icon>
           <v-icon small @click="deleteItem(item)">
-            {{ mdiDelete }}
+            {{ icons.mdiDelete }}
           </v-icon>
         </template>
       </v-data-table>
-
-      <DialogConfirm ref="confirm" />
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, mixins } from 'nuxt-property-decorator'
+import {
+  defineComponent,
+  ref,
+  useContext,
+  watch,
+} from '@nuxtjs/composition-api'
 import debounce from 'lodash/debounce'
 
-import DialogConfirm from '../../components/dialog-confirm.vue'
-import { IconsMixin } from '@/components/icons-mixin'
+import { useConfirmDialog } from '@/components/useConfirmDialog'
+import icons from '@/components/icons'
 
 interface ClientUpdate {
   id: number
@@ -102,103 +105,123 @@ interface ClientUpdate {
   useragent: string | null
 }
 
-@Component({ components: { DialogConfirm }, middleware: 'auth' })
-export default class StatsPage extends mixins(Vue, IconsMixin) {
-  filterVersion: string | null = null
-  showEditDialog = false
-  editedItem: ClientUpdate = {
-    id: 0,
-    timestamp: '',
-    version: '',
-    country: '',
-    useragent: '',
-  }
+export default defineComponent({
+  name: 'StatsPage',
 
-  headers = [
-    {
-      text: 'Timestamp',
-      value: 'timestamp',
-    },
-    {
-      text: 'Version',
-      align: 'left',
-      sortable: true,
-      value: 'version',
-    },
-    { text: 'Country', value: 'country' },
-    { text: 'Actions', value: 'action', sortable: false },
-  ]
+  middleware: 'auth',
 
-  entries: Array<ClientUpdate> = []
+  setup() {
+    const { $axios } = useContext()
 
-  pagination = {
-    itemsPerPage: 10,
-    sortBy: ['timestamp'],
-    sortDesc: [false],
-    page: 1,
-  }
+    const showConfirmDialog = useConfirmDialog()
 
-  totalItems = 0
-  loading = false
-  footerProps = { 'items-per-page-options': [10, 25, 50, 100] }
-
-  @Watch('pagination', { deep: true })
-  onPaginationChanged() {
-    this.getEntries()
-  }
-
-  @Watch('filterVersion')
-  onFilterVersionChanged() {
-    this.getEntries()
-  }
-
-  async getEntriesRaw() {
-    this.loading = true
-
-    const res = await this.$axios.$get('/stats/', {
-      params: {
-        sort: this.pagination.sortBy[0],
-        skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
-        limit: this.pagination.itemsPerPage,
-        desc: this.pagination.sortDesc[0],
-        version: this.filterVersion,
-      },
+    const filterVersion = ref<string | null>(null)
+    const showEditDialog = ref(false)
+    const editedItem = ref<ClientUpdate>({
+      id: 0,
+      timestamp: '',
+      version: '',
+      country: '',
+      useragent: '',
     })
-    this.entries = res.entries
-    this.totalItems = res.params.totalCount
 
-    this.loading = false
-  }
+    const headers = [
+      {
+        text: 'Timestamp',
+        value: 'timestamp',
+      },
+      {
+        text: 'Version',
+        align: 'left',
+        sortable: true,
+        value: 'version',
+      },
+      { text: 'Country', value: 'country' },
+      { text: 'Actions', value: 'action', sortable: false },
+    ]
 
-  getEntries = debounce(this.getEntriesRaw, 300)
+    const entries = ref<ClientUpdate[]>([])
 
-  editItem(item: ClientUpdate) {
-    // Edit a copy of the object
-    this.editedItem = Object.assign({}, item)
-    this.showEditDialog = true
-  }
+    const pagination = ref({
+      itemsPerPage: 10,
+      sortBy: ['timestamp'],
+      sortDesc: [false],
+      page: 1,
+    })
 
-  closeEditDialog() {
-    this.showEditDialog = false
-  }
+    const totalItems = ref(0)
+    const loading = ref(false)
+    const footerProps = { 'items-per-page-options': [10, 25, 50, 100] }
 
-  async deleteItem(item: ClientUpdate) {
-    if (
-      await (this.$refs.confirm as any).open({
-        title: 'Delete entry',
-        message: `Are you sure you want to delete this entry (${item.timestamp})?`,
-        color: 'secondary',
+    async function getEntriesRaw() {
+      loading.value = true
+
+      const res = await $axios.$get('/stats/', {
+        params: {
+          sort: pagination.value.sortBy[0],
+          skip: pagination.value.itemsPerPage * (pagination.value.page - 1),
+          limit: pagination.value.itemsPerPage,
+          desc: pagination.value.sortDesc[0],
+          version: filterVersion.value,
+        },
       })
-    ) {
-      await this.$axios.$delete(`/stats/${item.id}`)
-      this.getEntries()
+      entries.value = res.entries
+      totalItems.value = res.params.totalCount
+
+      loading.value = false
     }
-  }
+
+    const getEntries = debounce(getEntriesRaw, 300)
+
+    watch(pagination, getEntries)
+    watch(filterVersion, getEntries)
+
+    function editItem(item: ClientUpdate) {
+      // Edit a copy of the object
+      editedItem.value = Object.assign({}, item)
+      showEditDialog.value = true
+    }
+
+    function closeEditDialog() {
+      showEditDialog.value = false
+    }
+
+    async function deleteItem(item: ClientUpdate) {
+      if (
+        await showConfirmDialog(
+          `Are you sure you want to delete this entry (${item.timestamp})?`,
+          {
+            title: 'Delete entry',
+            color: 'secondary',
+          }
+        )
+      ) {
+        await $axios.$delete(`/stats/${item.id}`)
+        getEntries()
+      }
+    }
+
+    return {
+      filterVersion,
+      showEditDialog,
+      editedItem,
+      headers,
+      entries,
+      pagination,
+      totalItems,
+      loading,
+      footerProps,
+      editItem,
+      closeEditDialog,
+      deleteItem,
+      icons,
+    }
+  },
 
   head() {
     return {
       title: 'Portfolio Report Admin',
     }
-  }
-}
+  },
+})
 </script>

@@ -5,7 +5,7 @@
         <v-toolbar-title>Taxonomies</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="newTaxonomy">
-          <v-icon>{{ mdiPlus }}</v-icon>
+          <v-icon>{{ icons.mdiPlus }}</v-icon>
         </v-btn>
       </v-toolbar>
 
@@ -27,10 +27,10 @@
 
         <template #item.actions="{ item }">
           <v-btn color="primary" icon text @click="editTaxonomy(item)">
-            <v-icon>{{ mdiPencil }}</v-icon>
+            <v-icon>{{ icons.mdiPencil }}</v-icon>
           </v-btn>
           <v-btn color="error" icon text @click="deleteTaxonomy(item)">
-            <v-icon>{{ mdiDelete }}</v-icon>
+            <v-icon>{{ icons.mdiDelete }}</v-icon>
           </v-btn>
         </template>
       </v-data-table>
@@ -49,92 +49,108 @@
             <v-card-actions>
               <v-spacer />
               <v-btn color="primary" text @click="taxonomyDialog = false">
-                <v-icon>{{ mdiClose }}</v-icon> Cancel
+                <v-icon>{{ icons.mdiClose }}</v-icon> Cancel
               </v-btn>
               <v-btn type="submit" color="primary" text>
-                <v-icon>{{ mdiCheck }}</v-icon> Save
+                <v-icon>{{ icons.mdiCheck }}</v-icon> Save
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
       </v-dialog>
-
-      <DialogConfirm ref="confirm" />
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import { Component, Vue, mixins } from 'nuxt-property-decorator'
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  useContext,
+} from '@nuxtjs/composition-api'
 
-import DialogConfirm from '../../../components/dialog-confirm.vue'
-import { IconsMixin } from '@/components/icons-mixin'
+import { useConfirmDialog } from '~/components/useConfirmDialog'
+import icons from '@/components/icons'
 
 interface Taxonomy {
   uuid?: string
   name: string | null
+  parentUuid?: string | null
 }
 
-@Component({
-  components: { DialogConfirm },
+export default defineComponent({
+  name: 'TaxonomiesPage',
+
   middleware: 'auth',
-})
-export default class TaxonomiesPage extends mixins(Vue, IconsMixin) {
-  $refs!: {
-    confirm: DialogConfirm
-  }
 
-  taxonomyDialog = false
-  selectedTaxonomy = {} as Taxonomy
+  setup() {
+    const { $axios } = useContext()
 
-  taxonomies: Taxonomy[] = []
+    const showConfirmDialog = useConfirmDialog()
 
-  mounted() {
-    this.getTaxonomies()
-  }
+    const taxonomyDialog = ref(false)
+    const selectedTaxonomy = ref<Taxonomy>({ name: '' })
 
-  async getTaxonomies() {
-    this.taxonomies = await this.$axios.$get('/taxonomies')
-  }
+    const taxonomies = ref<Taxonomy[]>([])
 
-  newTaxonomy() {
-    this.selectedTaxonomy = { name: '' }
-    this.taxonomyDialog = true
-  }
+    onMounted(getTaxonomies)
 
-  editTaxonomy(taxonomy: Taxonomy) {
-    this.selectedTaxonomy = { ...taxonomy }
-    this.taxonomyDialog = true
-  }
+    async function getTaxonomies() {
+      taxonomies.value = await $axios.$get('/taxonomies')
+    }
 
-  async saveTaxonomy() {
-    if (this.selectedTaxonomy.uuid) {
-      await this.$axios.$patch(
-        `/taxonomies/${this.selectedTaxonomy.uuid}`,
-        this.selectedTaxonomy
+    function newTaxonomy() {
+      selectedTaxonomy.value = { name: '' }
+      taxonomyDialog.value = true
+    }
+
+    function editTaxonomy(taxonomy: Taxonomy) {
+      selectedTaxonomy.value = { ...taxonomy }
+      taxonomyDialog.value = true
+    }
+
+    async function saveTaxonomy() {
+      if (selectedTaxonomy.value?.uuid) {
+        await $axios.$patch(
+          `/taxonomies/${selectedTaxonomy.value.uuid}`,
+          selectedTaxonomy.value
+        )
+      } else {
+        await $axios.$post(`/taxonomies/`, selectedTaxonomy.value)
+      }
+      getTaxonomies()
+      taxonomyDialog.value = false
+    }
+
+    async function deleteTaxonomy(taxonomy: Taxonomy) {
+      const confirmed = await showConfirmDialog(
+        `Are you sure you want to delete "${taxonomy.name}"?`,
+        {}
       )
-    } else {
-      await this.$axios.$post(`/taxonomies/`, this.selectedTaxonomy)
-    }
-    this.getTaxonomies()
-    this.taxonomyDialog = false
-  }
 
-  async deleteTaxonomy(taxonomy: Taxonomy) {
-    const confirmed = await this.$refs.confirm.open({
-      message: `Are you sure you want to delete "${taxonomy.name}"?`,
-    })
-
-    if (confirmed) {
-      await this.$axios.$delete(`/taxonomies/${taxonomy.uuid}`)
-      this.getTaxonomies()
+      if (confirmed) {
+        await $axios.$delete(`/taxonomies/${taxonomy.uuid}`)
+        getTaxonomies()
+      }
     }
-  }
+
+    return {
+      taxonomyDialog,
+      selectedTaxonomy,
+      taxonomies,
+      newTaxonomy,
+      editTaxonomy,
+      saveTaxonomy,
+      deleteTaxonomy,
+      icons,
+    }
+  },
 
   head() {
     return {
       title: 'Portfolio Report Admin',
     }
-  }
-}
+  },
+})
 </script>

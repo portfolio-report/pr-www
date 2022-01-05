@@ -15,17 +15,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import { defineComponent } from '@nuxtjs/composition-api'
 
-@Component
-export default class ErrorLayout extends Vue {
+export default defineComponent({
+  name: 'ErrorLayout',
+
+  props: {
+    error: {
+      type: Object,
+      required: true,
+    },
+  },
+
   head() {
-    return {
-      title: 'Portfolio Report',
-    }
-  }
-
-  @Prop()
-  error!: Object
-}
+    return { title: 'Portfolio Report' }
+  },
+})
 </script>
