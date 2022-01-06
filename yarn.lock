@@ -10934,10 +10934,10 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
-vue-chart-3@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/vue-chart-3/-/vue-chart-3-2.0.3.tgz#2223e18c4217cecd2964227ea0e52c1296910ea2"
-  integrity sha512-Lg+xyi5l3QPG8vAq9VQOEZBXIeS4Ul9hmVogbI9iD0BJgq6gLt7y9/iDScN51tZMMX0p7A0Qqbc3C0DgcIg2vQ==
+vue-chart-3@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/vue-chart-3/-/vue-chart-3-2.0.5.tgz#66d7ef6b3d1c51cc7d570690eb06129ae6e6aeb6"
+  integrity sha512-RxINE50nxt/qonaF6uTzMecYg3xx0HgOZ+q3kACdOHErRF2BYmMd17fvq/Q94QPhDXPNS3lVeUDLUHAyvoogEg==
   dependencies:
     "@vue/composition-api" "^1.4.1"
     csstype "3.0.10"
