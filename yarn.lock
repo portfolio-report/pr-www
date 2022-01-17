@@ -1940,17 +1940,17 @@
     webpack-node-externals "^3.0.0"
     webpackbar "^4.0.0"
 
-"@nuxtjs/auth-next@5.0.0-1641544397.1af946a":
-  version "5.0.0-1641544397.1af946a"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/auth-next/-/auth-next-5.0.0-1641544397.1af946a.tgz#21f50d112ef4a8ac077ee9ea31cdd8b5584f9ed5"
-  integrity sha512-W7nSZRIL/EEXdawBhESwb7Tq/bN1G218LewSP2IAu48u1iyGeIUmIRMZGMMqJS+HHy6EqF8OEc/lqIJBD8VTIg==
+"@nuxtjs/auth-next@5.0.0-1642152945.3bb6b5f":
+  version "5.0.0-1642152945.3bb6b5f"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/auth-next/-/auth-next-5.0.0-1642152945.3bb6b5f.tgz#a818594a82115fcaf207ef61af2f3008217902bf"
+  integrity sha512-oGtFf28KnHP+ZVx9xsCxC69Qj7L9d0IltpX+OS9vDiy+xCxdvG1BOFjRtGtfvqiceIBrmD/n/l940asP2mQcsg==
   dependencies:
     "@nuxtjs/axios" "^5.13.6"
     axios "^0.24.0"
     body-parser "^1.19.1"
     consola "^2.15.3"
     cookie "^0.4.1"
-    defu "^5.0.0"
+    defu "^5.0.1"
     hasha "^5.2.2"
     jwt-decode "^3.1.2"
     requrl "^3.0.2"
@@ -4617,10 +4617,10 @@ defu@^4.0.1:
   resolved "https://registry.yarnpkg.com/defu/-/defu-4.0.1.tgz#9d7d7a48f9295f08285d153dcff174c89b9bcb22"
   integrity sha512-lC+G0KvvWRbisQa50+iFelm3/eMmwo4IlBmfASOVlw9MZpHHyQeVsZxc5j23+TQy5ydgEoTVSrWl7ptou1kzJQ==
 
-defu@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/defu/-/defu-5.0.0.tgz#5768f0d402a555bfc4c267246b20f82ce8b5a10b"
-  integrity sha512-VHg73EDeRXlu7oYWRmmrNp/nl7QkdXUxkQQKig0Zk8daNmm84AbGoC8Be6/VVLJEKxn12hR0UBmz8O+xQiAPKQ==
+defu@^5.0.0, defu@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/defu/-/defu-5.0.1.tgz#a034278f9b032bf0845d261aa75e9ad98da878ac"
+  integrity sha512-EPS1carKg+dkEVy3qNTqIdp2qV7mUP08nIsupfwQpz++slCVRw7qbQyWvSTig+kFPwz2XXp5/kIIkH+CwrJKkQ==
 
 depd@~1.1.2:
   version "1.1.2"
