@@ -15,7 +15,7 @@
   "dependencies": {
     "@fontsource/roboto": "^4.5.1",
     "@mdi/js": "^6.5.95",
-    "@nuxtjs/auth-next": "5.0.0-1641544397.1af946a",
+    "@nuxtjs/auth-next": "5.0.0-1642755117.7a526bb",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/vuetify": "^1.12.3",
     "chart.js": "^3.7.0",
