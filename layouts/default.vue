@@ -130,8 +130,15 @@ export default defineComponent({
   setup() {
     const { $auth } = useContext()
 
-    const { title } = useMeta()
+    const { title, link } = useMeta()
     title.value = 'Portfolio Report'
+    link.value = [
+      {
+        rel: 'search',
+        type: 'application/opensearchdescription+xml',
+        href: '/opensearch.xml',
+      },
+    ]
 
     const leftDrawerOpen = ref(false)
 
