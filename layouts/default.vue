@@ -42,7 +42,9 @@
         <v-toolbar-title v-text="title" />
       </nuxt-link>
       <v-spacer />
-      <v-btn v-if="!authenticated" to="/login" text>Log in</v-btn>
+      <v-btn v-if="!authenticated" to="/login" icon>
+        <v-icon>{{ icons.mdiLoginVariant }}</v-icon>
+      </v-btn>
       <v-menu v-if="authenticated" open-on-hover bottom offset-y>
         <template #activator="{ on }">
           <v-btn color="primary" text v-on="on">
