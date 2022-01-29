@@ -181,7 +181,9 @@ export default defineComponent({
 
     const username = computed(() => $auth.user?.username)
 
-    const logout = $auth.logout
+    function logout() {
+      $auth.logout()
+    }
 
     function search() {
       const q = searchTerm.value
