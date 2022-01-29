@@ -40,7 +40,9 @@
       <v-tabs grow>
         <v-tab key="overview">Overview</v-tab>
         <v-tab key="prices">Prices</v-tab>
-        <v-tab key="events">Events</v-tab>
+        <v-tab v-if="security.events && security.events.length" key="events">
+          Events
+        </v-tab>
 
         <v-tab-item key="overview">
           <ul>
