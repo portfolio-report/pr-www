@@ -7569,7 +7569,12 @@ nan@^2.12.1:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
   integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
 
-nanoid@3.1.30, nanoid@^3.1.20:
+nanoid@3.1.31:
+  version "3.1.31"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.31.tgz#f5b58a1ce1b7604da5f0605757840598d8974dc6"
+  integrity sha512-ZivnJm0o9bb13p2Ot5CpgC2rQdzB9Uxm/mFZweqm5eMViqOJe3PV6LU2E30SiLgheesmcPrjquqraoolONSA0A==
+
+nanoid@^3.1.20:
   version "3.1.30"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.30.tgz#63f93cc548d2a113dc5dfbc63bfa09e2b9b64362"
   integrity sha512-zJpuPDwOv8D2zq2WRoMe1HsfZthVewpel9CAvTfc/2mBD1uUT/agc5f7GHGWXlYkFvi1mVxe4IjvP2HNrop7nQ==
@@ -10856,15 +10861,15 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
-vue-chart-3@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/vue-chart-3/-/vue-chart-3-2.0.5.tgz#66d7ef6b3d1c51cc7d570690eb06129ae6e6aeb6"
-  integrity sha512-RxINE50nxt/qonaF6uTzMecYg3xx0HgOZ+q3kACdOHErRF2BYmMd17fvq/Q94QPhDXPNS3lVeUDLUHAyvoogEg==
+vue-chart-3@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/vue-chart-3/-/vue-chart-3-2.0.6.tgz#e59afb5dade3b7c20e1b0c4fe581ae2d7a0ad217"
+  integrity sha512-tpIVLf5tp+8wHSjysSPI/Cbt7qlvoXoRNW8pJL56Z8tMe0oin+L8UBWp94YI+pYQoUryboAGph52GwoVSJAazA==
   dependencies:
     "@vue/composition-api" "^1.4.1"
     csstype "3.0.10"
     lodash latest
-    nanoid "3.1.30"
+    nanoid "3.1.31"
 
 vue-client-only@^2.0.0:
   version "2.0.0"
