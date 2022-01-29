@@ -42,6 +42,16 @@
         <v-toolbar-title v-text="title" />
       </nuxt-link>
       <v-spacer />
+      <v-form v-if="$route.path != '/search'" @submit.prevent="search">
+        <v-text-field
+          v-model="searchTerm"
+          outlined
+          dense
+          :append-icon="icons.mdiMagnify"
+          single-line
+          hide-details
+        />
+      </v-form>
       <v-btn v-if="!authenticated" to="/login" icon>
         <v-icon>{{ icons.mdiLoginVariant }}</v-icon>
       </v-btn>
@@ -118,6 +128,7 @@ import {
   ref,
   useContext,
   useMeta,
+  useRouter,
 } from '@nuxtjs/composition-api'
 
 import icons from '@/components/icons'
@@ -131,6 +142,7 @@ export default defineComponent({
 
   setup() {
     const { $auth } = useContext()
+    const router = useRouter()
 
     const { title, link } = useMeta()
     title.value = 'Portfolio Report'
@@ -143,6 +155,7 @@ export default defineComponent({
     ]
 
     const leftDrawerOpen = ref(false)
+    const searchTerm = ref('')
 
     const menuItems = [
       { name: 'Home', icon: icons.mdiHome, to: '/' },
@@ -170,6 +183,12 @@ export default defineComponent({
 
     const logout = $auth.logout
 
+    function search() {
+      const q = searchTerm.value
+      searchTerm.value = ''
+      router.push({ path: '/search', query: { q } })
+    }
+
     return {
       leftDrawerOpen,
       menuItems,
@@ -178,6 +197,8 @@ export default defineComponent({
       logout,
       title,
       icons,
+      search,
+      searchTerm,
     }
   },
 
