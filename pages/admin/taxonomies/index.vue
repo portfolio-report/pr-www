@@ -97,7 +97,7 @@ export default defineComponent({
     onMounted(getTaxonomies)
 
     async function getTaxonomies() {
-      taxonomies.value = await $axios.$get('/taxonomies')
+      taxonomies.value = await $axios.$get('/taxonomies/')
     }
 
     function newTaxonomy() {

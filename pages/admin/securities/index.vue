@@ -152,7 +152,7 @@ export default defineComponent({
     async function getSecuritiesRaw() {
       loading.value = true
 
-      const res = await $axios.$get('/securities', {
+      const res = await $axios.$get('/securities/', {
         params: {
           sort: pagination.value.sortBy[0],
           skip: pagination.value.itemsPerPage * (pagination.value.page - 1),
