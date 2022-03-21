@@ -106,7 +106,7 @@
       <v-tooltip top>
         <template #activator="{ on }">
           <v-btn
-            href="https://www.github.com/tfabritius/pr-www"
+            href="https://www.github.com/portfolio-report/pr-www"
             target="_blank"
             icon
             v-on="on"
