@@ -105,12 +105,7 @@
       </v-tooltip>
       <v-tooltip top>
         <template #activator="{ on }">
-          <v-btn
-            href="https://www.github.com/portfolio-report/pr-www"
-            target="_blank"
-            icon
-            v-on="on"
-          >
+          <v-btn :href="githubLink" target="_blank" icon v-on="on">
             <v-icon>{{ icons.mdiSourceRepository }}</v-icon>
           </v-btn>
         </template>
@@ -181,6 +176,16 @@ export default defineComponent({
 
     const username = computed(() => $auth.user?.username)
 
+    const githubLink = computed(() => {
+      if (process.env.gitSha) {
+        return (
+          'https://github.com/portfolio-report/pr-www/commit/' +
+          process.env.gitSha
+        )
+      }
+      return 'https://www.github.com/portfolio-report/pr-www'
+    })
+
     function logout() {
       $auth.logout()
     }
@@ -196,6 +201,7 @@ export default defineComponent({
       menuItems,
       authenticated,
       username,
+      githubLink,
       logout,
       title,
       icons,

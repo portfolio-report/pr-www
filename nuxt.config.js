@@ -86,6 +86,10 @@ module.exports = {
     baseURL: 'https://api.portfolio-report.net/', // Used as fallback if no runtime config is provided
   },
 
+  env: {
+    gitSha: process.env.GITHUB_SHA,
+  },
+
   publicRuntimeConfig: {
     axios: {
       browserBaseURL: process.env.API_URL,
