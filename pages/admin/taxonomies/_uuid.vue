@@ -182,7 +182,7 @@ export default defineComponent({
 
     async function saveTaxonomy() {
       if (selectedTaxonomy.value.uuid) {
-        await $axios.$patch(
+        await $axios.$put(
           `/taxonomies/${selectedTaxonomy.value.uuid}`,
           selectedTaxonomy.value
         )
