@@ -38,7 +38,7 @@
     "@types/lodash": "^4.14.181",
     "@types/validator": "^13.7.2",
     "babel-eslint": "^10.1.0",
-    "eslint": "^8.13.0",
+    "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-loader": "^4.0.2",
