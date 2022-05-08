@@ -9,6 +9,7 @@ if (process.env.API_URL) {
 
 module.exports = {
   target: 'static',
+  ssr: false,
 
   /*
    ** Headers of the page
