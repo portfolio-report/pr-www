@@ -51,7 +51,7 @@
 
               <v-hover v-slot="{ hover }">
                 <span>
-                  <nuxt-link :to="'securities/' + result.uuid">
+                  <nuxt-link :to="'/securities/' + result.uuid">
                     <span class="subtitle-1">{{ result.name }}</span>
                   </nuxt-link>
                   <v-chip small color="primary" text-color="white">
