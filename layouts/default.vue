@@ -39,7 +39,7 @@
         />
       </nuxt-link>
       <nuxt-link to="/" class="title">
-        <v-toolbar-title v-text="title" />
+        <v-toolbar-title>{{ title }}</v-toolbar-title>
       </nuxt-link>
       <v-spacer />
       <v-form v-if="$route.path != '/search'" @submit.prevent="search">
