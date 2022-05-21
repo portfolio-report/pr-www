@@ -1434,10 +1434,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@fontsource/roboto@^4.5.5":
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.5.5.tgz#4ecc38e690469378e2ec2a97f9c12282c654cc93"
-  integrity sha512-Pe1p+gAO6K0aLxBXlLoJRHVx352tVc/v/7DOnvM3t+FYXb+KUga9aCD1NpnDfd0kKnWXqrZyAXguyyFWDDuphw==
+"@fontsource/roboto@^4.5.7":
+  version "4.5.7"
+  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.5.7.tgz#292740a52fa2bac61b89f92e1c588037defe65cb"
+  integrity sha512-m57UMER23Mk6Drg9OjtHW1Y+0KPGyZfE5XJoPTOsLARLar6013kJj4X2HICt+iFLJqIgTahA/QAvSn9lwF1EEw==
 
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.2"
@@ -4967,10 +4967,10 @@ eslint-plugin-import@^2.26.0:
     resolve "^1.22.0"
     tsconfig-paths "^3.14.1"
 
-eslint-plugin-jest@^26.2.0:
-  version "26.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.2.0.tgz#13f676ded6e5ea663c28d1bfba3893fa88b3a4c1"
-  integrity sha512-XSOV5ybCdmakNm0YjGgvuJVQIEjUjCOzlIcOsWtEeWEJ7/wh4YGHgVaJvkHzky+ugzKG89r3Wy4A9z72tWSFmQ==
+eslint-plugin-jest@^26.2.2:
+  version "26.2.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.2.2.tgz#74e000544259f1ef0462a609a3fc9e5da3768f6c"
+  integrity sha512-etSFZ8VIFX470aA6kTqDPhIq7YWe0tjBcboFNV3WeiC18PJ/AVonGhuTwlmuz2fBkH8FJHA7JQ4k7GsQIj1Gew==
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
 
@@ -5368,10 +5368,10 @@ fast-diff@^1.1.2:
   resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
   integrity sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==
 
-fast-glob@^3.1.1, fast-glob@^3.2.7:
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
-  integrity sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==
+fast-glob@^3.1.1, fast-glob@^3.2.11:
+  version "3.2.11"
+  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.11.tgz#a1172ad95ceb8a16e20caa5c5e56480e5129c1d9"
+  integrity sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
     "@nodelib/fs.walk" "^1.2.3"
@@ -6871,10 +6871,10 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-klona@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
-  integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
+klona@^2.0.4, klona@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
+  integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
 last-call-webpack-plugin@^3.0.0:
   version "3.0.0"
@@ -10056,13 +10056,13 @@ stylehacks@^4.0.0:
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
 
-stylus-loader@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/stylus-loader/-/stylus-loader-6.2.0.tgz#0ba499e744e7fb9d9b3977784c8639728a7ced8c"
-  integrity sha512-5dsDc7qVQGRoc6pvCL20eYgRUxepZ9FpeK28XhdXaIPP6kXr6nI1zAAKFQgP5OBkOfKaURp4WUpJzspg1f01Gg==
+stylus-loader@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/stylus-loader/-/stylus-loader-7.0.0.tgz#31fb929cd3a7c447a07a0b0148b48480eb2c3f4a"
+  integrity sha512-WTbtLrNfOfLgzTaR9Lj/BPhQroKk/LC1hfTXSUbrxmxgfUo3Y3LpmKRVA2R1XbjvTAvOfaian9vOyfv1z99E+A==
   dependencies:
-    fast-glob "^3.2.7"
-    klona "^2.0.4"
+    fast-glob "^3.2.11"
+    klona "^2.0.5"
     normalize-path "^3.0.0"
 
 stylus@^0.57.0:

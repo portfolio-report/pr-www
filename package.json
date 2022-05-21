@@ -13,7 +13,7 @@
     "lintfix": "eslint --fix --ext .ts,.js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
-    "@fontsource/roboto": "^4.5.5",
+    "@fontsource/roboto": "^4.5.7",
     "@mdi/js": "^6.6.96",
     "@nuxtjs/auth-next": "5.0.0-1643365392.dae6516",
     "@nuxtjs/axios": "^5.13.6",
@@ -43,7 +43,7 @@
     "eslint-config-standard": "^16.0.3",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^26.2.0",
+    "eslint-plugin-jest": "^26.2.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-nuxt": "^3.2.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -53,7 +53,7 @@
     "nodemon": "^2.0.16",
     "prettier": "^2.6.2",
     "stylus": "^0.57.0",
-    "stylus-loader": "^6.2.0"
+    "stylus-loader": "^7.0.0"
   },
   "lint-staged": {
     "*.{ts,js,vue}": "npm run lint --"
