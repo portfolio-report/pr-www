@@ -36,7 +36,7 @@
     "@types/bluebird": "^3.5.36",
     "@types/chart.js": "^2.9.37",
     "@types/lodash": "^4.14.182",
-    "@types/validator": "^13.7.2",
+    "@types/validator": "^13.7.3",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
