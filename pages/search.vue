@@ -57,6 +57,15 @@
                   <v-chip small color="primary" text-color="white">
                     {{ result.securityType }}
                   </v-chip>
+                  <v-chip
+                    v-for="tag in result.tags"
+                    :key="tag"
+                    small
+                    color="secondary"
+                    text-color="white"
+                  >
+                    {{ tag }}
+                  </v-chip>
                   <span v-if="hover">
                     <v-icon>{{ icons.mdiDragVariant }}</v-icon> Drag me to
                     Portfolio Performance!

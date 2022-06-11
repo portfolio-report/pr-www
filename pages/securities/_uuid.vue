@@ -88,6 +88,18 @@
                 {{ security.securityType }}
               </v-chip>
             </li>
+            <li v-if="security.tags && security.tags.length > 0">
+              Tags:
+              <v-chip
+                v-for="tag in security.tags"
+                :key="tag"
+                small
+                color="secondary"
+                text-color="white"
+              >
+                {{ tag }}
+              </v-chip>
+            </li>
           </ul>
         </v-tab-item>
 
