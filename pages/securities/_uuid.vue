@@ -90,15 +90,11 @@
             </li>
             <li v-if="security.tags && security.tags.length > 0">
               Tags:
-              <v-chip
+              <SecurityTag
                 v-for="tag in security.tags"
                 :key="tag"
-                small
-                color="secondary"
-                text-color="white"
-              >
-                {{ tag }}
-              </v-chip>
+                :name="tag"
+              />
             </li>
           </ul>
         </v-tab-item>
@@ -191,11 +187,12 @@ import {
 import icons from '@/components/icons'
 import PricesTable from '@/components/prices-table.vue'
 import { useSecurityDialog } from '@/components/SecurityDialogProvider.vue'
+import SecurityTag from '@/components/SecurityTag.vue'
 
 export default defineComponent({
   name: 'SecurityPage',
 
-  components: { PricesTable },
+  components: { PricesTable, SecurityTag },
 
   setup() {
     const selectedMarketcode = ref('')

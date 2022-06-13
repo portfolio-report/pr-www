@@ -57,15 +57,11 @@
                   <v-chip small color="primary" text-color="white">
                     {{ result.securityType }}
                   </v-chip>
-                  <v-chip
+                  <SecurityTag
                     v-for="tag in result.tags"
                     :key="tag"
-                    small
-                    color="secondary"
-                    text-color="white"
-                  >
-                    {{ tag }}
-                  </v-chip>
+                    :name="tag"
+                  />
                   <span v-if="hover">
                     <v-icon>{{ icons.mdiDragVariant }}</v-icon> Drag me to
                     Portfolio Performance!
@@ -126,11 +122,12 @@ import {
 
 import icons from '@/components/icons'
 import SelectSecurityType from '@/components/select-security-type.vue'
+import SecurityTag from '@/components/SecurityTag.vue'
 
 export default defineComponent({
   name: 'SearchPage',
 
-  components: { SelectSecurityType },
+  components: { SelectSecurityType, SecurityTag },
 
   setup() {
     const route = useRoute()
