@@ -1,11 +1,11 @@
 <template>
   <v-chip small color="secondary" text-color="white">
-    {{ name }}
+    <NuxtLink :to="linkTo">{{ name }}</NuxtLink>
   </v-chip>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { computed, defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'SecurityTag',
@@ -16,5 +16,28 @@ export default defineComponent({
       default: () => '',
     },
   },
+
+  setup(props) {
+    const linkTo = computed(() => {
+      let name = props.name
+      if (name.includes(' ')) {
+        name = '"' + name + '"'
+      }
+      return `/search?q=tag:${name}`
+    })
+
+    return { linkTo }
+  },
 })
 </script>
+
+<style scoped>
+a {
+  color: white !important;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+</style>
