@@ -50,25 +50,23 @@
                 <span>Prices available</span>
               </v-tooltip>
 
-              <v-hover v-slot="{ hover }">
-                <span>
-                  <nuxt-link :to="'/securities/' + result.uuid">
-                    <span class="subtitle-1">{{ result.name }}</span>
-                  </nuxt-link>
-                  <v-chip small color="primary" text-color="white">
-                    {{ result.securityType }}
-                  </v-chip>
-                  <SecurityTag
-                    v-for="tag in result.tags"
-                    :key="tag"
-                    :name="tag"
-                  />
-                  <span v-if="hover">
-                    <v-icon>{{ icons.mdiDragVariant }}</v-icon> Drag me to
-                    Portfolio Performance!
+              <v-tooltip bottom>
+                <template #activator="{ on, attrs }">
+                  <span v-bind="attrs" v-on="on">
+                    <nuxt-link :to="'/securities/' + result.uuid">
+                      <span class="subtitle-1">{{ result.name }}</span>
+                    </nuxt-link>
                   </span>
+                </template>
+                <span>
+                  <v-icon color="white">{{ icons.mdiDragVariant }}</v-icon> Drag
+                  and drop me to Portfolio Performance!
                 </span>
-              </v-hover>
+              </v-tooltip>
+              <v-chip small color="primary" text-color="white">
+                {{ result.securityType }}
+              </v-chip>
+              <SecurityTag v-for="tag in result.tags" :key="tag" :name="tag" />
             </div>
             ISIN: <b>{{ result.isin }}</b> | WKN: <b>{{ result.wkn }}</b> |
             Symbol(s):
