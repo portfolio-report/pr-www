@@ -13,6 +13,7 @@
               clearable
               outlined
               dense
+              autofocus
             />
             <select-security-type v-model="securityType" />
 
@@ -113,11 +114,11 @@
 <script lang="ts">
 import {
   defineComponent,
-  onMounted,
   ref,
   useContext,
   useRoute,
   useRouter,
+  watch,
 } from '@nuxtjs/composition-api'
 
 import icons from '@/components/icons'
@@ -163,24 +164,30 @@ export default defineComponent({
     const error = ref(false)
     const errorText = ref('')
 
-    onMounted(() => {
-      // Read query parameters from URL
-      const q = route.value.query.q
+    readQueryParameters()
+    updateResults()
 
-      if (q) {
-        searchTerm.value = q as string
-        securityType.value = (route.value.query.securityType || '') as string
-        search()
-      } else {
-        searchTermInput.value?.focus()
+    watch(
+      () => route.value.query.q,
+      () => {
+        if (route.value.query.q) {
+          readQueryParameters()
+          updateResults()
+        }
       }
-    })
+    )
 
     async function search() {
-      searching.value = true
-      noResults.value = false
-      error.value = false
+      updateQueryParameters()
+      await updateResults()
+    }
 
+    function readQueryParameters() {
+      searchTerm.value = route.value.query.q as string
+      securityType.value = (route.value.query.securityType || '') as string
+    }
+
+    function updateQueryParameters() {
       // Update query parameter in URL
       const query = { q: searchTerm.value } as {
         q: string
@@ -193,6 +200,15 @@ export default defineComponent({
         path: route.value.path,
         query,
       })
+    }
+
+    async function updateResults() {
+      if (!searchTerm.value) {
+        return
+      }
+      searching.value = true
+      noResults.value = false
+      error.value = false
 
       try {
         const params = {} as { securityType: string }
