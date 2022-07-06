@@ -1,41 +1,53 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="6">
-      <div class="headline">
-        {{ security.name }}
-        <v-btn
-          v-if="$auth.loggedIn"
-          color="primary"
-          icon
-          text
-          @click="editSecurity(security)"
-        >
-          <v-icon>{{ icons.mdiPencil }}</v-icon>
-        </v-btn>
-      </div>
+      <v-row align="center">
+        <v-col>
+          <div class="headline">
+            {{ security.name }}
+            <v-btn
+              v-if="$auth.loggedIn"
+              color="primary"
+              icon
+              text
+              @click="editSecurity(security)"
+            >
+              <v-icon>{{ icons.mdiPencil }}</v-icon>
+            </v-btn>
+          </div>
 
-      <v-tooltip right>
-        <template #activator="{ on }">
-          <v-btn
-            color="primary"
-            max-width="400"
-            nuxt
-            :to="$route.path"
-            class="mt-2"
-            style="cursor: move"
-            v-on="on"
-          >
-            <v-icon>{{ icons.mdiDragVariant }}</v-icon> Add to Portfolio
-            Performance
-          </v-btn>
-        </template>
-        <div>
-          <div class="title">Drag and drop!</div>
-          To add this security in Portfolio<br />
-          Performance, drag and drop it to<br />
-          securities list or statement of assets.
-        </div>
-      </v-tooltip>
+          <v-tooltip right>
+            <template #activator="{ on }">
+              <v-btn
+                color="primary"
+                max-width="400"
+                nuxt
+                :to="$route.path"
+                class="mt-2"
+                style="cursor: move"
+                v-on="on"
+              >
+                <v-icon>{{ icons.mdiDragVariant }}</v-icon> Add to Portfolio
+                Performance
+              </v-btn>
+            </template>
+            <div>
+              <div class="title">Drag and drop!</div>
+              To add this security in Portfolio<br />
+              Performance, drag and drop it to<br />
+              securities list or statement of assets.
+            </div>
+          </v-tooltip>
+        </v-col>
+        <v-spacer />
+        <v-col>
+          <v-img
+            v-if="security.logoUrl"
+            :src="security.logoUrl"
+            max-width="100"
+          />
+        </v-col>
+      </v-row>
 
       <v-tabs grow>
         <v-tab key="overview">Overview</v-tab>
