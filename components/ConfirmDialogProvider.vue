@@ -6,6 +6,7 @@
       :max-width="options.width"
       persistent
       @keydown.esc="no"
+      @keydown.enter="yes"
     >
       <v-form @submit.prevent="yes">
         <v-card>
