@@ -140,7 +140,10 @@
               </li>
             </ul>
 
-            <prices-table :prices="selectedMarket.prices" />
+            <prices-table
+              :prices="selectedMarket.prices"
+              @deletePrice="deletePrice"
+            />
           </div>
         </v-tab-item>
 
@@ -196,6 +199,7 @@ import {
   watch,
 } from '@nuxtjs/composition-api'
 
+import Vue from 'vue'
 import icons from '@/components/icons'
 import PricesTable from '@/components/prices-table.vue'
 import { useSecurityDialog } from '@/components/SecurityDialogProvider.vue'
@@ -258,6 +262,17 @@ export default defineComponent({
       )
     })
 
+    async function deletePrice({ date }: { date: string }) {
+      await $axios.$delete(
+        `/securities/uuid/${security.value.uuid}/markets/${selectedMarketcode.value}/prices/${date}`
+      )
+
+      const idx = selectedMarket.value.prices.findIndex(
+        (e: { date: string }) => e.date === date
+      )
+      Vue.delete(selectedMarket.value.prices, idx)
+    }
+
     useMeta(() => ({
       title: security.value?.name + ' - Portfolio Report',
     }))
@@ -268,6 +283,7 @@ export default defineComponent({
       selectedMarket,
       selectedMarketcode,
       editSecurity,
+      deletePrice,
       icons,
     }
   },
