@@ -4,6 +4,6 @@
   },
   "eslint.enable": true,
   "eslint.lintTask.enable": true,
-  "typescript.tsdk": "node_modules\\typescript\\lib",
-  "vetur.validation.template": false
+  "eslint.validate": ["javascript", "typescript"],
+  "typescript.tsdk": "node_modules/typescript/lib",
 }
