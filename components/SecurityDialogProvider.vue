@@ -140,15 +140,15 @@ export default defineComponent({
     function addDashesToUuid(uuid: string): string {
       if (/^[0-9a-f]{32}$/.test(uuid)) {
         return (
-          uuid.substr(0, 8) +
+          uuid.substring(0, 8) +
           '-' +
-          uuid.substr(8, 4) +
+          uuid.substring(8, 12) +
           '-' +
-          uuid.substr(12, 4) +
+          uuid.substring(12, 16) +
           '-' +
-          uuid.substr(16, 4) +
+          uuid.substring(16, 20) +
           '-' +
-          uuid.substr(20)
+          uuid.substring(20)
         )
       } else {
         return uuid
