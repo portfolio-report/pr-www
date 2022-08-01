@@ -1,11 +1,10 @@
 # Node
 node_modules/
 
-# nuxt.js build output
+# nuxt.js output
 .nuxt
-
-# nuxt.js generate output
 dist
+.output
 
 # .env
 .env
@@ -15,10 +14,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
-# pr-www
-db/
-api/config.json
 
 # Visual Studio Code
 .vscode/*
