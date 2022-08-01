@@ -48,8 +48,8 @@ import {
 } from '@nuxtjs/composition-api'
 import { BarChart } from 'vue-chart-3'
 
-import DateView from '~/components/stats-date.vue'
-import CountryView from '~/components/stats-country.vue'
+import DateView from '~/components/StatsDate.vue'
+import CountryView from '~/components/StatsCountry.vue'
 
 export default defineComponent({
   name: 'StatsPage',

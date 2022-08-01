@@ -107,11 +107,11 @@ import {
 import debounce from 'lodash/debounce'
 
 import icons from '@/components/icons'
-import SelectSecurityType from '@/components/select-security-type.vue'
+import SelectSecurityType from '~/components/SelectSecurityType.vue'
 import { Security } from '@/store/security.model'
 import { useSecurityDialog } from '@/components/SecurityDialogProvider.vue'
 import { useConfirmDialog } from '@/components/useConfirmDialog'
-import CreateMultipleSecuritiesDialog from '@/components/create-multiple-securities-dialog.vue'
+import CreateMultipleSecuritiesDialog from '~/components/CreateMultipleSecuritiesDialog.vue'
 
 export default defineComponent({
   name: 'SecuritiesPage',

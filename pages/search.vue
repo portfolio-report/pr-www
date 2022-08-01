@@ -120,7 +120,7 @@ import {
 } from '@nuxtjs/composition-api'
 
 import icons from '@/components/icons'
-import SelectSecurityType from '@/components/select-security-type.vue'
+import SelectSecurityType from '~/components/SelectSecurityType.vue'
 import SecurityTag from '@/components/SecurityTag.vue'
 
 export default defineComponent({

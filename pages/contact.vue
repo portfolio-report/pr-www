@@ -71,7 +71,7 @@
 <script lang="ts">
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 import isEmail from 'validator/lib/isEmail'
-import BtnLoading from '../components/btn-loading.vue'
+import BtnLoading from '../components/BtnLoading.vue'
 
 export default defineComponent({
   name: 'ContactPage',

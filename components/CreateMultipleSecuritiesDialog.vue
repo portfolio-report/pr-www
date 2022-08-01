@@ -57,7 +57,7 @@ import {
 } from '@nuxtjs/composition-api'
 
 import icons from '@/components/icons'
-import BtnLoading from '@/components/btn-loading.vue'
+import BtnLoading from '~/components/BtnLoading.vue'
 import { Security } from '@/store/security.model'
 
 export default defineComponent({

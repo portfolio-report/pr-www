@@ -201,7 +201,7 @@ import {
 
 import Vue from 'vue'
 import icons from '@/components/icons'
-import PricesTable from '@/components/prices-table.vue'
+import PricesTable from '~/components/PricesTable.vue'
 import { useSecurityDialog } from '@/components/SecurityDialogProvider.vue'
 import SecurityTag from '@/components/SecurityTag.vue'
 
