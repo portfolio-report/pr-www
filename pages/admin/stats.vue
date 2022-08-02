@@ -92,7 +92,7 @@ import {
   useContext,
   watch,
 } from '@nuxtjs/composition-api'
-import debounce from 'lodash/debounce'
+import { debounce } from '@/components/debounce'
 
 import { useConfirmDialog } from '@/components/useConfirmDialog'
 import icons from '@/components/icons'

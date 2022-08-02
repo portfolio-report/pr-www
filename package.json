@@ -19,7 +19,6 @@
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/vuetify": "^1.12.3",
     "chart.js": "^3.9.0",
-    "lodash": "^4.17.21",
     "nuxt": "^2.15.8",
     "vue": "^2",
     "vue-chart-3": "2.0.6"
@@ -32,7 +31,6 @@
     "@nuxtjs/eslint-config-typescript": "^10.0.0",
     "@nuxtjs/eslint-module": "^3.1.0",
     "@types/chart.js": "^2.9.37",
-    "@types/lodash": "^4.14.182",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.21.0",
     "eslint-config-prettier": "^8.5.0",

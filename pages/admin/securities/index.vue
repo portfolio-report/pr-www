@@ -104,7 +104,7 @@ import {
   useContext,
   watch,
 } from '@nuxtjs/composition-api'
-import debounce from 'lodash/debounce'
+import { debounce } from '@/components/debounce'
 
 import icons from '@/components/icons'
 import SelectSecurityType from '~/components/SelectSecurityType.vue'
