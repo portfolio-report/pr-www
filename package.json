@@ -22,7 +22,6 @@
     "cross-env": "^7.0.3",
     "lodash": "^4.17.21",
     "nuxt": "^2.15.8",
-    "validator": "^13.7.0",
     "vue": "^2",
     "vue-chart-3": "2.0.6"
   },
@@ -36,7 +35,6 @@
     "@types/bluebird": "^3.5.36",
     "@types/chart.js": "^2.9.37",
     "@types/lodash": "^4.14.182",
-    "@types/validator": "^13.7.4",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.21.0",
     "eslint-config-prettier": "^8.5.0",
