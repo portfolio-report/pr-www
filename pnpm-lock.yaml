@@ -31,8 +31,6 @@ specifiers:
   lodash: ^4.17.21
   nuxt: ^2.15.8
   prettier: ^2.7.1
-  stylus: ^0.58.1
-  stylus-loader: ^7.0.0
   vue: ^2
   vue-chart-3: 2.0.6
 
@@ -71,8 +69,6 @@ devDependencies:
   eslint-plugin-promise: 6.0.0_eslint@8.21.0
   eslint-plugin-vue: 9.3.0_eslint@8.21.0
   prettier: 2.7.1
-  stylus: 0.58.1
-  stylus-loader: 7.0.0_stylus@0.58.1
 
 packages:
 
@@ -3863,14 +3859,6 @@ packages:
   /css-what/4.0.0:
     resolution: {integrity: sha512-teijzG7kwYfNVsUh2H/YN62xW3KK9YhXEgSlbxMlcyjPNvdKJqFx5lrwlJgoFP1ZHlB89iGDlo/JyshKeRhv5A==}
     engines: {node: '>= 6'}
-
-  /css/3.0.0:
-    resolution: {integrity: sha512-DG9pFfwOrzc+hawpmqX/dHYHJG+Bsdb0klhyi1sDneOgGOXy9wQIC8hzyVp1e4NRYDBdxcylvywPkkXCHAzTyQ==}
-    dependencies:
-      inherits: 2.0.4
-      source-map: 0.6.1
-      source-map-resolve: 0.6.0
-    dev: true
 
   /cssdb/4.4.0:
     resolution: {integrity: sha512-LsTAR1JPEM9TpGhl/0p3nQecC2LJ0kD8X5YARu1hk/9I1gril5vDtMZyNxcEpxxDj34YNck/ucjuoUd66K03oQ==}
@@ -8399,14 +8387,6 @@ packages:
       source-map-url: 0.4.0
       urix: 0.1.0
 
-  /source-map-resolve/0.6.0:
-    resolution: {integrity: sha512-KXBr9d/fO/bWo97NXsPIAW1bFSBOuCnjbNTBMO7N59hsv5i9yzRDfcYwwt0l04+VqnKC+EwzvJZIP/qkuMgR/w==}
-    deprecated: See https://github.com/lydell/source-map-resolve#deprecated
-    dependencies:
-      atob: 2.1.2
-      decode-uri-component: 0.2.0
-    dev: true
-
   /source-map-support/0.5.21:
     resolution: {integrity: sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==}
     dependencies:
@@ -8640,32 +8620,6 @@ packages:
       browserslist: 4.18.1
       postcss: 7.0.36
       postcss-selector-parser: 3.1.2
-
-  /stylus-loader/7.0.0_stylus@0.58.1:
-    resolution: {integrity: sha512-WTbtLrNfOfLgzTaR9Lj/BPhQroKk/LC1hfTXSUbrxmxgfUo3Y3LpmKRVA2R1XbjvTAvOfaian9vOyfv1z99E+A==}
-    engines: {node: '>= 14.15.0'}
-    peerDependencies:
-      stylus: '>=0.52.4'
-      webpack: ^5.0.0
-    dependencies:
-      fast-glob: 3.2.11
-      klona: 2.0.5
-      normalize-path: 3.0.0
-      stylus: 0.58.1
-    dev: true
-
-  /stylus/0.58.1:
-    resolution: {integrity: sha512-AYiCHm5ogczdCPMfe9aeQa4NklB2gcf4D/IhzYPddJjTgPc+k4D/EVE0yfQbZD43MHP3lPy+8NZ9fcFxkrgs/w==}
-    hasBin: true
-    dependencies:
-      css: 3.0.0
-      debug: 4.3.4
-      glob: 7.2.0
-      sax: 1.2.4
-      source-map: 0.7.3
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
 
   /supports-color/2.0.0:
     resolution: {integrity: sha512-KKNVtd6pCYgPIKU4cp2733HWYCpplQhddZLBUryaAHou723x+FRzQ5Df824Fj+IyyuiQTRoub4SnIFfIcrp70g==}
