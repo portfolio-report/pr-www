@@ -8,12 +8,16 @@ Please use the [discussion forum](https://forum.portfolio-performance.info/) to 
 
 ## Getting started
 
+Prerequisites:
+- [Node.js](https://nodejs.org/)
+- [pnpm](https://pnpm.io/installation)
+
 ```bash
 # Clone repository
 $ git clone ...
 
 # Install dependencies
-$ yarn install --frozen-lockfile
+$ pnpm install --frozen-lockfile
 ```
 
 ## Configuration
@@ -28,9 +32,9 @@ API_URL=https://...
 
 ``` bash
 # serve with hot reload at localhost:3000
-$ yarn dev
+$ pnpm dev
 
 # generate files and serve them
-$ yarn generate
-$ yarn start
+$ pnpm generate
+$ pnpm start
 ```
