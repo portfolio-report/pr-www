@@ -29,7 +29,6 @@ specifiers:
   eslint-plugin-nuxt: ^3.2.0
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-promise: ^6.0.0
-  eslint-plugin-standard: ^5.0.0
   eslint-plugin-vue: ^9.3.0
   lodash: ^4.17.21
   nuxt: ^2.15.8
@@ -37,7 +36,7 @@ specifiers:
   stylus: ^0.58.1
   stylus-loader: ^7.0.0
   validator: ^13.7.0
-  vue: ^2.6.12
+  vue: ^2
   vue-chart-3: 2.0.6
 
 dependencies:
@@ -76,7 +75,6 @@ devDependencies:
   eslint-plugin-nuxt: 3.2.0_eslint@8.20.0
   eslint-plugin-prettier: 4.2.1_g4fztgbwjyq2fvmcscny2sj6fy
   eslint-plugin-promise: 6.0.0_eslint@8.20.0
-  eslint-plugin-standard: 5.0.0_eslint@8.20.0
   eslint-plugin-vue: 9.3.0_eslint@8.20.0
   prettier: 2.7.1
   stylus: 0.58.1
@@ -4625,15 +4623,6 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
-    dependencies:
-      eslint: 8.20.0
-    dev: true
-
-  /eslint-plugin-standard/5.0.0_eslint@8.20.0:
-    resolution: {integrity: sha512-eSIXPc9wBM4BrniMzJRBm2uoVuXz2EPa+NXPk2+itrVt+r5SbKFERx/IgrK/HmfjddyKVz2f+j+7gBRvu19xLg==}
-    deprecated: 'standard 16.0.0 and eslint-config-standard 16.0.0 no longer require the eslint-plugin-standard package. You can remove it from your dependencies with ''npm rm eslint-plugin-standard''. More info here: https://github.com/standard/standard/issues/1316'
-    peerDependencies:
-      eslint: '>=5.0.0'
     dependencies:
       eslint: 8.20.0
     dev: true
