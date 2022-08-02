@@ -19,7 +19,6 @@
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/vuetify": "^1.12.3",
     "chart.js": "^3.9.0",
-    "cross-env": "^7.0.3",
     "lodash": "^4.17.21",
     "nuxt": "^2.15.8",
     "vue": "^2",
