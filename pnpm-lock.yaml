@@ -37,7 +37,7 @@ specifiers:
   stylus: ^0.58.1
   stylus-loader: ^7.0.0
   validator: ^13.7.0
-  vue: ^2
+  vue: ^2.6.12
   vue-chart-3: 2.0.6
 
 dependencies:
@@ -1546,7 +1546,7 @@ packages:
       '@nuxt/utils': 2.15.8
       babel-loader: 8.2.2_uwaygiumfr5ruezn5bfsw34234
       cache-loader: 4.1.0_webpack@4.46.0
-      caniuse-lite: 1.0.30001286
+      caniuse-lite: 1.0.30001373
       consola: 2.15.3
       css-loader: 4.3.0_webpack@4.46.0
       cssnano: 4.1.11
@@ -2753,7 +2753,7 @@ packages:
     hasBin: true
     dependencies:
       browserslist: 4.18.1
-      caniuse-lite: 1.0.30001286
+      caniuse-lite: 1.0.30001373
       colorette: 1.4.0
       normalize-range: 0.1.2
       num2fraction: 1.2.2
@@ -3020,7 +3020,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001286
+      caniuse-lite: 1.0.30001373
       electron-to-chromium: 1.4.16
       escalade: 3.1.1
       node-releases: 2.0.1
@@ -3197,12 +3197,12 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.18.1
-      caniuse-lite: 1.0.30001286
+      caniuse-lite: 1.0.30001373
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
 
-  /caniuse-lite/1.0.30001286:
-    resolution: {integrity: sha512-zaEMRH6xg8ESMi2eQ3R4eZ5qw/hJiVsO/HlLwniIwErij0JDr9P+8V4dtx1l+kLq6j3yy8l8W4fst1lBnat5wQ==}
+  /caniuse-lite/1.0.30001373:
+    resolution: {integrity: sha512-pJYArGHrPp3TUqQzFYRmP/lwJlj8RCbVe3Gd3eJQkAV8SAC6b19XS9BjMvRdvaS8RMkaTN8ZhoHP6S1y8zzwEQ==}
 
   /chalk/1.1.3:
     resolution: {integrity: sha512-U3lRVLMSlsCfjqYPbLyVv11M9CPW4I728d6TCKMAOJueEeB9/8o+eSsMnxPJD+Q+K909sdESg7C+tIkoH6on1A==}
@@ -7498,7 +7498,7 @@ packages:
     dependencies:
       autoprefixer: 9.8.6
       browserslist: 4.18.1
-      caniuse-lite: 1.0.30001286
+      caniuse-lite: 1.0.30001373
       css-blank-pseudo: 0.1.4
       css-has-pseudo: 0.10.0
       css-prefers-color-scheme: 3.1.1
