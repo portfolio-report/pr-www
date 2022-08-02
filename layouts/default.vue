@@ -179,7 +179,7 @@ export default defineComponent({
     const githubLink = computed(() => {
       if (process.env.gitSha) {
         return (
-          'https://github.com/portfolio-report/pr-www/commit/' +
+          'https://github.com/portfolio-report/pr-www/tree/' +
           process.env.gitSha
         )
       }
