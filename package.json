@@ -20,7 +20,6 @@
     "@nuxtjs/vuetify": "^1.12.3",
     "chart.js": "^3.9.0",
     "cross-env": "^7.0.3",
-    "express": "^4.18.1",
     "lodash": "^4.17.21",
     "nuxt": "^2.15.8",
     "validator": "^13.7.0",
@@ -38,7 +37,6 @@
     "@types/chart.js": "^2.9.37",
     "@types/lodash": "^4.14.182",
     "@types/validator": "^13.7.4",
-    "@types/vue": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.20.0",
     "eslint-config-prettier": "^8.5.0",
@@ -52,7 +50,6 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^9.3.0",
-    "nodemon": "^2.0.19",
     "prettier": "^2.7.1",
     "stylus": "^0.58.1",
     "stylus-loader": "^7.0.0"
