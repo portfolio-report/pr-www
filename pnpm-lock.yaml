@@ -12,7 +12,6 @@ specifiers:
   '@nuxtjs/eslint-config-typescript': ^10.0.0
   '@nuxtjs/eslint-module': ^3.1.0
   '@nuxtjs/vuetify': ^1.12.3
-  '@types/bluebird': ^3.5.36
   '@types/chart.js': ^2.9.37
   '@types/lodash': ^4.14.182
   babel-eslint: ^10.1.0
@@ -53,7 +52,6 @@ devDependencies:
   '@nuxtjs/eslint-config': 10.0.0_eslint@8.21.0
   '@nuxtjs/eslint-config-typescript': 10.0.0_eslint@8.21.0
   '@nuxtjs/eslint-module': 3.1.0_eslint@8.21.0
-  '@types/bluebird': 3.5.36
   '@types/chart.js': 2.9.37
   '@types/lodash': 4.14.182
   babel-eslint: 10.1.0_eslint@8.21.0
@@ -1848,10 +1846,6 @@ packages:
     resolution: {integrity: sha512-kSjgDMZONiIfSH1Nxcr5JIRMwUetDki63FSQfpTCz8ogF3Ulqm8+mr5f78dUYs6vMiB6gBusQqfQmBvHZj/lwg==}
     dependencies:
       '@babel/types': 7.17.0
-    dev: true
-
-  /@types/bluebird/3.5.36:
-    resolution: {integrity: sha512-HBNx4lhkxN7bx6P0++W8E289foSu8kO8GCk2unhuVggO+cE7rh9DhZUyPhUxNRG9m+5B5BTKxZQ5ZP92x/mx9Q==}
     dev: true
 
   /@types/body-parser/1.19.0:
