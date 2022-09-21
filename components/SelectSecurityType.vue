@@ -1,43 +1,33 @@
 <template>
-  <div>
-    <v-select
-      :value="value"
-      :items="securityTypeItems"
-      label="Security Type"
-      dense
-      outlined
-      @input="update"
+  <span class="p-float-label">
+    <Dropdown
+      id="dropdown"
+      class="w-full"
+      :model-value="modelValue"
+      :options="securityTypeItems"
+      option-label="text"
+      option-value="value"
+      :show-clear="true"
+      @update:model-value="update"
     />
-  </div>
+    <label for="dropdown">Security Type</label>
+  </span>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+<script setup lang="ts">
+defineProps<{ modelValue: string }>()
 
-export default defineComponent({
-  name: 'SelectSecurityType',
+const emit = defineEmits<{ (e: 'update:modelValue', arg1: string): void }>()
 
-  props: {
-    value: {
-      type: String,
-      default: '',
-    },
-  },
+const securityTypeItems = [
+  { text: '*', value: '' },
+  { text: 'share', value: 'share' },
+  { text: 'fund', value: 'fund' },
+  { text: 'bond', value: 'bond' },
+  { text: 'index', value: 'index' },
+]
 
-  setup(_props, { emit }) {
-    const securityTypeItems = [
-      { text: '*', value: '' },
-      { text: 'share', value: 'share' },
-      { text: 'fund', value: 'fund' },
-      { text: 'bond', value: 'bond' },
-      { text: 'index', value: 'index' },
-    ]
-
-    function update(event: string) {
-      emit('input', event)
-    }
-
-    return { securityTypeItems, update }
-  },
-})
+function update(value: string) {
+  emit('update:modelValue', value)
+}
 </script>

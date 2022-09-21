@@ -1,71 +1,65 @@
 <template>
-  <v-row align="center" justify="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card>
-        <v-card-title class="headline">Security search</v-card-title>
-        <v-form v-model="searchFormValid" @submit.prevent="search">
-          <v-card-text>
-            <v-text-field
-              ref="searchTermInput"
-              v-model="searchTerm"
-              :rules="searchRules"
-              label="ISIN/WKN/Symbol/Name"
-              clearable
-              outlined
-              dense
-              autofocus
-            />
-            <select-security-type v-model="securityType" />
+  <div class="flex justify-content-center">
+    <div style="width: 800px">
+      <Card>
+        <template #title>Security Search</template>
+        <template #content>
+          <form @submit.prevent="search">
+            <div class="p-float-label mt-2">
+              <InputText
+                id="searchTermInput"
+                v-model="searchTerm"
+                type="search"
+                class="w-full"
+                autofocus
+              />
+              <label for="searchTermInput">ISIN/WKN/Symbol/Name</label>
+            </div>
 
-            <v-btn
+            <SelectSecurityType v-model="securityType" class="w-full mt-4" />
+
+            <Button
               type="submit"
-              color="primary"
-              :loading="searching"
-              :disabled="!searchFormValid || searching"
-              block
+              :disabled="!searchTerm || searching"
+              class="w-full flex justify-content-center mt-4"
             >
-              Search
-            </v-btn>
+              <span v-if="!searching" class="font-bold">Search</span>
+              <ProgressSpinner v-else style="height: 20px" />
+            </Button>
 
-            <v-alert v-model="noResults" type="info" outlined>
+            <Message v-if="noResults" severity="info">
               Sorry, no results were found.
-            </v-alert>
+            </Message>
 
-            <v-alert v-model="error" type="error" outlined>
+            <Message v-if="error" severity="error">
               Sorry, there was an error:<br />{{ errorText }}
-            </v-alert>
-          </v-card-text>
-        </v-form>
-      </v-card>
+            </Message>
+          </form>
+        </template>
+      </Card>
 
-      <v-card v-if="results.length > 0" class="mt-4">
-        <v-card-title>Results</v-card-title>
-        <v-card-text>
+      <Card v-if="results.length > 0" class="mt-4">
+        <template #title>Results</template>
+        <template #content>
           <div v-for="result in results" :key="result.uuid" class="mb-3">
-            <div>
-              <v-tooltip v-if="getPricesAvailable(result)" left>
-                <template #activator="{ on }">
-                  <v-icon v-on="on">{{ icons.mdiChartLine }}</v-icon>
-                </template>
-                <span>Prices available</span>
-              </v-tooltip>
+            <div class="text-lg font-medium flex align-items-center">
+              <i
+                v-if="getPricesAvailable(result)"
+                v-tooltip.top="'Prices available'"
+                class="i-carbon-chart-line mr-1"
+              ></i>
 
-              <v-tooltip bottom>
-                <template #activator="{ on, attrs }">
-                  <span v-bind="attrs" v-on="on">
-                    <nuxt-link :to="'/securities/' + result.uuid">
-                      <span class="subtitle-1">{{ result.name }}</span>
-                    </nuxt-link>
-                  </span>
-                </template>
-                <span>
-                  <v-icon color="white">{{ icons.mdiDragVariant }}</v-icon> Drag
-                  and drop me to Portfolio Performance!
-                </span>
-              </v-tooltip>
-              <v-chip small color="primary" text-color="white">
+              <NuxtLink
+                v-tooltip.top="'Drag and drop me to Portfolio Performance!'"
+                :to="'/securities/' + result.uuid"
+              >
+                {{ result.name }}
+              </NuxtLink>
+
+              <Chip class="mx-1 text-sm bg-teal-500 text-white">
                 {{ result.securityType }}
-              </v-chip>
+              </Chip>
+
               <SecurityTag v-for="tag in result.tags" :key="tag" :name="tag" />
             </div>
             ISIN: <b>{{ result.isin }}</b> | WKN: <b>{{ result.wkn }}</b> |
@@ -77,12 +71,12 @@
               </span>
             </span>
           </div>
-        </v-card-text>
-      </v-card>
+        </template>
+      </Card>
 
-      <v-card class="mt-4">
-        <v-card-title>Your contribution is needed 💪</v-card-title>
-        <v-card-text>
+      <Card class="mt-4">
+        <template #title>Your contribution is needed 💪</template>
+        <template #content>
           Your help is needed to keep this website up and running. Have you
           thought about contributing? You could:
           <ul>
@@ -103,44 +97,95 @@
               <a href="https://github.com/sponsors/tfabritius">Github</a>.
             </li>
           </ul>
-        </v-card-text>
-      </v-card>
-    </v-col>
-  </v-row>
+        </template>
+      </Card>
+    </div>
+  </div>
 </template>
 
-<script lang="ts">
-import {
-  defineComponent,
-  ref,
-  useContext,
-  useRoute,
-  useRouter,
-  watch,
-} from '@nuxtjs/composition-api'
+<script setup lang="ts">
+useHead({ title: 'Portfolio Report Search' })
+const route = useRoute()
+const router = useRouter()
 
-import icons from '@/components/icons'
-import SelectSecurityType from '~/components/SelectSecurityType.vue'
-import SecurityTag from '@/components/SecurityTag.vue'
+const searchTerm = ref('')
+const securityType = ref('')
 
-export default defineComponent({
-  name: 'SearchPage',
+const results = ref<
+  {
+    uuid: string
+    name: string
+    isin: string
+    wkn: string
+    securityType: string
+    symbolXfra: string | null
+    symbolXnas: string | null
+    symbolXnys: string | null
+    markets: Array<{
+      firstPriceDate: string
+      lastPriceDate: string
+      symbol: string | null
+    }>
+    tags: string[]
+  }[]
+>([])
+const noResults = ref(false)
+const searching = ref(false)
+const error = ref(false)
+const errorText = ref('')
 
-  components: { SelectSecurityType, SecurityTag },
+readQueryParameters()
+updateResults()
 
-  setup() {
-    const route = useRoute()
-    const router = useRouter()
-    const { $axios } = useContext()
+watch(
+  () => route.query.q,
+  () => {
+    if (route.query.q) {
+      readQueryParameters()
+      updateResults()
+    }
+  }
+)
 
-    const searchTermInput = ref<HTMLInputElement | null>(null)
+async function search() {
+  updateQueryParameters()
+  await updateResults()
+}
 
-    const searchFormValid = false
-    const searchTerm = ref('')
-    const searchRules = [(v: string) => !!v || 'Required']
-    const securityType = ref('')
+function readQueryParameters() {
+  searchTerm.value = route.query.q as string
+  securityType.value = (route.query.securityType || '') as string
+}
 
-    const results = ref<
+function updateQueryParameters() {
+  // Update query parameter in URL
+  const query = { q: searchTerm.value } as {
+    q: string
+    securityType: string
+  }
+  if (securityType.value) {
+    query.securityType = securityType.value
+  }
+  router.push({
+    path: route.path,
+    query,
+  })
+}
+
+async function updateResults() {
+  if (!searchTerm.value) {
+    return
+  }
+  searching.value = true
+  noResults.value = false
+  error.value = false
+
+  try {
+    const params = {} as { securityType: string }
+    if (securityType.value) {
+      params.securityType = securityType.value
+    }
+    const res = await useApi<
       {
         uuid: string
         name: string
@@ -155,127 +200,45 @@ export default defineComponent({
           lastPriceDate: string
           symbol: string | null
         }>
+        tags: string[]
       }[]
-    >([])
-    const noResults = ref(false)
-    const searching = ref(false)
-    const error = ref(false)
-    const errorText = ref('')
+    >(`/securities/search/${encodeURIComponent(searchTerm.value.trim())}`, {
+      params,
+    })
 
-    readQueryParameters()
-    updateResults()
+    searching.value = false
+    results.value = res
+    noResults.value = res.length === 0
+  } catch (err) {
+    searching.value = false
+    results.value = []
+    noResults.value = false
+    error.value = true
+    errorText.value = String(err)
+  }
+}
 
-    watch(
-      () => route.value.query.q,
-      () => {
-        if (route.value.query.q) {
-          readQueryParameters()
-          updateResults()
-        }
-      }
-    )
+function getPricesAvailable(result: {
+  markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
+}): boolean {
+  return result.markets.some(
+    (market) => market.firstPriceDate && market.lastPriceDate
+  )
+}
 
-    async function search() {
-      updateQueryParameters()
-      await updateResults()
-    }
-
-    function readQueryParameters() {
-      searchTerm.value = route.value.query.q as string
-      securityType.value = (route.value.query.securityType || '') as string
-    }
-
-    function updateQueryParameters() {
-      // Update query parameter in URL
-      const query = { q: searchTerm.value } as {
-        q: string
-        securityType: string
-      }
-      if (securityType.value) {
-        query.securityType = securityType.value
-      }
-      router.push({
-        path: route.value.path,
-        query,
-      })
-    }
-
-    async function updateResults() {
-      if (!searchTerm.value) {
-        return
-      }
-      searching.value = true
-      noResults.value = false
-      error.value = false
-
-      try {
-        const params = {} as { securityType: string }
-        if (securityType.value) {
-          params.securityType = securityType.value
-        }
-        const res = await $axios.$get(
-          `/securities/search/${encodeURIComponent(searchTerm.value.trim())}`,
-          { params }
-        )
-
-        searching.value = false
-        results.value = res
-        noResults.value = res.length === 0
-      } catch (err) {
-        searching.value = false
-        results.value = []
-        noResults.value = false
-        error.value = true
-        errorText.value = String(err)
-      }
-    }
-
-    function getPricesAvailable(result: {
-      markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
-    }): boolean {
-      return result.markets.some(
-        (market) => market.firstPriceDate && market.lastPriceDate
-      )
-    }
-
-    function getUniqueSymbols(result: {
-      symbolXfra: string | null
-      symbolXnas: string | null
-      symbolXnys: string | null
-      markets: Array<{ symbol: string | null }>
-    }) {
-      return Array.from(
-        new Set([
-          result.symbolXfra,
-          result.symbolXnas,
-          result.symbolXnys,
-          ...result.markets?.map((m) => m.symbol),
-        ])
-      ).filter((s) => !!s)
-    }
-
-    return {
-      icons,
-      search,
-      searchTerm,
-      searchTermInput,
-      searchFormValid,
-      searchRules,
-      securityType,
-      searching,
-      noResults,
-      error,
-      errorText,
-      results,
-      getPricesAvailable,
-      getUniqueSymbols,
-    }
-  },
-
-  head() {
-    return {
-      title: 'Portfolio Report Search',
-    }
-  },
-})
+function getUniqueSymbols(result: {
+  symbolXfra: string | null
+  symbolXnas: string | null
+  symbolXnys: string | null
+  markets: Array<{ symbol: string | null }>
+}) {
+  return [
+    ...new Set([
+      result.symbolXfra,
+      result.symbolXnas,
+      result.symbolXnys,
+      ...result.markets?.map((m) => m.symbol),
+    ]),
+  ].filter((s) => !!s)
+}
 </script>

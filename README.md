@@ -9,6 +9,7 @@ Please use the [discussion forum](https://forum.portfolio-performance.info/) to 
 ## Getting started
 
 Prerequisites:
+
 - [Node.js](https://nodejs.org/)
 - [pnpm](https://pnpm.io/installation)
 
@@ -23,8 +24,9 @@ $ pnpm install --frozen-lockfile
 ## Configuration
 
 Create `.env` configuration file or respective environment variables:
+
 ```ini
-# Use this URL as baseUrl for Axios
+# Use this URL as baseUrl for API requests
 API_URL=https://...
 ```
 
@@ -34,7 +36,7 @@ API_URL=https://...
 # serve with hot reload at localhost:3000
 $ pnpm dev
 
-# generate files and serve them
+# generate static files and serve them
 $ pnpm generate
 $ pnpm start
 ```

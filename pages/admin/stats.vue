@@ -1,101 +1,98 @@
 <template>
-  <v-row align="center" justify="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-toolbar color="primary" dark>
-        <v-toolbar-title>Client Updates</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-menu bottom left offset-y :close-on-content-click="false">
-          <template #activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>{{
-                filterVersion ? icons.mdiFilter : icons.mdiFilterOutline
-              }}</v-icon>
-            </v-btn>
-          </template>
-          <v-card>
-            <v-list>
-              <v-subheader>Version</v-subheader>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-text-field v-model="filterVersion" clearable single-line />
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-menu>
-      </v-toolbar>
+  <div>
+    <Dialog
+      v-model:visible="showEditDialog"
+      header="Edit Client Update"
+      style="max-width: 600"
+      :modal="true"
+    >
+      <div class="p-float-label mt-4">
+        <InputText
+          id="timestamp"
+          v-model="editedItem.timestamp"
+          class="w-20rem"
+        />
+        <label for="timestamp">Timestamp</label>
+      </div>
 
-      <v-dialog v-model="showEditDialog" max-width="600">
-        <v-card>
-          <v-card-title>Edit Client Update</v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="12" md="12">
-                  <v-text-field
-                    v-model="editedItem.timestamp"
-                    label="Timestamp"
-                  />
-                </v-col>
-                <v-col cols="12" sm="12" md="6">
-                  <v-text-field v-model="editedItem.version" label="Version" />
-                </v-col>
-                <v-col cols="12" sm="12" md="6">
-                  <v-text-field v-model="editedItem.country" label="Country" />
-                </v-col>
-                <v-col cols="12" sm="12" md="12">
-                  <v-text-field
-                    v-model="editedItem.useragent"
-                    label="User Agent"
-                  />
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="closeEditDialog">Cancel</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <div class="p-float-label mt-4">
+        <InputText id="version" v-model="editedItem.version" class="w-10rem" />
+        <label for="version">Version</label>
+      </div>
 
-      <v-data-table
-        :headers="headers"
-        :items="entries"
-        :options.sync="pagination"
-        :server-items-length="totalItems"
-        :footer-props="footerProps"
-        :loading="loading"
+      <div class="p-float-label mt-4">
+        <InputText id="country" v-model="editedItem.country" class="w-10rem" />
+        <label for="country">Country</label>
+      </div>
+
+      <div class="p-float-label mt-4">
+        <InputText
+          id="useragent"
+          v-model="editedItem.useragent"
+          class="w-25rem"
+        />
+        <label for="useragent">User Agent</label>
+      </div>
+
+      <template #footer>
+        <CancelBtn label="Cancel" @click="closeEditDialog" />
+      </template>
+    </Dialog>
+
+    <DataTable
+      v-model:filters="filters"
+      :value="entries"
+      :lazy="true"
+      :paginator="true"
+      :loading="loading"
+      :total-records="totalItems"
+      :rows="rowsPerPage"
+      class="p-datatable-sm"
+      :rows-per-page-options="[10, 25, 50, 100]"
+      sort-field="timestamp"
+      :sort-order="1"
+      filter-display="menu"
+      @page="onPage"
+      @sort="onSort"
+      @filter="onFilter"
+    >
+      <template #header>
+        <h5 class="m-0">Client updates</h5>
+      </template>
+      <Column field="timestamp" header="Timestamp" :sortable="true"></Column>
+      <Column
+        field="version"
+        header="Version"
+        :sortable="true"
+        :show-filter-match-modes="false"
       >
-        <template #items="props">
-          <td>{{ props.item.timestamp }}</td>
-          <td>{{ props.item.version }}</td>
-          <td>{{ props.item.country }}</td>
+        <template #filter="{ filterModel }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            class="p-column-filter"
+            placeholder="Filter by version"
+          />
         </template>
-        <template #item.action="{ item }">
-          <v-icon small class="mr-2" @click="editItem(item)">
-            {{ icons.mdiPencil }}
-          </v-icon>
-          <v-icon small @click="deleteItem(item)">
-            {{ icons.mdiDelete }}
-          </v-icon>
+      </Column>
+      <Column field="country" header="Country" :sortable="true"></Column>
+      <Column header="Actions">
+        <template #body="{ data }">
+          <EditBtn small @click="editItem(data)" />
+          <DeleteBtn small @click="deleteItem(data)" />
         </template>
-      </v-data-table>
-    </v-col>
-  </v-row>
+      </Column>
+    </DataTable>
+  </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {
-  defineComponent,
-  ref,
-  useContext,
-  watch,
-} from '@nuxtjs/composition-api'
-import { debounce } from '@/components/debounce'
-
-import { useConfirmDialog } from '@/components/useConfirmDialog'
-import icons from '@/components/icons'
+  DataTableFilterMetaData,
+  DataTablePageEvent,
+  DataTableSortEvent,
+} from 'primevue/datatable'
+import { debounce } from '~/components/debounce'
 
 interface ClientUpdate {
   id: number
@@ -104,124 +101,116 @@ interface ClientUpdate {
   country: string | null
   useragent: string | null
 }
+useHead({ title: 'Portfolio Report Admin' })
 
-export default defineComponent({
-  name: 'StatsPage',
-
-  middleware: 'auth',
-
-  setup() {
-    const { $axios } = useContext()
-
-    const showConfirmDialog = useConfirmDialog()
-
-    const filterVersion = ref<string | null>(null)
-    const showEditDialog = ref(false)
-    const editedItem = ref<ClientUpdate>({
-      id: 0,
-      timestamp: '',
-      version: '',
-      country: '',
-      useragent: '',
-    })
-
-    const headers = [
-      {
-        text: 'Timestamp',
-        value: 'timestamp',
-      },
-      {
-        text: 'Version',
-        align: 'left',
-        sortable: true,
-        value: 'version',
-      },
-      { text: 'Country', value: 'country' },
-      { text: 'Actions', value: 'action', sortable: false },
-    ]
-
-    const entries = ref<ClientUpdate[]>([])
-
-    const pagination = ref({
-      itemsPerPage: 10,
-      sortBy: ['timestamp'],
-      sortDesc: [false],
-      page: 1,
-    })
-
-    const totalItems = ref(0)
-    const loading = ref(false)
-    const footerProps = { 'items-per-page-options': [10, 25, 50, 100] }
-
-    async function getEntriesRaw() {
-      loading.value = true
-
-      const res = await $axios.$get('/stats/', {
-        params: {
-          sort: pagination.value.sortBy[0],
-          skip: pagination.value.itemsPerPage * (pagination.value.page - 1),
-          limit: pagination.value.itemsPerPage,
-          desc: pagination.value.sortDesc[0],
-          version: filterVersion.value,
-        },
-      })
-      entries.value = res.entries
-      totalItems.value = res.params.totalCount
-
-      loading.value = false
-    }
-
-    const getEntries = debounce(getEntriesRaw, 300)
-
-    watch(pagination, getEntries)
-    watch(filterVersion, getEntries)
-
-    function editItem(item: ClientUpdate) {
-      // Edit a copy of the object
-      editedItem.value = Object.assign({}, item)
-      showEditDialog.value = true
-    }
-
-    function closeEditDialog() {
-      showEditDialog.value = false
-    }
-
-    async function deleteItem(item: ClientUpdate) {
-      if (
-        await showConfirmDialog(
-          `Are you sure you want to delete this entry (${item.timestamp})?`,
-          {
-            title: 'Delete entry',
-            color: 'secondary',
-          }
-        )
-      ) {
-        await $axios.$delete(`/stats/${item.id}`)
-        getEntries()
-      }
-    }
-
-    return {
-      filterVersion,
-      showEditDialog,
-      editedItem,
-      headers,
-      entries,
-      pagination,
-      totalItems,
-      loading,
-      footerProps,
-      editItem,
-      closeEditDialog,
-      deleteItem,
-      icons,
-    }
-  },
-
-  head() {
-    return {
-      title: 'Portfolio Report Admin',
-    }
-  },
+definePageMeta({
+  middleware: ['auth'],
 })
+
+const confirm = useConfirmDialog()
+
+const showEditDialog = ref(false)
+const editedItem = ref<ClientUpdate>({
+  id: 0,
+  timestamp: '',
+  version: '',
+  country: '',
+  useragent: '',
+})
+
+const entries = ref<ClientUpdate[]>([])
+const versionFilter: DataTableFilterMetaData = {
+  value: null,
+  matchMode: '',
+}
+const filters = ref({
+  version: versionFilter,
+})
+
+const rowsPerPage = ref(10)
+
+const lazyParams = ref<{
+  first: number
+  sortField: string | null | undefined
+  sortOrder: number | null | undefined
+}>({
+  first: 0,
+  sortField: null,
+  sortOrder: null,
+})
+
+const onPage = (event: DataTablePageEvent) => {
+  lazyParams.value.first = event.first
+  rowsPerPage.value = event.rows
+  onSort(event)
+}
+
+const onSort = (event: DataTableSortEvent) => {
+  if (
+    typeof event.sortField === 'string' ||
+    typeof event.sortField === 'undefined' ||
+    event.sortField === null
+  ) {
+    lazyParams.value.sortField = event.sortField
+  }
+  lazyParams.value.sortOrder = event.sortOrder
+  getEntries()
+}
+
+const onFilter = () => {
+  getEntries()
+}
+
+const totalItems = ref(0)
+const loading = ref(false)
+
+async function getEntriesRaw() {
+  loading.value = true
+
+  const res = await useApi<{
+    entries: ClientUpdate[]
+    params: { totalCount: number }
+  }>('/stats/', {
+    params: {
+      sort: lazyParams.value.sortField,
+      skip: lazyParams.value.first,
+      limit: rowsPerPage.value,
+      desc: lazyParams.value.sortOrder === -1,
+      version: filters.value.version.value,
+    },
+  })
+  entries.value = res.entries
+  totalItems.value = res.params.totalCount
+
+  loading.value = false
+}
+
+const getEntries = debounce(getEntriesRaw, 300)
+
+onMounted(() => {
+  getEntries()
+})
+
+function editItem(item: ClientUpdate) {
+  // Edit a copy of the object
+  editedItem.value = Object.assign({}, item)
+  showEditDialog.value = true
+}
+
+function closeEditDialog() {
+  showEditDialog.value = false
+}
+
+async function deleteItem(item: ClientUpdate) {
+  if (
+    await confirm({
+      message: `Are you sure you want to delete this entry (${item.timestamp})?`,
+      header: 'Delete entry',
+      icon: 'i-carbon-warning',
+    })
+  ) {
+    await useApi(`/stats/${item.id}`, { method: 'delete' })
+    getEntries()
+  }
+}
 </script>

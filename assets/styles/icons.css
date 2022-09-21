@@ -1,0 +1,13 @@
+.ii {
+  line-height: 1;
+  display: inline-block;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.i-lg {
+  font-size: 1.5rem;
+}

@@ -1,80 +1,44 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="prices"
-    :footer-props="footerProps"
-    dense
-  >
-    <template #item.actions="{ item }">
-      <v-btn small color="error" icon text @click="deletePrice(item)">
-        <v-icon>{{ icons.mdiDelete }}</v-icon>
-      </v-btn>
-    </template>
-  </v-data-table>
+  <div>
+    <DataTable
+      :value="prices"
+      class="p-datatable-sm"
+      :paginator="true"
+      :rows="10"
+      :rows-per-page-options="[10, 30, 100, 300]"
+    >
+      <Column field="date" header="Date" :sortable="true"></Column>
+      <Column field="close" header="Close"> </Column>
+      <Column v-if="auth.loggedIn" style="min-width: 8rem">
+        <template #body="slotProps">
+          <DeleteBtn @click="deletePrice(slotProps.data)" />
+        </template>
+      </Column>
+    </DataTable>
+  </div>
 </template>
 
-<script lang="ts">
-import {
-  PropType,
-  computed,
-  defineComponent,
-  useContext,
-} from '@nuxtjs/composition-api'
+<script setup lang="ts">
+import { useAuthStore } from '~/store/auth'
 
-import icons from '@/components/icons'
-import { useConfirmDialog } from '@/components/useConfirmDialog'
+defineProps<{
+  prices: { date: string; close: number }[]
+}>()
 
-export default defineComponent({
-  name: 'PricesTable',
+const emit = defineEmits<{ (e: 'deletePrice', arg1: { date: string }): void }>()
 
-  props: {
-    prices: {
-      type: Array as PropType<Array<{ date: string; close: number }>>,
-      default: () => [],
-    },
-  },
+const auth = useAuthStore()
 
-  setup(_props, { emit }) {
-    const unfilteredHeaders = [
-      {
-        text: 'Date',
-        value: 'date',
-      },
-      {
-        text: 'Close',
-        value: 'close',
-      },
-      {
-        text: '',
-        value: 'actions',
-        adminOnly: true,
-      },
-    ]
-
-    const { $auth } = useContext()
-
-    const headers = computed(() =>
-      unfilteredHeaders.filter((e) => !e.adminOnly || $auth.loggedIn)
-    )
-
-    const footerProps = { 'items-per-page-options': [10, 30, 100, 300] }
-
-    const showConfirmDialog = useConfirmDialog()
-    async function deletePrice(price: { date: string }) {
-      if (
-        await showConfirmDialog(
-          `Are you sure you want to delete the price of ${price.date}?`,
-          {
-            title: 'Delete price',
-            color: 'secondary',
-          }
-        )
-      ) {
-        emit('deletePrice', { date: price.date })
-      }
-    }
-
-    return { headers, footerProps, deletePrice, icons }
-  },
-})
+const showConfirmDialog = useConfirmDialog()
+async function deletePrice(price: { date: string }) {
+  if (
+    await showConfirmDialog({
+      message: `Are you sure you want to delete the price of ${price.date}?`,
+      header: 'Delete price',
+      icon: 'i-carbon-warning',
+    })
+  ) {
+    emit('deletePrice', { date: price.date })
+  }
+}
 </script>

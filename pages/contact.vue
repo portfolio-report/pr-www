@@ -1,142 +1,142 @@
 <template>
-  <v-row align="center" justify="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card>
-        <v-card-title class="headline lighten-2" primary-title>
-          Contact
-        </v-card-title>
+  <div class="flex justify-content-center">
+    <Card style="width: 800px">
+      <template #title>Contact</template>
+      <template #content>
+        Please use the
+        <a href="https://forum.portfolio-performance.info/">
+          discussion forum
+        </a>
+        for all matters that can be discussed publicly.<br />
+        This contact form can be used to establish direct contact with the
+        operators for all matters that cannot be discussed publicly.
 
-        <v-card-text>
-          Please use the
-          <a href="https://forum.portfolio-performance.info/">
-            discussion forum</a
-          >
-          for all matters that can be discussed publicly.<br />
-          This contact form can be used to establish direct contact with the
-          operators for all matters that cannot be discussed publicly.
-
-          <v-form ref="form" v-model="contactFormValid" class="mt-4">
-            <v-text-field
-              v-model="name"
-              :rules="nameRules"
-              label="Your name"
-              outlined
-              dense
+        <form class="mt-2" @submit.prevent="send">
+          <div class="p-float-label mt-4">
+            <InputText
+              id="formName"
+              v-model="v$.name.$model"
+              class="w-full"
+              :class="{ 'p-invalid': v$.name.$invalid && v$.name.$dirty }"
+              @blur="v$.name.$touch"
             />
-            <v-text-field
-              v-model="email"
-              :rules="emailRules"
-              label="Your email address"
-              outlined
-              dense
-            />
-            <v-text-field
-              v-model="subject"
-              :rules="subjectRules"
-              label="Subject"
-              outlined
-              dense
-            />
-            <v-textarea
-              v-model="message"
-              :rules="messageRules"
-              label="Your message"
-              outlined
-              dense
-            />
-          </v-form>
-        </v-card-text>
+            <label for="formName">Your name</label>
+          </div>
 
-        <v-divider />
+          <div class="p-float-label mt-4">
+            <InputText
+              id="formEmail"
+              v-model="v$.email.$model"
+              class="w-full"
+              :class="{ 'p-invalid': v$.email.$invalid && v$.email.$dirty }"
+              @blur="v$.email.$touch"
+            />
+            <label form="formEmail">Your email address</label>
+          </div>
 
-        <v-alert :value="showErrorMessage" type="error" outlined>
-          Message could not be send. Please try again later.
-        </v-alert>
+          <div class="p-float-label mt-4">
+            <InputText
+              id="formSubject"
+              v-model="v$.subject.$model"
+              class="w-full"
+              :class="{
+                'p-invalid': v$.subject.$invalid && v$.subject.$dirty,
+              }"
+              @blur="v$.subject.$touch"
+            />
+            <label for="formSubject">Subject</label>
+          </div>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <btn-loading
-            color="primary"
-            :disabled="!contactFormValid"
-            :action="send"
-          >
-            Send
-          </btn-loading>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+          <div class="p-float-label mt-4">
+            <Textarea
+              id="message"
+              v-model="v$.message.$model"
+              class="w-full"
+              :class="{
+                'p-invalid': v$.message.$invalid && v$.message.$dirty,
+              }"
+              :auto-resize="true"
+              @blur="v$.message.$touch"
+            />
+            <label for="formMessage">Your message</label>
+          </div>
+
+          <div class="flex justify-content-end mt-4">
+            <TextBtn
+              type="submit"
+              icon="i-carbon-send"
+              label="Send"
+              :disabled="loading"
+            />
+          </div>
+        </form>
+      </template>
+    </Card>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
-import BtnLoading from '../components/BtnLoading.vue'
+<script setup lang="ts">
+import { useToast } from 'primevue/usetoast'
+import { email, required } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
 
-import { isEmail } from '~/components/isEmail'
+useHead({ title: 'Portfolio Report - Contact' })
+const toast = useToast()
 
-export default defineComponent({
-  name: 'ContactPage',
+const initialState = {
+  name: '',
+  email: '',
+  subject: '',
+  message: '',
+}
+const state = ref({ ...initialState })
 
-  components: { BtnLoading },
+const rules = {
+  name: { required },
+  email: { required, email },
+  subject: { required },
+  message: { required },
+}
 
-  setup() {
-    const { $axios } = useContext()
+const v$ = useVuelidate(rules, state)
 
-    const form = ref<HTMLFormElement | null>(null)
+const loading = ref(false)
 
-    const contactFormValid = ref(false)
-    const showErrorMessage = ref(false)
-    const name = ref('')
-    const nameRules = [(v: string) => !!v || 'Required']
-    const email = ref('')
-    const emailRules = [
-      (v: string) => !!v || 'Required',
-      (v: string) => (!!v && isEmail(v)) || 'Valid email required',
-    ]
+async function send() {
+  if (v$.value.$invalid) {
+    v$.value.$touch()
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Please fill all fields.',
+      life: 5000,
+    })
+    return
+  }
 
-    const subject = ref('')
-    const subjectRules = [(v: string) => !!v || 'Required']
-    const message = ref('')
-    const messageRules = [(v: string) => !!v || 'Required']
+  loading.value = true
 
-    async function send() {
-      showErrorMessage.value = false
-      const data = {
-        name: name.value,
-        email: email.value,
-        subject: subject.value,
-        message: message.value,
-      }
-      try {
-        await $axios.post('/contact', data)
-        form.value?.reset()
-      } catch (err) {
-        showErrorMessage.value = true
-        // eslint-disable-next-line no-console
-        console.log(err)
-      }
-    }
-
-    return {
-      form,
-      contactFormValid,
-      showErrorMessage,
-      name,
-      nameRules,
-      email,
-      emailRules,
-      subject,
-      subjectRules,
-      message,
-      messageRules,
-      send,
-    }
-  },
-
-  head() {
-    return {
-      title: 'Portfolio Report - Contact',
-    }
-  },
-})
+  try {
+    await useApi('/contact', { method: 'post', body: state.value })
+    state.value = { ...initialState }
+    v$.value.$reset()
+    toast.add({
+      severity: 'success',
+      summary: 'Thank you',
+      detail: 'Your message has been sent.',
+      life: 5000,
+    })
+    loading.value = false
+  } catch (err) {
+    loading.value = false
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Message could not be sent. Please try again later.',
+      life: 5000,
+    })
+    // eslint-disable-next-line no-console
+    console.log(err)
+  }
+}
 </script>

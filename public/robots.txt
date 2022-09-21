@@ -1,5 +1,2 @@
-User-agent: *
-Disallow: /api/
-
 User-agent: ia_archiver
 Disallow: /

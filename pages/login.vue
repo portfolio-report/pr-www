@@ -1,114 +1,87 @@
 <template>
-  <v-row align="center" justify="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="elevation-12">
-        <v-toolbar dark color="primary">
-          <v-toolbar-title>Login</v-toolbar-title>
-        </v-toolbar>
-
-        <v-card-text v-if="authenticated">
-          <nuxt-link to="/">You are logged in already.</nuxt-link>
-        </v-card-text>
-        <div v-else>
-          <v-card-text>
-            <v-form @submit.prevent="login">
-              <v-alert :value="!!errorMessage" type="error" outlined>
-                {{ errorMessage }}
-              </v-alert>
-              <v-text-field
-                ref="username"
-                v-model="formUsername"
-                label="Username"
-                :prepend-icon="icons.mdiAccount"
-                outlined
-                dense
-              />
-              <v-text-field
-                v-model="formPassword"
-                label="Password"
-                type="password"
-                :prepend-icon="icons.mdiLock"
-                outlined
-                dense
-              />
-              <v-btn
-                type="submit"
-                color="primary"
-                :loading="loading"
-                :disabled="loading"
-                block
-              >
-                Login
-              </v-btn>
-            </v-form>
-          </v-card-text>
+  <div class="flex justify-content-center">
+    <Card class="p-4 shadow-2" style="width: 40rem">
+      <template #title>
+        <div class="text-center mb-5">
+          <i class="ii i-carbon-user-avatar" style="font-size: 3rem"></i>
+          <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
         </div>
-      </v-card>
-    </v-col>
-  </v-row>
+      </template>
+
+      <template #content>
+        <div v-if="authenticated">
+          <NuxtLink to="/">You are logged in already.</NuxtLink>
+        </div>
+        <form v-else @submit.prevent="login">
+          <label for="username" class="block text-900 font-medium mb-2">
+            Username
+          </label>
+          <InputText
+            id="username"
+            ref="username"
+            v-model="formUsername"
+            autofocus
+            type="text"
+            class="w-full mb-3"
+          />
+
+          <label for="password" class="block text-900 font-medium mb-2">
+            Password
+          </label>
+          <InputText
+            id="password"
+            v-model="formPassword"
+            type="password"
+            class="w-full mb-3"
+          />
+
+          <Button
+            label="Sign In"
+            type="submit"
+            class="w-full"
+            :disabled="loading"
+          ></Button>
+        </form>
+      </template>
+    </Card>
+  </div>
 </template>
 
-<script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  ref,
-  useContext,
-} from '@nuxtjs/composition-api'
+<script setup lang="ts">
+import { useToast } from 'primevue/usetoast'
 
-import icons from '@/components/icons'
+import { useAuthStore } from '~/store/auth'
 
-export default defineComponent({
-  name: 'LoginPage',
+const auth = useAuthStore()
+const toast = useToast()
 
-  setup() {
-    const { $auth } = useContext()
+const formUsername = ref('')
+const formPassword = ref('')
 
-    const username = ref<HTMLInputElement | null>(null)
+const loading = ref(false)
 
-    const formUsername = ref('')
-    const formPassword = ref('')
-    const errorMessage = ref<string | null>(null)
+const authenticated = computed(() => auth.loggedIn && auth.isAdmin)
 
-    const loading = ref(false)
+async function login() {
+  loading.value = true
+  try {
+    await auth.login({
+      username: formUsername.value,
+      password: formPassword.value,
+    })
 
-    const authenticated = computed(() => $auth.loggedIn && $auth.user?.isAdmin)
+    formUsername.value = ''
+    formPassword.value = ''
 
-    onMounted(() => username.value?.focus())
-
-    async function login() {
-      loading.value = true
-      try {
-        errorMessage.value = null
-        await $auth.loginWith('local', {
-          data: { username: formUsername.value, password: formPassword.value },
-        })
-
-        formUsername.value = ''
-        formPassword.value = ''
-      } catch (err) {
-        errorMessage.value = String(err)
-      }
-      loading.value = false
-    }
-
-    return {
-      authenticated,
-      formUsername,
-      formPassword,
-      errorMessage,
-      loading,
-      login,
-      username,
-      icons,
-    }
-  },
-
-  head() {
-    return {
-      title: 'Portfolio Report',
-    }
-  },
-})
+    return navigateTo('/')
+  } catch (err) {
+    toast.add({
+      severity: 'error',
+      summary: 'Sign in failed',
+      detail: String(err),
+      life: 5000,
+    })
+  }
+  loading.value = false
+}
 </script>

@@ -1,134 +1,99 @@
 <template>
-  <v-dialog v-if="value" :value="true" width="600" persistent>
-    <v-form @submit.prevent="">
-      <v-card>
-        <v-card-title>Create multiple securities</v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="12">
-                <v-textarea
-                  v-model="textInput"
-                  outlined
-                  placeholder="Paste ISINs here"
-                />
-              </v-col>
-              <v-col cols="12" sm="12">
-                <v-chip v-for="isin in isins" :key="isin" class="ma-2">
-                  {{ isin }}
-                </v-chip>
-              </v-col>
-              <v-col cols="12" sm="12">
-                <btn-loading
-                  color="primary"
-                  :disabled="isins.length == 0"
-                  :action="batchCreate"
-                >
-                  <v-icon>{{ icons.mdiCheck }}</v-icon> Create all
-                  {{ isins.length }} securities
-                </btn-loading>
-              </v-col>
-              <v-col cols="12" sm="12">
-                <v-alert v-if="securitiesCreated > 0" type="info">
-                  {{ securitiesCreated }} securities created
-                </v-alert>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="close">
-            <v-icon>{{ icons.mdiClose }}</v-icon> Close
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-form>
-  </v-dialog>
+  <Dialog
+    header="Create multiple securities"
+    :modal="true"
+    style="width: 600px"
+    :visible="modelValue"
+    @update:visible="setVisible"
+  >
+    <Textarea
+      v-model="textInput"
+      :auto-resize="true"
+      class="w-full"
+      placeholder="Paste ISINs here"
+    />
+
+    <div class="mt-2">
+      <Chip v-for="isin in isins" :key="isin" class="m-1 text-sm">
+        {{ isin }}
+      </Chip>
+    </div>
+
+    <div class="mt-2">
+      <Button
+        :action="batchCreate"
+        :disabled="isins.length === 0"
+        icon="i-lg i-carbon-list-checked"
+        :label="'Create all ' + isins.length + ' securities'"
+        :loading="loading"
+      >
+      </Button>
+    </div>
+
+    <Message v-if="securitiesCreated > 0" severity="info">
+      {{ securitiesCreated }} securities created
+    </Message>
+
+    <template #footer>
+      <CancelBtn label="Close" @click="setVisible(false)" />
+    </template>
+  </Dialog>
 </template>
 
-<script lang="ts">
-import {
-  computed,
-  defineComponent,
-  ref,
-  useContext,
-  watch,
-} from '@nuxtjs/composition-api'
+<script setup lang="ts">
+import { Security } from '~/store/Security.model'
 
-import icons from '@/components/icons'
-import BtnLoading from '~/components/BtnLoading.vue'
-import { Security } from '@/store/security.model'
+const props = defineProps<{ modelValue: boolean }>()
+const emit = defineEmits<{
+  (e: 'update'): void
+  (e: 'update:modelValue', arg1: boolean): void
+}>()
 
-export default defineComponent({
-  name: 'CreateMultipleSecuritiesDialog',
-
-  components: { BtnLoading },
-
-  props: {
-    value: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  emits: ['update'],
-
-  setup(props, { emit }) {
-    const { $axios } = useContext()
-
-    watch(
-      () => props.value,
-      (selection, _prevSelection) => {
-        if (selection === true) {
-          textInput.value = ''
-          securitiesCreated.value = 0
-        }
-      }
-    )
-
-    const securitiesCreated = ref(0)
-    const textInput = ref('')
-
-    const isins = computed(() => {
-      const isinRegex = /\b([A-Z]{2})([A-Z0-9]{9})([0-9]{1})\b/g
-      const isins = [...textInput.value.matchAll(isinRegex)].map((e) => e[0])
-
-      // return unique values
-      return [...new Set(isins)]
-    })
-
-    async function batchCreate() {
-      for (const isin of isins.value) {
-        const security: Security = {
-          name: '',
-          isin,
-          wkn: null,
-          securityType: null,
-          symbolXfra: null,
-          symbolXnas: null,
-          symbolXnys: null,
-        }
-        await $axios.$post(`/securities/`, security)
-        securitiesCreated.value += 1
-      }
+watch(
+  () => props.modelValue,
+  (selection, _prevSelection) => {
+    if (selection === true) {
+      textInput.value = ''
+      securitiesCreated.value = 0
     }
+  }
+)
 
-    function close() {
-      emit('input', false)
-      if (securitiesCreated.value > 0) {
-        emit('update')
-      }
-    }
+const loading = ref(false)
 
-    return {
-      textInput,
-      securitiesCreated,
-      isins,
-      batchCreate,
-      close,
-      icons,
-    }
-  },
+const securitiesCreated = ref(0)
+const textInput = ref('')
+
+const isins = computed(() => {
+  const isinRegex = /\b([A-Z]{2})([A-Z0-9]{9})([0-9]{1})\b/g
+  const isins = [...textInput.value.matchAll(isinRegex)].map((e) => e[0])
+
+  // return unique values
+  return [...new Set(isins)]
 })
+
+async function batchCreate() {
+  loading.value = true
+  for (const isin of isins.value) {
+    const security: Security = {
+      name: '',
+      isin,
+      wkn: null,
+      securityType: null,
+      symbolXfra: null,
+      symbolXnas: null,
+      symbolXnys: null,
+    }
+    await useApi(`/securities/`, { method: 'post', body: security })
+    securitiesCreated.value += 1
+  }
+  loading.value = false
+}
+
+function setVisible(value: boolean) {
+  emit('update:modelValue', value)
+  if (value === false && securitiesCreated.value > 0) {
+    emit('update')
+  }
+}
 </script>

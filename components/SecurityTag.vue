@@ -1,33 +1,18 @@
 <template>
-  <v-chip small color="secondary" text-color="white">
+  <Chip class="mx-1 text-sm bg-orange-300">
     <NuxtLink :to="linkTo">{{ name }}</NuxtLink>
-  </v-chip>
+  </Chip>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from '@nuxtjs/composition-api'
+<script setup lang="ts">
+const props = defineProps<{ name: string }>()
 
-export default defineComponent({
-  name: 'SecurityTag',
-
-  props: {
-    name: {
-      type: String,
-      default: () => '',
-    },
-  },
-
-  setup(props) {
-    const linkTo = computed(() => {
-      let name = props.name
-      if (name.includes(' ')) {
-        name = '"' + name + '"'
-      }
-      return `/search?q=tag:${name}`
-    })
-
-    return { linkTo }
-  },
+const linkTo = computed(() => {
+  let name = props.name
+  if (name.includes(' ')) {
+    name = '"' + name + '"'
+  }
+  return `/search?q=tag:${name}`
 })
 </script>
 
