@@ -1,12 +1,14 @@
 <template>
   <div class="layout-menu-container">
-    <IconLink
-      v-if="isDesktop"
-      small
-      class="absolute right-0 mr-4"
-      :icon="layout === 'static' ? 'i-carbon-pin-filled' : 'i-carbon-pin'"
-      @click="toggleLayout"
-    />
+    <ClientOnly>
+      <IconLink
+        v-if="isDesktop"
+        small
+        class="absolute right-0 mr-4"
+        :icon="layout === 'static' ? 'i-carbon-pin-filled' : 'i-carbon-pin'"
+        @click="toggleLayout"
+      />
+    </ClientOnly>
     <AppSubMenu
       :items="menuItems"
       :root="true"
