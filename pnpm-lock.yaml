@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@iconify/json': ^2.1.110
+  '@iconify/json': ^2.1.112
   '@nuxtjs/eslint-config': ^11.0.0
   '@nuxtjs/eslint-config-typescript': ^11.0.0
   '@pinia/nuxt': ^0.4.2
@@ -46,7 +46,7 @@ dependencies:
   sass: 1.55.0
 
 devDependencies:
-  '@iconify/json': 2.1.110
+  '@iconify/json': 2.1.112
   '@nuxtjs/eslint-config': 11.0.0_eslint@8.24.0
   '@nuxtjs/eslint-config-typescript': 11.0.0_7ilbxdl5iguzcjriqqcg2m5cku
   '@types/node': 18.7.20
@@ -432,15 +432,11 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json/2.1.110:
-    resolution: {integrity: sha512-y+C2w8jbt0Vnk0RC9tjB0ZnT9apMaxYMv2rzAOMeWfx4SlHbZAyy7UKqbSqih9mHmDJuhs6fk5CZP2+dggIHww==}
+  /@iconify/json/2.1.112:
+    resolution: {integrity: sha512-tJxPwbeFZ99ebrtJ4ZacTh0uXfUw2jkS0ShgIC772LWdLHU5IArvkP8BWuLEUmk5UPXTd4iNe6YuouC8AeYGLg==}
     dependencies:
-      '@iconify/types': 1.1.0
+      '@iconify/types': 2.0.0
       pathe: 0.3.8
-    dev: true
-
-  /@iconify/types/1.1.0:
-    resolution: {integrity: sha512-Jh0llaK2LRXQoYsorIH8maClebsnzTcve+7U3rQUSnC11X4jtPnFuyatqFLvMxZ8MLG8dB4zfHsbPfuvxluONw==}
     dev: true
 
   /@iconify/types/2.0.0:

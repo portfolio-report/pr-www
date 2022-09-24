@@ -30,7 +30,7 @@
     "sass": "^1.55.0"
   },
   "devDependencies": {
-    "@iconify/json": "^2.1.110",
+    "@iconify/json": "^2.1.112",
     "@nuxtjs/eslint-config": "^11.0.0",
     "@nuxtjs/eslint-config-typescript": "^11.0.0",
     "@types/node": "^18.7.20",
