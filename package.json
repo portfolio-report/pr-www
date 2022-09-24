@@ -27,7 +27,7 @@
     "primeflex": "^3.2.1",
     "primeicons": "^6.0.1",
     "primevue": "3.17.0",
-    "sass": "^1.54.9"
+    "sass": "^1.55.0"
   },
   "devDependencies": {
     "@iconify/json": "^2.1.110",
