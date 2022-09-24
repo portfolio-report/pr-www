@@ -5,7 +5,7 @@ specifiers:
   '@nuxtjs/eslint-config': ^11.0.0
   '@nuxtjs/eslint-config-typescript': ^11.0.0
   '@pinia/nuxt': ^0.4.2
-  '@types/node': ^18.7.18
+  '@types/node': ^18.7.20
   '@unocss/nuxt': ^0.45.22
   '@vuelidate/core': 2.0.0-alpha.44
   '@vuelidate/validators': 2.0.0-alpha.31
@@ -49,7 +49,7 @@ devDependencies:
   '@iconify/json': 2.1.110
   '@nuxtjs/eslint-config': 11.0.0_eslint@8.24.0
   '@nuxtjs/eslint-config-typescript': 11.0.0_7ilbxdl5iguzcjriqqcg2m5cku
-  '@types/node': 18.7.18
+  '@types/node': 18.7.20
   '@unocss/nuxt': 0.45.22
   eslint: 8.24.0
   eslint-config-prettier: 8.5.0_eslint@8.24.0
@@ -1003,8 +1003,8 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
 
-  /@types/node/18.7.18:
-    resolution: {integrity: sha512-m+6nTEOadJZuTPkKR/SYK3A2d7FZrgElol9UP1Kae90VVU4a6mxnPuLiIW1m4Cq4gZ/nWb9GrdVXJCoCazDAbg==}
+  /@types/node/18.7.20:
+    resolution: {integrity: sha512-adzY4vLLr5Uivmx8+zfSJ5fbdgKxX8UMtjtl+17n0B1q1Nz8JEmE151vefMdpD+1gyh+77weN4qEhej/O7budQ==}
     dev: true
 
   /@types/normalize-package-data/2.4.1:
@@ -1014,7 +1014,7 @@ packages:
   /@types/resolve/1.17.1:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
     dependencies:
-      '@types/node': 18.7.18
+      '@types/node': 18.7.20
     dev: true
 
   /@types/web-bluetooth/0.0.15:
@@ -4070,7 +4070,7 @@ packages:
     resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.7.18
+      '@types/node': 18.7.20
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: true
