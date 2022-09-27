@@ -33,7 +33,7 @@
         :value="stats.versions"
         sort-field="version"
         class="p-datatable-sm"
-        :sort-order="1"
+        :sort-order="-1"
       >
         <Column field="version" header="Version" :sortable="true">
           <template #body="{ data }">

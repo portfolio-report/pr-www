@@ -15,7 +15,7 @@
         <DataTable
           :value="data?.byDate"
           sort-field="date"
-          :sort-order="1"
+          :sort-order="-1"
           class="p-datatable-sm"
         >
           <Column field="date" header="Date" :sortable="true"></Column>
