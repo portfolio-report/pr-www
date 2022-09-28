@@ -6,6 +6,11 @@
           <h2>
             {{ security.name }}
             <EditBtn v-if="auth.loggedIn" @click="editSecurity(security)" />
+            <IconLink
+              v-if="auth.loggedIn"
+              icon="i-carbon-manage-protection"
+              :to="`/admin/securities/${security.uuid}`"
+            />
           </h2>
           <NuxtLink :to="$route.path">
             <Button

@@ -1,6 +1,12 @@
 <template>
   <div>
-    <h2>Security: {{ security.name }}</h2>
+    <h2>
+      Security: {{ security.name }}
+      <IconLink
+        icon="i-carbon-earth-europe-africa"
+        :to="`/securities/${security.uuid}`"
+      />
+    </h2>
 
     <TabView>
       <TabPanel header="Master data">
