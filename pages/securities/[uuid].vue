@@ -125,6 +125,22 @@
           </div>
         </TabPanel>
 
+        <TabPanel v-if="countries" header="Categories">
+          <h4>Country</h4>
+          <DataTable
+            :value="countries"
+            sort-field="weight"
+            :sort-order="-1"
+            class="p-datatable-sm"
+          >
+            <Column field="weight" header="Percentage" :sortable="true">
+              <template #body="{ data }"> {{ data.weight }}%</template>
+            </Column>
+            <Column field="taxonomy.name" header="Country" :sortable="true" />
+            <Column field="taxonomy.code" header="Code" :sortable="true" />
+          </DataTable>
+        </TabPanel>
+
         <TabPanel
           v-if="security.events && security.events.length > 0"
           header="Events"
@@ -160,6 +176,7 @@ import SecurityDialog from '~/components/SecurityDialog.vue'
 import { useAuthStore } from '~/store/auth'
 import { Security, SecurityAPI } from '~/store/Security.model'
 import { useApi } from '~/composables/useApi'
+import { Taxonomy } from '~/store/Taxonomy.model'
 
 const selectedMarketcode = ref('')
 const selectedMarket = ref<{
@@ -213,6 +230,34 @@ const markets = computed(() => {
     }
   })
 })
+
+const { data: rawTaxonomies } = await useAsyncData(`taxonomies`, () =>
+  useApi<Taxonomy[]>(`/taxonomies/`)
+)
+
+if (!rawTaxonomies.value) {
+  throw createError({
+    statusCode: 404,
+    message: 'This page could not be found',
+    fatal: true,
+  })
+}
+const taxonomies = ref(rawTaxonomies.value)
+
+const securityTaxonomies = computed(() =>
+  security.value.securityTaxonomies.map((st) => ({
+    ...st,
+    weight: Number(st.weight),
+    // Join taxonomies to securityTaxonomies
+    taxonomy: taxonomies.value.find((t) => t.uuid === st.taxonomyUuid),
+  }))
+)
+
+const countries = computed(() =>
+  securityTaxonomies.value.filter(
+    (st) => st.rootTaxonomyUuid === '5b0d5647-a4e6-4db8-807b-c3a6d11697a7'
+  )
+)
 
 watch(selectedMarketcode, async (selectedMarketcode) => {
   selectedMarket.value = await useApi<{

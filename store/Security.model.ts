@@ -1,3 +1,5 @@
+import { SecurityTaxonomy } from './SecurityTaxonomy.model'
+
 export interface Security {
   uuid?: string | null
   name: string | null
@@ -35,6 +37,7 @@ export interface Event {
 export interface SecurityAPI extends Security {
   markets: Market[]
   events: Event[]
+  securityTaxonomies: SecurityTaxonomy[]
   logoUrl: string | null
   tags: string[]
 }
