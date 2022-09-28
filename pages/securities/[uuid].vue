@@ -8,7 +8,7 @@
             <EditBtn v-if="auth.loggedIn" @click="editSecurity(security)" />
             <IconLink
               v-if="auth.loggedIn"
-              icon="i-carbon-manage-protection"
+              icon="i-carbon-unlocked"
               :to="`/admin/securities/${security.uuid}`"
             />
           </h2>
