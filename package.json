@@ -18,7 +18,7 @@
   "dependencies": {
     "@pinia/nuxt": "^0.4.2",
     "@vuelidate/core": "2.0.0-alpha.44",
-    "@vuelidate/validators": "2.0.0-alpha.31",
+    "@vuelidate/validators": "2.0.0",
     "@vueuse/core": "^9.2.0",
     "@vueuse/head": "^0.7.12",
     "chart.js": "^3.9.1",
