@@ -41,7 +41,7 @@
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.0.1",
-    "eslint-plugin-unicorn": "^43.0.2",
+    "eslint-plugin-unicorn": "^44.0.0",
     "eslint-plugin-vue": "^9.5.1",
     "nuxt": "3.0.0-rc.11",
     "prettier": "^2.7.1",
