@@ -22,7 +22,7 @@
     "@vueuse/core": "^9.3.0",
     "@vueuse/head": "^0.9.7",
     "chart.js": "^3.9.1",
-    "pinia": "^2.0.22",
+    "pinia": "^2.0.23",
     "pinia-plugin-persistedstate": "^2.2.0",
     "primeflex": "^3.2.1",
     "primeicons": "^6.0.1",

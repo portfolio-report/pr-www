@@ -21,7 +21,7 @@ specifiers:
   eslint-plugin-unicorn: ^44.0.0
   eslint-plugin-vue: ^9.6.0
   nuxt: 3.0.0-rc.11
-  pinia: ^2.0.22
+  pinia: ^2.0.23
   pinia-plugin-persistedstate: ^2.2.0
   prettier: ^2.7.1
   primeflex: ^3.2.1
@@ -38,8 +38,8 @@ dependencies:
   '@vueuse/core': 9.3.0
   '@vueuse/head': 0.9.7
   chart.js: 3.9.1
-  pinia: 2.0.22_typescript@4.8.3
-  pinia-plugin-persistedstate: 2.2.0_pinia@2.0.22
+  pinia: 2.0.23_typescript@4.8.3
+  pinia-plugin-persistedstate: 2.2.0_pinia@2.0.23
   primeflex: 3.2.1
   primeicons: 6.0.1
   primevue: 3.17.0_primeicons@6.0.1
@@ -1430,6 +1430,7 @@ packages:
 
   /@vue/devtools-api/6.2.1:
     resolution: {integrity: sha512-OEgAMeQXvCoJ+1x8WyQuVZzFo0wcyCmUR3baRVLmKBo1LmYZWMlRiXlux5jd0fqVJu6PfDbOrZItVqUEzLobeQ==}
+    dev: true
 
   /@vue/devtools-api/6.4.4:
     resolution: {integrity: sha512-Ku31WzpOV/8cruFaXaEZKF81WkNnvCSlBY4eOGtz5WMSdJvX1v1WWlSMGZeqUwPtQ27ZZz7B62erEMq8JDjcXw==}
@@ -4926,7 +4927,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /pinia-plugin-persistedstate/2.2.0_pinia@2.0.22:
+  /pinia-plugin-persistedstate/2.2.0_pinia@2.0.23:
     resolution: {integrity: sha512-j3CknBg4H17MXDwG+X6JT50wmGkxG5cWshVb5pdV8o/ivMxiVsML9ADwe7SEchas1myIWd6/sYeVv0/IGT5YrQ==}
     peerDependencies:
       pinia: ^2.0.0
@@ -4934,24 +4935,7 @@ packages:
       pinia:
         optional: true
     dependencies:
-      pinia: 2.0.22_typescript@4.8.3
-    dev: false
-
-  /pinia/2.0.22_typescript@4.8.3:
-    resolution: {integrity: sha512-u+b8/BC+tmvo3ACbYO2w5NfxHWFOjvvw9DQnyT0dW8aUMCPRQT5QnfZ5R5W2MzZBMTeZRMQI7V/QFbafmM9QHw==}
-    peerDependencies:
-      '@vue/composition-api': ^1.4.0
-      typescript: '>=4.4.4'
-      vue: ^2.6.14 || ^3.2.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      '@vue/devtools-api': 6.2.1
-      typescript: 4.8.3
-      vue-demi: 0.13.8
+      pinia: 2.0.23_typescript@4.8.3
     dev: false
 
   /pinia/2.0.23_typescript@4.8.3:
@@ -6564,19 +6548,6 @@ packages:
     dependencies:
       vue: 3.2.39
     dev: true
-
-  /vue-demi/0.13.8:
-    resolution: {integrity: sha512-Vy1zbZhCOdsmvGR6tJhAvO5vhP7eiS8xkbYQSoVa7o6KlIy3W8Rc53ED4qI4qpeRDjv3mLfXSEpYU6Yq4pgXRg==}
-    engines: {node: '>=12'}
-    hasBin: true
-    requiresBuild: true
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^3.0.0-0 || ^2.6.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-    dev: false
 
   /vue-devtools-stub/0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
