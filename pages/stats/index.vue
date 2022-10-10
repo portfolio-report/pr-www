@@ -1,6 +1,21 @@
 <template>
   <div>
-    <h1>Statistics <TextBtn icon="i-carbon-renew" @click="refresh()" /></h1>
+    <div class="p-buttonset">
+      <Button
+        label="Versions"
+        icon="i-carbon-tag"
+        class="p-button-primary"
+        :disabled="true"
+      />
+      <Button
+        label="Weekly"
+        icon="i-carbon-calendar"
+        class="p-button-secondary"
+        @click="navigateTo('/stats/weekly/')"
+      />
+    </div>
+
+    <h2>Version Statistics</h2>
 
     <template v-if="pending || !stats">
       <Skeleton width="15em" />
@@ -19,8 +34,8 @@
     </template>
 
     <template v-else>
-      Last update: {{ stats.lastUpdate }}
-      <h2>Client Updates</h2>
+      Last updated {{ timeAgo }}
+      <TextBtn small icon="i-carbon-renew" @click="refresh()" />
 
       <Chart
         type="bar"
@@ -64,6 +79,11 @@
 </template>
 
 <script setup lang="ts">
+import { useTimeAgo } from '@vueuse/core'
+
+const lastUpdate = ref(new Date())
+const timeAgo = useTimeAgo(lastUpdate)
+
 const {
   data: stats,
   pending,
@@ -92,7 +112,9 @@ const {
     }
   }
 
-  return { lastUpdate: new Date().toISOString(), versions }
+  lastUpdate.value = new Date()
+
+  return { versions }
 })
 
 const chartData = computed(() => ({

@@ -17,6 +17,7 @@ import InputNumber from 'primevue/inputnumber'
 import InputText from 'primevue/inputtext'
 import Menu from 'primevue/menu'
 import Message from 'primevue/message'
+import OverlayPanel from 'primevue/overlaypanel'
 import ProgressBar from 'primevue/progressbar'
 import ProgressSpinner from 'primevue/progressspinner'
 import Skeleton from 'primevue/skeleton'
@@ -50,6 +51,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component('InputText', InputText)
   nuxtApp.vueApp.component('Menu', Menu)
   nuxtApp.vueApp.component('Message', Message)
+  nuxtApp.vueApp.component('OverlayPanel', OverlayPanel)
   nuxtApp.vueApp.component('ProgressBar', ProgressBar)
   nuxtApp.vueApp.component('ProgressSpinner', ProgressSpinner)
   nuxtApp.vueApp.component('Skeleton', Skeleton)

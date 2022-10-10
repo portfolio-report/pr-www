@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Statistics</h1>
-    <h2>Client Updates - Version {{ $route.params.version }}</h2>
+    <h2>Version Statistics for {{ $route.params.version }}</h2>
 
     <TabView>
       <TabPanel header="By date">
