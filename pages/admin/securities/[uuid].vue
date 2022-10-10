@@ -264,7 +264,7 @@ const {
   }>(`/securities/${route.params.uuid}`)
 )
 
-const { data: rawTaxonomies } = await useAsyncData(() =>
+const { data: rawTaxonomies } = await useAsyncData(`taxonomies`, () =>
   useApi<Taxonomy[]>(`/taxonomies/`)
 )
 

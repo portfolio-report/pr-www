@@ -51,11 +51,13 @@
 <script setup lang="ts">
 const route = useRoute()
 
-const { data, error } = await useAsyncData(() =>
-  useApi<{
-    byCountry: { country: string; count: number }[]
-    byDate: { date: string; count: number }[]
-  }>(`/stats/updates/${route.params.version}`)
+const { data, error } = await useAsyncData(
+  `stats:${route.params.version}`,
+  () =>
+    useApi<{
+      byCountry: { country: string; count: number }[]
+      byDate: { date: string; count: number }[]
+    }>(`/stats/updates/${route.params.version}`)
 )
 if (error.value || data.value?.byCountry == null || data.value.byDate == null) {
   throw createError({ statusCode: 404 })
