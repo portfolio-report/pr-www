@@ -8,14 +8,6 @@
     </NuxtLink>
 
     <Button
-      v-show="authenticated"
-      class="p-link layout-menu-button layout-topbar-button"
-      @click.prevent="emit('menuToggle')"
-    >
-      <i class="i-carbon-menu"></i>
-    </Button>
-
-    <Button
       v-styleclass="{
         selector: '@next',
         enterClass: 'hidden',
@@ -43,72 +35,20 @@
           </div>
         </form>
       </li>
-      <ClientOnly>
-        <template v-if="authenticated">
-          <li>
-            <Button class="p-link layout-topbar-button">
-              <i class="i-carbon-settings"></i>
-              <span>Settings</span>
-            </Button>
-          </li>
-          <li>
-            <Button class="p-link layout-topbar-button" @click="userMenuToggle">
-              <i class="i-carbon-user-avatar"></i>
-              <span>User {{ auth.username.toUpperCase() }}</span>
-            </Button>
-            <Menu ref="userMenu" :model="userMenuItems" :popup="true"></Menu>
-          </li>
-        </template>
-        <li v-else>
-          <NuxtLink to="/login">
-            <Button class="p-link layout-topbar-button">
-              <i class="i-carbon-login"></i>
-              <span>Sign in</span>
-            </Button>
-          </NuxtLink>
-        </li>
-      </ClientOnly>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-import Menu from 'primevue/menu'
-import { MenuItem } from 'primevue/menuitem'
-
-import { useAuthStore } from '~/store/auth'
-
-const emit = defineEmits<{ (e: 'menuToggle'): void }>()
-
 const router = useRouter()
-const auth = useAuthStore()
 
 const searchTerm = ref('')
-
-const authenticated = computed(() => auth.loggedIn && auth.isAdmin)
 
 function search() {
   const q = searchTerm.value
   searchTerm.value = ''
   router.push({ path: '/search', query: { q } })
 }
-
-const userMenu = ref<Menu>()
-const userMenuToggle = (event: Event) => {
-  userMenu.value?.toggle(event)
-}
-const userMenuItems = ref<MenuItem[]>([
-  {
-    label: 'Log out',
-    items: [
-      {
-        label: 'Log out',
-        icon: 'i-carbon-logout',
-        command: () => auth.logout(),
-      },
-    ],
-  },
-])
 </script>
 
 <style lang="scss" scoped>

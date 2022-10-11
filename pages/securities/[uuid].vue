@@ -3,15 +3,7 @@
     <div style="width: 800px">
       <div class="flex flex-wrap">
         <div class="flex-grow-1">
-          <h2>
-            {{ security.name }}
-            <EditBtn v-if="auth.loggedIn" @click="editSecurity(security)" />
-            <IconLink
-              v-if="auth.loggedIn"
-              icon="i-carbon-unlocked"
-              :to="`/admin/securities/${security.uuid}`"
-            />
-          </h2>
+          <h2>{{ security.name }}</h2>
           <NuxtLink :to="$route.path">
             <Button
               v-tooltip.right="{
@@ -37,9 +29,6 @@
       <TabView class="mt-2">
         <TabPanel header="Overview">
           <ul>
-            <li v-if="auth.loggedIn">
-              UUID: <b>{{ security.uuid }}</b>
-            </li>
             <li>
               ISIN: <b>{{ security.isin }}</b>
             </li>
@@ -166,15 +155,11 @@
         </TabPanel>
       </TabView>
     </div>
-
-    <SecurityDialog ref="securityDialog" />
   </div>
 </template>
 
 <script setup lang="ts">
-import SecurityDialog from '~/components/SecurityDialog.vue'
-import { useAuthStore } from '~/store/auth'
-import { Security, SecurityAPI } from '~/store/Security.model'
+import { SecurityAPI } from '~/store/Security.model'
 import { useApi } from '~/composables/useApi'
 import { Taxonomy } from '~/store/Taxonomy.model'
 
@@ -189,7 +174,6 @@ const selectedMarket = ref<{
 } | null>(null)
 
 const route = useRoute()
-const auth = useAuthStore()
 
 const { data: rawSecurity, error } = await useAsyncData(
   `security:${route.params.uuid}`,
@@ -203,14 +187,6 @@ if (error.value || !rawSecurity.value) {
   })
 }
 const security = ref(rawSecurity.value)
-
-const securityDialog = ref<InstanceType<typeof SecurityDialog> | null>(null)
-async function editSecurity(s: Security) {
-  const ret = await securityDialog.value?.show(s)
-  if (ret) {
-    security.value = { ...security.value, ...ret }
-  }
-}
 
 const markets = computed(() => {
   return security.value?.markets?.map((market) => {

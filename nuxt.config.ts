@@ -21,7 +21,6 @@ export default defineNuxtConfig({
   ],
 
   modules: [
-    '@pinia/nuxt',
     '@unocss/nuxt',
     //
   ],
@@ -40,7 +39,7 @@ export default defineNuxtConfig({
 
   nitro: {
     prerender: {
-      ignore: ['/admin', '/stats'],
+      ignore: ['/stats'],
     },
   },
 })

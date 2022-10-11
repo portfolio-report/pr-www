@@ -3,7 +3,6 @@
     <NuxtLayout>
       <NuxtPage :key="$route.fullPath" />
     </NuxtLayout>
-    <ConfirmDialog />
     <Toast />
   </div>
 </template>
