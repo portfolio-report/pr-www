@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@iconify/json': ^2.1.112
+  '@iconify/json': ^2.1.120
   '@nuxtjs/eslint-config': ^11.0.0
   '@nuxtjs/eslint-config-typescript': ^11.0.0
   '@types/node': ^18.7.20
@@ -40,7 +40,7 @@ dependencies:
   sass: 1.55.0
 
 devDependencies:
-  '@iconify/json': 2.1.112
+  '@iconify/json': 2.1.120
   '@nuxtjs/eslint-config': 11.0.0_eslint@8.25.0
   '@nuxtjs/eslint-config-typescript': 11.0.0_z4bbprzjrhnsfa24uvmcbu7f5q
   '@types/node': 18.7.20
@@ -440,11 +440,11 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json/2.1.112:
-    resolution: {integrity: sha512-tJxPwbeFZ99ebrtJ4ZacTh0uXfUw2jkS0ShgIC772LWdLHU5IArvkP8BWuLEUmk5UPXTd4iNe6YuouC8AeYGLg==}
+  /@iconify/json/2.1.120:
+    resolution: {integrity: sha512-4/i5iXtfi3ARkylcZcCD0elC2qWo7CIa5caeeTGLx06yblqDQEzIfgclVc7FJJkktKEUJHftQhRlwGOr9cMINQ==}
     dependencies:
       '@iconify/types': 2.0.0
-      pathe: 0.3.8
+      pathe: 0.3.9
     dev: true
 
   /@iconify/types/2.0.0:
@@ -631,7 +631,7 @@ packages:
       create-require: 1.1.1
       defu: 6.1.0
       jiti: 1.16.0
-      pathe: 0.3.8
+      pathe: 0.3.9
       pkg-types: 0.3.5
       postcss-import-resolver: 2.0.0
       scule: 0.3.2
@@ -653,7 +653,7 @@ packages:
       create-require: 1.1.1
       defu: 6.1.0
       jiti: 1.16.0
-      pathe: 0.3.8
+      pathe: 0.3.9
       pkg-types: 0.3.5
       postcss-import-resolver: 2.0.0
       scule: 0.3.2
@@ -728,7 +728,7 @@ packages:
       magic-string: 0.26.6
       mlly: 0.5.16
       ohash: 0.1.5
-      pathe: 0.3.8
+      pathe: 0.3.9
       perfect-debounce: 0.1.3
       pkg-types: 0.3.5
       postcss: 8.4.16
@@ -1895,7 +1895,7 @@ packages:
       gittar: 0.1.1
       jiti: 1.16.0
       mlly: 0.5.16
-      pathe: 0.3.8
+      pathe: 0.3.9
       pkg-types: 0.3.5
       rc9: 1.2.2
     dev: true
@@ -3311,7 +3311,7 @@ packages:
     dependencies:
       enhanced-resolve: 5.10.0
       mlly: 0.5.16
-      pathe: 0.3.8
+      pathe: 0.3.9
       ufo: 0.8.5
     dev: true
 
@@ -4469,7 +4469,7 @@ packages:
     resolution: {integrity: sha512-LaJ8yuh4v0zEmge/g3c7jjFlhoCPfQn6RCjXgm9A0Qiuochq4BcuOxVfWmdnCoLTlg2MV+hqhOek+W2OhG0Lwg==}
     dependencies:
       acorn: 8.8.0
-      pathe: 0.3.8
+      pathe: 0.3.9
       pkg-types: 0.3.5
       ufo: 0.8.5
     dev: true
@@ -4565,7 +4565,7 @@ packages:
       node-fetch-native: 0.1.5
       ohash: 0.1.5
       ohmyfetch: 0.4.19
-      pathe: 0.3.8
+      pathe: 0.3.9
       perfect-debounce: 0.1.3
       pkg-types: 0.3.5
       pretty-bytes: 6.0.0
@@ -5008,7 +5008,7 @@ packages:
     dependencies:
       jsonc-parser: 3.2.0
       mlly: 0.5.16
-      pathe: 0.3.8
+      pathe: 0.3.9
     dev: true
 
   /pluralize/8.0.0:
@@ -6238,7 +6238,7 @@ packages:
       defu: 6.1.0
       mime: 3.0.0
       node-fetch-native: 0.1.4
-      pathe: 0.3.8
+      pathe: 0.3.9
     dev: true
 
   /unimport/0.6.7:
@@ -6250,7 +6250,7 @@ packages:
       local-pkg: 0.4.2
       magic-string: 0.26.6
       mlly: 0.5.16
-      pathe: 0.3.8
+      pathe: 0.3.9
       scule: 0.3.2
       strip-literal: 0.4.2
       unplugin: 0.9.5
@@ -6270,7 +6270,7 @@ packages:
       local-pkg: 0.4.2
       magic-string: 0.26.6
       mlly: 0.5.16
-      pathe: 0.3.8
+      pathe: 0.3.9
       scule: 0.3.2
       strip-literal: 0.4.2
       unplugin: 0.9.5_smomlxmjgt6y4akd764agnhchu
@@ -6290,7 +6290,7 @@ packages:
       local-pkg: 0.4.2
       magic-string: 0.26.6
       mlly: 0.5.16
-      pathe: 0.3.8
+      pathe: 0.3.9
       scule: 0.3.2
       strip-literal: 0.4.2
       unplugin: 0.9.5_yrghuvd3zkjqr2aqvquijs2oqu
