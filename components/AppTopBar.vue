@@ -23,7 +23,10 @@
 
     <ul class="layout-topbar-menu hidden lg:flex origin-top">
       <li>
-        <form v-if="$route.path != '/search'" @submit.prevent="search">
+        <form
+          v-if="!$route.path.startsWith('/search')"
+          @submit.prevent="search"
+        >
           <div class="p-inputgroup">
             <InputText v-model="searchTerm" placeholder="Search" />
             <Button
