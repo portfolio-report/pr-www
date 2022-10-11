@@ -5,6 +5,8 @@
       class="p-datatable-sm"
       :paginator="true"
       :rows="10"
+      sort-field="date"
+      :sort-order="-1"
       :rows-per-page-options="[10, 30, 100, 300]"
     >
       <Column field="date" header="Date" :sortable="true"></Column>
