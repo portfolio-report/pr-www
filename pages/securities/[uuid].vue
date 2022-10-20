@@ -19,11 +19,17 @@
           </NuxtLink>
         </div>
 
-        <img
-          v-if="security.logoUrl"
-          :src="security.logoUrl"
-          style="max-width: 100px; max-height: 100px; mix-blend-mode: multiply"
-        />
+        <div>
+          <img
+            v-if="security.logoUrl"
+            :src="security.logoUrl"
+            style="
+              max-width: 100px;
+              max-height: 100px;
+              mix-blend-mode: multiply;
+            "
+          />
+        </div>
       </div>
 
       <TabView class="mt-2">
