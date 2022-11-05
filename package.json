@@ -40,7 +40,7 @@
     "eslint-plugin-promise": "^6.0.1",
     "eslint-plugin-unicorn": "^44.0.0",
     "eslint-plugin-vue": "^9.6.0",
-    "nuxt": "3.0.0-rc.12",
+    "nuxt": "3.0.0-rc.13",
     "prettier": "^2.7.1",
     "typescript": "^4.8.4",
     "vue-tsc": "^1.0.8"
