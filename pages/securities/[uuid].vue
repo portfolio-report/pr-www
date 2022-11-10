@@ -131,7 +131,12 @@
             <Column field="weight" header="Percentage" :sortable="true">
               <template #body="{ data }"> {{ data.weight }}%</template>
             </Column>
-            <Column field="taxonomy.name" header="Country" :sortable="true" />
+            <Column field="taxonomy.name" header="Country" :sortable="true">
+              <template #body="{ data }">
+                <CountryFlag :country="data.taxonomy.code" />
+                {{ data.taxonomy.name }}
+              </template>
+            </Column>
             <Column field="taxonomy.code" header="Code" :sortable="true" />
           </DataTable>
         </TabPanel>
