@@ -21,7 +21,7 @@ specifiers:
   eslint-plugin-vue: ^9.6.0
   nuxt: ^3.0.0
   prettier: ^2.7.1
-  primeflex: ^3.2.1
+  primeflex: ^3.3.0
   primeicons: ^6.0.1
   primevue: 3.19.0
   sass: ^1.55.0
@@ -34,7 +34,7 @@ dependencies:
   '@vueuse/core': 9.3.0
   '@vueuse/head': 0.9.8
   chart.js: 4.0.1
-  primeflex: 3.2.1
+  primeflex: 3.3.0
   primeicons: 6.0.1
   primevue: 3.19.0_primeicons@6.0.1
   sass: 1.55.0
@@ -5713,8 +5713,8 @@ packages:
     engines: {node: ^14.13.1 || >=16.0.0}
     dev: true
 
-  /primeflex/3.2.1:
-    resolution: {integrity: sha512-sGDJ4mh2fG19xa1yc4IPGSQ8MUMyu5nU+tYnl27AFuFHhX8XwEA7fWCtWyBbclclVhXtre+Kf9WobWPnfxWAEQ==}
+  /primeflex/3.3.0:
+    resolution: {integrity: sha512-4hvyIO7lERN5bnyURn67Qpozghins8Jq/GSXO6tymc3oa2ADHWuiYBti8ZptPwHu+uD/HTEisS26NEmeIGfPZQ==}
     dev: false
 
   /primeicons/6.0.1:

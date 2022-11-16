@@ -21,7 +21,7 @@
     "@vueuse/core": "^9.3.0",
     "@vueuse/head": "^0.9.8",
     "chart.js": "^4.0.1",
-    "primeflex": "^3.2.1",
+    "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primevue": "3.19.0",
     "sass": "^1.55.0"
