@@ -27,7 +27,7 @@
     "sass": "^1.55.0"
   },
   "devDependencies": {
-    "@iconify/json": "^2.1.120",
+    "@iconify/json": "^2.1.146",
     "@nuxtjs/eslint-config": "^12.0.0",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@types/node": "^18.7.20",
