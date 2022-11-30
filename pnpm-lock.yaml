@@ -16,7 +16,7 @@ specifiers:
   eslint-plugin-node: ^11.1.0
   eslint-plugin-nuxt: ^4.0.0
   eslint-plugin-prettier: ^4.2.1
-  eslint-plugin-promise: ^6.0.1
+  eslint-plugin-promise: ^6.1.1
   eslint-plugin-unicorn: ^45.0.1
   eslint-plugin-vue: ^9.8.0
   nuxt: ^3.0.0
@@ -50,7 +50,7 @@ devDependencies:
   eslint-plugin-node: 11.1.0_eslint@8.25.0
   eslint-plugin-nuxt: 4.0.0_eslint@8.25.0
   eslint-plugin-prettier: 4.2.1_5wldh2qskrkkuj5r7hgfqqm4fa
-  eslint-plugin-promise: 6.0.1_eslint@8.25.0
+  eslint-plugin-promise: 6.1.1_eslint@8.25.0
   eslint-plugin-unicorn: 45.0.1_eslint@8.25.0
   eslint-plugin-vue: 9.8.0_eslint@8.25.0
   nuxt: 3.0.0_ftrcvmx23hjbspfi2zgyykvgd4
@@ -3287,15 +3287,6 @@ packages:
       eslint-config-prettier: 8.5.0_eslint@8.25.0
       prettier: 2.8.0
       prettier-linter-helpers: 1.0.0
-    dev: true
-
-  /eslint-plugin-promise/6.0.1_eslint@8.25.0:
-    resolution: {integrity: sha512-uM4Tgo5u3UWQiroOyDEsYcVMOo7re3zmno0IZmB5auxoaQNIceAbXEkSt8RNrKtaYehARHG06pYK6K1JhtP0Zw==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      eslint: ^7.0.0 || ^8.0.0
-    dependencies:
-      eslint: 8.25.0
     dev: true
 
   /eslint-plugin-promise/6.1.1_eslint@8.25.0:
