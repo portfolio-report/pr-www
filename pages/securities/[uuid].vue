@@ -120,25 +120,57 @@
           </div>
         </TabPanel>
 
-        <TabPanel v-if="countries" header="Categories">
-          <h4>Country</h4>
-          <DataTable
-            :value="countries"
-            sort-field="weight"
-            :sort-order="-1"
-            class="p-datatable-sm"
-          >
-            <Column field="weight" header="Percentage" :sortable="true">
-              <template #body="{ data }"> {{ data.weight }}%</template>
-            </Column>
-            <Column field="taxonomy.name" header="Country" :sortable="true">
-              <template #body="{ data }">
-                <CountryFlag :country="data.taxonomy.code" />
-                {{ data.taxonomy.name }}
-              </template>
-            </Column>
-            <Column field="taxonomy.code" header="Code" :sortable="true" />
-          </DataTable>
+        <TabPanel
+          v-if="countries.length > 0 || industries.length > 0"
+          header="Categories"
+        >
+          <div v-if="countries.length == 1 && countries[0].taxonomy">
+            <h4>Country</h4>
+            <p class="mb-2">
+              <CountryFlag :country="countries[0].taxonomy.code || ''" />
+              {{ countries[0].taxonomy.name }}
+              ({{ countries[0].taxonomy.code }})
+            </p>
+          </div>
+          <div v-else-if="countries.length > 1">
+            <h4>Countries</h4>
+            <DataTable
+              :value="countries"
+              sort-field="weight"
+              :sort-order="-1"
+              class="p-datatable-sm mb-2"
+            >
+              <Column field="weight" header="Percentage" :sortable="true">
+                <template #body="{ data }"> {{ data.weight }}%</template>
+              </Column>
+              <Column field="taxonomy.name" header="Country" :sortable="true">
+                <template #body="{ data }">
+                  <CountryFlag :country="data.taxonomy.code" />
+                  {{ data.taxonomy.name }}
+                </template>
+              </Column>
+              <Column field="taxonomy.code" header="Code" :sortable="true" />
+            </DataTable>
+          </div>
+
+          <div v-if="industries.length == 1 && industries[0].taxonomy">
+            <h4>Industry</h4>
+            {{ industries[0].taxonomy.name }}
+          </div>
+          <div v-else-if="industries.length > 1">
+            <h4>Industries</h4>
+            <DataTable
+              :value="industries"
+              sort-field="weight"
+              :sort-order="-1"
+              class="p-datatable-sm"
+            >
+              <Column field="weight" header="Percentage" :sortable="true">
+                <template #body="{ data }"> {{ data.weight }}%</template>
+              </Column>
+              <Column field="taxonomy.name" header="Country" :sortable="true" />
+            </DataTable>
+          </div>
         </TabPanel>
 
         <TabPanel
@@ -243,6 +275,12 @@ const securityTaxonomies = computed(() =>
 const countries = computed(() =>
   securityTaxonomies.value.filter(
     (st) => st.rootTaxonomyUuid === '5b0d5647-a4e6-4db8-807b-c3a6d11697a7'
+  )
+)
+
+const industries = computed(() =>
+  securityTaxonomies.value.filter(
+    (st) => st.rootTaxonomyUuid === '072bba7b-ed7a-4cb4-aab3-91520d00fb00'
   )
 )
 
