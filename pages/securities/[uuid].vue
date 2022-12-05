@@ -82,6 +82,68 @@
                 :name="tag"
               />
             </li>
+            <li v-if="countries.length === 1 && countries[0].taxonomy">
+              Country:
+              <CountryFlag :country="countries[0].taxonomy.code || ''" />
+              <b>
+                {{ countries[0].taxonomy.name }}
+                ({{ countries[0].taxonomy.code }})
+              </b>
+            </li>
+            <li v-else-if="countries.length > 1">
+              <a href="#" @click="toggleCountriesOverlay">Countries</a>
+              <OverlayPanel ref="countriesOverlay" :show-close-icon="true">
+                <DataTable
+                  :value="countries"
+                  sort-field="weight"
+                  :sort-order="-1"
+                  class="p-datatable-sm mb-2"
+                >
+                  <Column field="weight" header="Percentage" :sortable="true">
+                    <template #body="{ data }"> {{ data.weight }}%</template>
+                  </Column>
+                  <Column
+                    field="taxonomy.name"
+                    header="Country"
+                    :sortable="true"
+                  >
+                    <template #body="{ data }">
+                      <CountryFlag :country="data.taxonomy.code" />
+                      {{ data.taxonomy.name }}
+                    </template>
+                  </Column>
+                  <Column
+                    field="taxonomy.code"
+                    header="Code"
+                    :sortable="true"
+                  />
+                </DataTable>
+              </OverlayPanel>
+            </li>
+            <li v-if="industries.length == 1 && industries[0].taxonomy">
+              Industry:
+              <b>{{ industries[0].taxonomy.name }}</b>
+            </li>
+            <li v-else-if="industries.length > 1">
+              <a href="#" @click="toggleIndustriesOverlay">Industries</a>
+              <OverlayPanel ref="industriesOverlay" :show-close-icon="true">
+                <DataTable
+                  :value="industries"
+                  sort-field="weight"
+                  :sort-order="-1"
+                  class="p-datatable-sm"
+                >
+                  <Column field="weight" header="Percentage" :sortable="true">
+                    <template #body="{ data }"> {{ data.weight }}%</template>
+                  </Column>
+                  <Column
+                    field="taxonomy.name"
+                    header="Country"
+                    :sortable="true"
+                  />
+                </DataTable>
+              </OverlayPanel>
+            </li>
           </ul>
         </TabPanel>
 
@@ -117,59 +179,6 @@
               :prices="selectedMarket.prices"
               @delete-price="deletePrice"
             />
-          </div>
-        </TabPanel>
-
-        <TabPanel
-          v-if="countries.length > 0 || industries.length > 0"
-          header="Categories"
-        >
-          <div v-if="countries.length == 1 && countries[0].taxonomy">
-            <h4>Country</h4>
-            <p class="mb-2">
-              <CountryFlag :country="countries[0].taxonomy.code || ''" />
-              {{ countries[0].taxonomy.name }}
-              ({{ countries[0].taxonomy.code }})
-            </p>
-          </div>
-          <div v-else-if="countries.length > 1">
-            <h4>Countries</h4>
-            <DataTable
-              :value="countries"
-              sort-field="weight"
-              :sort-order="-1"
-              class="p-datatable-sm mb-2"
-            >
-              <Column field="weight" header="Percentage" :sortable="true">
-                <template #body="{ data }"> {{ data.weight }}%</template>
-              </Column>
-              <Column field="taxonomy.name" header="Country" :sortable="true">
-                <template #body="{ data }">
-                  <CountryFlag :country="data.taxonomy.code" />
-                  {{ data.taxonomy.name }}
-                </template>
-              </Column>
-              <Column field="taxonomy.code" header="Code" :sortable="true" />
-            </DataTable>
-          </div>
-
-          <div v-if="industries.length == 1 && industries[0].taxonomy">
-            <h4>Industry</h4>
-            {{ industries[0].taxonomy.name }}
-          </div>
-          <div v-else-if="industries.length > 1">
-            <h4>Industries</h4>
-            <DataTable
-              :value="industries"
-              sort-field="weight"
-              :sort-order="-1"
-              class="p-datatable-sm"
-            >
-              <Column field="weight" header="Percentage" :sortable="true">
-                <template #body="{ data }"> {{ data.weight }}%</template>
-              </Column>
-              <Column field="taxonomy.name" header="Country" :sortable="true" />
-            </DataTable>
           </div>
         </TabPanel>
 
@@ -278,11 +287,21 @@ const countries = computed(() =>
   )
 )
 
+const countriesOverlay = ref()
+const toggleCountriesOverlay = (event: MouseEvent) => {
+  countriesOverlay.value.toggle(event)
+}
+
 const industries = computed(() =>
   securityTaxonomies.value.filter(
     (st) => st.rootTaxonomyUuid === '072bba7b-ed7a-4cb4-aab3-91520d00fb00'
   )
 )
+
+const industriesOverlay = ref()
+const toggleIndustriesOverlay = (event: MouseEvent) => {
+  industriesOverlay.value.toggle(event)
+}
 
 watch(selectedMarketcode, async (selectedMarketcode) => {
   selectedMarket.value = await useApi<{
