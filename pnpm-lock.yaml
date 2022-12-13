@@ -23,7 +23,7 @@ specifiers:
   prettier: ^2.8.0
   primeflex: ^3.3.0
   primeicons: ^6.0.1
-  primevue: 3.20.0
+  primevue: 3.21.0
   sass: ^1.56.1
   typescript: ^4.9.3
   vue-tsc: ^1.0.10
@@ -36,7 +36,7 @@ dependencies:
   chart.js: 4.0.1
   primeflex: 3.3.0
   primeicons: 6.0.1
-  primevue: 3.20.0_primeicons@6.0.1
+  primevue: 3.21.0_primeicons@6.0.1
   sass: 1.56.1
 
 devDependencies:
@@ -5468,8 +5468,8 @@ packages:
     resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
     dev: false
 
-  /primevue/3.20.0_primeicons@6.0.1:
-    resolution: {integrity: sha512-qLIp1Bwf7lk/ZAvQXqemkoUMh7WQwmVy/Cp8PR+uGGd6szxC0QZWAit/gSjSjD55gZJDtbsiHFVB2a78gN7tdA==}
+  /primevue/3.21.0_primeicons@6.0.1:
+    resolution: {integrity: sha512-VqXMvigzz24JRPgG+i20Vj1AMS0AKiNdT9iFkmcWnO4EilntLS2I1yR2OE1hd9bMFV97ePsdaScIygW+bedN2g==}
     peerDependencies:
       primeicons: ^5.0.0 || ^6.0.0
       vue: ^3.0.0
