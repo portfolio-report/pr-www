@@ -10,7 +10,13 @@
       :rows-per-page-options="[10, 30, 100, 300]"
     >
       <Column field="date" header="Date" :sortable="true"></Column>
-      <Column field="close" header="Close"> </Column>
+      <Column field="close" header="Close">
+        <template #body="{ data }">
+          {{
+            data.close.toLocaleString(undefined, { minimumFractionDigits: 2 })
+          }}
+        </template>
+      </Column>
     </DataTable>
   </div>
 </template>
