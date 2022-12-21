@@ -9,7 +9,7 @@ specifiers:
   '@vuelidate/core': 2.0.0
   '@vuelidate/validators': 2.0.0
   '@vueuse/core': ^9.6.0
-  '@vueuse/head': ^1.0.18
+  '@vueuse/head': ^1.0.22
   chart.js: ^4.0.1
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
@@ -32,7 +32,7 @@ dependencies:
   '@vuelidate/core': 2.0.0
   '@vuelidate/validators': 2.0.0
   '@vueuse/core': 9.6.0
-  '@vueuse/head': 1.0.18
+  '@vueuse/head': 1.0.22
   chart.js: 4.0.1
   primeflex: 3.3.0
   primeicons: 6.0.1
@@ -1125,10 +1125,10 @@ packages:
       '@unhead/schema': 1.0.1
     dev: true
 
-  /@unhead/dom/1.0.4:
-    resolution: {integrity: sha512-Mzkevk50k5xQo6mIcNcKGKJ4R7tYyCg8ZN5NfmiUXIfvjaM4zWEZK8DhZNbQ8/548oO6Eq2Y73+53W8rLsSaoQ==}
+  /@unhead/dom/1.0.13:
+    resolution: {integrity: sha512-ErfhK3Nwk3kpxnPEOrkruKAdS3/TrNlKs0nYtKgFJ1ywJYg+uNwRFDe82v4JdUMhnfmbgL/qcO3PTx3Dv09IEQ==}
     dependencies:
-      '@unhead/schema': 1.0.4
+      '@unhead/schema': 1.0.13
 
   /@unhead/schema/1.0.0:
     resolution: {integrity: sha512-RDjizmCwEBpY7zzLgwMPFCb1h6P/chopg9uvrZS233HEND1IkzGm/tX7IgbPos/wOmDlebjsnUUBwmYBGoq6pQ==}
@@ -1144,10 +1144,10 @@ packages:
       hookable: 5.4.2
     dev: true
 
-  /@unhead/schema/1.0.4:
-    resolution: {integrity: sha512-bCkwV+GkAQN5yByelaeASmLVgdXypMC1O3xChW8oAC7ySz/ZqV9nXPt1Gx6jrNX4wL7Vbv3eCQ8jtB3QFH92ag==}
+  /@unhead/schema/1.0.13:
+    resolution: {integrity: sha512-K8SiAEkM8G7GaF1QvsKlthLmRqGB8R9SvZXMCucZqb2VQ6bU4IFSs/4q6dKxmV0fXb5AHdKUL9+rX/4rQ6FsZg==}
     dependencies:
-      '@zhead/schema': 1.0.4
+      '@zhead/schema': 1.0.7
       hookable: 5.4.2
 
   /@unhead/ssr/1.0.0:
@@ -1156,26 +1156,26 @@ packages:
       '@unhead/schema': 1.0.0
     dev: true
 
-  /@unhead/ssr/1.0.4:
-    resolution: {integrity: sha512-/uyJLBGM3OfemBHt9hWvQOMpbWaMjJCns2WmYcuiOE6EFNy68SjSzHbm0rYkarhZWYZqxy0Sq6zuzVsM0Gi15Q==}
+  /@unhead/ssr/1.0.13:
+    resolution: {integrity: sha512-pach3THVx8LU54M6aQ4qZeQdcLjXVnPlpHe7pQjHGvD6iBJC5bZc8TL+CHdTRxeiq2DqMA5uyfoor7VJJTi5AQ==}
     dependencies:
-      '@unhead/schema': 1.0.4
+      '@unhead/schema': 1.0.13
 
-  /@unhead/vue/1.0.4:
-    resolution: {integrity: sha512-dW4FY4SRNaoGcFXuk6dU2Fp7fFHluBZqdOxpekMKO3q4zn+sOcnqHdzDmSnXPgoqr4huumnG8zNjVsuyRQ0+Mg==}
+  /@unhead/vue/1.0.13:
+    resolution: {integrity: sha512-sGl640UQqN8HUYTKXOh6gErk/vw8byPdx1+ECqX4ec7UZYktsWgfyIReYBu09Qm3O6pIYfX8HlZbDipX+wQAOQ==}
     peerDependencies:
       vue: '>=2.7 || >=3'
     dependencies:
-      '@unhead/schema': 1.0.4
+      '@unhead/schema': 1.0.13
       hookable: 5.4.2
     dev: false
 
-  /@unhead/vue/1.0.4_vue@3.2.45:
-    resolution: {integrity: sha512-dW4FY4SRNaoGcFXuk6dU2Fp7fFHluBZqdOxpekMKO3q4zn+sOcnqHdzDmSnXPgoqr4huumnG8zNjVsuyRQ0+Mg==}
+  /@unhead/vue/1.0.13_vue@3.2.45:
+    resolution: {integrity: sha512-sGl640UQqN8HUYTKXOh6gErk/vw8byPdx1+ECqX4ec7UZYktsWgfyIReYBu09Qm3O6pIYfX8HlZbDipX+wQAOQ==}
     peerDependencies:
       vue: '>=2.7 || >=3'
     dependencies:
-      '@unhead/schema': 1.0.4
+      '@unhead/schema': 1.0.13
       hookable: 5.4.2
       vue: 3.2.45
     dev: true
@@ -1609,26 +1609,26 @@ packages:
       - vue
     dev: false
 
-  /@vueuse/head/1.0.18:
-    resolution: {integrity: sha512-V3EuLoZFrMgvCQYSE0pJupYglZ0ID3rr/8ATIgnZNn+fjRrIEn8oAwAe8FRFAUKgBb0rZt+QY94PaDF6/HOLOQ==}
+  /@vueuse/head/1.0.22:
+    resolution: {integrity: sha512-YmUdbzNdCnhmrAFxGnJS+Rixj+swE+TQC9OEaYDHIro6gE7W11jugcdwVP00HrA4WRQhg+TOQ4YcY2oL/PP1hw==}
     peerDependencies:
       vue: '>=2.7 || >=3'
     dependencies:
-      '@unhead/dom': 1.0.4
-      '@unhead/schema': 1.0.4
-      '@unhead/ssr': 1.0.4
-      '@unhead/vue': 1.0.4
+      '@unhead/dom': 1.0.13
+      '@unhead/schema': 1.0.13
+      '@unhead/ssr': 1.0.13
+      '@unhead/vue': 1.0.13
     dev: false
 
-  /@vueuse/head/1.0.18_vue@3.2.45:
-    resolution: {integrity: sha512-V3EuLoZFrMgvCQYSE0pJupYglZ0ID3rr/8ATIgnZNn+fjRrIEn8oAwAe8FRFAUKgBb0rZt+QY94PaDF6/HOLOQ==}
+  /@vueuse/head/1.0.22_vue@3.2.45:
+    resolution: {integrity: sha512-YmUdbzNdCnhmrAFxGnJS+Rixj+swE+TQC9OEaYDHIro6gE7W11jugcdwVP00HrA4WRQhg+TOQ4YcY2oL/PP1hw==}
     peerDependencies:
       vue: '>=2.7 || >=3'
     dependencies:
-      '@unhead/dom': 1.0.4
-      '@unhead/schema': 1.0.4
-      '@unhead/ssr': 1.0.4
-      '@unhead/vue': 1.0.4_vue@3.2.45
+      '@unhead/dom': 1.0.13
+      '@unhead/schema': 1.0.13
+      '@unhead/ssr': 1.0.13
+      '@unhead/vue': 1.0.13_vue@3.2.45
       vue: 3.2.45
     dev: true
 
@@ -1649,8 +1649,8 @@ packages:
     resolution: {integrity: sha512-n6BDs+MjSOesuv6krG2QGyCPfdndxWX0M/G2wEGu1SPHc5jLHHi3EY1+vQvudFVXRVXquZHKsDPE7pSyeyGgHg==}
     dev: true
 
-  /@zhead/schema/1.0.4:
-    resolution: {integrity: sha512-v/CM22nH0TW9VU5IcRXlshwrMtsZPnFQWhcLBvpZjOJvfEmjl8cUb6OIJQJRR2WESNjjPW2Cji8mgL9XSVLjxA==}
+  /@zhead/schema/1.0.7:
+    resolution: {integrity: sha512-jN2ipkz39YrHd8uulgw/Y7x8iOxvR/cTkin/E9zRQVP5JBIrrJMiGyFFj6JBW4Q029xJ5dKtpwy/3RZWpz+dkQ==}
 
   /abbrev/1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -4785,7 +4785,7 @@ packages:
       '@unhead/ssr': 1.0.0
       '@vue/reactivity': 3.2.45
       '@vue/shared': 3.2.45
-      '@vueuse/head': 1.0.18_vue@3.2.45
+      '@vueuse/head': 1.0.22_vue@3.2.45
       chokidar: 3.5.3
       cookie-es: 0.5.0
       defu: 6.1.1
