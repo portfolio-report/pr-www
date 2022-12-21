@@ -1,15 +1,28 @@
 <template>
   <div>
     <DataTable
-      :value="prices"
+      v-model:filters="filters"
+      :value="priceArray"
       class="p-datatable-sm"
       :paginator="true"
       :rows="10"
       sort-field="date"
       :sort-order="-1"
       :rows-per-page-options="[10, 30, 100, 300]"
+      filter-display="menu"
     >
-      <Column field="date" header="Date" :sortable="true"></Column>
+      <Column field="date" header="Date" sortable data-type="date">
+        <template #body="{ data }">
+          {{ data.dateStr }}
+        </template>
+        <template #filter="{ filterModel }">
+          <Calendar
+            v-model="filterModel.value"
+            date-format="yy-mm-dd"
+            placeholder="yyyy-mm-dd"
+          />
+        </template>
+      </Column>
       <Column field="close" header="Close">
         <template #body="{ data }">
           {{
@@ -22,7 +35,24 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { FilterMatchMode, FilterOperator } from 'primevue/api'
+
+const props = defineProps<{
   prices: { date: string; close: number }[]
 }>()
+
+const priceArray = computed(() =>
+  props.prices.map((e) => ({
+    dateStr: e.date,
+    date: new Date(e.date),
+    close: e.close,
+  }))
+)
+
+const filters = ref({
+  date: {
+    operator: FilterOperator.AND,
+    constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
+  },
+})
 </script>

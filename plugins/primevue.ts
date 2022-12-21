@@ -4,6 +4,7 @@ import ToastService from 'primevue/toastservice'
 
 import Badge from 'primevue/badge'
 import Button from 'primevue/button'
+import Calendar from 'primevue/calendar'
 import Card from 'primevue/card'
 import Chart from 'primevue/chart'
 import Checkbox from 'primevue/checkbox'
@@ -38,6 +39,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   nuxtApp.vueApp.component('Badge', Badge)
   nuxtApp.vueApp.component('Button', Button)
+  nuxtApp.vueApp.component('Calendar', Calendar)
   nuxtApp.vueApp.component('Card', Card)
   nuxtApp.vueApp.component('Chart', Chart)
   nuxtApp.vueApp.component('Checkbox', Checkbox)
