@@ -66,14 +66,15 @@
 
               <SecurityTag v-for="tag in result.tags" :key="tag" :name="tag" />
             </div>
-            ISIN: <b>{{ result.isin }}</b> | WKN: <b>{{ result.wkn }}</b> |
-            Symbol(s):
-            <span v-for="(symbol, idx) in getUniqueSymbols(result)" :key="idx">
-              <span v-if="idx != 0">, </span>
-              <span>
-                <b>{{ symbol }}</b>
+            <div class="text-600">
+              {{ result.isin }} · {{ result.wkn }}
+              <span
+                v-for="(symbol, idx) in getUniqueSymbols(result)"
+                :key="idx"
+              >
+                · {{ symbol }}
               </span>
-            </span>
+            </div>
           </div>
         </template>
       </Card>
