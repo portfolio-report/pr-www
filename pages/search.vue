@@ -46,7 +46,11 @@
               <i
                 v-if="getPricesAvailable(result)"
                 v-tooltip.top="'Prices available'"
-                class="i-carbon-chart-line mr-1"
+                :class="[
+                  'i-carbon-chart-line',
+                  'mr-1',
+                  { 'text-primary': getRecentPricesAvailable(result) },
+                ]"
               ></i>
 
               <NuxtLink
@@ -104,6 +108,8 @@
 </template>
 
 <script setup lang="ts">
+import { differenceInCalendarDays } from 'date-fns'
+
 useHead({ title: 'Portfolio Report Search' })
 const route = useRoute()
 const router = useRouter()
@@ -223,6 +229,16 @@ function getPricesAvailable(result: {
 }): boolean {
   return result.markets.some(
     (market) => market.firstPriceDate && market.lastPriceDate
+  )
+}
+
+function getRecentPricesAvailable(result: {
+  markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
+}): boolean {
+  return result.markets.some(
+    (market) =>
+      market.lastPriceDate &&
+      differenceInCalendarDays(new Date(), new Date(market.lastPriceDate)) < 30
   )
 }
 

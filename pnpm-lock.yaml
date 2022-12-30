@@ -11,6 +11,7 @@ specifiers:
   '@vueuse/core': ^9.8.2
   '@vueuse/head': ^1.0.22
   chart.js: ^4.1.1
+  date-fns: ^2.29.3
   eslint: ^8.30.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-node: ^11.1.0
@@ -34,6 +35,7 @@ dependencies:
   '@vueuse/core': 9.8.2
   '@vueuse/head': 1.0.22
   chart.js: 4.1.1
+  date-fns: 2.29.3
   primeflex: 3.3.0
   primeicons: 6.0.1
   primevue: 3.21.0_primeicons@6.0.1
@@ -2352,6 +2354,11 @@ packages:
     resolution: {integrity: sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==}
     engines: {node: '>= 12'}
     dev: true
+
+  /date-fns/2.29.3:
+    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+    engines: {node: '>=0.11'}
+    dev: false
 
   /de-indent/1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
