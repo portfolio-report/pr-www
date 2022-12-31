@@ -5,27 +5,29 @@
         <template #title>Security Search</template>
         <template #content>
           <form @submit.prevent="search">
-            <div class="p-float-label mt-2">
-              <InputText
-                id="searchTermInput"
-                v-model="searchTerm"
-                type="search"
-                class="w-full"
-                autofocus
-              />
-              <label for="searchTermInput">ISIN/WKN/Symbol/Name</label>
-            </div>
+            <ClientOnly>
+              <div class="p-float-label mt-2">
+                <InputText
+                  id="searchTermInput"
+                  v-model="searchTerm"
+                  type="search"
+                  class="w-full"
+                  autofocus
+                />
+                <label for="searchTermInput">ISIN/WKN/Symbol/Name</label>
+              </div>
 
-            <SelectSecurityType v-model="securityType" class="w-full mt-4" />
+              <SelectSecurityType v-model="securityType" class="w-full mt-4" />
 
-            <Button
-              type="submit"
-              :disabled="!searchTerm || searching"
-              class="w-full flex justify-content-center mt-4"
-            >
-              <span v-if="!searching" class="font-bold">Search</span>
-              <ProgressSpinner v-else style="height: 20px" />
-            </Button>
+              <Button
+                type="submit"
+                :disabled="!searchTerm || searching"
+                class="w-full flex justify-content-center mt-4"
+              >
+                <span v-if="!searching" class="font-bold">Search</span>
+                <ProgressSpinner v-else style="height: 20px" />
+              </Button>
+            </ClientOnly>
 
             <Message v-if="noResults" severity="info">
               Sorry, no results were found.
