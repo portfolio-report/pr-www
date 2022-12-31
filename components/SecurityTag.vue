@@ -1,7 +1,7 @@
 <template>
-  <Chip class="mx-1 text-sm bg-orange-300">
+  <Tag class="mx-1 bg-orange-300">
     <NuxtLink :to="linkTo">{{ name }}</NuxtLink>
-  </Chip>
+  </Tag>
 </template>
 
 <script setup lang="ts">

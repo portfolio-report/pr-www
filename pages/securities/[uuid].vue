@@ -70,9 +70,9 @@
             </li>
             <li>
               Type:
-              <Chip class="mx-1 text-sm bg-teal-500 text-white">
+              <Tag class="mx-1 bg-teal-500">
                 {{ security.securityType }}
-              </Chip>
+              </Tag>
             </li>
             <li v-if="security.tags && security.tags.length > 0">
               Tags:

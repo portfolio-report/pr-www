@@ -60,9 +60,9 @@
                 {{ result.name }}
               </NuxtLink>
 
-              <Chip class="mx-1 text-sm bg-teal-500 text-white">
+              <Tag class="mx-1 bg-teal-500">
                 {{ result.securityType }}
-              </Chip>
+              </Tag>
 
               <SecurityTag v-for="tag in result.tags" :key="tag" :name="tag" />
             </div>

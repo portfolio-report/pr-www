@@ -24,6 +24,7 @@ import ProgressSpinner from 'primevue/progressspinner'
 import Skeleton from 'primevue/skeleton'
 import TabPanel from 'primevue/tabpanel'
 import TabView from 'primevue/tabview'
+import Tag from 'primevue/tag'
 import Textarea from 'primevue/textarea'
 import TreeTable from 'primevue/treetable'
 import Toast from 'primevue/toast'
@@ -59,6 +60,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component('Skeleton', Skeleton)
   nuxtApp.vueApp.component('TabPanel', TabPanel)
   nuxtApp.vueApp.component('TabView', TabView)
+  nuxtApp.vueApp.component('Tag', Tag)
   nuxtApp.vueApp.component('Textarea', Textarea)
   nuxtApp.vueApp.component('Toast', Toast)
   nuxtApp.vueApp.component('TreeTable', TreeTable)
