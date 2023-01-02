@@ -80,7 +80,12 @@ import { useToast } from 'primevue/usetoast'
 import { email, required } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 
-useHead({ title: 'Portfolio Report - Contact' })
+useHead({
+  title: 'Portfolio Report - Contact',
+  link: [
+    { rel: 'canonical', href: 'https://www.portfolio-report.net/contact' },
+  ],
+})
 const toast = useToast()
 
 const initialState = {

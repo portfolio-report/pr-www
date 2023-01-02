@@ -113,9 +113,26 @@
 <script setup lang="ts">
 import { differenceInCalendarDays } from 'date-fns'
 
-useHead({ title: 'Portfolio Report Search' })
 const route = useRoute()
 const router = useRouter()
+
+const canonicalUrl = computed(() => {
+  let ret = 'https://www.portfolio-report.net/search'
+
+  if (route.query && route.query.q) {
+    ret += '?q=' + route.query.q
+
+    if (route.query.securityType) {
+      ret += '&securityType=' + route.query.securityType
+    }
+  }
+  return ret
+})
+
+useHead({
+  title: 'Portfolio Report Search',
+  link: [{ rel: 'canonical', href: canonicalUrl.value }],
+})
 
 const searchTerm = ref('')
 const securityType = ref('')

@@ -332,5 +332,12 @@ async function deletePrice({ date }: { date: string }) {
 
 useHead(() => ({
   title: security.value?.name + ' - Portfolio Report',
+  link: [
+    {
+      rel: 'canonical',
+      href:
+        'https://www.portfolio-report.net/securities/' + security.value.uuid,
+    },
+  ],
 }))
 </script>
