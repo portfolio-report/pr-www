@@ -3,7 +3,22 @@
     <div style="width: 800px">
       <div class="flex flex-wrap">
         <div class="flex-grow-1">
-          <h2>{{ security.name }}</h2>
+          <h2>
+            {{ security.name }}
+            <Tag class="mx-1 bg-teal-500 vertical-align-top">
+              {{ security.securityType }}
+            </Tag>
+            <SecurityTag
+              v-for="tag in security.tags"
+              :key="tag"
+              class="vertical-align-top"
+              :name="tag"
+            />
+          </h2>
+          <div class="text-600">
+            <span v-tooltip.top="'ISIN'">{{ security.isin }}</span> ·
+            <span v-tooltip.top="'WKN'">{{ security.wkn }}</span>
+          </div>
           <NuxtLink :to="$route.path">
             <Button
               v-tooltip.right="{
@@ -35,12 +50,6 @@
       <TabView class="mt-2">
         <TabPanel header="Overview">
           <ul>
-            <li>
-              ISIN: <b>{{ security.isin }}</b>
-            </li>
-            <li>
-              WKN: <b>{{ security.wkn }}</b>
-            </li>
             <li v-for="market in markets" :key="market.marketCode">
               Market: <b>{{ market.name }}</b>
               <ul>
@@ -67,20 +76,6 @@
             <li v-if="security.symbolXnys">
               Symbol (New York):
               <b>{{ security.symbolXnys }}</b>
-            </li>
-            <li>
-              Type:
-              <Tag class="mx-1 bg-teal-500">
-                {{ security.securityType }}
-              </Tag>
-            </li>
-            <li v-if="security.tags && security.tags.length > 0">
-              Tags:
-              <SecurityTag
-                v-for="tag in security.tags"
-                :key="tag"
-                :name="tag"
-              />
             </li>
             <li v-if="countries.length === 1 && countries[0].taxonomy">
               Country:
