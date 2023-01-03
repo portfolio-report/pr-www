@@ -1,6 +1,6 @@
 # Portfolio Report Website
 
-![Language](https://img.shields.io/github/languages/top/portfolio-report/pr-www?style=flat-square) [![Build status](https://img.shields.io/github/workflow/status/portfolio-report/pr-www/CI?style=flat-square)](https://github.com/portfolio-report/pr-www/actions/workflows/ci.yml) [![Website status](https://img.shields.io/website?style=flat-square&url=https%3A%2F%2Fwww.portfolio-report.net)](https://www.portfolio-report.net/)
+![Language](https://img.shields.io/github/languages/top/portfolio-report/pr-www?style=flat-square) [![Build status](https://img.shields.io/github/actions/workflow/status/portfolio-report/pr-www/ci.yml?style=flat-square)](https://github.com/portfolio-report/pr-www/actions/workflows/ci.yml) [![Website status](https://img.shields.io/website?style=flat-square&url=https%3A%2F%2Fwww.portfolio-report.net)](https://www.portfolio-report.net/)
 
 This repo holds the website [Portfolio Report](https://www.portfolio-report.net/). It provides a user interface to the data provided by the API.
 
