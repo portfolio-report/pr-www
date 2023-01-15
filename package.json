@@ -42,7 +42,7 @@
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@types/node": "^18.11.17",
     "@unocss/nuxt": "^0.48.0",
-    "eslint": "^8.30.0",
+    "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-nuxt": "^4.0.0",
