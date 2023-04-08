@@ -7,7 +7,7 @@ specifiers:
   '@types/node': ^18.11.17
   '@unocss/nuxt': ^0.50.1
   '@vuelidate/core': 2.0.0
-  '@vuelidate/validators': 2.0.0
+  '@vuelidate/validators': 2.0.2
   '@vueuse/core': ^9.8.2
   '@vueuse/head': ^1.0.22
   chart.js: ^4.1.1
@@ -32,7 +32,7 @@ specifiers:
 
 dependencies:
   '@vuelidate/core': 2.0.0
-  '@vuelidate/validators': 2.0.0
+  '@vuelidate/validators': 2.0.2
   '@vueuse/core': 9.8.2
   '@vueuse/head': 1.0.22
   chart.js: 4.1.1
@@ -2068,8 +2068,8 @@ packages:
       vue-demi: 0.13.11
     dev: false
 
-  /@vuelidate/validators/2.0.0:
-    resolution: {integrity: sha512-fQQcmDWfz7pyH5/JPi0Ng2GEgNK1pUHn/Z/j5rG/Q+HwhgIXvJblTPcZwKOj1ABL7V4UVuGKECvZCDHNGOwdrg==}
+  /@vuelidate/validators/2.0.2:
+    resolution: {integrity: sha512-6y6QLoK567XVmaLP3Paf1vkg6K2zO6xax3yTyczy1RnJ4PsLDLLGzP1PFzSpwb16aw4CKduBgI63HvIuctJhQg==}
     peerDependencies:
       '@vue/composition-api': ^1.0.0-rc.1
       vue: ^2.0.0 || >=3.0.0
