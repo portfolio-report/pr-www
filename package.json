@@ -25,7 +25,7 @@
     }
   },
   "dependencies": {
-    "@vuelidate/core": "2.0.0",
+    "@vuelidate/core": "2.0.2",
     "@vuelidate/validators": "2.0.2",
     "@vueuse/core": "^9.8.2",
     "@vueuse/head": "^1.0.22",
