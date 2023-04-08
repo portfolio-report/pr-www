@@ -25,7 +25,7 @@ specifiers:
   prettier: ^2.8.3
   primeflex: ^3.3.0
   primeicons: ^6.0.1
-  primevue: 3.24.0
+  primevue: 3.26.1
   sass: ^1.57.1
   typescript: ^4.9.4
   vue-tsc: ^1.2.0
@@ -39,7 +39,7 @@ dependencies:
   date-fns: 2.29.3
   primeflex: 3.3.0
   primeicons: 6.0.1
-  primevue: 3.24.0_primeicons@6.0.1
+  primevue: 3.26.1_primeicons@6.0.1
   sass: 1.57.1
 
 devDependencies:
@@ -6006,8 +6006,8 @@ packages:
     resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
     dev: false
 
-  /primevue/3.24.0_primeicons@6.0.1:
-    resolution: {integrity: sha512-mJxXQrWPnKv9IrVPj8wj8bdH/ukoM4K0ErpaMbc31/rVwqCYSAezpyDmRMWIkALvThcgN3TSy2nGowMQCfNqKA==}
+  /primevue/3.26.1_primeicons@6.0.1:
+    resolution: {integrity: sha512-I10mYyKMl0GF0KfIZK+psCpifzE6vTW8lvlgB8ukmYghKUmU1Ii879OgD7a8xWM8ijoEaO4mYZ18XXVpQ3xScw==}
     peerDependencies:
       primeicons: ^5.0.0 || ^6.0.0
       vue: ^3.0.0
