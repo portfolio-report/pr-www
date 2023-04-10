@@ -33,8 +33,7 @@
     "date-fns": "^2.29.3",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
-    "primevue": "3.26.1",
-    "sass": "^1.57.1"
+    "primevue": "3.26.1"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.48",
@@ -53,6 +52,7 @@
     "express": "^4.18.2",
     "nuxt": "^3.3.3",
     "prettier": "^2.8.3",
+    "sass": "^1.61.0",
     "typescript": "^5.0.4",
     "vue-tsc": "^1.2.0"
   }
