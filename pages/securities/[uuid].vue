@@ -19,18 +19,21 @@
             <span v-tooltip.top="'ISIN'">{{ security.isin }}</span> ·
             <span v-tooltip.top="'WKN'">{{ security.wkn }}</span>
           </div>
-          <NuxtLink :to="$route.path">
-            <Button
-              v-tooltip.right="{
-                escape: true,
-                value:
-                  '<h4>Drag and drop!</h4> To add this security in Portfolio Performance, drag and drop it to securities list or statement of assets.',
-              }"
-              class="mt-2 cursor-move w-20rem"
-              icon="i-carbon-move i-lg"
-              label="Add to Portfolio Performance"
-            >
-            </Button>
+
+          <NuxtLink
+            v-tooltip.right="{
+              escape: true,
+              value:
+                '<h4>Drag and drop!</h4> To add this security in Portfolio Performance, drag and drop it to securities list or statement of assets.',
+            }"
+            :to="$route.path"
+          >
+            <span class="mt-2 cursor-move w-20rem p-button p-component">
+              <span
+                class="i-carbon-move i-lg p-button-icon p-button-icon-left"
+              ></span>
+              <span class="p-button-label">Add to Portfolio Performance</span>
+            </span>
           </NuxtLink>
         </div>
 
