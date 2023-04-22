@@ -30,7 +30,7 @@
     "date-fns": "^2.29.3",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
-    "primevue": "3.26.1"
+    "primevue": "3.27.0"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.48",
