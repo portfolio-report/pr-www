@@ -16,9 +16,6 @@ dependencies:
   primeicons:
     specifier: ^6.0.1
     version: 6.0.1
-  primevue:
-    specifier: 3.26.1
-    version: 3.26.1(primeicons@6.0.1)
 
 devDependencies:
   '@iconify/json':
@@ -78,6 +75,9 @@ devDependencies:
   prettier:
     specifier: ^2.8.7
     version: 2.8.7
+  primevue:
+    specifier: 3.27.0
+    version: 3.27.0
   sass:
     specifier: ^1.61.0
     version: 1.61.0
@@ -5674,17 +5674,14 @@ packages:
     resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
     dev: false
 
-  /primevue@3.26.1(primeicons@6.0.1):
-    resolution: {integrity: sha512-I10mYyKMl0GF0KfIZK+psCpifzE6vTW8lvlgB8ukmYghKUmU1Ii879OgD7a8xWM8ijoEaO4mYZ18XXVpQ3xScw==}
+  /primevue@3.27.0:
+    resolution: {integrity: sha512-oVJl8vLGNb6t5nXN41mnjR5V9Cc/eHVvmtRWiNgIC1db6OW3Qo7y2LaDEmXps/wdxX/FuJ7nuPHAZI4y8tvGyQ==}
     peerDependencies:
-      primeicons: ^5.0.0 || ^6.0.0
       vue: ^3.0.0
     peerDependenciesMeta:
       vue:
         optional: true
-    dependencies:
-      primeicons: 6.0.1
-    dev: false
+    dev: true
 
   /process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
