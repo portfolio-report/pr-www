@@ -76,8 +76,8 @@ devDependencies:
     specifier: ^2.8.7
     version: 2.8.7
   primevue:
-    specifier: 3.27.0
-    version: 3.27.0
+    specifier: 3.28.0
+    version: 3.28.0
   sass:
     specifier: ^1.61.0
     version: 1.61.0
@@ -5664,8 +5664,8 @@ packages:
     resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
     dev: false
 
-  /primevue@3.27.0:
-    resolution: {integrity: sha512-oVJl8vLGNb6t5nXN41mnjR5V9Cc/eHVvmtRWiNgIC1db6OW3Qo7y2LaDEmXps/wdxX/FuJ7nuPHAZI4y8tvGyQ==}
+  /primevue@3.28.0:
+    resolution: {integrity: sha512-yLHvmtTUvO4znfQqcOYHO8H/l0sBHqfvzPAhu4rKNSRjyrj/KO1cP0S+1aa5zGsspaKxXfi2bhhzwSDD0xXwgA==}
     peerDependencies:
       vue: ^3.0.0
     peerDependenciesMeta:
