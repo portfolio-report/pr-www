@@ -1,11 +1,12 @@
+process.env.ESLINT_TSCONFIG = 'tsconfig.json'
+
 module.exports = {
   root: true,
   env: {
     browser: true,
     node: true,
   },
-  extends: ['@antfu', 'plugin:prettier/recommended'],
-  plugins: ['prettier'],
+  extends: ['@antfu'],
   // add your custom rules here
   rules: {
     'nuxt/no-cjs-in-config': 'off',
@@ -21,6 +22,18 @@ module.exports = {
     'vue/eqeqeq': 'off',
     'vue/prefer-separate-static-class': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
+    'curly': 'off',
+    'arrow-parens': 'off',
+    'operator-linebreak': 'off',
+    'vue/html-self-closing': 'off',
+    'vue/singleline-html-element-content-newline': 'off',
+    'vue/html-indent': 'off',
+    'vue/html-closing-bracket-newline': 'off',
+    '@typescript-eslint/comma-dangle': 'off',
+    '@typescript-eslint/quotes': 'off',
+    '@typescript-eslint/brace-style': ['warn', '1tbs', { allowSingleLine: true }],
+    '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
 
     // sort imports
     'sort-imports': ['warn', { ignoreDeclarationSort: true }],
