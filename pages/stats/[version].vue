@@ -17,13 +17,13 @@
           :sort-order="-1"
           class="p-datatable-sm"
         >
-          <Column field="date" header="Date" :sortable="true"></Column>
+          <Column field="date" header="Date" :sortable="true" />
           <Column
             field="count"
             header="Count"
             :sortable="true"
             class="text-right"
-          ></Column>
+          />
         </DataTable>
       </TabPanel>
 
@@ -34,13 +34,13 @@
           :sort-order="-1"
           class="p-datatable-sm"
         >
-          <Column field="country" header="Country" :sortable="true"></Column>
+          <Column field="country" header="Country" :sortable="true" />
           <Column
             field="count"
             header="Count"
             :sortable="true"
             class="text-right"
-          ></Column>
+          />
         </DataTable>
       </TabPanel>
     </TabView>
@@ -56,7 +56,7 @@ const { data, error } = await useAsyncData(
     useApi<{
       byCountry: { country: string; count: number }[]
       byDate: { date: string; count: number }[]
-    }>(`/stats/updates/${route.params.version}`)
+    }>(`/stats/updates/${route.params.version}`),
 )
 if (error.value || data.value?.byCountry == null || data.value.byDate == null) {
   throw createError({ statusCode: 404 })
@@ -74,17 +74,17 @@ const chartData = computed(() => {
   }
 
   const datesSorted = [...data.value.byDate].sort((a, b) =>
-    a.date.localeCompare(b.date)
+    a.date.localeCompare(b.date),
   )
 
   return {
-    labels: datesSorted.map((e) => e.date),
+    labels: datesSorted.map(e => e.date),
     datasets: [
       {
         backgroundColor: '#3B82F6',
         borderColor: '#3B82F6',
         fill: false,
-        data: datesSorted.map((e) => e.count),
+        data: datesSorted.map(e => e.count),
       },
     ],
   }

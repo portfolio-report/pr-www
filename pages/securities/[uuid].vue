@@ -29,9 +29,7 @@
             :to="$route.path"
           >
             <span class="mt-2 cursor-move w-20rem p-button p-component">
-              <span
-                class="i-carbon-move i-lg p-button-icon p-button-icon-left"
-              ></span>
+              <span class="i-carbon-move i-lg p-button-icon p-button-icon-left" />
               <span class="p-button-label">Add to Portfolio Performance</span>
             </span>
           </NuxtLink>
@@ -46,7 +44,7 @@
               max-height: 100px;
               mix-blend-mode: multiply;
             "
-          />
+          >
         </div>
       </div>
 
@@ -98,7 +96,9 @@
                   class="p-datatable-sm mb-2"
                 >
                   <Column field="weight" header="Percentage" :sortable="true">
-                    <template #body="{ data }"> {{ data.weight }}%</template>
+                    <template #body="{ data }">
+                      {{ data.weight }}%
+                    </template>
                   </Column>
                   <Column
                     field="taxonomy.name"
@@ -118,7 +118,7 @@
                 </DataTable>
               </OverlayPanel>
             </li>
-            <li v-if="industries.length == 1 && industries[0].taxonomy">
+            <li v-if="industries.length === 1 && industries[0].taxonomy">
               Industry:
               <b>{{ industries[0].taxonomy.name }}</b>
             </li>
@@ -132,7 +132,9 @@
                   class="p-datatable-sm"
                 >
                   <Column field="weight" header="Percentage" :sortable="true">
-                    <template #body="{ data }"> {{ data.weight }}%</template>
+                    <template #body="{ data }">
+                      {{ data.weight }}%
+                    </template>
                   </Column>
                   <Column
                     field="taxonomy.name"
@@ -185,17 +187,17 @@
           header="Events"
         >
           <DataTable :value="security.events">
-            <Column field="date" header="Date"></Column>
+            <Column field="date" header="Date" />
             <Column
               field="type"
               header="Type"
               style="text-transform: capitalize"
-            ></Column>
+            />
             <Column header="...">
               <template #body="{ data: event }">
                 {{
                   event.type === 'dividend'
-                    ? event.amount + ' ' + event.currencyCode
+                    ? `${event.amount} ${event.currencyCode}`
                     : ''
                 }}
                 {{ event.type === 'split' ? event.ratio : '' }}
@@ -209,9 +211,9 @@
 </template>
 
 <script setup lang="ts">
-import { SecurityAPI } from '~/store/Security.model'
+import type { SecurityAPI } from '~/store/Security.model'
 import { useApi } from '~/composables/useApi'
-import { Taxonomy } from '~/store/Taxonomy.model'
+import type { Taxonomy } from '~/store/Taxonomy.model'
 
 const selectedMarketcode = ref('')
 const selectedMarket = ref<{
@@ -227,7 +229,7 @@ const route = useRoute()
 
 const { data: rawSecurity, error } = await useAsyncData(
   `security:${route.params.uuid}`,
-  () => useApi<SecurityAPI>(`/securities/uuid/${route.params.uuid}`)
+  () => useApi<SecurityAPI>(`/securities/uuid/${route.params.uuid}`),
 )
 if (error.value || !rawSecurity.value) {
   throw createError({
@@ -257,8 +259,8 @@ const markets = computed(() => {
   })
 })
 
-const { data: rawTaxonomies } = await useAsyncData(`taxonomies`, () =>
-  useApi<Taxonomy[]>(`/taxonomies/`)
+const { data: rawTaxonomies } = await useAsyncData('taxonomies', () =>
+  useApi<Taxonomy[]>('/taxonomies/'),
 )
 
 if (!rawTaxonomies.value) {
@@ -271,18 +273,18 @@ if (!rawTaxonomies.value) {
 const taxonomies = ref(rawTaxonomies.value)
 
 const securityTaxonomies = computed(() =>
-  security.value.securityTaxonomies.map((st) => ({
+  security.value.securityTaxonomies.map(st => ({
     ...st,
     weight: Number(st.weight),
     // Join taxonomies to securityTaxonomies
-    taxonomy: taxonomies.value.find((t) => t.uuid === st.taxonomyUuid),
-  }))
+    taxonomy: taxonomies.value.find(t => t.uuid === st.taxonomyUuid),
+  })),
 )
 
 const countries = computed(() =>
   securityTaxonomies.value.filter(
-    (st) => st.rootTaxonomyUuid === '5b0d5647-a4e6-4db8-807b-c3a6d11697a7'
-  )
+    st => st.rootTaxonomyUuid === '5b0d5647-a4e6-4db8-807b-c3a6d11697a7',
+  ),
 )
 
 const countriesOverlay = ref()
@@ -292,8 +294,8 @@ const toggleCountriesOverlay = (event: MouseEvent) => {
 
 const industries = computed(() =>
   securityTaxonomies.value.filter(
-    (st) => st.rootTaxonomyUuid === '072bba7b-ed7a-4cb4-aab3-91520d00fb00'
-  )
+    st => st.rootTaxonomyUuid === '072bba7b-ed7a-4cb4-aab3-91520d00fb00',
+  ),
 )
 
 const industriesOverlay = ref()
@@ -317,24 +319,24 @@ watch(selectedMarketcode, async (selectedMarketcode) => {
 async function deletePrice({ date }: { date: string }) {
   await useApi(
     `/securities/uuid/${security.value.uuid}/markets/${selectedMarketcode.value}/prices/${date}`,
-    { method: 'delete' }
+    { method: 'delete' },
   )
 
   if (selectedMarket.value) {
     const idx = selectedMarket.value.prices.findIndex(
-      (e: { date: string }) => e.date === date
+      (e: { date: string }) => e.date === date,
     )
     delete selectedMarket.value.prices[idx]
   }
 }
 
 useHead(() => ({
-  title: security.value?.name + ' - Portfolio Report',
+  title: `${security.value?.name} - Portfolio Report`,
   link: [
     {
       rel: 'canonical',
       href:
-        'https://www.portfolio-report.net/securities/' + security.value.uuid,
+        `https://www.portfolio-report.net/securities/${security.value.uuid}`,
     },
   ],
 }))

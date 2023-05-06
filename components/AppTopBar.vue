@@ -1,7 +1,7 @@
 <template>
   <div class="layout-topbar">
     <NuxtLink to="/" class="layout-topbar-logo">
-      <img class="mx-2 h-4rem" src="/favicon-192.png" to="/" alt="Logo" />
+      <img class="mx-2 h-4rem" src="/favicon-192.png" to="/" alt="Logo">
       <span class="text-2xl font-medium align-self-center text-color">
         Portfolio Report
       </span>
@@ -19,7 +19,7 @@
       }"
       class="p-link layout-topbar-menu-button layout-topbar-button"
     >
-      <i class="i-carbon-overflow-menu-vertical"></i>
+      <i class="i-carbon-overflow-menu-vertical" />
     </Button>
 
     <ul
@@ -34,8 +34,7 @@
               type="submit"
               icon="i-carbon-search i-lg"
               class="p-button-secondary"
-            >
-            </Button>
+            />
           </div>
         </form>
       </li>

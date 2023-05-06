@@ -6,8 +6,8 @@
       'p-button-text': !solid,
       'p-button-rounded': !label,
       'x-button-small': small,
-      'p-button-secondary': color == 'secondary',
-      'p-button-success': color == 'success',
+      'p-button-secondary': color === 'secondary',
+      'p-button-success': color === 'success',
     }"
     :label="label"
     :form="form"
@@ -34,7 +34,7 @@ const emit = defineEmits<{
 
 const icons = computed(() => {
   if (props.icon && !props.small) {
-    return props.icon + ' i-lg'
+    return `${props.icon} i-lg`
   }
   return props.icon
 })

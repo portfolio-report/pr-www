@@ -1,4 +1,4 @@
-import { SecurityTaxonomy } from './SecurityTaxonomy.model'
+import type { SecurityTaxonomy } from './SecurityTaxonomy.model'
 
 export interface Security {
   uuid?: string | null

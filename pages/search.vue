@@ -2,7 +2,9 @@
   <div class="flex justify-content-center">
     <div style="width: 800px">
       <Card>
-        <template #title>Security Search</template>
+        <template #title>
+          Security Search
+        </template>
         <template #content>
           <form @submit.prevent="search">
             <ClientOnly>
@@ -34,30 +36,30 @@
             </Message>
 
             <Message v-if="error" severity="error">
-              Sorry, there was an error:<br />{{ errorText }}
+              Sorry, there was an error:<br>{{ errorText }}
             </Message>
           </form>
         </template>
       </Card>
 
       <Card v-if="results.length > 0" class="mt-4">
-        <template #title>Results</template>
+        <template #title>
+          Results
+        </template>
         <template #content>
           <div v-for="result in results" :key="result.uuid" class="mb-3">
             <div class="text-lg font-medium flex align-items-center">
               <i
                 v-if="getPricesAvailable(result)"
                 v-tooltip.top="'Prices available'"
-                :class="[
-                  'i-carbon-chart-line',
-                  'mr-1',
+                class="i-carbon-chart-line mr-1" :class="[
                   { 'text-primary': getRecentPricesAvailable(result) },
                 ]"
-              ></i>
+              />
 
               <NuxtLink
                 v-tooltip.top="'Drag and drop me to Portfolio Performance!'"
-                :to="'/securities/' + result.uuid"
+                :to="`/securities/${result.uuid}`"
               >
                 {{ result.name }}
               </NuxtLink>
@@ -82,16 +84,16 @@
       </Card>
 
       <Card class="mt-4">
-        <template #title>Your contribution is needed 💪</template>
+        <template #title>
+          Your contribution is needed 💪
+        </template>
         <template #content>
           Your help is needed to keep this website up and running. Have you
           thought about contributing? You could:
           <ul>
             <li>
               Actively maintain and develop the
-              <a href="https://www.github.com/portfolio-report"
-                >source code on Github</a
-              >.
+              <a href="https://www.github.com/portfolio-report">source code on Github</a>.
             </li>
             <li>
               Become member of the
@@ -120,10 +122,10 @@ const canonicalUrl = computed(() => {
   let ret = 'https://www.portfolio-report.net/search'
 
   if (route.query && route.query.q) {
-    ret += '?q=' + route.query.q
+    ret += `?q=${route.query.q}`
 
     if (route.query.securityType) {
-      ret += '&securityType=' + route.query.securityType
+      ret += `&securityType=${route.query.securityType}`
     }
   }
   return ret
@@ -170,7 +172,7 @@ watch(
       readQueryParameters()
       updateResults()
     }
-  }
+  },
 )
 
 async function search() {
@@ -248,7 +250,7 @@ function getPricesAvailable(result: {
   markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
 }): boolean {
   return result.markets.some(
-    (market) => market.firstPriceDate && market.lastPriceDate
+    market => market.firstPriceDate && market.lastPriceDate,
   )
 }
 
@@ -256,9 +258,9 @@ function getRecentPricesAvailable(result: {
   markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
 }): boolean {
   return result.markets.some(
-    (market) =>
-      market.lastPriceDate &&
-      differenceInCalendarDays(new Date(), new Date(market.lastPriceDate)) < 30
+    market =>
+      market.lastPriceDate
+      && differenceInCalendarDays(new Date(), new Date(market.lastPriceDate)) < 30,
   )
 }
 
@@ -273,8 +275,8 @@ function getUniqueSymbols(result: {
       result.symbolXfra,
       result.symbolXnas,
       result.symbolXnys,
-      ...result.markets?.map((m) => m.symbol),
+      ...result.markets?.map(m => m.symbol),
     ]),
-  ].filter((s) => !!s)
+  ].filter(s => !!s)
 }
 </script>

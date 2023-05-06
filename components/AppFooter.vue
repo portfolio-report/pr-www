@@ -25,7 +25,7 @@ const config = useRuntimeConfig()
 const githubLink = computed(() => {
   if (config.public.gitSha) {
     return (
-      'https://github.com/portfolio-report/pr-www/tree/' + config.public.gitSha
+      `https://github.com/portfolio-report/pr-www/tree/${config.public.gitSha}`
     )
   }
   return 'https://www.github.com/portfolio-report/pr-www'

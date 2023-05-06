@@ -25,7 +25,7 @@
           v-for="(h, i) in [30, 25, 45, 70, 90]"
           :key="i"
           width="20%"
-          :height="h + '%'"
+          :height="`${h}%`"
           class="mr-2"
         />
       </div>
@@ -118,11 +118,11 @@ const {
 })
 
 const chartData = computed(() => ({
-  labels: stats.value?.versions.map((e) => e.version),
+  labels: stats.value?.versions.map(e => e.version),
   datasets: [
     {
       backgroundColor: '#3B82F6',
-      data: stats.value?.versions.map((e) => e.count),
+      data: stats.value?.versions.map(e => e.count),
     },
   ],
 }))

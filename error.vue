@@ -8,7 +8,7 @@
             style="font-size: 5rem"
           />
           <h1 class="mt-0">
-            <span v-if="error.statusCode == 404">Page not found 😟</span>
+            <span v-if="error.statusCode === 404">Page not found 😟</span>
             <span v-else>
               {{ error.statusMessage }} ({{ error.statusCode }})
             </span>
@@ -17,17 +17,21 @@
       </template>
 
       <template #content>
-        <div v-if="error.statusCode == 404" class="text-center">
+        <div v-if="error.statusCode === 404" class="text-center">
           <p>
             Sorry, this page does not exist. If you think, this is wrong, please
-            <NuxtLink to="/contact">let us know</NuxtLink>.
+            <NuxtLink to="/contact">
+              let us know
+            </NuxtLink>.
           </p>
-          <NuxtLink to="/">Go to home page</NuxtLink>
+          <NuxtLink to="/">
+            Go to home page
+          </NuxtLink>
         </div>
         <div v-else>
           {{ error.message }}
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div v-html="error.description"></div>
+          <div v-html="error.description" />
         </div>
       </template>
     </Card>

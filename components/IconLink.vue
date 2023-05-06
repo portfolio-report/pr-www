@@ -26,7 +26,7 @@ const emit = defineEmits<{
 
 const icons = computed(() => {
   if (props.icon && !props.small) {
-    return props.icon + ' i-lg'
+    return `${props.icon} i-lg`
   }
   return props.icon
 })

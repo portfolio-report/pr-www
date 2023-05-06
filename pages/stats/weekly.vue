@@ -32,7 +32,7 @@
           v-for="(h, i) in [30, 25, 45, 70, 90]"
           :key="i"
           width="20%"
-          :height="h + '%'"
+          :height="`${h}%`"
           class="mr-2"
         />
       </div>
@@ -115,15 +115,15 @@ const { data, pending, refresh } = useLazyAsyncData(
     return {
       weeks: weeks.sort((a, b) => a.week - b.week),
     }
-  }
+  },
 )
 
 const chartData = computed(() => ({
-  labels: data.value?.weeks.map((e) => e.week),
+  labels: data.value?.weeks.map(e => e.week),
   datasets: [
     {
       backgroundColor: '#3B82F6',
-      data: data.value?.weeks.map((e) => e.count),
+      data: data.value?.weeks.map(e => e.count),
     },
   ],
 }))

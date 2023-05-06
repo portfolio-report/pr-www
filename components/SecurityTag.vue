@@ -1,6 +1,8 @@
 <template>
   <Tag class="mx-1 bg-orange-300">
-    <NuxtLink :to="linkTo">{{ name }}</NuxtLink>
+    <NuxtLink :to="linkTo">
+      {{ name }}
+    </NuxtLink>
   </Tag>
 </template>
 
@@ -10,7 +12,7 @@ const props = defineProps<{ name: string }>()
 const linkTo = computed(() => {
   let name = props.name
   if (name.includes(' ')) {
-    name = '"' + name + '"'
+    name = `"${name}"`
   }
   return `/search?q=tag:${name}`
 })

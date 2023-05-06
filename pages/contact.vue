@@ -1,13 +1,15 @@
 <template>
   <div class="flex justify-content-center">
     <Card style="width: 800px">
-      <template #title>Contact</template>
+      <template #title>
+        Contact
+      </template>
       <template #content>
         Please use the
         <a href="https://forum.portfolio-performance.info/">
           discussion forum
         </a>
-        for all matters that can be discussed publicly.<br />
+        for all matters that can be discussed publicly.<br>
         This contact form can be used to establish direct contact with the
         operators for all matters that cannot be discussed publicly.
 

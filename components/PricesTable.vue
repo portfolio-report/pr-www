@@ -36,18 +36,18 @@
 
 <script setup lang="ts">
 import { FilterOperator } from 'primevue/api'
-import { DataTableFilterMeta } from 'primevue/datatable'
+import type { DataTableFilterMeta } from 'primevue/datatable'
 
 const props = defineProps<{
   prices: { date: string; close: number }[]
 }>()
 
 const priceArray = computed(() =>
-  props.prices.map((e) => ({
+  props.prices.map(e => ({
     dateStr: e.date,
     date: new Date(e.date),
     close: e.close,
-  }))
+  })),
 )
 
 const filters = ref({

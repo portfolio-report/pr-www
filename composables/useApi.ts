@@ -1,8 +1,8 @@
-import { NitroFetchOptions, NitroFetchRequest } from 'nitropack'
+import type { NitroFetchOptions, NitroFetchRequest } from 'nitropack'
 
 export async function useApi<T>(
   path: string,
-  opts?: NitroFetchOptions<NitroFetchRequest>
+  opts?: NitroFetchOptions<NitroFetchRequest>,
 ): Promise<T> {
   const config = useRuntimeConfig()
 
