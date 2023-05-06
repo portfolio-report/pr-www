@@ -2,7 +2,6 @@
 import { useTimeAgo } from '@vueuse/core'
 
 const year = ref(new Date().getFullYear())
-watch(year, () => refresh())
 
 const yearOverlay = ref()
 const toggleYearOverlay = (event: MouseEvent) => {
@@ -42,6 +41,8 @@ const { data, pending, refresh } = useLazyAsyncData(
     }
   },
 )
+
+watch(year, () => refresh())
 
 const chartData = computed(() => ({
   labels: data.value?.weeks.map(e => e.week),
