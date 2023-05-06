@@ -5,7 +5,6 @@ module.exports = {
   rules: {
     'curly': ['warn', 'all'],
 
-    'antfu/top-level-function': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/brace-style': ['warn', '1tbs', { allowSingleLine: true }],
 

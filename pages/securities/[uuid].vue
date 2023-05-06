@@ -76,7 +76,7 @@ const countries = computed(() =>
 )
 
 const countriesOverlay = ref()
-const toggleCountriesOverlay = (event: MouseEvent) => {
+function toggleCountriesOverlay(event: MouseEvent) {
   countriesOverlay.value.toggle(event)
 }
 
@@ -87,7 +87,7 @@ const industries = computed(() =>
 )
 
 const industriesOverlay = ref()
-const toggleIndustriesOverlay = (event: MouseEvent) => {
+function toggleIndustriesOverlay(event: MouseEvent) {
   industriesOverlay.value.toggle(event)
 }
 

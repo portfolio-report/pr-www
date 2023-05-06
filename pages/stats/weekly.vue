@@ -4,7 +4,7 @@ import { useTimeAgo } from '@vueuse/core'
 const year = ref(new Date().getFullYear())
 
 const yearOverlay = ref()
-const toggleYearOverlay = (event: MouseEvent) => {
+function toggleYearOverlay(event: MouseEvent) {
   yearOverlay.value.toggle(event)
 }
 
