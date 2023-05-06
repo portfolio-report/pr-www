@@ -1,24 +1,26 @@
-// eslint-disable-next-line unicorn/prefer-module
 module.exports = {
   root: true,
   env: {
     browser: true,
     node: true,
   },
-  extends: [
-    'plugin:vue/vue3-recommended',
-    '@nuxtjs/eslint-config-typescript',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:nuxt/recommended',
-    'plugin:prettier/recommended',
-    'plugin:promise/recommended',
-    'plugin:unicorn/recommended',
-  ],
+  extends: ['@antfu', 'plugin:prettier/recommended'],
   plugins: ['prettier'],
   // add your custom rules here
   rules: {
     'nuxt/no-cjs-in-config': 'off',
     'no-console': 'warn',
+
+    'antfu/if-newline': 'off',
+    'antfu/top-level-function': 'off',
+    'vue/component-tags-order': 'off',
+    'vue/prefer-template': 'off',
+    'prefer-template': 'off',
+    '@typescript-eslint/consistent-type-imports': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    'vue/eqeqeq': 'off',
+    'vue/prefer-separate-static-class': 'off',
+    '@typescript-eslint/no-explicit-any': 'warn',
 
     // sort imports
     'sort-imports': ['warn', { ignoreDeclarationSort: true }],
@@ -30,9 +32,6 @@ module.exports = {
         allowModifiers: true,
       },
     ],
-
-    // eslint-plugin-nuxt is still for nuxt/vue 2
-    'vue/no-v-model-argument': 'off',
 
     // Enable additional vue rules
     // https://eslint.vuejs.org/rules/
