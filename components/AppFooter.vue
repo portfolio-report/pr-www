@@ -1,3 +1,16 @@
+<script setup lang="ts">
+const config = useRuntimeConfig()
+
+const githubLink = computed(() => {
+  if (config.public.gitSha) {
+    return (
+      `https://github.com/portfolio-report/pr-www/tree/${config.public.gitSha}`
+    )
+  }
+  return 'https://www.github.com/portfolio-report/pr-www'
+})
+</script>
+
 <template>
   <footer class="flex justify-content-center">
     <IconLink
@@ -18,19 +31,6 @@
     />
   </footer>
 </template>
-
-<script setup lang="ts">
-const config = useRuntimeConfig()
-
-const githubLink = computed(() => {
-  if (config.public.gitSha) {
-    return (
-      `https://github.com/portfolio-report/pr-www/tree/${config.public.gitSha}`
-    )
-  }
-  return 'https://www.github.com/portfolio-report/pr-www'
-})
-</script>
 
 <style scoped>
 a {

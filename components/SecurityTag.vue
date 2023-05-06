@@ -1,11 +1,3 @@
-<template>
-  <Tag class="mx-1 bg-orange-300">
-    <NuxtLink :to="linkTo">
-      {{ name }}
-    </NuxtLink>
-  </Tag>
-</template>
-
 <script setup lang="ts">
 const props = defineProps<{ name: string }>()
 
@@ -17,6 +9,14 @@ const linkTo = computed(() => {
   return `/search?q=tag:${name}`
 })
 </script>
+
+<template>
+  <Tag class="mx-1 bg-orange-300">
+    <NuxtLink :to="linkTo">
+      {{ name }}
+    </NuxtLink>
+  </Tag>
+</template>
 
 <style scoped>
 a {

@@ -1,3 +1,59 @@
+<script setup lang="ts">
+import { useTimeAgo } from '@vueuse/core'
+
+const lastUpdate = ref(new Date())
+const timeAgo = useTimeAgo(lastUpdate)
+
+const {
+  data: stats,
+  pending,
+  refresh,
+} = useLazyAsyncData(async () => {
+  const versions = await useApi<
+    Array<{
+      version: string
+      count: number
+      firstUpdate: Date
+      firstUpdateInt: number
+      lastUpdate: Date
+      lastUpdateInt: number
+    }>
+  >('/stats/updates')
+
+  /* Convert datetime strings to objects and numerical */
+  for (const v of versions) {
+    if (v.firstUpdate) {
+      v.firstUpdate = new Date(v.firstUpdate)
+      v.firstUpdateInt = v.firstUpdate.getTime()
+    }
+    if (v.lastUpdate) {
+      v.lastUpdate = new Date(v.lastUpdate)
+      v.lastUpdateInt = v.lastUpdate.getTime()
+    }
+  }
+
+  lastUpdate.value = new Date()
+
+  return { versions }
+})
+
+const chartData = computed(() => ({
+  labels: stats.value?.versions.map(e => e.version),
+  datasets: [
+    {
+      backgroundColor: '#3B82F6',
+      data: stats.value?.versions.map(e => e.count),
+    },
+  ],
+}))
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+}
+</script>
+
 <template>
   <div>
     <div class="p-buttonset">
@@ -77,59 +133,3 @@
     </template>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useTimeAgo } from '@vueuse/core'
-
-const lastUpdate = ref(new Date())
-const timeAgo = useTimeAgo(lastUpdate)
-
-const {
-  data: stats,
-  pending,
-  refresh,
-} = useLazyAsyncData(async () => {
-  const versions = await useApi<
-    Array<{
-      version: string
-      count: number
-      firstUpdate: Date
-      firstUpdateInt: number
-      lastUpdate: Date
-      lastUpdateInt: number
-    }>
-  >('/stats/updates')
-
-  /* Convert datetime strings to objects and numerical */
-  for (const v of versions) {
-    if (v.firstUpdate) {
-      v.firstUpdate = new Date(v.firstUpdate)
-      v.firstUpdateInt = v.firstUpdate.getTime()
-    }
-    if (v.lastUpdate) {
-      v.lastUpdate = new Date(v.lastUpdate)
-      v.lastUpdateInt = v.lastUpdate.getTime()
-    }
-  }
-
-  lastUpdate.value = new Date()
-
-  return { versions }
-})
-
-const chartData = computed(() => ({
-  labels: stats.value?.versions.map(e => e.version),
-  datasets: [
-    {
-      backgroundColor: '#3B82F6',
-      data: stats.value?.versions.map(e => e.count),
-    },
-  ],
-}))
-
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: { legend: { display: false } },
-}
-</script>

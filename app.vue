@@ -1,12 +1,3 @@
-<template>
-  <div>
-    <NuxtLayout>
-      <NuxtPage :key="$route.fullPath" />
-    </NuxtLayout>
-    <Toast />
-  </div>
-</template>
-
 <script setup lang="ts">
 useHead({
   title: 'Portfolio Report',
@@ -39,3 +30,12 @@ useHead({
   ],
 })
 </script>
+
+<template>
+  <div>
+    <NuxtLayout>
+      <NuxtPage :key="$route.fullPath" />
+    </NuxtLayout>
+    <Toast />
+  </div>
+</template>

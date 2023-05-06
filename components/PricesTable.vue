@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import { FilterOperator } from 'primevue/api'
+import type { DataTableFilterMeta } from 'primevue/datatable'
+
+const props = defineProps<{
+  prices: { date: string; close: number }[]
+}>()
+
+const priceArray = computed(() =>
+  props.prices.map(e => ({
+    dateStr: e.date,
+    date: new Date(e.date),
+    close: e.close,
+  })),
+)
+
+const filters = ref({
+  date: {
+    operator: FilterOperator.AND,
+    constraints: [{ value: null, matchMode: 'dateIs' }],
+  },
+} satisfies DataTableFilterMeta)
+</script>
+
 <template>
   <div>
     <DataTable
@@ -33,27 +57,3 @@
     </DataTable>
   </div>
 </template>
-
-<script setup lang="ts">
-import { FilterOperator } from 'primevue/api'
-import type { DataTableFilterMeta } from 'primevue/datatable'
-
-const props = defineProps<{
-  prices: { date: string; close: number }[]
-}>()
-
-const priceArray = computed(() =>
-  props.prices.map(e => ({
-    dateStr: e.date,
-    date: new Date(e.date),
-    close: e.close,
-  })),
-)
-
-const filters = ref({
-  date: {
-    operator: FilterOperator.AND,
-    constraints: [{ value: null, matchMode: 'dateIs' }],
-  },
-} satisfies DataTableFilterMeta)
-</script>

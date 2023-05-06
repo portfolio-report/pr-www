@@ -1,14 +1,3 @@
-<template>
-  <NuxtLink
-    :to="to"
-    :href="to ? undefined : href || '#'"
-    :target="target"
-    @click="emit('click', $event)"
-  >
-    <i class="ii" :class="icons" />
-  </NuxtLink>
-</template>
-
 <script setup lang="ts">
 const props = defineProps<{
   color?: 'secondary' | 'success'
@@ -31,6 +20,17 @@ const icons = computed(() => {
   return props.icon
 })
 </script>
+
+<template>
+  <NuxtLink
+    :to="to"
+    :href="to ? undefined : href || '#'"
+    :target="target"
+    @click="emit('click', $event)"
+  >
+    <i class="ii" :class="icons" />
+  </NuxtLink>
+</template>
 
 <style scoped>
 a {

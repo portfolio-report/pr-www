@@ -1,3 +1,47 @@
+<script setup lang="ts">
+const route = useRoute()
+
+const { data, error } = await useAsyncData(
+  `stats:${route.params.version}`,
+  () =>
+    useApi<{
+      byCountry: { country: string; count: number }[]
+      byDate: { date: string; count: number }[]
+    }>(`/stats/updates/${route.params.version}`),
+)
+if (error.value || data.value?.byCountry == null || data.value.byDate == null) {
+  throw createError({ statusCode: 404 })
+}
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+}
+
+const chartData = computed(() => {
+  if (!data.value?.byCountry) {
+    return { labels: [], datasets: [] }
+  }
+
+  const datesSorted = [...data.value.byDate].sort((a, b) =>
+    a.date.localeCompare(b.date),
+  )
+
+  return {
+    labels: datesSorted.map(e => e.date),
+    datasets: [
+      {
+        backgroundColor: '#3B82F6',
+        borderColor: '#3B82F6',
+        fill: false,
+        data: datesSorted.map(e => e.count),
+      },
+    ],
+  }
+})
+</script>
+
 <template>
   <div>
     <h2>Version Statistics for {{ $route.params.version }}</h2>
@@ -46,47 +90,3 @@
     </TabView>
   </div>
 </template>
-
-<script setup lang="ts">
-const route = useRoute()
-
-const { data, error } = await useAsyncData(
-  `stats:${route.params.version}`,
-  () =>
-    useApi<{
-      byCountry: { country: string; count: number }[]
-      byDate: { date: string; count: number }[]
-    }>(`/stats/updates/${route.params.version}`),
-)
-if (error.value || data.value?.byCountry == null || data.value.byDate == null) {
-  throw createError({ statusCode: 404 })
-}
-
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: { legend: { display: false } },
-}
-
-const chartData = computed(() => {
-  if (!data.value?.byCountry) {
-    return { labels: [], datasets: [] }
-  }
-
-  const datesSorted = [...data.value.byDate].sort((a, b) =>
-    a.date.localeCompare(b.date),
-  )
-
-  return {
-    labels: datesSorted.map(e => e.date),
-    datasets: [
-      {
-        backgroundColor: '#3B82F6',
-        borderColor: '#3B82F6',
-        fill: false,
-        data: datesSorted.map(e => e.count),
-      },
-    ],
-  }
-})
-</script>

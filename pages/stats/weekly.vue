@@ -1,3 +1,65 @@
+<script setup lang="ts">
+import { useTimeAgo } from '@vueuse/core'
+
+const year = ref(new Date().getFullYear())
+watch(year, () => refresh())
+
+const yearOverlay = ref()
+const toggleYearOverlay = (event: MouseEvent) => {
+  yearOverlay.value.toggle(event)
+}
+
+const lastUpdate = ref(new Date())
+const timeAgo = useTimeAgo(lastUpdate)
+
+const { data, pending, refresh } = useLazyAsyncData(
+  `statsWeeks:${year.value}`,
+  async () => {
+    const weeks = await useApi<
+      Array<{
+        year: number
+        week: number
+        count: number
+        firstUpdate: Date
+        lastUpdate: Date
+      }>
+    >(`/stats/updates/weeks?year=${year.value}`)
+
+    /* Convert datetime strings to objects */
+    for (const w of weeks) {
+      if (w.firstUpdate) {
+        w.firstUpdate = new Date(w.firstUpdate)
+      }
+      if (w.lastUpdate) {
+        w.lastUpdate = new Date(w.lastUpdate)
+      }
+    }
+
+    lastUpdate.value = new Date()
+
+    return {
+      weeks: weeks.sort((a, b) => a.week - b.week),
+    }
+  },
+)
+
+const chartData = computed(() => ({
+  labels: data.value?.weeks.map(e => e.week),
+  datasets: [
+    {
+      backgroundColor: '#3B82F6',
+      data: data.value?.weeks.map(e => e.count),
+    },
+  ],
+}))
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+}
+</script>
+
 <template>
   <div>
     <div class="p-buttonset">
@@ -72,65 +134,3 @@
     </template>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useTimeAgo } from '@vueuse/core'
-
-const year = ref(new Date().getFullYear())
-watch(year, () => refresh())
-
-const yearOverlay = ref()
-const toggleYearOverlay = (event: MouseEvent) => {
-  yearOverlay.value.toggle(event)
-}
-
-const lastUpdate = ref(new Date())
-const timeAgo = useTimeAgo(lastUpdate)
-
-const { data, pending, refresh } = useLazyAsyncData(
-  `statsWeeks:${year.value}`,
-  async () => {
-    const weeks = await useApi<
-      Array<{
-        year: number
-        week: number
-        count: number
-        firstUpdate: Date
-        lastUpdate: Date
-      }>
-    >(`/stats/updates/weeks?year=${year.value}`)
-
-    /* Convert datetime strings to objects */
-    for (const w of weeks) {
-      if (w.firstUpdate) {
-        w.firstUpdate = new Date(w.firstUpdate)
-      }
-      if (w.lastUpdate) {
-        w.lastUpdate = new Date(w.lastUpdate)
-      }
-    }
-
-    lastUpdate.value = new Date()
-
-    return {
-      weeks: weeks.sort((a, b) => a.week - b.week),
-    }
-  },
-)
-
-const chartData = computed(() => ({
-  labels: data.value?.weeks.map(e => e.week),
-  datasets: [
-    {
-      backgroundColor: '#3B82F6',
-      data: data.value?.weeks.map(e => e.count),
-    },
-  ],
-}))
-
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: { legend: { display: false } },
-}
-</script>

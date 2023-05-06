@@ -1,117 +1,3 @@
-<template>
-  <div class="flex justify-content-center">
-    <div style="width: 800px">
-      <Card>
-        <template #title>
-          Security Search
-        </template>
-        <template #content>
-          <form @submit.prevent="search">
-            <ClientOnly>
-              <div class="p-float-label mt-2">
-                <InputText
-                  id="searchTermInput"
-                  v-model="searchTerm"
-                  type="search"
-                  class="w-full"
-                  autofocus
-                />
-                <label for="searchTermInput">ISIN/WKN/Symbol/Name</label>
-              </div>
-
-              <SelectSecurityType v-model="securityType" class="w-full mt-4" />
-
-              <Button
-                type="submit"
-                :disabled="!searchTerm || searching"
-                class="w-full flex justify-content-center mt-4"
-              >
-                <span v-if="!searching" class="font-bold">Search</span>
-                <ProgressSpinner v-else style="height: 20px" />
-              </Button>
-            </ClientOnly>
-
-            <Message v-if="noResults" severity="info">
-              Sorry, no results were found.
-            </Message>
-
-            <Message v-if="error" severity="error">
-              Sorry, there was an error:<br>{{ errorText }}
-            </Message>
-          </form>
-        </template>
-      </Card>
-
-      <Card v-if="results.length > 0" class="mt-4">
-        <template #title>
-          Results
-        </template>
-        <template #content>
-          <div v-for="result in results" :key="result.uuid" class="mb-3">
-            <div class="text-lg font-medium flex align-items-center">
-              <i
-                v-if="getPricesAvailable(result)"
-                v-tooltip.top="'Prices available'"
-                class="i-carbon-chart-line mr-1" :class="[
-                  { 'text-primary': getRecentPricesAvailable(result) },
-                ]"
-              />
-
-              <NuxtLink
-                v-tooltip.top="'Drag and drop me to Portfolio Performance!'"
-                :to="`/securities/${result.uuid}`"
-              >
-                {{ result.name }}
-              </NuxtLink>
-
-              <Tag class="mx-1 bg-teal-500">
-                {{ result.securityType }}
-              </Tag>
-
-              <SecurityTag v-for="tag in result.tags" :key="tag" :name="tag" />
-            </div>
-            <div class="text-600">
-              {{ result.isin }} · {{ result.wkn }}
-              <span
-                v-for="(symbol, idx) in getUniqueSymbols(result)"
-                :key="idx"
-              >
-                · {{ symbol }}
-              </span>
-            </div>
-          </div>
-        </template>
-      </Card>
-
-      <Card class="mt-4">
-        <template #title>
-          Your contribution is needed 💪
-        </template>
-        <template #content>
-          Your help is needed to keep this website up and running. Have you
-          thought about contributing? You could:
-          <ul>
-            <li>
-              Actively maintain and develop the
-              <a href="https://www.github.com/portfolio-report">source code on Github</a>.
-            </li>
-            <li>
-              Become member of the
-              <a href="https://forum.portfolio-performance.info">forum</a> and
-              help other users.
-            </li>
-            <li>
-              Cover monthly costs for server operation and licence fees. Become
-              sponsor on
-              <a href="https://github.com/sponsors/tfabritius">Github</a>.
-            </li>
-          </ul>
-        </template>
-      </Card>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { differenceInCalendarDays } from 'date-fns'
 
@@ -280,3 +166,117 @@ function getUniqueSymbols(result: {
   ].filter(s => !!s)
 }
 </script>
+
+<template>
+  <div class="flex justify-content-center">
+    <div style="width: 800px">
+      <Card>
+        <template #title>
+          Security Search
+        </template>
+        <template #content>
+          <form @submit.prevent="search">
+            <ClientOnly>
+              <div class="p-float-label mt-2">
+                <InputText
+                  id="searchTermInput"
+                  v-model="searchTerm"
+                  type="search"
+                  class="w-full"
+                  autofocus
+                />
+                <label for="searchTermInput">ISIN/WKN/Symbol/Name</label>
+              </div>
+
+              <SelectSecurityType v-model="securityType" class="w-full mt-4" />
+
+              <Button
+                type="submit"
+                :disabled="!searchTerm || searching"
+                class="w-full flex justify-content-center mt-4"
+              >
+                <span v-if="!searching" class="font-bold">Search</span>
+                <ProgressSpinner v-else style="height: 20px" />
+              </Button>
+            </ClientOnly>
+
+            <Message v-if="noResults" severity="info">
+              Sorry, no results were found.
+            </Message>
+
+            <Message v-if="error" severity="error">
+              Sorry, there was an error:<br>{{ errorText }}
+            </Message>
+          </form>
+        </template>
+      </Card>
+
+      <Card v-if="results.length > 0" class="mt-4">
+        <template #title>
+          Results
+        </template>
+        <template #content>
+          <div v-for="result in results" :key="result.uuid" class="mb-3">
+            <div class="text-lg font-medium flex align-items-center">
+              <i
+                v-if="getPricesAvailable(result)"
+                v-tooltip.top="'Prices available'"
+                class="i-carbon-chart-line mr-1" :class="[
+                  { 'text-primary': getRecentPricesAvailable(result) },
+                ]"
+              />
+
+              <NuxtLink
+                v-tooltip.top="'Drag and drop me to Portfolio Performance!'"
+                :to="`/securities/${result.uuid}`"
+              >
+                {{ result.name }}
+              </NuxtLink>
+
+              <Tag class="mx-1 bg-teal-500">
+                {{ result.securityType }}
+              </Tag>
+
+              <SecurityTag v-for="tag in result.tags" :key="tag" :name="tag" />
+            </div>
+            <div class="text-600">
+              {{ result.isin }} · {{ result.wkn }}
+              <span
+                v-for="(symbol, idx) in getUniqueSymbols(result)"
+                :key="idx"
+              >
+                · {{ symbol }}
+              </span>
+            </div>
+          </div>
+        </template>
+      </Card>
+
+      <Card class="mt-4">
+        <template #title>
+          Your contribution is needed 💪
+        </template>
+        <template #content>
+          Your help is needed to keep this website up and running. Have you
+          thought about contributing? You could:
+          <ul>
+            <li>
+              Actively maintain and develop the
+              <a href="https://www.github.com/portfolio-report">source code on Github</a>.
+            </li>
+            <li>
+              Become member of the
+              <a href="https://forum.portfolio-performance.info">forum</a> and
+              help other users.
+            </li>
+            <li>
+              Cover monthly costs for server operation and licence fees. Become
+              sponsor on
+              <a href="https://github.com/sponsors/tfabritius">Github</a>.
+            </li>
+          </ul>
+        </template>
+      </Card>
+    </div>
+  </div>
+</template>

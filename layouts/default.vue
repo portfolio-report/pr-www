@@ -1,3 +1,10 @@
+<script setup lang="ts">
+const containerClass = ref<Array<string | { [key: string]: boolean }>>([
+  'layout-wrapper',
+  'layout-overlay',
+])
+</script>
+
 <template>
   <div :class="containerClass">
     <AppTopBar />
@@ -10,13 +17,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-const containerClass = ref<Array<string | { [key: string]: boolean }>>([
-  'layout-wrapper',
-  'layout-overlay',
-])
-</script>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/variables.scss';

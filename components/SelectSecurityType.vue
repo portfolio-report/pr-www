@@ -1,19 +1,3 @@
-<template>
-  <span class="p-float-label">
-    <Dropdown
-      id="dropdown"
-      class="w-full"
-      :model-value="modelValue"
-      :options="securityTypeItems"
-      option-label="text"
-      option-value="value"
-      :show-clear="true"
-      @update:model-value="update"
-    />
-    <label for="dropdown">Security Type</label>
-  </span>
-</template>
-
 <script setup lang="ts">
 defineProps<{ modelValue: string }>()
 
@@ -31,3 +15,19 @@ function update(value: string) {
   emit('update:modelValue', value)
 }
 </script>
+
+<template>
+  <span class="p-float-label">
+    <Dropdown
+      id="dropdown"
+      class="w-full"
+      :model-value="modelValue"
+      :options="securityTypeItems"
+      option-label="text"
+      option-value="value"
+      :show-clear="true"
+      @update:model-value="update"
+    />
+    <label for="dropdown">Security Type</label>
+  </span>
+</template>

@@ -1,3 +1,15 @@
+<script setup lang="ts">
+const router = useRouter()
+
+const searchTerm = ref('')
+
+function search() {
+  const q = searchTerm.value
+  searchTerm.value = ''
+  router.push({ path: '/search', query: { q } })
+}
+</script>
+
 <template>
   <div class="layout-topbar">
     <NuxtLink to="/" class="layout-topbar-logo">
@@ -41,18 +53,6 @@
     </ul>
   </div>
 </template>
-
-<script setup lang="ts">
-const router = useRouter()
-
-const searchTerm = ref('')
-
-function search() {
-  const q = searchTerm.value
-  searchTerm.value = ''
-  router.push({ path: '/search', query: { q } })
-}
-</script>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/mixins.scss';

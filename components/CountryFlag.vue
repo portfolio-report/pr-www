@@ -1,7 +1,3 @@
-<template>
-  <i class="ii" :class="icon" />
-</template>
-
 <script setup lang="ts">
 const props = defineProps<{
   country: string
@@ -48,3 +44,7 @@ const icon = computed(() => {
   return mapIcons[props.country]
 })
 </script>
+
+<template>
+  <i class="ii" :class="icon" />
+</template>

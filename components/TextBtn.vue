@@ -1,22 +1,3 @@
-<template>
-  <Button
-    :type="type"
-    :icon="icons"
-    :class="{
-      'p-button-text': !solid,
-      'p-button-rounded': !label,
-      'x-button-small': small,
-      'p-button-secondary': color === 'secondary',
-      'p-button-success': color === 'success',
-    }"
-    :label="label"
-    :form="form"
-    @click="emit('click', $event)"
-  >
-    <slot />
-  </Button>
-</template>
-
 <script setup lang="ts">
 const props = defineProps<{
   color?: 'secondary' | 'success'
@@ -39,6 +20,25 @@ const icons = computed(() => {
   return props.icon
 })
 </script>
+
+<template>
+  <Button
+    :type="type"
+    :icon="icons"
+    :class="{
+      'p-button-text': !solid,
+      'p-button-rounded': !label,
+      'x-button-small': small,
+      'p-button-secondary': color === 'secondary',
+      'p-button-success': color === 'success',
+    }"
+    :label="label"
+    :form="form"
+    @click="emit('click', $event)"
+  >
+    <slot />
+  </Button>
+</template>
 
 <style scoped>
 .p-button.x-button-small {

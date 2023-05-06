@@ -1,3 +1,135 @@
+<script setup lang="ts">
+import type { SecurityAPI } from '~/store/Security.model'
+import { useApi } from '~/composables/useApi'
+import type { Taxonomy } from '~/store/Taxonomy.model'
+
+const selectedMarketcode = ref('')
+const selectedMarket = ref<{
+  currencyCode: string
+  marketCode: string
+  firstPriceDate: string | null
+  lastPriceDate: string | null
+  symbol: string | null
+  prices: Array<{ date: string; close: number }>
+} | null>(null)
+
+const route = useRoute()
+
+const { data: rawSecurity, error } = await useAsyncData(
+  `security:${route.params.uuid}`,
+  () => useApi<SecurityAPI>(`/securities/uuid/${route.params.uuid}`),
+)
+if (error.value || !rawSecurity.value) {
+  throw createError({
+    statusCode: 404,
+    message: 'This page could not be found',
+    fatal: true,
+  })
+}
+const security = ref(rawSecurity.value)
+
+const markets = computed(() => {
+  return security.value?.markets?.map((market) => {
+    let marketName
+    if (market.marketCode === 'XETR') {
+      marketName = 'XETRA (Frankfurt)'
+    } else if (market.marketCode === 'XFRA') {
+      marketName = 'Frankfurt'
+    } else if (market.marketCode === 'XNAS') {
+      marketName = 'NASDAQ'
+    } else if (market.marketCode === 'XNYS') {
+      marketName = 'NYSE'
+    }
+    return {
+      ...market,
+      name: marketName,
+    }
+  })
+})
+
+const { data: rawTaxonomies } = await useAsyncData('taxonomies', () =>
+  useApi<Taxonomy[]>('/taxonomies/'),
+)
+
+if (!rawTaxonomies.value) {
+  throw createError({
+    statusCode: 404,
+    message: 'This page could not be found',
+    fatal: true,
+  })
+}
+const taxonomies = ref(rawTaxonomies.value)
+
+const securityTaxonomies = computed(() =>
+  security.value.securityTaxonomies.map(st => ({
+    ...st,
+    weight: Number(st.weight),
+    // Join taxonomies to securityTaxonomies
+    taxonomy: taxonomies.value.find(t => t.uuid === st.taxonomyUuid),
+  })),
+)
+
+const countries = computed(() =>
+  securityTaxonomies.value.filter(
+    st => st.rootTaxonomyUuid === '5b0d5647-a4e6-4db8-807b-c3a6d11697a7',
+  ),
+)
+
+const countriesOverlay = ref()
+const toggleCountriesOverlay = (event: MouseEvent) => {
+  countriesOverlay.value.toggle(event)
+}
+
+const industries = computed(() =>
+  securityTaxonomies.value.filter(
+    st => st.rootTaxonomyUuid === '072bba7b-ed7a-4cb4-aab3-91520d00fb00',
+  ),
+)
+
+const industriesOverlay = ref()
+const toggleIndustriesOverlay = (event: MouseEvent) => {
+  industriesOverlay.value.toggle(event)
+}
+
+watch(selectedMarketcode, async (selectedMarketcode) => {
+  selectedMarket.value = await useApi<{
+    currencyCode: string
+    marketCode: string
+    firstPriceDate: string | null
+    lastPriceDate: string | null
+    prices: Array<{ date: string; close: number }>
+    symbol: string | null
+  }>(`/securities/uuid/${route.params.uuid}/markets/${selectedMarketcode}`, {
+    params: { from: '2000-01-01' },
+  })
+})
+
+async function deletePrice({ date }: { date: string }) {
+  await useApi(
+    `/securities/uuid/${security.value.uuid}/markets/${selectedMarketcode.value}/prices/${date}`,
+    { method: 'delete' },
+  )
+
+  if (selectedMarket.value) {
+    const idx = selectedMarket.value.prices.findIndex(
+      (e: { date: string }) => e.date === date,
+    )
+    delete selectedMarket.value.prices[idx]
+  }
+}
+
+useHead(() => ({
+  title: `${security.value?.name} - Portfolio Report`,
+  link: [
+    {
+      rel: 'canonical',
+      href:
+        `https://www.portfolio-report.net/securities/${security.value.uuid}`,
+    },
+  ],
+}))
+</script>
+
 <template>
   <div class="flex justify-content-center">
     <div style="width: 800px">
@@ -209,135 +341,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { SecurityAPI } from '~/store/Security.model'
-import { useApi } from '~/composables/useApi'
-import type { Taxonomy } from '~/store/Taxonomy.model'
-
-const selectedMarketcode = ref('')
-const selectedMarket = ref<{
-  currencyCode: string
-  marketCode: string
-  firstPriceDate: string | null
-  lastPriceDate: string | null
-  symbol: string | null
-  prices: Array<{ date: string; close: number }>
-} | null>(null)
-
-const route = useRoute()
-
-const { data: rawSecurity, error } = await useAsyncData(
-  `security:${route.params.uuid}`,
-  () => useApi<SecurityAPI>(`/securities/uuid/${route.params.uuid}`),
-)
-if (error.value || !rawSecurity.value) {
-  throw createError({
-    statusCode: 404,
-    message: 'This page could not be found',
-    fatal: true,
-  })
-}
-const security = ref(rawSecurity.value)
-
-const markets = computed(() => {
-  return security.value?.markets?.map((market) => {
-    let marketName
-    if (market.marketCode === 'XETR') {
-      marketName = 'XETRA (Frankfurt)'
-    } else if (market.marketCode === 'XFRA') {
-      marketName = 'Frankfurt'
-    } else if (market.marketCode === 'XNAS') {
-      marketName = 'NASDAQ'
-    } else if (market.marketCode === 'XNYS') {
-      marketName = 'NYSE'
-    }
-    return {
-      ...market,
-      name: marketName,
-    }
-  })
-})
-
-const { data: rawTaxonomies } = await useAsyncData('taxonomies', () =>
-  useApi<Taxonomy[]>('/taxonomies/'),
-)
-
-if (!rawTaxonomies.value) {
-  throw createError({
-    statusCode: 404,
-    message: 'This page could not be found',
-    fatal: true,
-  })
-}
-const taxonomies = ref(rawTaxonomies.value)
-
-const securityTaxonomies = computed(() =>
-  security.value.securityTaxonomies.map(st => ({
-    ...st,
-    weight: Number(st.weight),
-    // Join taxonomies to securityTaxonomies
-    taxonomy: taxonomies.value.find(t => t.uuid === st.taxonomyUuid),
-  })),
-)
-
-const countries = computed(() =>
-  securityTaxonomies.value.filter(
-    st => st.rootTaxonomyUuid === '5b0d5647-a4e6-4db8-807b-c3a6d11697a7',
-  ),
-)
-
-const countriesOverlay = ref()
-const toggleCountriesOverlay = (event: MouseEvent) => {
-  countriesOverlay.value.toggle(event)
-}
-
-const industries = computed(() =>
-  securityTaxonomies.value.filter(
-    st => st.rootTaxonomyUuid === '072bba7b-ed7a-4cb4-aab3-91520d00fb00',
-  ),
-)
-
-const industriesOverlay = ref()
-const toggleIndustriesOverlay = (event: MouseEvent) => {
-  industriesOverlay.value.toggle(event)
-}
-
-watch(selectedMarketcode, async (selectedMarketcode) => {
-  selectedMarket.value = await useApi<{
-    currencyCode: string
-    marketCode: string
-    firstPriceDate: string | null
-    lastPriceDate: string | null
-    prices: Array<{ date: string; close: number }>
-    symbol: string | null
-  }>(`/securities/uuid/${route.params.uuid}/markets/${selectedMarketcode}`, {
-    params: { from: '2000-01-01' },
-  })
-})
-
-async function deletePrice({ date }: { date: string }) {
-  await useApi(
-    `/securities/uuid/${security.value.uuid}/markets/${selectedMarketcode.value}/prices/${date}`,
-    { method: 'delete' },
-  )
-
-  if (selectedMarket.value) {
-    const idx = selectedMarket.value.prices.findIndex(
-      (e: { date: string }) => e.date === date,
-    )
-    delete selectedMarket.value.prices[idx]
-  }
-}
-
-useHead(() => ({
-  title: `${security.value?.name} - Portfolio Report`,
-  link: [
-    {
-      rel: 'canonical',
-      href:
-        `https://www.portfolio-report.net/securities/${security.value.uuid}`,
-    },
-  ],
-}))
-</script>

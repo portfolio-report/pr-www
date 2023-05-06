@@ -1,3 +1,9 @@
+<script setup lang="ts">
+defineProps({ error: { type: Object, required: true } })
+
+useHead({ title: 'Portfolio Report' })
+</script>
+
 <template>
   <div class="flex justify-content-center align-items-center h-screen">
     <Card class="shadow-2" style="min-width: 600px">
@@ -37,9 +43,3 @@
     </Card>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps({ error: { type: Object, required: true } })
-
-useHead({ title: 'Portfolio Report' })
-</script>
