@@ -73,10 +73,10 @@ function readQueryParameters() {
 
 function updateQueryParameters() {
   // Update query parameter in URL
-  const query = { q: searchTerm.value } as {
+  const query: {
     q: string
-    securityType: string
-  }
+    securityType?: string
+  } = { q: searchTerm.value }
   if (securityType.value) {
     query.securityType = securityType.value
   }
@@ -95,7 +95,7 @@ async function updateResults() {
   error.value = false
 
   try {
-    const params = {} as { securityType: string }
+    const params: { securityType?: string } = {}
     if (securityType.value) {
       params.securityType = securityType.value
     }
