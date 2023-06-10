@@ -35,7 +35,7 @@
     "@antfu/eslint-config": "^0.39.5",
     "@iconify/json": "^2.2.48",
     "@types/node": "^20.1.0",
-    "@unocss/nuxt": "^0.51.2",
+    "@unocss/nuxt": "^0.53.1",
     "@vueuse/core": "^10.0.2",
     "@vueuse/head": "^1.1.26",
     "chart.js": "^4.2.1",
