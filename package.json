@@ -36,7 +36,7 @@
     "@iconify/json": "^2.2.85",
     "@types/node": "^20.3.1",
     "@unocss/nuxt": "^0.53.4",
-    "@vueuse/core": "^10.2.0",
+    "@vueuse/core": "^10.2.1",
     "@vueuse/head": "^1.1.26",
     "chart.js": "^4.3.0",
     "eslint": "^8.44.0",
