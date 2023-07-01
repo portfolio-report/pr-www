@@ -1,4 +1,6 @@
 export default defineNuxtConfig({
+  spaLoadingTemplate: 'spa-loading-template.html',
+
   build: {
     transpile: [
       'primevue',
