@@ -25,24 +25,21 @@ useHead({
 const searchTerm = ref('')
 const securityType = ref('')
 
-const results = ref<
-  {
-    uuid: string
-    name: string
-    isin: string
-    wkn: string
-    securityType: string
-    symbolXfra: string | null
-    symbolXnas: string | null
-    symbolXnys: string | null
-    markets: Array<{
-      firstPriceDate: string
-      lastPriceDate: string
-      symbol: string | null
-    }>
-    tags: string[]
-  }[]
->([])
+interface SecuritySearchResult {
+  uuid: string
+  name: string
+  isin: string
+  wkn: string
+  securityType: string
+  markets: Array<{
+    firstPriceDate: string
+    lastPriceDate: string
+    symbol: string | null
+  }>
+  tags: string[]
+}
+
+const results = ref<SecuritySearchResult[]>([])
 const noResults = ref(false)
 const searching = ref(false)
 const error = ref(false)
@@ -99,26 +96,12 @@ async function updateResults() {
     if (securityType.value) {
       params.securityType = securityType.value
     }
-    const res = await useApi<
+
+    const res = await useApi<SecuritySearchResult[]>(
+      `/securities/search/${encodeURIComponent(searchTerm.value.trim())}`,
       {
-        uuid: string
-        name: string
-        isin: string
-        wkn: string
-        securityType: string
-        symbolXfra: string | null
-        symbolXnas: string | null
-        symbolXnys: string | null
-        markets: Array<{
-          firstPriceDate: string
-          lastPriceDate: string
-          symbol: string | null
-        }>
-        tags: string[]
-      }[]
-    >(`/securities/search/${encodeURIComponent(searchTerm.value.trim())}`, {
-      params,
-    })
+        params,
+      })
 
     searching.value = false
     results.value = res
@@ -132,17 +115,13 @@ async function updateResults() {
   }
 }
 
-function getPricesAvailable(result: {
-  markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
-}): boolean {
+function getPricesAvailable(result: SecuritySearchResult): boolean {
   return result.markets.some(
     market => market.firstPriceDate && market.lastPriceDate,
   )
 }
 
-function getRecentPricesAvailable(result: {
-  markets: Array<{ firstPriceDate: string; lastPriceDate: string }>
-}): boolean {
+function getRecentPricesAvailable(result: SecuritySearchResult): boolean {
   return result.markets.some(
     market =>
       market.lastPriceDate
@@ -150,19 +129,11 @@ function getRecentPricesAvailable(result: {
   )
 }
 
-function getUniqueSymbols(result: {
-  symbolXfra: string | null
-  symbolXnas: string | null
-  symbolXnys: string | null
-  markets: Array<{ symbol: string | null }>
-}) {
+function getUniqueSymbols(result: SecuritySearchResult) {
   return [
-    ...new Set([
-      result.symbolXfra,
-      result.symbolXnas,
-      result.symbolXnys,
-      ...result.markets?.map(m => m.symbol),
-    ]),
+    ...new Set(
+      result.markets?.map(m => m.symbol),
+    ),
   ].filter(s => !!s)
 }
 </script>

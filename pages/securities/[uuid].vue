@@ -198,18 +198,6 @@ useHead(() => ({
                 </li>
               </ul>
             </li>
-            <li v-if="security.symbolXfra">
-              Symbol (Frankfurt):
-              <b>{{ security.symbolXfra }}</b>
-            </li>
-            <li v-if="security.symbolXnas">
-              Symbol (NASDAQ):
-              <b>{{ security.symbolXnas }}</b>
-            </li>
-            <li v-if="security.symbolXnys">
-              Symbol (New York):
-              <b>{{ security.symbolXnys }}</b>
-            </li>
             <li v-if="countries.length === 1 && countries[0].taxonomy">
               Country:
               <CountryFlag :country="countries[0].taxonomy.code || ''" />
