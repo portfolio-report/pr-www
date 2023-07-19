@@ -43,7 +43,10 @@ export default defineNuxtConfig({
 
   nitro: {
     prerender: {
-      ignore: ['/stats'],
+      ignore: [
+        '/stats',
+        '/',
+      ],
     },
   },
 })
