@@ -30,6 +30,12 @@ jobs:
     - run: pnpm prepare
     - run: pnpm typecheck
     - run: pnpm generate
+    - name: Check if 200.html exists
+      run: |
+        if [ ! -f "dist/200.html" ]; then
+          echo "200.html does not exist."
+          exit 1
+        fi
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       if: ${{ github.ref == 'refs/heads/main' }}
