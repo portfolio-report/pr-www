@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 export default defineNuxtConfig({
   spaLoadingTemplate: 'spa-loading-template.html',
 
