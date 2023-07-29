@@ -41,8 +41,8 @@ devDependencies:
     specifier: ^1.1.26
     version: 1.1.26
   chart.js:
-    specifier: ^4.3.0
-    version: 4.3.0
+    specifier: ^4.3.2
+    version: 4.3.2
   eslint:
     specifier: ^8.45.0
     version: 8.45.0
@@ -2666,8 +2666,8 @@ packages:
     resolution: {integrity: sha512-mKKUkUbhPpQlCOfIuZkvSEgktjPFIsZKRRbC6KWVEMvlzblj3i3asQv5ODsrwt0N3pHAEvjP8KTQPHkp0+6jOg==}
     dev: true
 
-  /chart.js@4.3.0:
-    resolution: {integrity: sha512-ynG0E79xGfMaV2xAHdbhwiPLczxnNNnasrmPEXriXsPJGjmhOBYzFVEsB65w2qMDz+CaBJJuJD0inE/ab/h36g==}
+  /chart.js@4.3.2:
+    resolution: {integrity: sha512-pvQNyFOY1QmbmIr8oDORL16/FFivfxj8V26VFpFilMo4cNvkV5WXLJetDio365pd9gKUHGdirUTbqJfw8tr+Dg==}
     engines: {pnpm: '>=7'}
     dependencies:
       '@kurkle/color': 0.3.1
