@@ -26,8 +26,8 @@ devDependencies:
     specifier: ^0.39.8
     version: 0.39.8(eslint@8.45.0)(typescript@5.1.6)
   '@iconify/json':
-    specifier: ^2.2.98
-    version: 2.2.98
+    specifier: ^2.2.101
+    version: 2.2.101
   '@types/node':
     specifier: ^20.4.10
     version: 20.4.10
@@ -962,8 +962,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json@2.2.98:
-    resolution: {integrity: sha512-KbXFeKbbKrzdjei/vu43CJLQhBF8ZasVoY9+MWhKvqazzsd7ANC5+Z3CP87EP8vO7hEGUxD0ZXgyujSwk3s3aw==}
+  /@iconify/json@2.2.101:
+    resolution: {integrity: sha512-4otJXRpPYZPVY1IhDZSun8FI5Tk5BBlFYlq5Kl44e/DAG3MGS08fzGwqFUEcG5cbAWMhrQUIGHOhy3kkXxmcJw==}
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 1.1.1
