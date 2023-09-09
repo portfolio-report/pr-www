@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.41.0",
-    "@iconify/json": "^2.2.110",
+    "@iconify/json": "^2.2.113",
     "@types/node": "^20.5.8",
     "@unocss/nuxt": "^0.55.4",
     "@vueuse/core": "^10.4.1",
