@@ -19,7 +19,6 @@ function update(value: string) {
 <template>
   <span class="p-float-label">
     <Dropdown
-      id="dropdown"
       class="w-full"
       :model-value="modelValue"
       :options="securityTypeItems"
@@ -28,6 +27,6 @@ function update(value: string) {
       :show-clear="true"
       @update:model-value="update"
     />
-    <label for="dropdown">Security Type</label>
+    <label>Security Type</label>
   </span>
 </template>

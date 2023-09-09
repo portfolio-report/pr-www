@@ -13,7 +13,7 @@ function search() {
 <template>
   <div class="layout-topbar">
     <NuxtLink to="/" class="layout-topbar-logo">
-      <img class="mx-2 h-4rem" src="/favicon-192.png" to="/" alt="Logo">
+      <img class="mx-2 h-4rem" src="/favicon-192.png" alt="Logo">
       <span class="text-2xl font-medium align-self-center text-color">
         Portfolio Report
       </span>

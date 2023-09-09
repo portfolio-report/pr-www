@@ -269,7 +269,6 @@ useHead(() => ({
 
         <TabPanel header="Prices">
           <Dropdown
-            id="market"
             v-model="selectedMarketcode"
             :options="markets"
             option-label="name"

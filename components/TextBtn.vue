@@ -7,6 +7,7 @@ const props = defineProps<{
   solid?: boolean
   type?: 'button' | 'submit' | 'reset'
   form?: string
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -34,6 +35,7 @@ const icons = computed(() => {
     }"
     :label="label"
     :form="form"
+    :disabled="disabled"
     @click="emit('click', $event)"
   >
     <slot />
