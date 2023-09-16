@@ -9,8 +9,8 @@ dependencies:
     specifier: 2.0.3
     version: 2.0.3
   '@vuelidate/validators':
-    specifier: 2.0.3
-    version: 2.0.3
+    specifier: 2.0.4
+    version: 2.0.4
   date-fns:
     specifier: ^2.30.0
     version: 2.30.0
@@ -2176,8 +2176,8 @@ packages:
       vue-demi: 0.13.11
     dev: false
 
-  /@vuelidate/validators@2.0.3:
-    resolution: {integrity: sha512-P4WtmczPRbwmVihKlSAs3pIjIil4xjHW+Qoi58MCw7vnKuYr/IHarOFkwp0K8eIIqiQqY4URM5Gb4aeDjna6Yw==}
+  /@vuelidate/validators@2.0.4:
+    resolution: {integrity: sha512-odTxtUZ2JpwwiQ10t0QWYJkkYrfd0SyFYhdHH44QQ1jDatlZgTh/KRzrWVmn/ib9Gq7H4hFD4e8ahoo5YlUlDw==}
     peerDependencies:
       '@vue/composition-api': ^1.0.0-rc.1
       vue: ^2.0.0 || >=3.0.0
