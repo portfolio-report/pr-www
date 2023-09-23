@@ -8,7 +8,7 @@ module.exports = {
     'curly': ['warn', 'all'],
 
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/brace-style': ['warn', '1tbs', { allowSingleLine: true }],
+    '@stylistic/ts/brace-style': ['warn', '1tbs', { allowSingleLine: true }],
 
     // Enable additional vue rules
     // https://eslint.vuejs.org/rules/
