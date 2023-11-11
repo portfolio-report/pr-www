@@ -50,8 +50,8 @@ devDependencies:
     specifier: ^3.8.0
     version: 3.8.0(@types/node@20.8.10)(eslint@8.53.0)(sass@1.69.5)(typescript@5.2.2)(vue-tsc@1.8.22)
   primevue:
-    specifier: 3.39.0
-    version: 3.39.0
+    specifier: 3.40.1
+    version: 3.40.1
   sass:
     specifier: ^1.69.5
     version: 1.69.5
@@ -6962,8 +6962,8 @@ packages:
     resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
     dev: false
 
-  /primevue@3.39.0:
-    resolution: {integrity: sha512-fDaK/SHijvw5ds3RNs4yzPgVFyA1/RYXxnEshHME1zhn9/HiTxEqa0Wv3obbuwSmRckA4fdGh+lZ8dDd1RJJLQ==}
+  /primevue@3.40.1:
+    resolution: {integrity: sha512-TIFjoSUDiTmlxwQddaWckzcPIpj0F8a6ZMnm0tpAD/ieyUIHnNpbAi5de8LQf8eF0b+x5EkOkdjdngSlD+iPCw==}
     peerDependencies:
       vue: ^3.0.0
     peerDependenciesMeta:
