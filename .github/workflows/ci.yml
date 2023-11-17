@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -16,30 +16,30 @@ jobs:
         node-version: [18.x]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Install Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install pnpm
-      uses: pnpm/action-setup@v2.4.0
-      with:
-        version: 8
-    - run: pnpm install --frozen-lockfile
-    - run: pnpm lint
-    - run: pnpm prepare
-    - run: pnpm typecheck
-    - run: pnpm generate
-    - name: Check if 200.html exists
-      run: |
-        if [ ! -f "dist/200.html" ]; then
-          echo "200.html does not exist."
-          exit 1
-        fi
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      if: ${{ github.ref == 'refs/heads/main' }}
-      with:
-        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        external_repository: portfolio-report/pr-www-pages
-        publish_dir: ./dist
+      - uses: actions/checkout@v4
+      - name: Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.4.0
+        with:
+          version: 8
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm prepare
+      - run: pnpm typecheck
+      - run: pnpm generate
+      - name: Check if 200.html exists
+        run: |
+          if [ ! -f "dist/200.html" ]; then
+            echo "200.html does not exist."
+            exit 1
+          fi
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          external_repository: portfolio-report/pr-www-pages
+          publish_dir: ./dist

@@ -22,7 +22,9 @@ const { data, pending, refresh } = useLazyAsyncData(
         firstUpdate: Date
         lastUpdate: Date
       }>
-    >(`/stats/updates/weeks?year=${year.value}`)
+    >(
+      `/stats/updates/weeks?year=${year.value}`,
+    )
 
     /* Convert datetime strings to objects */
     for (const w of weeks) {

@@ -18,7 +18,9 @@ const {
       lastUpdate: Date
       lastUpdateInt: number
     }>
-  >('/stats/updates')
+  >(
+    '/stats/updates',
+  )
 
   /* Convert datetime strings to objects and numerical */
   for (const v of versions) {

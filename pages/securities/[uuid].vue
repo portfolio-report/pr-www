@@ -10,7 +10,7 @@ const selectedMarket = ref<{
   firstPriceDate: string | null
   lastPriceDate: string | null
   symbol: string | null
-  prices: Array<{ date: string; close: number }>
+  prices: Array<{ date: string, close: number }>
 } | null>(null)
 
 const route = useRoute()
@@ -48,8 +48,7 @@ const markets = computed(() => {
 })
 
 const { data: rawTaxonomies } = await useAsyncData('taxonomies', () =>
-  useApi<Taxonomy[]>('/taxonomies/'),
-)
+  useApi<Taxonomy[]>('/taxonomies/'))
 
 if (!rawTaxonomies.value) {
   throw createError({
@@ -97,7 +96,7 @@ watch(selectedMarketcode, async (selectedMarketcode) => {
     marketCode: string
     firstPriceDate: string | null
     lastPriceDate: string | null
-    prices: Array<{ date: string; close: number }>
+    prices: Array<{ date: string, close: number }>
     symbol: string | null
   }>(`/securities/uuid/${route.params.uuid}/markets/${selectedMarketcode}`, {
     params: { from: '2000-01-01' },

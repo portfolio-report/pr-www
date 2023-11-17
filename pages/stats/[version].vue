@@ -5,8 +5,8 @@ const { data, error } = await useAsyncData(
   `stats:${route.params.version}`,
   () =>
     useApi<{
-      byCountry: { country: string; count: number }[]
-      byDate: { date: string; count: number }[]
+      byCountry: { country: string, count: number }[]
+      byDate: { date: string, count: number }[]
     }>(`/stats/updates/${route.params.version}`),
 )
 if (error.value || data.value?.byCountry == null || data.value.byDate == null) {
@@ -24,8 +24,7 @@ const chartData = computed(() => {
     return { labels: [], datasets: [] }
   }
 
-  const datesSorted = [...data.value.byDate].sort((a, b) =>
-    a.date.localeCompare(b.date),
+  const datesSorted = [...data.value.byDate].sort((a, b) => a.date.localeCompare(b.date),
   )
 
   return {

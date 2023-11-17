@@ -4,6 +4,7 @@
   "description": "Portfolio Report",
   "author": "Thomas Fabritius",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "nuxi dev --host localhost",
     "prepare": "nuxi prepare",
@@ -11,8 +12,8 @@
     "start": "nuxi preview",
     "generate": "nuxi generate",
     "serve": "node serve.mjs",
-    "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
-    "lintfix": "eslint --fix --ext .ts,.js,.vue --ignore-path .gitignore .",
+    "lint": "eslint .",
+    "lintfix": "eslint --fix .",
     "typecheck": "nuxi typecheck"
   },
   "pnpm": {
@@ -32,7 +33,7 @@
     "primeicons": "^6.0.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.43.1",
+    "@antfu/eslint-config": "^1.2.1",
     "@iconify/json": "^2.2.134",
     "@types/node": "^20.9.0",
     "@unocss/nuxt": "^0.57.3",

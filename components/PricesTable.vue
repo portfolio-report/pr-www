@@ -3,7 +3,7 @@ import { FilterOperator } from 'primevue/api'
 import type { DataTableFilterMeta } from 'primevue/datatable'
 
 const props = defineProps<{
-  prices: { date: string; close: number }[]
+  prices: { date: string, close: number }[]
 }>()
 
 const priceArray = computed(() =>

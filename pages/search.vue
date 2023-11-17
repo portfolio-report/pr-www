@@ -101,7 +101,8 @@ async function updateResults() {
       `/securities/search/${encodeURIComponent(searchTerm.value.trim())}`,
       {
         params,
-      })
+      },
+    )
 
     searching.value = false
     results.value = res
