@@ -107,6 +107,11 @@ async function updateResults() {
     searching.value = false
     results.value = res
     noResults.value = res.length === 0
+
+    // Forward user to security page if only one result
+    if (res.length === 1) {
+      await navigateTo(`/securities/${res[0].uuid}`)
+    }
   } catch (err) {
     searching.value = false
     results.value = []
