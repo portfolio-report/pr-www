@@ -1,9 +1,9 @@
 {
-  "name": "pr-www",
-  "version": "1.0.0",
-  "description": "Portfolio Report",
-  "author": "Thomas Fabritius",
+  "$schema": "https://json.schemastore.org/package",
   "private": true,
+  "engines": {
+    "node": "18"
+  },
   "type": "module",
   "scripts": {
     "dev": "nuxi dev --host localhost",
