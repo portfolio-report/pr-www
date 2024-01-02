@@ -153,7 +153,7 @@ useHead(() => ({
 
           <NuxtLink
             v-tooltip.right="{
-              escape: true,
+              escape: false,
               value:
                 '<h4>Drag and drop!</h4> To add this security in Portfolio Performance, drag and drop it to securities list or statement of assets.',
             }"
