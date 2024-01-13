@@ -12,8 +12,8 @@ dependencies:
     specifier: 2.0.4
     version: 2.0.4
   date-fns:
-    specifier: ^3.0.6
-    version: 3.0.6
+    specifier: ^3.2.0
+    version: 3.2.0
   primeflex:
     specifier: ^3.3.1
     version: 3.3.1
@@ -3697,8 +3697,8 @@ packages:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
     dev: true
 
-  /date-fns@3.0.6:
-    resolution: {integrity: sha512-W+G99rycpKMMF2/YD064b2lE7jJGUe+EjOES7Q8BIGY8sbNdbgcs9XFTZwvzc9Jx1f3k7LB7gZaZa7f8Agzljg==}
+  /date-fns@3.2.0:
+    resolution: {integrity: sha512-E4KWKavANzeuusPi0jUjpuI22SURAznGkx7eZV+4i6x2A+IZxAMcajgkvuDAU1bg40+xuhW1zRdVIIM/4khuIg==}
     dev: false
 
   /de-indent@1.0.2:
