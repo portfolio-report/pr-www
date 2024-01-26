@@ -146,9 +146,13 @@ useHead(() => ({
               :name="tag"
             />
           </h2>
-          <div class="text-600">
-            <span v-tooltip.top="'ISIN'">{{ security.isin }}</span> ·
-            <span v-tooltip.top="'WKN'">{{ security.wkn }}</span>
+          <div>
+            <CopyClipboard v-tooltip.top="'ISIN'" :text="security.isin ?? ''">
+              {{ security.isin }}
+            </CopyClipboard> ·
+            <CopyClipboard v-tooltip.top="'WKN'" :text="security.wkn ?? ''">
+              {{ security.wkn }}
+            </CopyClipboard>
           </div>
 
           <NuxtLink

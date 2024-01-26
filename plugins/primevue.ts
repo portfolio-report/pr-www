@@ -14,6 +14,7 @@ import ConfirmDialog from 'primevue/confirmdialog'
 import DataTable from 'primevue/datatable'
 import Dialog from 'primevue/dialog'
 import Dropdown from 'primevue/dropdown'
+import InlineMessage from 'primevue/inlinemessage'
 import InputNumber from 'primevue/inputnumber'
 import InputText from 'primevue/inputtext'
 import Menu from 'primevue/menu'
@@ -50,6 +51,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component('DataTable', DataTable)
   nuxtApp.vueApp.component('Dialog', Dialog)
   nuxtApp.vueApp.component('Dropdown', Dropdown)
+  nuxtApp.vueApp.component('InlineMessage', InlineMessage)
   nuxtApp.vueApp.component('InputNumber', InputNumber)
   nuxtApp.vueApp.component('InputText', InputText)
   nuxtApp.vueApp.component('Menu', Menu)
