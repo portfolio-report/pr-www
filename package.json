@@ -33,7 +33,7 @@
     "primeicons": "^6.0.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.6.3",
+    "@antfu/eslint-config": "^2.6.4",
     "@iconify/json": "^2.2.181",
     "@types/node": "^20.11.17",
     "@unocss/nuxt": "^0.58.5",
