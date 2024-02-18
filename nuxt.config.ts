@@ -16,8 +16,6 @@ export default defineNuxtConfig({
     strict: true,
   },
 
-  experimental: { payloadExtraction: false },
-
   css: [
     'primevue/resources/themes/lara-light-blue/theme.css',
     'primevue/resources/primevue.css',
