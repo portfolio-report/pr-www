@@ -29,7 +29,9 @@ function search() {
         leaveActiveClass: 'fadeout',
         hideOnOutsideClick: true,
       }"
-      class="p-link layout-topbar-menu-button layout-topbar-button"
+      text
+      rounded
+      class="p-button-icon-only layout-topbar-menu-button"
     >
       <i class="i-carbon-overflow-menu-vertical" />
     </Button>
