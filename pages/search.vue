@@ -216,13 +216,14 @@ function getUniqueSymbols(result: SecuritySearchResult) {
 
               <SecurityTag v-for="tag in result.tags" :key="tag" :name="tag" />
             </div>
-            <div class="text-600">
-              {{ result.isin }} · {{ result.wkn }}
+            <div class="text-600 separator-container">
+              <span v-if="result.isin">{{ result.isin }}</span>
+              <span v-if="result.wkn">{{ result.wkn }}</span>
               <span
                 v-for="(symbol, idx) in getUniqueSymbols(result)"
                 :key="idx"
               >
-                · {{ symbol }}
+                {{ symbol }}
               </span>
             </div>
           </div>
@@ -257,3 +258,9 @@ function getUniqueSymbols(result: SecuritySearchResult) {
     </div>
   </div>
 </template>
+
+<style scoped>
+.separator-container > *:not(:last-child)::after {
+  content: ' · ';
+}
+</style>

@@ -146,11 +146,11 @@ useHead(() => ({
               :name="tag"
             />
           </h2>
-          <div>
-            <CopyClipboard v-tooltip.top="'ISIN'" :text="security.isin ?? ''">
+          <div class="separator-container">
+            <CopyClipboard v-if="security.isin" v-tooltip.top="'ISIN'" :text="security.isin">
               {{ security.isin }}
-            </CopyClipboard> ·
-            <CopyClipboard v-tooltip.top="'WKN'" :text="security.wkn ?? ''">
+            </CopyClipboard>
+            <CopyClipboard v-if="security.wkn" v-tooltip.top="'WKN'" :text="security.wkn">
               {{ security.wkn }}
             </CopyClipboard>
           </div>
@@ -331,3 +331,9 @@ useHead(() => ({
     </div>
   </div>
 </template>
+
+<style scoped>
+.separator-container > *:not(:last-child)::after {
+  content: ' · ';
+}
+</style>
