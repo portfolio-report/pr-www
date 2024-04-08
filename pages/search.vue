@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { differenceInCalendarDays } from 'date-fns'
-
 const route = useRoute()
 const router = useRouter()
 
