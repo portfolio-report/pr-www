@@ -37,4 +37,5 @@ export interface SecurityAPI extends Security {
   securityTaxonomies: SecurityTaxonomy[]
   logoUrl: string | null
   tags: string[]
+  pricesAvailable: boolean
 }

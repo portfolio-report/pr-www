@@ -36,6 +36,7 @@ interface SecuritySearchResult {
     lastPriceDate: string
     symbol: string | null
   }>
+  pricesAvailable: boolean
   tags: string[]
 }
 
@@ -121,20 +122,6 @@ async function updateResults() {
   }
 }
 
-function getPricesAvailable(result: SecuritySearchResult): boolean {
-  return result.markets.some(
-    market => market.firstPriceDate && market.lastPriceDate,
-  )
-}
-
-function getRecentPricesAvailable(result: SecuritySearchResult): boolean {
-  return result.markets.some(
-    market =>
-      market.lastPriceDate
-      && differenceInCalendarDays(new Date(), new Date(market.lastPriceDate)) < 30,
-  )
-}
-
 function getUniqueSymbols(result: SecuritySearchResult) {
   return [
     ...new Set(
@@ -196,11 +183,9 @@ function getUniqueSymbols(result: SecuritySearchResult) {
           <div v-for="result in results" :key="result.uuid" class="mb-3">
             <div class="text-lg font-medium flex align-items-center">
               <i
-                v-if="getPricesAvailable(result)"
+                v-if="result.pricesAvailable"
                 v-tooltip.top="'Prices available'"
-                class="i-carbon-chart-line mr-1" :class="[
-                  { 'text-primary': getRecentPricesAvailable(result) },
-                ]"
+                class="i-carbon-chart-line mr-1 text-primary"
               />
 
               <NuxtLink

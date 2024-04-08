@@ -3,16 +3,6 @@ import type { SecurityAPI } from '~/store/Security.model'
 import { useApi } from '~/composables/useApi'
 import type { Taxonomy } from '~/store/Taxonomy.model'
 
-const selectedMarketcode = ref('')
-const selectedMarket = ref<{
-  currencyCode: string
-  marketCode: string
-  firstPriceDate: string | null
-  lastPriceDate: string | null
-  symbol: string | null
-  prices: Array<{ date: string, close: number }>
-} | null>(null)
-
 const route = useRoute()
 
 const { data: rawSecurity, error } = await useAsyncData(
@@ -27,6 +17,55 @@ if (error.value || !rawSecurity.value) {
   })
 }
 const security = ref(rawSecurity.value)
+
+const currencies = [
+  { code: 'EUR' },
+  { code: 'USD' },
+  { code: 'AED' },
+  { code: 'AUD' },
+  { code: 'BGN' },
+  { code: 'BRL' },
+  { code: 'CAD' },
+  { code: 'CHF' },
+  { code: 'CNY' },
+  { code: 'CZK' },
+  { code: 'DKK' },
+  { code: 'GBP' },
+  { code: 'GBX' },
+  { code: 'HKD' },
+  { code: 'HRK' },
+  { code: 'HUF' },
+  { code: 'IDR' },
+  { code: 'ILS' },
+  { code: 'INR' },
+  { code: 'ISK' },
+  { code: 'JPY' },
+  { code: 'KRW' },
+  { code: 'MXN' },
+  { code: 'MYR' },
+  { code: 'NOK' },
+  { code: 'NZD' },
+  { code: 'PHP' },
+  { code: 'PLN' },
+  { code: 'RON' },
+  { code: 'RUB' },
+  { code: 'SEK' },
+  { code: 'SGD' },
+  { code: 'THB' },
+  { code: 'TRY' },
+  { code: 'ZAR' },
+]
+
+const selectedCurrency = ref(currencies[0])
+
+const { data: prices } = await useAsyncData(
+  `security:${route.params.uuid}:prices:${selectedCurrency.value.code}`,
+  () => useApi<{ date: string, close: number }[]>(
+    `/securities/uuid/${route.params.uuid}/prices/${selectedCurrency.value.code}`,
+    { params: { from: '2000-01-01' } },
+  ),
+  { watch: [selectedCurrency] },
+)
 
 const markets = computed(() => {
   return security.value?.markets?.map((market) => {
@@ -74,48 +113,11 @@ const countries = computed(() =>
   ),
 )
 
-const countriesOverlay = ref()
-function toggleCountriesOverlay(event: MouseEvent) {
-  countriesOverlay.value.toggle(event)
-}
-
 const industries = computed(() =>
   securityTaxonomies.value.filter(
     st => st.rootTaxonomyUuid === '072bba7b-ed7a-4cb4-aab3-91520d00fb00',
   ),
 )
-
-const industriesOverlay = ref()
-function toggleIndustriesOverlay(event: MouseEvent) {
-  industriesOverlay.value.toggle(event)
-}
-
-watch(selectedMarketcode, async (selectedMarketcode) => {
-  selectedMarket.value = await useApi<{
-    currencyCode: string
-    marketCode: string
-    firstPriceDate: string | null
-    lastPriceDate: string | null
-    prices: Array<{ date: string, close: number }>
-    symbol: string | null
-  }>(`/securities/uuid/${route.params.uuid}/markets/${selectedMarketcode}`, {
-    params: { from: '2000-01-01' },
-  })
-})
-
-async function deletePrice({ date }: { date: string }) {
-  await useApi(
-    `/securities/uuid/${security.value.uuid}/markets/${selectedMarketcode.value}/prices/${date}`,
-    { method: 'delete' },
-  )
-
-  if (selectedMarket.value) {
-    const idx = selectedMarket.value.prices.findIndex(
-      (e: { date: string }) => e.date === date,
-    )
-    delete selectedMarket.value.prices[idx]
-  }
-}
 
 useHead(() => ({
   title: `${security.value?.name} - Portfolio Report`,
@@ -183,151 +185,142 @@ useHead(() => ({
         </div>
       </div>
 
-      <TabView class="mt-2">
-        <TabPanel header="Overview">
-          <ul>
-            <li v-for="market in markets" :key="market.marketCode">
-              Market: <b>{{ market.name }}</b>
-              <ul>
-                <li>
-                  Currency: <b>{{ market.currencyCode || '-' }}</b>
-                </li>
-                <li>
-                  Symbol: <b>{{ market.symbol }}</b>
-                </li>
-                <li>
-                  Prices available: <b>{{ market.firstPriceDate }}</b> -
-                  <b>{{ market.lastPriceDate }}</b>
-                </li>
-              </ul>
-            </li>
-            <li v-if="countries.length === 1 && countries[0].taxonomy">
-              Country:
-              <CountryFlag :country="countries[0].taxonomy.code || ''" />
-              <b>
-                {{ countries[0].taxonomy.name }}
-                ({{ countries[0].taxonomy.code }})
-              </b>
-            </li>
-            <li v-else-if="countries.length > 1">
-              <a href="#" @click="toggleCountriesOverlay">Countries</a>
-              <OverlayPanel ref="countriesOverlay" :show-close-icon="true">
-                <DataTable
-                  :value="countries"
-                  sort-field="weight"
-                  :sort-order="-1"
-                  class="p-datatable-sm mb-2"
-                >
-                  <Column field="weight" header="Percentage" :sortable="true">
-                    <template #body="{ data }">
-                      {{ data.weight }}%
-                    </template>
-                  </Column>
-                  <Column
-                    field="taxonomy.name"
-                    header="Country"
-                    :sortable="true"
-                  >
-                    <template #body="{ data }">
-                      <CountryFlag :country="data.taxonomy.code" />
-                      {{ data.taxonomy.name }}
-                    </template>
-                  </Column>
-                  <Column
-                    field="taxonomy.code"
-                    header="Code"
-                    :sortable="true"
-                  />
-                </DataTable>
-              </OverlayPanel>
-            </li>
-            <li v-if="industries.length === 1 && industries[0].taxonomy">
-              Industry:
-              <b>{{ industries[0].taxonomy.name }}</b>
-            </li>
-            <li v-else-if="industries.length > 1">
-              <a href="#" @click="toggleIndustriesOverlay">Industries</a>
-              <OverlayPanel ref="industriesOverlay" :show-close-icon="true">
-                <DataTable
-                  :value="industries"
-                  sort-field="weight"
-                  :sort-order="-1"
-                  class="p-datatable-sm"
-                >
-                  <Column field="weight" header="Percentage" :sortable="true">
-                    <template #body="{ data }">
-                      {{ data.weight }}%
-                    </template>
-                  </Column>
-                  <Column
-                    field="taxonomy.name"
-                    header="Country"
-                    :sortable="true"
-                  />
-                </DataTable>
-              </OverlayPanel>
-            </li>
-          </ul>
-        </TabPanel>
-
-        <TabPanel header="Prices">
+      <div class="mt-4">
+        <h3 v-if="security.pricesAvailable">
+          Prices
           <Dropdown
-            v-model="selectedMarketcode"
-            :options="markets"
-            option-label="name"
-            option-value="marketCode"
-            placeholder="Please select market"
+            v-if="security.pricesAvailable"
+            v-model="selectedCurrency"
+            :options="currencies"
+            option-label="code"
           >
+            <template #value="{ value }">
+              <CountryFlag :country="value.code.substring(0, 2)" class="mr-1" />
+              {{ value.code }}
+            </template>
             <template #option="{ option }">
-              {{ option.name }} - {{ option.marketCode }}
+              <CountryFlag :country="option.code.substring(0, 2)" class="mr-1" />
+              {{ option.code }}
             </template>
           </Dropdown>
+        </h3>
 
-          <div v-if="selectedMarket">
+        <PricesTable
+          v-if="prices"
+          :prices="prices"
+        />
+
+        <h5 v-if="markets.length > 0">
+          Markets
+        </h5>
+        <ul v-if="markets.length > 0">
+          <li v-for="market in markets" :key="market.marketCode">
+            <b>{{ market.name }}</b>
             <ul>
               <li>
-                Symbol: <b>{{ selectedMarket.symbol }}</b>
+                Currency: <CountryFlag :country="market.currencyCode.substring(0, 2)" class="mr-1" />
+                <b>{{ market.currencyCode || '-' }}</b>
               </li>
               <li>
-                Currency: <b>{{ selectedMarket.currencyCode || '-' }}</b>
-              </li>
-              <li>
-                Prices available: <b>{{ selectedMarket.firstPriceDate }}</b> -
-                <b>{{ selectedMarket.lastPriceDate }}</b>
+                Symbol: <b>{{ market.symbol }}</b>
               </li>
             </ul>
+          </li>
+        </ul>
 
-            <PricesTable
-              :prices="selectedMarket.prices"
-              @delete-price="deletePrice"
-            />
-          </div>
-        </TabPanel>
+        <h5 v-if="countries.length === 1">
+          Country
+        </h5>
+        <span v-if="countries.length === 1">
+          <CountryFlag :country="countries[0].taxonomy?.code ?? ''" class="mr-1" />
+          {{ countries[0].taxonomy?.name }}
+          ({{ countries[0].taxonomy?.code }})
+        </span>
 
-        <TabPanel
-          v-if="security.events && security.events.length > 0"
-          header="Events"
+        <h5 v-if="countries.length > 1">
+          Countries
+        </h5>
+        <DataTable
+          v-if="countries.length > 1"
+          :value="countries"
+          sort-field="weight"
+          :sort-order="-1"
+          class="p-datatable-sm mb-2"
         >
-          <DataTable :value="security.events">
-            <Column field="date" header="Date" />
-            <Column
-              field="type"
-              header="Type"
-              style="text-transform: capitalize"
-            />
-            <Column header="...">
-              <template #body="{ data: event }">
-                {{
-                  event.type === 'dividend'
-                    ? `${event.amount} ${event.currencyCode}`
-                    : ''
-                }}
-                {{ event.type === 'split' ? event.ratio : '' }}
-              </template>
-            </Column>
-          </DataTable>
-        </TabPanel>
-      </TabView>
+          <Column field="weight" header="Percentage" :sortable="true">
+            <template #body="{ data }">
+              {{ data.weight }}%
+            </template>
+          </Column>
+          <Column
+            field="taxonomy.name"
+            header="Country"
+            :sortable="true"
+          >
+            <template #body="{ data }">
+              <CountryFlag :country="data.taxonomy.code" class="mr-1" />
+              {{ data.taxonomy.name }}
+            </template>
+          </Column>
+          <Column
+            field="taxonomy.code"
+            header="Code"
+            :sortable="true"
+          />
+        </DataTable>
+
+        <h5 v-if="industries.length === 1">
+          Industry
+        </h5>
+        <span v-if="industries.length === 1">
+          {{ industries[0].taxonomy?.name }}
+        </span>
+
+        <h5 v-if="industries.length > 1">
+          Industries
+        </h5>
+
+        <DataTable
+          v-if="industries.length > 1"
+          :value="industries"
+          sort-field="weight"
+          :sort-order="-1"
+          class="p-datatable-sm"
+        >
+          <Column field="weight" header="Percentage" :sortable="true">
+            <template #body="{ data }">
+              {{ data.weight }}%
+            </template>
+          </Column>
+          <Column
+            field="taxonomy.name"
+            header="Country"
+            :sortable="true"
+          />
+        </DataTable>
+
+        <h5 v-if="security.events.length > 0">
+          Events
+        </h5>
+        <DataTable v-if="security.events.length > 0" :value="security.events">
+          <Column field="date" header="Date" />
+          <Column
+            field="type"
+            header="Type"
+            style="text-transform: capitalize"
+          />
+          <Column header="...">
+            <template #body="{ data: event }">
+              {{
+                event.type === 'dividend'
+                  ? `${event.amount} ${event.currencyCode}`
+                  : ''
+              }}
+              {{ event.type === 'split' ? event.ratio : '' }}
+            </template>
+          </Column>
+        </DataTable>
+      </div>
     </div>
   </div>
 </template>
