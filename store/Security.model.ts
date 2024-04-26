@@ -5,6 +5,7 @@ export interface Security {
   name: string | null
   isin: string | null
   wkn: string | null
+  code: string
   securityType: string | null
 }
 

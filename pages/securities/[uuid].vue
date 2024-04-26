@@ -155,6 +155,9 @@ useHead(() => ({
             <CopyClipboard v-if="security.wkn" v-tooltip.top="'WKN'" :text="security.wkn">
               {{ security.wkn }}
             </CopyClipboard>
+            <CopyClipboard v-if="security.code" v-tooltip.top="'Code'" :text="security.code">
+              {{ security.code }}
+            </CopyClipboard>
           </div>
 
           <NuxtLink

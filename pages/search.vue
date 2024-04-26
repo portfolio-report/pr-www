@@ -28,8 +28,9 @@ interface SecuritySearchResult {
   name: string
   isin: string
   wkn: string
+  code: string
   securityType: string
-  markets: Array<{
+  markets?: Array<{
     firstPriceDate: string
     lastPriceDate: string
     symbol: string | null
@@ -91,17 +92,14 @@ async function updateResults() {
   error.value = false
 
   try {
-    const params: { securityType?: string } = {}
+    const params: { q: string, securityType?: string } = {
+      q: encodeURIComponent(searchTerm.value.trim()),
+    }
     if (securityType.value) {
       params.securityType = securityType.value
     }
 
-    const res = await useApi<SecuritySearchResult[]>(
-      `/securities/search/${encodeURIComponent(searchTerm.value.trim())}`,
-      {
-        params,
-      },
-    )
+    const res = await useApi<SecuritySearchResult[]>('/v1/securities/search', { params })
 
     searching.value = false
     results.value = res
@@ -208,6 +206,7 @@ function getUniqueSymbols(result: SecuritySearchResult) {
               >
                 {{ symbol }}
               </span>
+              <span v-if="result.code">{{ result.code }}</span>
             </div>
           </div>
         </template>
