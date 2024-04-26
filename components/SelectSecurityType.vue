@@ -7,6 +7,7 @@ const securityTypeItems = [
   { text: '*', value: '' },
   { text: 'share', value: 'share' },
   { text: 'fund', value: 'fund' },
+  { text: 'crypto', value: 'crypto' },
   { text: 'bond', value: 'bond' },
   { text: 'index', value: 'index' },
 ]
