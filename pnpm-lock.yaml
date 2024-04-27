@@ -26,8 +26,8 @@ devDependencies:
     specifier: ^2.15.0
     version: 2.15.0(@vue/compiler-sfc@3.4.21)(eslint@8.57.0)(typescript@5.4.5)
   '@iconify/json':
-    specifier: ^2.2.202
-    version: 2.2.202
+    specifier: ^2.2.204
+    version: 2.2.204
   '@types/express':
     specifier: ^4.17.21
     version: 4.17.21
@@ -866,8 +866,8 @@ packages:
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
     dev: true
 
-  /@iconify/json@2.2.202:
-    resolution: {integrity: sha512-ohR6hsbWPUYscf8FW2HdyN8L07mrhJraruVyMBDWltU2JzY6W0NDB0mIpZ5+3vuhvlecSZyWL95XiH0QFQpoFg==}
+  /@iconify/json@2.2.204:
+    resolution: {integrity: sha512-sFlh+TIF54DZoEzsF5YVWY7XEzjN2ZSmCjtzvajk5EdNjvPAKr9Tvvptoyj6hcuylJsDxiU12FRDSdygW1c8bg==}
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 1.1.2
