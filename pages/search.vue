@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { useRouteQuery } from '@vueuse/router'
+
+const q = useRouteQuery('q', '', { transform: v => v || '' })
+const securityType = useRouteQuery('securityType', '', { transform: v => v || '' })
+
 const route = useRoute()
-const router = useRouter()
 
 const canonicalUrl = computed(() => {
   let ret = 'https://www.portfolio-report.net/search'
@@ -20,8 +24,8 @@ useHead({
   link: [{ rel: 'canonical', href: canonicalUrl.value }],
 })
 
-const searchTerm = ref('')
-const securityType = ref('')
+const searchTerm = ref(q.value)
+const selectedSecurityType = ref(securityType.value)
 
 interface SecuritySearchResult {
   uuid: string
@@ -45,46 +49,21 @@ const searching = ref(false)
 const error = ref(false)
 const errorText = ref('')
 
-readQueryParameters()
-updateResults()
-
-watch(
-  () => route.query.q,
-  () => {
-    if (route.query.q) {
-      readQueryParameters()
-      updateResults()
-    }
-  },
-)
-
 async function search() {
-  updateQueryParameters()
-  await updateResults()
+  searchTerm.value = searchTerm.value.trim()
+
+  q.value = searchTerm.value
+  securityType.value = selectedSecurityType.value
+  // Don't perform the search here
+  // updating the query parameters will trigger the onMounted lifecycle hook
 }
 
-function readQueryParameters() {
-  searchTerm.value = route.query.q as string
-  securityType.value = (route.query.securityType || '') as string
-}
-
-function updateQueryParameters() {
-  // Update query parameter in URL
-  const query: {
-    q: string
-    securityType?: string
-  } = { q: searchTerm.value }
-  if (securityType.value) {
-    query.securityType = securityType.value
-  }
-  router.push({
-    path: route.path,
-    query,
-  })
-}
+onMounted(() => {
+  updateResults()
+})
 
 async function updateResults() {
-  if (!searchTerm.value) {
+  if (!q.value) {
     return
   }
   searching.value = true
@@ -92,10 +71,10 @@ async function updateResults() {
   error.value = false
 
   try {
-    const params: { q: string, securityType?: string } = {
-      q: encodeURIComponent(searchTerm.value.trim()),
+    const params: Record<string, string> = {
+      q: q.value,
     }
-    if (securityType.value) {
+    if (selectedSecurityType.value) {
       params.securityType = securityType.value
     }
 
@@ -148,7 +127,7 @@ function getUniqueSymbols(result: SecuritySearchResult) {
                 <label for="searchTermInput">ISIN/WKN/Symbol/Name</label>
               </div>
 
-              <SelectSecurityType v-model="securityType" class="w-full mt-4" />
+              <SelectSecurityType v-model="selectedSecurityType" class="w-full mt-4" />
 
               <Button
                 type="submit"
