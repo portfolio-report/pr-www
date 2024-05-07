@@ -58,12 +58,17 @@ const currencies = [
 
 const selectedCurrency = ref(currencies[0])
 
-const { data: prices } = await useAsyncData(
+const { data: prices } = await useLazyAsyncData(
   `security:${route.params.uuid}:prices:${selectedCurrency.value.code}`,
-  () => useApi<{ date: string, close: number }[]>(
+  async () => {
+    if (!security.value.pricesAvailable) {
+      return []
+    }
+    return await useApi<{ date: string, close: number }[]>(
     `/securities/uuid/${route.params.uuid}/prices/${selectedCurrency.value.code}`,
     { params: { from: '2000-01-01' } },
-  ),
+    )
+  },
   { watch: [selectedCurrency] },
 )
 
@@ -209,9 +214,13 @@ useHead(() => ({
         </h3>
 
         <PricesTable
-          v-if="prices"
+          v-if="security.pricesAvailable && prices"
           :prices="prices"
         />
+
+        <span v-if="!security.pricesAvailable">
+          No prices available
+        </span>
 
         <h5 v-if="markets.length > 0">
           Markets
