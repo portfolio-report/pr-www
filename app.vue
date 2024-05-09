@@ -34,7 +34,7 @@ useHead({
 <template>
   <div>
     <NuxtLayout>
-      <NuxtPage :key="$route.fullPath" />
+      <NuxtPage />
     </NuxtLayout>
     <Toast />
   </div>

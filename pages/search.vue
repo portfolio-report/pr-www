@@ -54,8 +54,8 @@ async function search() {
 
   q.value = searchTerm.value
   securityType.value = selectedSecurityType.value
-  // Don't perform the search here
-  // updating the query parameters will trigger the onMounted lifecycle hook
+
+  updateResults()
 }
 
 onMounted(() => {
