@@ -37,7 +37,7 @@
     "@iconify/json": "^2.2.215",
     "@types/express": "^4.17.21",
     "@types/node": "^20.13.0",
-    "@unocss/nuxt": "^0.60.3",
+    "@unocss/nuxt": "^0.60.4",
     "@vueuse/core": "^10.10.0",
     "@vueuse/router": "^10.9.0",
     "chart.js": "^4.4.3",
