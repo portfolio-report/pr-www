@@ -119,12 +119,12 @@ const chartOptions = {
         </Column>
         <Column field="firstUpdateInt" header="From" :sortable="true">
           <template #body="slotProps">
-            {{ slotProps.data.firstUpdate.toLocaleString('de-DE') }}
+            <Date :value="slotProps.data.firstUpdate" />
           </template>
         </Column>
         <Column field="lastUpdateInt" header="To" :sortable="true">
           <template #body="slotProps">
-            {{ slotProps.data.lastUpdate.toLocaleString('de-DE') }}
+            <Date :value="slotProps.data.lastUpdate" />
           </template>
         </Column>
         <Column
