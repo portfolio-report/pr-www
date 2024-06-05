@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     'primeflex/primeflex.css',
     'primeicons/primeicons.css',
     '~/assets/styles/main.scss',
+    '@fontsource/fira-mono',
   ],
 
   modules: [

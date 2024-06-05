@@ -107,7 +107,7 @@ const chartOptions = {
       <DataTable
         :value="stats.versions"
         sort-field="version"
-        class="p-datatable-sm"
+        class="p-datatable-sm font-mono"
         :sort-order="-1"
       >
         <Column field="version" header="Version" :sortable="true">

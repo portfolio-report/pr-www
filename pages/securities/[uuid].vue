@@ -153,7 +153,7 @@ useHead(() => ({
               :name="tag"
             />
           </h2>
-          <div class="separator-container">
+          <div class="separator-container font-mono">
             <CopyClipboard v-if="security.isin" v-tooltip.top="'ISIN'" :text="security.isin">
               {{ security.isin }}
             </CopyClipboard>
@@ -231,10 +231,10 @@ useHead(() => ({
             <ul>
               <li>
                 Currency: <CountryFlag :country="market.currencyCode.substring(0, 2)" class="mr-1" />
-                <b>{{ market.currencyCode || '-' }}</b>
+                <b class="font-mono">{{ market.currencyCode || '-' }}</b>
               </li>
               <li>
-                Symbol: <b>{{ market.symbol }}</b>
+                Symbol: <b class="font-mono">{{ market.symbol }}</b>
               </li>
             </ul>
           </li>
@@ -243,7 +243,7 @@ useHead(() => ({
         <h5 v-if="countries.length === 1">
           Country
         </h5>
-        <span v-if="countries.length === 1">
+        <span v-if="countries.length === 1" class="font-mono">
           <CountryFlag :country="countries[0].taxonomy?.code ?? ''" class="mr-1" />
           {{ countries[0].taxonomy?.name }}
           ({{ countries[0].taxonomy?.code }})
@@ -284,7 +284,7 @@ useHead(() => ({
         <h5 v-if="industries.length === 1">
           Industry
         </h5>
-        <span v-if="industries.length === 1">
+        <span v-if="industries.length === 1" class="font-mono">
           {{ industries[0].taxonomy?.name }}
         </span>
 
@@ -314,8 +314,12 @@ useHead(() => ({
         <h5 v-if="security.events.length > 0">
           Events
         </h5>
-        <DataTable v-if="security.events.length > 0" :value="security.events">
-          <Column field="date" header="Date" />
+        <DataTable
+          v-if="security.events.length > 0"
+          :value="security.events"
+          class="p-datatable-sm font-mono"
+        >
+          <Column field="date" header="Date"/>
           <Column
             field="type"
             header="Type"

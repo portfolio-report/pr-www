@@ -27,7 +27,7 @@ const filters = ref({
     <DataTable
       v-model:filters="filters"
       :value="priceArray"
-      class="p-datatable-sm"
+      class="p-datatable-sm font-mono"
       :paginator="true"
       :rows="10"
       sort-field="date"

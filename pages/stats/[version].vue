@@ -60,7 +60,7 @@ const chartData = computed(() => {
           :value="data?.byDate"
           sort-field="date"
           :sort-order="-1"
-          class="p-datatable-sm"
+          class="p-datatable-sm font-mono"
         >
           <Column field="date" header="Date" :sortable="true" />
           <Column
@@ -77,7 +77,7 @@ const chartData = computed(() => {
           :value="data?.byCountry"
           sort-field="count"
           :sort-order="-1"
-          class="p-datatable-sm"
+          class="p-datatable-sm font-mono"
         >
           <Column field="country" header="Country" :sortable="true" />
           <Column

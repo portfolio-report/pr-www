@@ -121,7 +121,7 @@ const chartOptions = {
       <DataTable
         :value="data.weeks"
         sort-field="week"
-        class="p-datatable-sm"
+        class="p-datatable-sm font-mono"
         :sort-order="-1"
       >
         <Column field="week" header="Week" :sortable="true">

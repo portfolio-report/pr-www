@@ -176,7 +176,7 @@ function getUniqueSymbols(result: SecuritySearchResult) {
 
               <SecurityTag v-for="tag in result.tags" :key="tag" :name="tag" />
             </div>
-            <div class="text-600 separator-container">
+            <div class="text-600 separator-container font-mono">
               <span v-if="result.isin">{{ result.isin }}</span>
               <span v-if="result.wkn">{{ result.wkn }}</span>
               <span

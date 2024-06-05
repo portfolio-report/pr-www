@@ -25,6 +25,9 @@ devDependencies:
   '@antfu/eslint-config':
     specifier: ^2.19.2
     version: 2.19.2(@vue/compiler-sfc@3.4.21)(eslint@8.57.0)(typescript@5.4.5)
+  '@fontsource/fira-mono':
+    specifier: ^5.0.13
+    version: 5.0.13
   '@iconify/json':
     specifier: ^2.2.215
     version: 2.2.215
@@ -1160,6 +1163,10 @@ packages:
 
   /@floating-ui/utils@0.2.1:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
+    dev: true
+
+  /@fontsource/fira-mono@5.0.13:
+    resolution: {integrity: sha512-fZDjR2BdAqmauEbTjcIT62zYzbOgDa5+IQH34D2k8Pxmy1T815mAqQkZciWZVQ9dc/BgdTtTUV9HJ2ulBNwchg==}
     dev: true
 
   /@humanwhocodes/config-array@0.11.14:
