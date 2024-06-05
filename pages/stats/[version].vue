@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Chart from 'primevue/chart';
+import Chart from 'primevue/chart'
 
 const route = useRoute()
 
