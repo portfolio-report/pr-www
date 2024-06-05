@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 
   build: {
     transpile: [
-      'primevue',
+      // 'primevue',
       'chart.js',
       //
     ],
@@ -26,8 +26,12 @@ export default defineNuxtConfig({
 
   modules: [
     '@unocss/nuxt',
+    'nuxt-primevue',
     //
   ],
+
+  primevue: {
+  },
 
   unocss: {
     uno: false, // disable `@unocss/preset-uno`

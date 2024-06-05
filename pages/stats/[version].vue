@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Chart from 'primevue/chart';
+
 const route = useRoute()
 
 const { data, error } = await useAsyncData(
