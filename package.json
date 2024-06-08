@@ -34,7 +34,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^2.19.2",
     "@fontsource/fira-mono": "^5.0.13",
-    "@iconify/json": "^2.2.215",
+    "@iconify/json": "^2.2.217",
     "@types/express": "^4.17.21",
     "@types/node": "^20.13.0",
     "@unocss/nuxt": "^0.60.4",
