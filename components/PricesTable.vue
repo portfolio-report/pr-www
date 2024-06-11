@@ -47,7 +47,13 @@ const filters = ref({
           />
         </template>
       </Column>
-      <Column field="close" header="Close">
+      <Column
+        field="close"
+        body-class="text-right"
+      >
+        <template #header>
+          <span class="flex-1 text-right">Close</span>
+        </template>
         <template #body="{ data }">
           {{
             data.close.toLocaleString(undefined, { minimumFractionDigits: 2 })
