@@ -21,6 +21,8 @@ const chartOptions = {
   plugins: { legend: { display: false } },
 }
 
+const byDateAccumulated = ref(false)
+
 const chartData = computed(() => {
   if (!data.value?.byCountry) {
     return { labels: [], datasets: [] }
@@ -36,7 +38,13 @@ const chartData = computed(() => {
         backgroundColor: '#3B82F6',
         borderColor: '#3B82F6',
         fill: false,
-        data: datesSorted.map(e => e.count),
+        data: byDateAccumulated.value
+          ? datesSorted.reduce((acc: number[], curr) => {
+            const count = acc.length > 0 ? acc[acc.length - 1] + curr.count : curr.count
+            acc.push(count)
+            return acc
+          }, [])
+          : datesSorted.map(e => e.count),
       },
     ],
   }
@@ -55,6 +63,10 @@ const chartData = computed(() => {
           :options="chartOptions"
           style="height: 400px"
         />
+        <div class="flex items-center my-2">
+          <Checkbox v-model="byDateAccumulated" binary input-id="checkboxAccumulated" />
+          <label for="checkboxAccumulated" class="ml-2">Accumulated numbers</label>
+        </div>
 
         <DataTable
           :value="data?.byDate"
