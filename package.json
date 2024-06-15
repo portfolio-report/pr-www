@@ -38,7 +38,7 @@
     "@types/express": "^4.17.21",
     "@types/node": "^20.14.2",
     "@unocss/nuxt": "^0.61.0",
-    "@vueuse/core": "^10.10.0",
+    "@vueuse/core": "^10.11.0",
     "@vueuse/router": "^10.11.0",
     "chart.js": "^4.4.3",
     "eslint": "^8.57.0",
