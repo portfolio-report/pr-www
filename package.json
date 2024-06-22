@@ -46,7 +46,7 @@
     "nuxt": "^3.11.2",
     "nuxt-primevue": "^3.0.0",
     "primevue": "3.52.0",
-    "sass": "^1.77.5",
+    "sass": "^1.77.6",
     "typescript": "^5.4.5",
     "vue-tsc": "^1.8.27"
   }
