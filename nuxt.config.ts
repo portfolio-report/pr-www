@@ -36,11 +36,6 @@ export default defineNuxtConfig({
     },
   },
 
-  unocss: {
-    uno: true, // enable `@unocss/preset-uno`
-    icons: true, // enable `@unocss/preset-icons`
-  },
-
   runtimeConfig: {
     public: {
       gitSha: process.env.GITHUB_SHA,
