@@ -143,7 +143,7 @@ useHead(() => ({
         <div class="flex-grow-1">
           <h2>
             {{ security.name }}
-            <Tag class="mx-1 p-1 text-xs text-white bg-teal-500 align-top">
+            <Tag class="mx-1 p-1 !text-xs !text-white !bg-teal-500 align-top">
               {{ security.securityType }}
             </Tag>
             <SecurityTag

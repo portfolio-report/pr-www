@@ -169,7 +169,7 @@ function getUniqueSymbols(result: SecuritySearchResult) {
                 {{ result.name }}
               </NuxtLink>
 
-              <Tag class="mx-1 p-1 text-xs bg-teal-500 text-white">
+              <Tag class="mx-1 p-1 !text-xs !bg-teal-500 !text-white">
                 {{ result.securityType }}
               </Tag>
 
@@ -200,17 +200,17 @@ function getUniqueSymbols(result: SecuritySearchResult) {
           <ul>
             <li>
               Actively maintain and develop the
-              <a href="https://www.github.com/portfolio-report">source code on Github</a>.
+              <a href="https://www.github.com/portfolio-report" class="text-blue-500">source code on Github</a>.
             </li>
             <li>
               Become member of the
-              <a href="https://forum.portfolio-performance.info">forum</a> and
+              <a href="https://forum.portfolio-performance.info" class="text-blue-500">forum</a> and
               help other users.
             </li>
             <li>
               Cover monthly costs for server operation and licence fees. Become
               sponsor on
-              <a href="https://github.com/sponsors/tfabritius">Github</a>.
+              <a href="https://github.com/sponsors/tfabritius" class="text-blue-500">Github</a>.
             </li>
           </ul>
         </template>
