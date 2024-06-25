@@ -11,7 +11,7 @@
     "build": "nuxi build",
     "start": "nuxi preview",
     "generate": "nuxi generate",
-    "serve": "node serve.mjs",
+    "serve": "node serve.js",
     "lint": "eslint .",
     "lintfix": "eslint --fix .",
     "typecheck": "nuxi typecheck"
