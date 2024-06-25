@@ -9,6 +9,17 @@ export interface Security {
   securityType: string | null
 }
 
+export interface SecurityV1 {
+  uuid: string
+  name: string
+  isin: string
+  wkn: string
+  code: string
+  tags: string[]
+  securityType: string
+  pricesAvailable: boolean
+}
+
 export interface Market {
   marketCode: string
   currencyCode: string
