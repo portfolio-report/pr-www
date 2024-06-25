@@ -11,9 +11,7 @@ html {
 }
 
 body {
-  font-family: var(--font-family);
-  color: var(--text-color);
-  background-color: var(--surface-ground);
+  font-family: 'Inter Variable', sans-serif;
   margin: 0;
   padding: 0;
   min-height: 100%;
@@ -23,7 +21,6 @@ body {
 
 a {
   text-decoration: none;
-  color: var(--primary-color);
 }
 
 .font-mono {

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
-import OverlayPanel from 'primevue/overlaypanel'
+import type Popover from 'primevue/popover'
 
 const props = defineProps<{ text: string }>()
 
 const { copy } = useClipboard()
 
-const overlay = ref<OverlayPanel | null>(null)
+const overlay = ref<typeof Popover | null>(null)
 
 async function copyTextToClipboard(event: Event) {
   copy(props.text)
@@ -20,8 +20,8 @@ async function copyTextToClipboard(event: Event) {
 <template>
   <span>
     <slot /> <a class="ii i-carbon-copy cursor-pointer hover:text-primary-500" @click="ev => copyTextToClipboard(ev)" />
-    <OverlayPanel ref="overlay" :dismissable="false" :close-on-escape="false" :pt="{ content: { class: 'p-0' } }">
+    <Popover ref="overlay" :dismissable="false" :close-on-escape="false" :pt="{ content: { class: 'p-0' } }">
       <InlineMessage severity="success">Copied to clipboard</InlineMessage>
-    </OverlayPanel>
+    </Popover>
   </span>
 </template>

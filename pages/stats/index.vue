@@ -80,7 +80,7 @@ const chartOptions = {
     <template v-if="pending || !stats">
       <Skeleton width="15em" />
 
-      <div class="flex align-items-end" style="height: 400px">
+      <div class="flex items-end" style="height: 400px">
         <Skeleton
           v-for="(h, i) in [30, 25, 45, 70, 90]"
           :key="i"
@@ -107,12 +107,13 @@ const chartOptions = {
       <DataTable
         :value="stats.versions"
         sort-field="version"
-        class="p-datatable-sm font-mono"
+        class="font-mono"
+        size="small"
         :sort-order="-1"
       >
         <Column field="version" header="Version" :sortable="true">
           <template #body="{ data }">
-            <NuxtLink :to="`/stats/${data.version}`">
+            <NuxtLink :to="`/stats/${data.version}`" class="text-blue-500">
               {{ data.version }}
             </NuxtLink>
           </template>
@@ -131,7 +132,7 @@ const chartOptions = {
           field="count"
           header="Count"
           :sortable="true"
-          class="text-right"
+          class="!text-right"
         />
       </DataTable>
     </template>

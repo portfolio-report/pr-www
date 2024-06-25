@@ -137,19 +137,19 @@ useHead(() => ({
 </script>
 
 <template>
-  <div class="flex justify-content-center">
+  <div class="flex justify-center">
     <div style="width: 800px">
       <div class="flex flex-wrap">
         <div class="flex-grow-1">
           <h2>
             {{ security.name }}
-            <Tag class="mx-1 bg-teal-500 vertical-align-top">
+            <Tag class="mx-1 p-1 text-xs text-white bg-teal-500 align-top">
               {{ security.securityType }}
             </Tag>
             <SecurityTag
               v-for="tag in security.tags"
               :key="tag"
-              class="vertical-align-top"
+              class="align-top"
               :name="tag"
             />
           </h2>
@@ -194,13 +194,16 @@ useHead(() => ({
       </div>
 
       <div class="mt-4">
-        <h3 v-if="security.pricesAvailable">
-          Prices
-          <Dropdown
+        <div class="flex items-baseline">
+          <h3 v-if="security.pricesAvailable">
+            Prices
+          </h3>
+          <Select
             v-if="security.pricesAvailable"
             v-model="selectedCurrency"
             :options="currencies"
             option-label="code"
+            class="ml-2"
           >
             <template #value="{ value }">
               <CountryFlag :country="value.code.substring(0, 2)" class="mr-1" />
@@ -210,8 +213,8 @@ useHead(() => ({
               <CountryFlag :country="option.code.substring(0, 2)" class="mr-1" />
               {{ option.code }}
             </template>
-          </Dropdown>
-        </h3>
+          </Select>
+        </div>
 
         <PricesTable
           v-if="security.pricesAvailable && prices"
@@ -257,7 +260,8 @@ useHead(() => ({
           :value="countries"
           sort-field="weight"
           :sort-order="-1"
-          class="p-datatable-sm mb-2"
+          class="mb-2"
+          size="small"
         >
           <Column field="weight" header="Percentage" :sortable="true">
             <template #body="{ data }">
@@ -297,7 +301,7 @@ useHead(() => ({
           :value="industries"
           sort-field="weight"
           :sort-order="-1"
-          class="p-datatable-sm"
+          size="small"
         >
           <Column field="weight" header="Percentage" :sortable="true">
             <template #body="{ data }">
@@ -317,9 +321,10 @@ useHead(() => ({
         <DataTable
           v-if="security.events.length > 0"
           :value="security.events"
-          class="p-datatable-sm font-mono"
+          class="font-mono"
+          size="small"
         >
-          <Column field="date" header="Date"/>
+          <Column field="date" header="Date" />
           <Column
             field="type"
             header="Type"

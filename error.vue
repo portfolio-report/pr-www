@@ -5,7 +5,7 @@ useHead({ title: 'Portfolio Report' })
 </script>
 
 <template>
-  <div class="flex justify-content-center align-items-center h-screen">
+  <div class="flex justify-center items-center h-screen">
     <Card class="shadow-2" style="min-width: 600px">
       <template #title>
         <div class="text-center">
@@ -26,11 +26,11 @@ useHead({ title: 'Portfolio Report' })
         <div v-if="error.statusCode === 404" class="text-center">
           <p>
             Sorry, this page does not exist. If you think, this is wrong, please
-            <NuxtLink to="/contact">
+            <NuxtLink to="/contact" class="text-blue-500">
               let us know
             </NuxtLink>.
           </p>
-          <NuxtLink to="/">
+          <NuxtLink to="/" class="text-blue-500">
             Go to home page
           </NuxtLink>
         </div>

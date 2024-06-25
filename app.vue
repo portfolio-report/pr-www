@@ -28,6 +28,9 @@ useHead({
       href: '/favicon-192.png',
     },
   ],
+  bodyAttrs: {
+    class: 'bg-gray-50 text-gray-600',
+  },
 })
 </script>
 

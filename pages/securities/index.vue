@@ -49,7 +49,7 @@ watch(page, () => {
       </template>
       <Column field="name" header="Name">
         <template #body="{ data: security }">
-          <NuxtLink :to="`/securities/${security.uuid}`">
+          <NuxtLink :to="`/securities/${security.uuid}`" class="text-blue-500">
             {{ security.name }}
           </NuxtLink>
 
@@ -70,7 +70,7 @@ watch(page, () => {
       </Column>
       <Column field="securityType" header="Type">
         <template #body="{ data: security }">
-          <Tag class="mx-1 bg-teal-500">
+          <Tag class="mx-1 p-1 text-xs bg-teal-500 text-white">
             {{ security.securityType }}
           </Tag>
         </template>

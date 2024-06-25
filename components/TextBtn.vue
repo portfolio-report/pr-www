@@ -26,13 +26,10 @@ const icons = computed(() => {
   <Button
     :type="type"
     :icon="icons"
-    :class="{
-      'p-button-text': !solid,
-      'p-button-rounded': !label,
-      'x-button-small': small,
-      'p-button-secondary': color === 'secondary',
-      'p-button-success': color === 'success',
-    }"
+    :text="!solid"
+    :rounded="!label"
+    :size="small ? 'small' : undefined"
+    :severity="color"
     :label="label"
     :form="form"
     :disabled="disabled"

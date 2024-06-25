@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { FilterOperator } from 'primevue/api'
 import type { DataTableFilterMeta } from 'primevue/datatable'
 
 const props = defineProps<{
@@ -16,7 +15,7 @@ const priceArray = computed(() =>
 
 const filters = ref({
   date: {
-    operator: FilterOperator.AND,
+    operator: 'and',
     constraints: [{ value: null, matchMode: 'dateIs' }],
   },
 } satisfies DataTableFilterMeta)
@@ -27,7 +26,8 @@ const filters = ref({
     <DataTable
       v-model:filters="filters"
       :value="priceArray"
-      class="p-datatable-sm font-mono"
+      class="font-mono"
+      size="small"
       :paginator="true"
       :rows="10"
       sort-field="date"
@@ -40,7 +40,7 @@ const filters = ref({
           {{ data.dateStr }}
         </template>
         <template #filter="{ filterModel }">
-          <Calendar
+          <DatePicker
             v-model="filterModel.value"
             date-format="yy-mm-dd"
             placeholder="yyyy-mm-dd"
@@ -49,7 +49,7 @@ const filters = ref({
       </Column>
       <Column
         field="close"
-        body-class="text-right"
+        body-class="!text-right"
       >
         <template #header>
           <span class="flex-1 text-right">Close</span>

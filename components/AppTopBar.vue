@@ -11,10 +11,10 @@ function search() {
 </script>
 
 <template>
-  <div class="layout-topbar">
-    <NuxtLink to="/" class="layout-topbar-logo">
+  <div class="layout-topbar bg-white">
+    <NuxtLink to="/" class="layout-topbar-logo text-gray-600">
       <img class="mx-2 h-4rem" src="/favicon-192.png" alt="Logo">
-      <span class="text-2xl font-medium align-self-center text-color">
+      <span class="text-2xl font-medium self-center">
         Portfolio Report
       </span>
     </NuxtLink>
@@ -23,9 +23,9 @@ function search() {
       v-if="!$route.path.startsWith('/search')"
       v-styleclass="{
         selector: '@next',
-        enterClass: 'hidden',
+        enterFromClass: '!hidden',
         enterActiveClass: 'scalein',
-        leaveToClass: 'hidden',
+        leaveToClass: '!hidden',
         leaveActiveClass: 'fadeout',
         hideOnOutsideClick: true,
       }"
@@ -38,7 +38,7 @@ function search() {
 
     <ul
       v-if="!$route.path.startsWith('/search')"
-      class="layout-topbar-menu hidden lg:flex origin-top"
+      class="layout-topbar-menu !hidden lg:!flex origin-top"
     >
       <li>
         <form @submit.prevent="search">
@@ -68,7 +68,6 @@ function search() {
   top: 0;
   width: 100%;
   padding: 0 2rem;
-  background-color: var(--surface-card);
   transition: left $transitionDuration;
   display: flex;
   align-items: center;
@@ -78,16 +77,10 @@ function search() {
   .layout-topbar-logo {
     display: flex;
     align-items: center;
-    color: var(--surface-900);
     font-size: 1.5rem;
     font-weight: 500;
     width: 300px;
     border-radius: $borderRadius;
-
-    img {
-      height: 2.5rem;
-      margin-right: 0.5rem;
-    }
 
     &:focus {
       @include focused();
@@ -99,17 +92,11 @@ function search() {
     justify-content: center;
     align-items: center;
     position: relative;
-    color: var(--text-color-secondary);
     border-radius: 50%;
     width: 3rem;
     height: 3rem;
     cursor: pointer;
     transition: background-color $transitionDuration;
-
-    &:hover {
-      color: var(--text-color);
-      background-color: var(--surface-hover);
-    }
 
     &:focus {
       @include focused();
@@ -127,6 +114,10 @@ function search() {
 
   .layout-menu-button {
     margin-left: 2rem;
+
+    &:focus {
+      @include focused();
+    }
   }
 
   .layout-topbar-menu-button {
@@ -134,6 +125,10 @@ function search() {
 
     i {
       font-size: 1.25rem;
+    }
+
+    &:focus {
+      @include focused();
     }
   }
 
@@ -202,6 +197,37 @@ function search() {
         }
       }
     }
+  }
+}
+
+.scalein {
+  animation: scalein .15s linear;
+}
+
+@keyframes scalein {
+  0% {
+    opacity: 0;
+    transform: scaleY(.8);
+    transition: transform .12s cubic-bezier(0,0,.2,1), opacity .12s cubic-bezier(0,0,.2,1);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.fadeout {
+  animation: fadeout .15s linear;
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
   }
 }
 </style>

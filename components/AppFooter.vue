@@ -12,7 +12,7 @@ const githubLink = computed(() => {
 </script>
 
 <template>
-  <footer class="flex justify-content-center">
+  <footer class="flex justify-center">
     <IconLink
       v-tooltip.top="'Get help and discuss'"
       href="https://forum.portfolio-performance.info/"

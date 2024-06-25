@@ -18,16 +18,13 @@ function update(value: string) {
 </script>
 
 <template>
-  <span class="p-float-label">
-    <Dropdown
-      class="w-full"
-      :model-value="modelValue"
-      :options="securityTypeItems"
-      option-label="text"
-      option-value="value"
-      :show-clear="true"
-      @update:model-value="update"
-    />
-    <label>Security Type</label>
-  </span>
+  <Select
+    :model-value="modelValue"
+    :options="securityTypeItems"
+    option-label="text"
+    option-value="value"
+    :show-clear="true"
+    placeholder="Security Type"
+    @update:model-value="update"
+  />
 </template>

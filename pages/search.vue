@@ -107,7 +107,7 @@ function getUniqueSymbols(result: SecuritySearchResult) {
 </script>
 
 <template>
-  <div class="flex justify-content-center">
+  <div class="flex justify-center">
     <div style="width: 800px">
       <Card>
         <template #title>
@@ -116,23 +116,21 @@ function getUniqueSymbols(result: SecuritySearchResult) {
         <template #content>
           <form @submit.prevent="search">
             <ClientOnly>
-              <div class="p-float-label mt-2">
-                <InputText
-                  id="searchTermInput"
-                  v-model="searchTerm"
-                  type="search"
-                  class="w-full"
-                  autofocus
-                />
-                <label for="searchTermInput">ISIN/WKN/Symbol/Name</label>
-              </div>
+              <InputText
+                id="searchTermInput"
+                v-model="searchTerm"
+                type="search"
+                class="mt-2 w-full"
+                autofocus
+                placeholder="ISIN/WKN/Symbol/Name"
+              />
 
               <SelectSecurityType v-model="selectedSecurityType" class="w-full mt-4" />
 
               <Button
                 type="submit"
                 :disabled="!searchTerm || searching"
-                class="w-full flex justify-content-center mt-4"
+                class="w-full flex justify-center mt-4"
               >
                 <span v-if="!searching" class="font-bold">Search</span>
                 <ProgressSpinner v-else style="height: 20px" />
@@ -156,27 +154,28 @@ function getUniqueSymbols(result: SecuritySearchResult) {
         </template>
         <template #content>
           <div v-for="result in results" :key="result.uuid" class="mb-3">
-            <div class="text-lg font-medium flex align-items-center">
+            <div class="text-lg font-medium flex items-center">
               <i
                 v-if="result.pricesAvailable"
                 v-tooltip.top="'Prices available'"
-                class="i-carbon-chart-line mr-1 text-primary"
+                class="i-carbon-chart-line mr-1 text-blue-500"
               />
 
               <NuxtLink
                 v-tooltip.top="'Drag and drop me to Portfolio Performance!'"
                 :to="`/securities/${result.uuid}`"
+                class="text-blue-500"
               >
                 {{ result.name }}
               </NuxtLink>
 
-              <Tag class="mx-1 bg-teal-500">
+              <Tag class="mx-1 p-1 text-xs bg-teal-500 text-white">
                 {{ result.securityType }}
               </Tag>
 
               <SecurityTag v-for="tag in result.tags" :key="tag" :name="tag" />
             </div>
-            <div class="text-600 separator-container font-mono">
+            <div class="text-gray-600 separator-container font-mono">
               <span v-if="result.isin">{{ result.isin }}</span>
               <span v-if="result.wkn">{{ result.wkn }}</span>
               <span

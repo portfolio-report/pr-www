@@ -55,51 +55,63 @@ const chartData = computed(() => {
   <div>
     <h2>Version Statistics for {{ $route.params.version }}</h2>
 
-    <TabView>
-      <TabPanel header="By date">
-        <Chart
-          type="line"
-          :data="chartData"
-          :options="chartOptions"
-          style="height: 400px"
-        />
-        <div class="flex items-center my-2">
-          <Checkbox v-model="byDateAccumulated" binary input-id="checkboxAccumulated" />
-          <label for="checkboxAccumulated" class="ml-2">Accumulated numbers</label>
-        </div>
-
-        <DataTable
-          :value="data?.byDate"
-          sort-field="date"
-          :sort-order="-1"
-          class="p-datatable-sm font-mono"
-        >
-          <Column field="date" header="Date" :sortable="true" />
-          <Column
-            field="count"
-            header="Count"
-            :sortable="true"
-            class="text-right"
+    <Tabs value="byDate">
+      <TabList>
+        <Tab value="byDate">
+          By date
+        </Tab>
+        <Tab value="byCountry">
+          By country
+        </Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel value="byDate">
+          <Chart
+            type="line"
+            :data="chartData"
+            :options="chartOptions"
+            style="height: 400px"
           />
-        </DataTable>
-      </TabPanel>
+          <div class="flex items-center my-2">
+            <Checkbox v-model="byDateAccumulated" binary input-id="checkboxAccumulated" />
+            <label for="checkboxAccumulated" class="ml-2">Accumulated numbers</label>
+          </div>
 
-      <TabPanel header="By country">
-        <DataTable
-          :value="data?.byCountry"
-          sort-field="count"
-          :sort-order="-1"
-          class="p-datatable-sm font-mono"
-        >
-          <Column field="country" header="Country" :sortable="true" />
-          <Column
-            field="count"
-            header="Count"
-            :sortable="true"
-            class="text-right"
-          />
-        </DataTable>
-      </TabPanel>
-    </TabView>
+          <DataTable
+            :value="data?.byDate"
+            sort-field="date"
+            :sort-order="-1"
+            class="font-mono"
+            size="small"
+          >
+            <Column field="date" header="Date" :sortable="true" />
+            <Column
+              field="count"
+              header="Count"
+              :sortable="true"
+              class="!text-right"
+            />
+          </DataTable>
+        </TabPanel>
+
+        <TabPanel value="byCountry">
+          <DataTable
+            :value="data?.byCountry"
+            sort-field="count"
+            :sort-order="-1"
+            class="font-mono"
+            size="small"
+          >
+            <Column field="country" header="Country" :sortable="true" />
+            <Column
+              field="count"
+              header="Count"
+              :sortable="true"
+              class="!text-right"
+            />
+          </DataTable>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   </div>
 </template>

@@ -99,7 +99,7 @@ const containerClass = ref<Array<string | { [key: string]: boolean }>>([
 
     .layout-mask {
       z-index: 998;
-      background-color: var(--maskbg);
+      background-color: rgba(0,0,0,.4);
 
       &.layout-mask-enter-from,
       &.layout-mask-leave-to {

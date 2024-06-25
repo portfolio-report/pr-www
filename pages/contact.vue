@@ -70,7 +70,7 @@ async function send() {
 </script>
 
 <template>
-  <div class="flex justify-content-center">
+  <div class="flex justify-center">
     <Card style="width: 800px">
       <template #title>
         Contact
@@ -85,7 +85,7 @@ async function send() {
         operators for all matters that cannot be discussed publicly.
 
         <form class="mt-2" @submit.prevent="send">
-          <div class="p-float-label mt-4">
+          <FloatLabel class="mt-8">
             <InputText
               id="formName"
               v-model="v$.name.$model"
@@ -94,9 +94,9 @@ async function send() {
               @blur="v$.name.$touch"
             />
             <label for="formName">Your name</label>
-          </div>
+          </FloatLabel>
 
-          <div class="p-float-label mt-4">
+          <FloatLabel class="mt-8">
             <InputText
               id="formEmail"
               v-model="v$.email.$model"
@@ -105,9 +105,9 @@ async function send() {
               @blur="v$.email.$touch"
             />
             <label form="formEmail">Your email address</label>
-          </div>
+          </FloatLabel>
 
-          <div class="p-float-label mt-4">
+          <FloatLabel class="mt-8">
             <InputText
               id="formSubject"
               v-model="v$.subject.$model"
@@ -118,9 +118,9 @@ async function send() {
               @blur="v$.subject.$touch"
             />
             <label for="formSubject">Subject</label>
-          </div>
+          </FloatLabel>
 
-          <div class="p-float-label mt-4">
+          <FloatLabel class="mt-8">
             <Textarea
               id="message"
               v-model="v$.message.$model"
@@ -132,9 +132,9 @@ async function send() {
               @blur="v$.message.$touch"
             />
             <label for="formMessage">Your message</label>
-          </div>
+          </FloatLabel>
 
-          <div class="flex justify-content-end mt-4">
+          <div class="flex justify-content-end mt-8">
             <TextBtn
               type="submit"
               icon="i-carbon-send"

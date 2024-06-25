@@ -26,18 +26,9 @@ const icons = computed(() => {
     :to="to"
     :href="to ? undefined : href || '#'"
     :target="target"
+    class="text-slate-500 hover:text-blue-500"
     @click="emit('click', $event)"
   >
     <i class="ii" :class="icons" />
   </NuxtLink>
 </template>
-
-<style scoped>
-a {
-  color: #64748b;
-}
-
-a:hover {
-  color: var(--primary-color);
-}
-</style>

@@ -11,7 +11,7 @@ const linkTo = computed(() => {
 </script>
 
 <template>
-  <Tag class="mx-1 bg-orange-300">
+  <Tag class="mx-1 p-1 text-xs bg-orange-300">
     <NuxtLink :to="linkTo">
       {{ name }}
     </NuxtLink>

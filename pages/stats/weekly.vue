@@ -84,17 +84,17 @@ const chartOptions = {
 
     <h2>
       Weekly Statistics for
-      <a class="cursor-pointer" @click="toggleYearOverlay">{{ year }}</a>
+      <a class="cursor-pointer text-blue-500" @click="toggleYearOverlay">{{ year }}</a>
     </h2>
 
-    <OverlayPanel ref="yearOverlay" :show-close-icon="true">
+    <Popover ref="yearOverlay" :show-close-icon="true">
       <InputNumber v-model="year" :use-grouping="false" />
-    </OverlayPanel>
+    </Popover>
 
     <template v-if="pending || !data">
       <Skeleton width="15em" />
 
-      <div class="flex align-items-end" style="height: 400px">
+      <div class="flex items-end" style="height: 400px">
         <Skeleton
           v-for="(h, i) in [30, 25, 45, 70, 90]"
           :key="i"
@@ -121,7 +121,8 @@ const chartOptions = {
       <DataTable
         :value="data.weeks"
         sort-field="week"
-        class="p-datatable-sm font-mono"
+        class="font-mono"
+        size="small"
         :sort-order="-1"
       >
         <Column field="week" header="Week" :sortable="true">
@@ -133,7 +134,7 @@ const chartOptions = {
           field="count"
           header="Count"
           :sortable="true"
-          class="text-right"
+          class="!text-right"
         />
       </DataTable>
     </template>
