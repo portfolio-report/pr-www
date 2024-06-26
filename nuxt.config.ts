@@ -48,6 +48,7 @@ export default defineNuxtConfig({
       autoSubfolderIndex: false,
       failOnError: false,
       ignore: [
+        '/securities',
         '/stats',
       ],
     },

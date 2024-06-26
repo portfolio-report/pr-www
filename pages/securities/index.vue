@@ -42,10 +42,20 @@ watch(page, () => {
       @page="onPage($event)"
     >
       <template #paginatorstart>
-        <TextBtn v-if="page > 1" solid label="Previous" @click="page--" />
+        <NuxtLink
+          v-if="page > 1"
+          :to="`/securities?page=${page - 1}`"
+        >
+          <TextBtn solid label="Previous" />
+        </NuxtLink>
       </template>
       <template #paginatorend>
-        <TextBtn v-if="page !== data?.pages" solid label="Next" @click="page++" />
+        <NuxtLink
+          v-if="page !== data?.pages"
+          :to="`/securities?page=${page + 1}`"
+        >
+          <TextBtn solid label="Next" />
+        </NuxtLink>
       </template>
       <Column field="name" header="Name">
         <template #body="{ data: security }">
