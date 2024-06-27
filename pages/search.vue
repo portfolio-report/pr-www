@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouteQuery } from '@vueuse/router'
+import type { SecurityV1 } from '~/store/Security.model'
 
 const q = useRouteQuery('q', '', { transform: v => v || '' })
 const securityType = useRouteQuery('securityType', '', { transform: v => v || '' })
@@ -27,23 +28,7 @@ useHead({
 const searchTerm = ref(q.value)
 const selectedSecurityType = ref(securityType.value)
 
-interface SecuritySearchResult {
-  uuid: string
-  name: string
-  isin: string
-  wkn: string
-  code: string
-  securityType: string
-  markets?: Array<{
-    firstPriceDate: string
-    lastPriceDate: string
-    symbol: string | null
-  }>
-  pricesAvailable: boolean
-  tags: string[]
-}
-
-const results = ref<SecuritySearchResult[]>([])
+const results = ref<SecurityV1[]>([])
 const noResults = ref(false)
 const searching = ref(false)
 const error = ref(false)
@@ -78,7 +63,7 @@ async function updateResults() {
       params.securityType = securityType.value
     }
 
-    const res = await useApi<SecuritySearchResult[]>('/v1/securities/search', { params })
+    const res = await useApi<SecurityV1[]>('/v1/securities/search', { params })
 
     searching.value = false
     results.value = res
@@ -95,14 +80,6 @@ async function updateResults() {
     error.value = true
     errorText.value = String(err)
   }
-}
-
-function getUniqueSymbols(result: SecuritySearchResult) {
-  return [
-    ...new Set(
-      result.markets?.map(m => m.symbol),
-    ),
-  ].filter(s => !!s)
 }
 </script>
 
@@ -178,12 +155,6 @@ function getUniqueSymbols(result: SecuritySearchResult) {
             <div class="text-gray-600 separator-container font-mono">
               <span v-if="result.isin">{{ result.isin }}</span>
               <span v-if="result.wkn">{{ result.wkn }}</span>
-              <span
-                v-for="(symbol, idx) in getUniqueSymbols(result)"
-                :key="idx"
-              >
-                {{ symbol }}
-              </span>
               <span v-if="result.code">{{ result.code }}</span>
             </div>
           </div>
