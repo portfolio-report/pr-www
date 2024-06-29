@@ -87,7 +87,8 @@ const chartOptions = {
       <a class="cursor-pointer text-blue-500" @click="toggleYearOverlay">{{ year }}</a>
     </h2>
 
-    <Popover ref="yearOverlay" :show-close-icon="true">
+    <Popover ref="yearOverlay">
+      <Button icon="i-carbon-close-large" rounded icon-class="text-xl" class="position-absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2" @click="yearOverlay.hide()" />
       <InputNumber v-model="year" :use-grouping="false" />
     </Popover>
 
