@@ -25,8 +25,8 @@ useHead({
   link: [{ rel: 'canonical', href: canonicalUrl.value }],
 })
 
-const searchTerm = ref(q.value)
-const selectedSecurityType = ref(securityType.value)
+const searchTerm = ref('')
+const selectedSecurityType = ref('')
 
 const results = ref<SecurityV1[]>([])
 const noResults = ref(false)
@@ -39,13 +39,14 @@ async function search() {
 
   q.value = searchTerm.value
   securityType.value = selectedSecurityType.value
-
-  updateResults()
 }
 
-onMounted(() => {
+watch([q, securityType], () => {
+  searchTerm.value = q.value
+  selectedSecurityType.value = securityType.value
+
   updateResults()
-})
+}, { immediate: true })
 
 async function updateResults() {
   if (!q.value) {
