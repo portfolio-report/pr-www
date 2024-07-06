@@ -31,8 +31,8 @@ importers:
         specifier: 4.0.0-rc.3
         version: 4.0.0-rc.3(@babel/parser@7.24.7)(@primeuix/utils@0.0.5)(magicast@0.3.4)(rollup@4.14.0)(vue@3.4.29(typescript@5.4.5))
       '@primevue/themes':
-        specifier: 4.0.0-rc.2
-        version: 4.0.0-rc.2(@primeuix/styled@0.0.5)
+        specifier: 4.0.0
+        version: 4.0.0(@primeuix/styled@0.0.5)
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -933,11 +933,11 @@ packages:
     resolution: {integrity: sha512-l61FG7p98ffF80TktVTyAZ3go/cQvsyXOWdjov+AxR7AKB684+UsfR131v6E0nxd3Smd4AJ8Go84ncKQV/uy/g==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/themes@4.0.0-rc.2':
-    resolution: {integrity: sha512-4y9NlDDwA4J51aNoO1+7anPOwjNTpCzetOZlKY7pQfxxpAmKUM4ouf87kjQz0/IFjBIxN4ZK3XfwtamFoL08Ug==}
+  '@primevue/themes@4.0.0':
+    resolution: {integrity: sha512-y1HKYTuWma3T8NM9xVsLeJJeFWMxLIdJqNvQ+l8CnASgU+GH+KxMXOpPXqTAiJ2zpPmBL5VwpCCJWX93DjjvMQ==}
     engines: {node: '>=12.11.0'}
     peerDependencies:
-      '@primeuix/styled': ^0.0.1
+      '@primeuix/styled': ^0.0.5
 
   '@rollup/plugin-alias@5.1.0':
     resolution: {integrity: sha512-lpA3RZ9PdIG7qqhEfv79tBffNaoDuukFDrmhLqg9ifv99u/ehn+lOg30x2zmhf8AQqQUZaMk/B9fZraQ6/acDQ==}
@@ -5978,7 +5978,7 @@ snapshots:
       - supports-color
       - vue
 
-  '@primevue/themes@4.0.0-rc.2(@primeuix/styled@0.0.5)':
+  '@primevue/themes@4.0.0(@primeuix/styled@0.0.5)':
     dependencies:
       '@primeuix/styled': 0.0.5
 
