@@ -25,8 +25,8 @@ importers:
         specifier: ^5.0.13
         version: 5.0.13
       '@iconify/json':
-        specifier: ^2.2.225
-        version: 2.2.225
+        specifier: ^2.2.227
+        version: 2.2.227
       '@primevue/nuxt-module':
         specifier: 4.0.0-rc.3
         version: 4.0.0-rc.3(@babel/parser@7.24.7)(@primeuix/utils@0.0.5)(magicast@0.3.4)(rollup@4.18.0)(vue@3.4.31(typescript@5.5.3))
@@ -819,8 +819,8 @@ packages:
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
     deprecated: Use @eslint/object-schema instead
 
-  '@iconify/json@2.2.225':
-    resolution: {integrity: sha512-3MxzXdrxDxItlGxvTmLnbZGlvGcwuBIOofJfyobq097lysZasvsNddFguiWecmKP91nRR4I2ik7enFVQ9Lz3mg==}
+  '@iconify/json@2.2.227':
+    resolution: {integrity: sha512-MFSbYNpLJXHashfMAKox00XKK1ATEUMxOcqOBgdV+dsiscE9EOeApLpmyZ88+FQq7uDZea0l1YS63eSnVN5Yjw==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -5496,7 +5496,7 @@ snapshots:
 
   '@humanwhocodes/object-schema@2.0.2': {}
 
-  '@iconify/json@2.2.225':
+  '@iconify/json@2.2.227':
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 1.1.2
