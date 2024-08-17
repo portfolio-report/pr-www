@@ -51,7 +51,7 @@
     "unocss": "^0.62.2",
     "vue": "^3.4.38",
     "vue-router": "^4.4.0",
-    "vue-tsc": "^2.0.26"
+    "vue-tsc": "^2.0.29"
   },
   "packageManager": "pnpm@9.4.0"
 }
