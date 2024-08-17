@@ -38,7 +38,7 @@
     "@primevue/themes": "4.0.0",
     "@types/express": "^4.17.21",
     "@types/node": "^22.2.0",
-    "@unocss/nuxt": "^0.61.9",
+    "@unocss/nuxt": "^0.62.2",
     "@vueuse/core": "^11.0.0",
     "@vueuse/router": "^11.0.0",
     "chart.js": "^4.4.3",
