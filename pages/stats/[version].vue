@@ -61,7 +61,7 @@ const chartData = computed(() => {
 
 <template>
   <div>
-    <h2>Version Statistics for {{ $route.params.version }}</h2>
+    <h2>Version Statistics for {{ route.params.version }}</h2>
 
     <Tabs value="byDate">
       <TabList>

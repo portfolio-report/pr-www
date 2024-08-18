@@ -3,6 +3,7 @@ import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 
 const router = useRouter()
+const route = useRoute()
 
 const searchTerm = ref('')
 
@@ -23,7 +24,7 @@ function search() {
     </NuxtLink>
 
     <Button
-      v-if="!$route.path.startsWith('/search')"
+      v-if="!route.path.startsWith('/search')"
       v-styleclass="{
         selector: '@next',
         enterFromClass: '!hidden',
@@ -40,7 +41,7 @@ function search() {
     </Button>
 
     <ul
-      v-if="!$route.path.startsWith('/search')"
+      v-if="!route.path.startsWith('/search')"
       class="layout-topbar-menu !hidden lg:!flex origin-top"
     >
       <li>
