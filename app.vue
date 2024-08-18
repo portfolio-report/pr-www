@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Toast from 'primevue/toast'
+
 useHead({
   title: 'Portfolio Report',
   meta: [{ name: 'description', content: 'Portfolio Report' }],

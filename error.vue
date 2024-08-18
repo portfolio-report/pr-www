@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Card from 'primevue/card'
+
 defineProps({ error: { type: Object, required: true } })
 
 useHead({ title: 'Portfolio Report' })

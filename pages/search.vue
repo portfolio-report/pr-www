@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import Button from 'primevue/button'
+import Card from 'primevue/card'
+import InputText from 'primevue/inputtext'
+import Message from 'primevue/message'
+import ProgressSpinner from 'primevue/progressspinner'
+import Tag from 'primevue/tag'
+
 import { useRouteQuery } from '@vueuse/router'
 import type { SecurityV1 } from '~/store/Security.model'
 

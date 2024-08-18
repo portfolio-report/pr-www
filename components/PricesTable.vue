@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import Column from 'primevue/column'
+import DataTable from 'primevue/datatable'
 import type { DataTableFilterMeta } from 'primevue/datatable'
+import DatePicker from 'primevue/datepicker'
 
 const props = defineProps<{
   prices: { date: string, close: number }[]

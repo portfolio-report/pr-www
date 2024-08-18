@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import Card from 'primevue/card'
+import FloatLabel from 'primevue/floatlabel'
+import InputText from 'primevue/inputtext'
+import Textarea from 'primevue/textarea'
+
 import { useToast } from 'primevue/usetoast'
 import { email, required } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'

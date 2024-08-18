@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
+
 const router = useRouter()
 
 const searchTerm = ref('')
