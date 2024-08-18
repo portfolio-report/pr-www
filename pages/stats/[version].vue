@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import Chart from 'primevue/chart'
+import Checkbox from 'primevue/checkbox'
+import Column from 'primevue/column'
+import DataTable from 'primevue/datatable'
+import Tab from 'primevue/tab'
+import TabList from 'primevue/tablist'
+import TabPanel from 'primevue/tabpanel'
+import TabPanels from 'primevue/tabpanels'
+import Tabs from 'primevue/tabs'
 
 const route = useRoute()
 

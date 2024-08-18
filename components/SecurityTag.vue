@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Tag from 'primevue/tag'
+
 const props = defineProps<{ name: string }>()
 
 const linkTo = computed(() => {

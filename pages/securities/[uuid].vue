@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import Column from 'primevue/column'
+import DataTable from 'primevue/datatable'
+import Select from 'primevue/select'
+import Tag from 'primevue/tag'
+
 import type { SecurityAPI } from '~/store/Security.model'
 import { useApi } from '~/composables/useApi'
 import type { Taxonomy } from '~/store/Taxonomy.model'

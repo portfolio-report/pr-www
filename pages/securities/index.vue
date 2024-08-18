@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import Column from 'primevue/column'
+import DataTable from 'primevue/datatable'
+import Tag from 'primevue/tag'
+
 import { useRouteQuery } from '@vueuse/router'
 import type { SecurityV1 } from '~/store/Security.model'
 

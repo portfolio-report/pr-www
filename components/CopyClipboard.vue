@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import InlineMessage from 'primevue/inlinemessage'
+import Popover from 'primevue/popover'
+
 import { useClipboard } from '@vueuse/core'
-import type Popover from 'primevue/popover'
 
 const props = defineProps<{ text: string }>()
 

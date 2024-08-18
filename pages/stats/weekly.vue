@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import Button from 'primevue/button'
 import Chart from 'primevue/chart'
+import Column from 'primevue/column'
+import DataTable from 'primevue/datatable'
+import InputNumber from 'primevue/inputnumber'
+import Popover from 'primevue/popover'
+import Skeleton from 'primevue/skeleton'
 
 import { useTimeAgo } from '@vueuse/core'
 

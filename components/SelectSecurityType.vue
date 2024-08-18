@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Select from 'primevue/select'
+
 defineProps<{ modelValue: string }>()
 
 const emit = defineEmits<{ (e: 'update:modelValue', arg1: string): void }>()
