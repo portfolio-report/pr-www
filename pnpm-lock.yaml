@@ -22,8 +22,8 @@ importers:
         specifier: ^5.0.20
         version: 5.0.20
       '@fontsource/fira-mono':
-        specifier: ^5.0.13
-        version: 5.0.13
+        specifier: ^5.0.14
+        version: 5.0.14
       '@iconify/json':
         specifier: ^2.2.238
         version: 2.2.238
@@ -840,8 +840,8 @@ packages:
   '@fontsource-variable/inter@5.0.20':
     resolution: {integrity: sha512-dhzG4Zls/tIrf8h0FhTNi8jT/uFwNhdTY2vKe6DYqoXDYOfEcTVZDyh1hKml1rlLT44Y7OoKoGz8w7czDW7twQ==}
 
-  '@fontsource/fira-mono@5.0.13':
-    resolution: {integrity: sha512-fZDjR2BdAqmauEbTjcIT62zYzbOgDa5+IQH34D2k8Pxmy1T815mAqQkZciWZVQ9dc/BgdTtTUV9HJ2ulBNwchg==}
+  '@fontsource/fira-mono@5.0.14':
+    resolution: {integrity: sha512-4IKa+cuHipk/vr2frgZh4pyR2XcoQk/j3zmMlo8uuAGUB3IPLpQlgN6Qm5d3RfRZ7dXGlTn/PWiAJeU8bkmD4w==}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -5546,7 +5546,7 @@ snapshots:
 
   '@fontsource-variable/inter@5.0.20': {}
 
-  '@fontsource/fira-mono@5.0.13': {}
+  '@fontsource/fira-mono@5.0.14': {}
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
