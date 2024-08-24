@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
+import ButtonGroup from 'primevue/buttongroup'
 import Chart from 'primevue/chart'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
@@ -60,11 +61,15 @@ const chartOptions = {
   maintainAspectRatio: false,
   plugins: { legend: { display: false } },
 }
+
+function navTo(url: string) {
+  navigateTo(url)
+}
 </script>
 
 <template>
   <div>
-    <div class="p-buttonset">
+    <ButtonGroup>
       <Button
         label="Versions"
         icon="i-carbon-tag"
@@ -75,9 +80,9 @@ const chartOptions = {
         label="Weekly"
         icon="i-carbon-calendar"
         class="p-button-secondary"
-        @click="navigateTo('/stats/weekly/')"
+        @click="navTo('/stats/weekly')"
       />
-    </div>
+    </ButtonGroup>
 
     <h2>Version Statistics</h2>
 
