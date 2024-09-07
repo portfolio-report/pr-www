@@ -25,8 +25,8 @@ importers:
         specifier: ^5.0.14
         version: 5.0.14
       '@iconify/json':
-        specifier: ^2.2.242
-        version: 2.2.242
+        specifier: ^2.2.245
+        version: 2.2.245
       '@primevue/nuxt-module':
         specifier: 4.0.5
         version: 4.0.5(@babel/parser@7.25.3)(magicast@0.3.4)(rollup@4.18.0)(vue@3.4.38(typescript@5.5.4))
@@ -814,8 +814,8 @@ packages:
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
     deprecated: Use @eslint/object-schema instead
 
-  '@iconify/json@2.2.242':
-    resolution: {integrity: sha512-cS6eYdx1C1GhqaZm25ztH5yoghCaTXGJBeseUkS259GxxX9obtGLLk0yy+twxpNCD5/F9gjbgxh46BjNWsHtwg==}
+  '@iconify/json@2.2.245':
+    resolution: {integrity: sha512-JbruddbGKghBe6fE1mzuo5hhUkisIW4mAdQGAyx0Q6sI52ukeQJHakolc2RQD/yWC3xp7rARNXMzWSXJynJ1vw==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -1376,9 +1376,6 @@ packages:
 
   '@types/mime@3.0.4':
     resolution: {integrity: sha512-iJt33IQnVRkqeqC7PzBHPTC6fDlRNRW8vjrgqtScAhrmMwe8c4Eo7+fUGTa+XdWrpEgpyKWMYmi2dIwMAYRzPw==}
-
-  '@types/node@22.5.0':
-    resolution: {integrity: sha512-DkFrJOe+rfdHTqqMg0bSNlGlQ85hSoh2TPzZyhHsXnMtligRWpxUySiyw8FY14ITt24HVCiQPWxS3KO/QlGmWg==}
 
   '@types/node@22.5.1':
     resolution: {integrity: sha512-KkHsxej0j9IW1KKOOAA/XBA0z08UFSrRQHErzEfA3Vgq57eXIMYboIlHJuYIfd+lwCQjtKqUu3UnmKbtUc9yRw==}
@@ -5654,7 +5651,7 @@ snapshots:
 
   '@humanwhocodes/object-schema@2.0.2': {}
 
-  '@iconify/json@2.2.242':
+  '@iconify/json@2.2.245':
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 1.1.2
@@ -6395,10 +6392,6 @@ snapshots:
   '@types/mime@1.3.5': {}
 
   '@types/mime@3.0.4': {}
-
-  '@types/node@22.5.0':
-    dependencies:
-      undici-types: 6.19.6
 
   '@types/node@22.5.1':
     dependencies:
@@ -8815,7 +8808,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.5.0
+      '@types/node': 22.5.1
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
