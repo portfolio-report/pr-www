@@ -134,6 +134,7 @@ async function send() {
                 'p-invalid': v$.message.$invalid && v$.message.$dirty,
               }"
               :auto-resize="true"
+              rows="5"
               @blur="v$.message.$touch"
             />
             <label for="formMessage">Your message</label>
