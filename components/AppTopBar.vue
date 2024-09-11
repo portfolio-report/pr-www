@@ -46,14 +46,14 @@ function search() {
     >
       <li>
         <form @submit.prevent="search">
-          <div class="p-inputgroup">
+          <InputGroup>
             <InputText v-model="searchTerm" placeholder="Search" />
             <Button
               type="submit"
               icon="i-carbon-search i-lg"
               class="p-button-secondary"
             />
-          </div>
+          </InputGroup>
         </form>
       </li>
     </ul>
