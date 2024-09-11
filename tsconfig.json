@@ -2,5 +2,8 @@
   "extends": "./.nuxt/tsconfig.json",
   "vueCompilerOptions": {
     "strictTemplates": true
+  },
+  "compilerOptions": {
+    "noUncheckedIndexedAccess": true
   }
 }

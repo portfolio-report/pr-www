@@ -78,7 +78,7 @@ async function updateResults() {
     noResults.value = res.length === 0
 
     // Forward user to security page if only one result
-    if (res.length === 1) {
+    if (res.length === 1 && res[0]) {
       await navigateTo(`/securities/${res[0].uuid}`)
     }
   } catch (err) {

@@ -61,7 +61,7 @@ const currencies = [
   { code: 'ZAR' },
 ]
 
-const selectedCurrency = ref(currencies[0])
+const selectedCurrency = ref(currencies[0]!)
 
 const { data: prices } = await useLazyAsyncData(
   `security:${route.params.uuid}:prices:${selectedCurrency.value.code}`,
@@ -251,7 +251,7 @@ useHead(() => ({
         <h5 v-if="countries.length === 1">
           Country
         </h5>
-        <span v-if="countries.length === 1" class="font-mono">
+        <span v-if="countries.length === 1 && countries[0]" class="font-mono">
           <CountryFlag :country="countries[0].taxonomy?.code ?? ''" class="mr-1" />
           {{ countries[0].taxonomy?.name }}
           ({{ countries[0].taxonomy?.code }})
@@ -293,7 +293,7 @@ useHead(() => ({
         <h5 v-if="industries.length === 1">
           Industry
         </h5>
-        <span v-if="industries.length === 1" class="font-mono">
+        <span v-if="industries.length === 1 && industries[0]" class="font-mono">
           {{ industries[0].taxonomy?.name }}
         </span>
 
