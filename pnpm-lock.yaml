@@ -31,8 +31,8 @@ importers:
         specifier: 4.0.6
         version: 4.0.6(@babel/parser@7.25.3)(magicast@0.3.4)(rollup@4.21.0)(vue@3.5.3(typescript@5.6.2))(webpack-sources@3.2.3)
       '@primevue/themes':
-        specifier: 4.0.5
-        version: 4.0.5
+        specifier: 4.0.6
+        version: 4.0.6
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -1078,8 +1078,8 @@ packages:
     resolution: {integrity: sha512-/E/lWqjYQSVgFJrdA5A/nmcwiC1rKqvn9td2YIMCJ3xbVAl/DOlRfeIP8Q6WPxRjdqWm2tpO071u2atyws3VqA==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/themes@4.0.5':
-    resolution: {integrity: sha512-cRrAhOapOT8eFCTDwNdB/acg2ZEEkn7y6h6p188PYSjJsWnYK+D8eI1Js1ZB5HwWo4sWs3oR3Sy8bPwejnGbAw==}
+  '@primevue/themes@4.0.6':
+    resolution: {integrity: sha512-8/b0GB6Tua2J+fyr1ZUn7dk4WFSNq/AVw6NRwxamPtNJcDqmvtB/CWq9xU9WkX08WUJJSA0y0qFSjyRfbAYMAg==}
     engines: {node: '>=12.11.0'}
 
   '@rollup/plugin-alias@5.1.0':
@@ -6020,7 +6020,7 @@ snapshots:
       - vue
       - webpack-sources
 
-  '@primevue/themes@4.0.5':
+  '@primevue/themes@4.0.6':
     dependencies:
       '@primeuix/styled': 0.0.5
 
