@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { useRouteQuery } from '@vueuse/router'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Message from 'primevue/message'
 import ProgressSpinner from 'primevue/progressspinner'
-import Tag from 'primevue/tag'
 
-import { useRouteQuery } from '@vueuse/router'
+import Tag from 'primevue/tag'
 import type { SecurityV1 } from '~/store/Security.model'
 
 const q = useRouteQuery('q', '', { transform: v => v || '' })

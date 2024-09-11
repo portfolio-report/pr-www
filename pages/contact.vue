@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { useVuelidate } from '@vuelidate/core'
+import { email, required } from '@vuelidate/validators'
 import Card from 'primevue/card'
 import FloatLabel from 'primevue/floatlabel'
+
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
-
 import { useToast } from 'primevue/usetoast'
-import { email, required } from '@vuelidate/validators'
-import { useVuelidate } from '@vuelidate/core'
 
 useHead({
   title: 'Portfolio Report - Contact',

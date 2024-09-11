@@ -4,8 +4,8 @@ import DataTable from 'primevue/datatable'
 import Select from 'primevue/select'
 import Tag from 'primevue/tag'
 
-import type { SecurityAPI } from '~/store/Security.model'
 import { useApi } from '~/composables/useApi'
+import type { SecurityAPI } from '~/store/Security.model'
 import type { Taxonomy } from '~/store/Taxonomy.model'
 
 const route = useRoute()

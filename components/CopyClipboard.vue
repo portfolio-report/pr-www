@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import InlineMessage from 'primevue/inlinemessage'
-import Popover from 'primevue/popover'
-
 import { useClipboard } from '@vueuse/core'
+import InlineMessage from 'primevue/inlinemessage'
+
+import Popover from 'primevue/popover'
 
 const props = defineProps<{ text: string }>()
 
@@ -21,7 +21,7 @@ async function copyTextToClipboard(event: Event) {
 
 <template>
   <span>
-    <slot /> <a class="ii i-carbon-copy cursor-pointer hover:text-primary-500" @click="ev => copyTextToClipboard(ev)" />
+    <slot /> <a class="ii i-carbon-copy cursor-pointer hover:text-primary-500" @click="copyTextToClipboard" />
     <Popover ref="overlay" :dismissable="false" :close-on-escape="false" :pt="{ content: { class: 'p-0' } }">
       <InlineMessage severity="success">Copied to clipboard</InlineMessage>
     </Popover>

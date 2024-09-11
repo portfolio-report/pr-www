@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useTimeAgo } from '@vueuse/core'
 import Button from 'primevue/button'
 import ButtonGroup from 'primevue/buttongroup'
 import Chart from 'primevue/chart'
@@ -6,9 +7,8 @@ import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
 import InputNumber from 'primevue/inputnumber'
 import Popover from 'primevue/popover'
-import Skeleton from 'primevue/skeleton'
 
-import { useTimeAgo } from '@vueuse/core'
+import Skeleton from 'primevue/skeleton'
 
 const year = ref(new Date().getFullYear())
 
