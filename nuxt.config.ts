@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   css: [
     '~/assets/styles/main.scss',
     '@fontsource/fira-mono',
-    '@fontsource-variable/inter',
+    '@fontsource/fira-sans',
   ],
 
   modules: [
