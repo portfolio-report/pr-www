@@ -19,8 +19,8 @@ importers:
         specifier: ^3.5.1
         version: 3.5.1(@typescript-eslint/utils@8.5.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.6.2))(@vue/compiler-sfc@3.5.4)(eslint@9.10.0(jiti@1.21.6))(typescript@5.6.2)
       '@fontsource/fira-mono':
-        specifier: ^5.0.15
-        version: 5.0.15
+        specifier: ^5.1.0
+        version: 5.1.0
       '@fontsource/fira-sans':
         specifier: ^5.0.22
         version: 5.0.22
@@ -813,8 +813,8 @@ packages:
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
 
-  '@fontsource/fira-mono@5.0.15':
-    resolution: {integrity: sha512-wc3TpF2GBbtFDKNbb444BrC3mEKuoPLITSYCKweNIrqBvAalIfJGloY/MVrmSGaMNgaAKUpdgy4eAWPLkUVzaA==}
+  '@fontsource/fira-mono@5.1.0':
+    resolution: {integrity: sha512-6+nftSKApXyN0I9FC5GJuG5TUCh+in5OehtrXRIsHJvq38Pm//oA1kZZYNdXv99JYzLzJ3lzsTAavmS+xGLGDw==}
 
   '@fontsource/fira-sans@5.0.22':
     resolution: {integrity: sha512-mx//lXB+nFwSgAwX6rdZFs/KMGt18IyHfmJnbWAsKpxRqgLIz+INgMtfFfXCLAPiB2Mzt7KoyoU9bItdyj+8NQ==}
@@ -5594,7 +5594,7 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
-  '@fontsource/fira-mono@5.0.15': {}
+  '@fontsource/fira-mono@5.1.0': {}
 
   '@fontsource/fira-sans@5.0.22': {}
 
