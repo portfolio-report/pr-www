@@ -45,7 +45,7 @@
     "eslint": "^9.10.0",
     "express": "^4.21.0",
     "nuxt": "^3.13.1",
-    "primevue": "4.0.6",
+    "primevue": "4.0.7",
     "sass": "^1.78.0",
     "typescript": "^5.6.2",
     "unocss": "^0.62.3",
