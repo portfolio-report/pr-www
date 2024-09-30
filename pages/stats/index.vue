@@ -13,8 +13,8 @@ const timeAgo = useTimeAgo(lastUpdate)
 
 const {
   data: stats,
-  pending,
   refresh,
+  status,
 } = useLazyAsyncData(async () => {
   const versions = await useApi<
     Array<{
@@ -86,7 +86,7 @@ function navTo(url: string) {
 
     <h2>Version Statistics</h2>
 
-    <template v-if="pending || !stats">
+    <template v-if="status === 'pending' || !stats">
       <Skeleton width="15em" />
 
       <div class="flex items-end" style="height: 400px">

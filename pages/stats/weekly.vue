@@ -20,7 +20,7 @@ function toggleYearOverlay(event: MouseEvent) {
 const lastUpdate = ref(new Date())
 const timeAgo = useTimeAgo(lastUpdate)
 
-const { data, pending, refresh } = useLazyAsyncData(
+const { data, refresh, status } = useLazyAsyncData(
   `statsWeeks:${year.value}`,
   async () => {
     const weeks = await useApi<
@@ -103,7 +103,7 @@ function navTo(url: string) {
       <InputNumber v-model="year" :use-grouping="false" />
     </Popover>
 
-    <template v-if="pending || !data">
+    <template v-if="status === 'pending' || !data">
       <Skeleton width="15em" />
 
       <div class="flex items-end" style="height: 400px">
