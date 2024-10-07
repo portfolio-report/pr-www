@@ -71,7 +71,6 @@ const { data: prices } = await useLazyAsyncData(
     }
     return await useApi<{ date: string, close: number }[]>(
       `/securities/uuid/${route.params.uuid}/prices/${selectedCurrency.value.code}`,
-      { params: { from: '2000-01-01' } },
     )
   },
   { watch: [selectedCurrency] },
