@@ -34,7 +34,7 @@
     "@fontsource/fira-mono": "^5.1.0",
     "@fontsource/fira-sans": "^5.1.0",
     "@iconify/json": "^2.2.256",
-    "@primevue/nuxt-module": "4.0.7",
+    "@primevue/nuxt-module": "4.1.1",
     "@primevue/themes": "4.0.7",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.4",
