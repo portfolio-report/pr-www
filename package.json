@@ -30,7 +30,7 @@
     "@vuelidate/validators": "2.0.4"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.7.3",
+    "@antfu/eslint-config": "^3.8.0",
     "@fontsource/fira-mono": "^5.1.0",
     "@fontsource/fira-sans": "^5.1.0",
     "@iconify/json": "^2.2.261",
