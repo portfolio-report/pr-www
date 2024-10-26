@@ -31,8 +31,8 @@ importers:
         specifier: 4.1.1
         version: 4.1.1(@babel/parser@7.25.8)(magicast@0.3.5)(rollup@4.24.0)(vue@3.5.12(typescript@5.6.3))(webpack-sources@3.2.3)
       '@primevue/themes':
-        specifier: 4.0.7
-        version: 4.0.7
+        specifier: 4.1.1
+        version: 4.1.1
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
@@ -1040,16 +1040,8 @@ packages:
   '@polka/url@1.0.0-next.24':
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
 
-  '@primeuix/styled@0.0.5':
-    resolution: {integrity: sha512-pVoGn/uPkVm/DyF3TR3EmH/pL/dP4nR42FcYbVduFq9VfO3KVeOEqvcCULHXos66RZO9MCbCFUoLy6ctf9GUGQ==}
-    engines: {node: '>=12.11.0'}
-
   '@primeuix/styled@0.2.0':
     resolution: {integrity: sha512-3Q6bDrmwTW88tzJsFIFenC0VyXLj0+/wYw+TZnJ/4CCDfehR4WfTs4EZdpuFtYqvmbpJ6zWXAiwSCNdSYTZkyA==}
-    engines: {node: '>=12.11.0'}
-
-  '@primeuix/utils@0.0.5':
-    resolution: {integrity: sha512-ntUiUgtRtkF8KuaxHffzhYxQxoXk6LAPHm7CVlFjdqS8Rx8xRkLkZVyo84E+pO2hcNFkOGVP/GxHhQ2s94O8zA==}
     engines: {node: '>=12.11.0'}
 
   '@primeuix/utils@0.2.0':
@@ -1088,8 +1080,8 @@ packages:
     resolution: {integrity: sha512-MaX4bmVssQLhcL3le5cNyJNhDzfpodZ7SeRUjiDQOFBsXrxE4Pij4iawgLjgsJdRb6ZQs9JIwu0aIQNdGLeApQ==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/themes@4.0.7':
-    resolution: {integrity: sha512-ZbDUrpBmtuqdeegNwUaJTubaLDBBJWOc4Z6UoQM3DG2c7EAE19wQbuh+cG9zqA7sT/Xsp+ACC/Z9e4FnfqB55g==}
+  '@primevue/themes@4.1.1':
+    resolution: {integrity: sha512-ec2gBN2vP0ydGtGAzC0nYCFqYN7CzvXxnlJqcvcPIo3rP/pcdj+FkzAe3y2DMG3OorYtqdzoyGtBefQrx3v5ag==}
     engines: {node: '>=12.11.0'}
 
   '@rollup/plugin-alias@5.1.0':
@@ -5939,15 +5931,9 @@ snapshots:
 
   '@polka/url@1.0.0-next.24': {}
 
-  '@primeuix/styled@0.0.5':
-    dependencies:
-      '@primeuix/utils': 0.0.5
-
   '@primeuix/styled@0.2.0':
     dependencies:
       '@primeuix/utils': 0.2.0
-
-  '@primeuix/utils@0.0.5': {}
 
   '@primeuix/utils@0.2.0': {}
 
@@ -6001,9 +5987,9 @@ snapshots:
       - vue
       - webpack-sources
 
-  '@primevue/themes@4.0.7':
+  '@primevue/themes@4.1.1':
     dependencies:
-      '@primeuix/styled': 0.0.5
+      '@primeuix/styled': 0.2.0
 
   '@rollup/plugin-alias@5.1.0(rollup@4.24.0)':
     dependencies:
