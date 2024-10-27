@@ -19,7 +19,7 @@ const containerClass = ref<Array<string | { [key: string]: boolean }>>([
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variables.scss';
+@use '@/assets/styles/variables' as *;
 
 .layout-main {
   flex: 1 1 auto;

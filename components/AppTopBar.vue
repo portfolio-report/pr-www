@@ -61,8 +61,8 @@ function search() {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/mixins.scss';
-@import '@/assets/styles/variables.scss';
+@use '@/assets/styles/mixins' as *;
+@use '@/assets/styles/variables' as *;
 
 .layout-topbar {
   position: fixed;
