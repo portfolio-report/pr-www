@@ -10,8 +10,6 @@ const securityTypeItems = [
   { text: 'share', value: 'share' },
   { text: 'fund', value: 'fund' },
   { text: 'crypto', value: 'crypto' },
-  { text: 'bond', value: 'bond' },
-  { text: 'index', value: 'index' },
 ]
 
 function update(value: string) {
