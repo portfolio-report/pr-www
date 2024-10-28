@@ -168,20 +168,6 @@ useHead(() => ({
               {{ security.code }}
             </CopyClipboard>
           </div>
-
-          <NuxtLink
-            v-tooltip.right="{
-              escape: false,
-              value:
-                '<h4>Drag and drop!</h4> To add this security in Portfolio Performance, drag and drop it to securities list or statement of assets.',
-            }"
-            :to="route.path"
-          >
-            <span class="mt-2 cursor-move w-20rem p-button p-component">
-              <span class="i-carbon-move i-lg p-button-icon p-button-icon-left" />
-              <span class="p-button-label">Add to Portfolio Performance</span>
-            </span>
-          </NuxtLink>
         </div>
 
         <div>

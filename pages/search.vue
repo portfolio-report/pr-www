@@ -122,11 +122,11 @@ async function updateResults() {
               </Button>
             </ClientOnly>
 
-            <Message v-if="noResults" severity="info">
+            <Message v-if="noResults" severity="info" class="mt-4">
               Sorry, no results were found.
             </Message>
 
-            <Message v-if="error" severity="error">
+            <Message v-if="error" severity="error" class="mt-4">
               Sorry, there was an error:<br>{{ errorText }}
             </Message>
           </form>
@@ -147,7 +147,6 @@ async function updateResults() {
               />
 
               <NuxtLink
-                v-tooltip.top="'Drag and drop me to Portfolio Performance!'"
                 :to="`/securities/${result.uuid}`"
                 class="text-blue-500"
               >
