@@ -6,7 +6,6 @@ import Select from 'primevue/select'
 import { useApi } from '~/composables/useApi'
 import type { SecurityAPI } from '~/store/Security.model'
 import { useTaxonomiesStore } from '~/store/taxonomies'
-import type { Taxonomy } from '~/store/Taxonomy.model'
 
 const route = useRoute()
 
