@@ -6,6 +6,7 @@ import Tag from 'primevue/tag'
 
 import { useApi } from '~/composables/useApi'
 import type { SecurityAPI } from '~/store/Security.model'
+import { useTaxonomiesStore } from '~/store/taxonomies'
 import type { Taxonomy } from '~/store/Taxonomy.model'
 
 const route = useRoute()
@@ -76,17 +77,8 @@ const { data: prices } = await useLazyAsyncData(
   { watch: [selectedCurrency] },
 )
 
-const { data: rawTaxonomies } = await useAsyncData('taxonomies', () =>
-  useApi<Taxonomy[]>('/taxonomies/'))
-
-if (!rawTaxonomies.value) {
-  throw createError({
-    statusCode: 404,
-    message: 'This page could not be found',
-    fatal: true,
-  })
-}
-const taxonomies = ref(rawTaxonomies.value)
+const taxonomiesStore = useTaxonomiesStore()
+const taxonomies = ref(taxonomiesStore.taxonomies)
 
 const securityTaxonomies = computed(() =>
   security.value.securityTaxonomies.map(st => ({
