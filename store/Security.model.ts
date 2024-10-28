@@ -44,7 +44,6 @@ export interface Event {
 }
 
 export interface SecurityAPI extends Security {
-  markets: Market[]
   events: Event[]
   securityTaxonomies: SecurityTaxonomy[]
   logoUrl: string | null

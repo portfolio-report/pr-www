@@ -76,25 +76,6 @@ const { data: prices } = await useLazyAsyncData(
   { watch: [selectedCurrency] },
 )
 
-const markets = computed(() => {
-  return security.value?.markets?.map((market) => {
-    let marketName
-    if (market.marketCode === 'XETR') {
-      marketName = 'XETRA (Frankfurt)'
-    } else if (market.marketCode === 'XFRA') {
-      marketName = 'Frankfurt'
-    } else if (market.marketCode === 'XNAS') {
-      marketName = 'NASDAQ'
-    } else if (market.marketCode === 'XNYS') {
-      marketName = 'NYSE'
-    }
-    return {
-      ...market,
-      name: marketName,
-    }
-  })
-})
-
 const { data: rawTaxonomies } = await useAsyncData('taxonomies', () =>
   useApi<Taxonomy[]>('/taxonomies/'))
 
@@ -214,24 +195,6 @@ useHead(() => ({
         <span v-if="!security.pricesAvailable">
           No prices available
         </span>
-
-        <h5 v-if="markets.length > 0">
-          Markets
-        </h5>
-        <ul v-if="markets.length > 0">
-          <li v-for="market in markets" :key="market.marketCode">
-            <b>{{ market.name }}</b>
-            <ul>
-              <li>
-                Currency: <CountryFlag :country="market.currencyCode.substring(0, 2)" class="mr-1" />
-                <b class="font-mono">{{ market.currencyCode || '-' }}</b>
-              </li>
-              <li>
-                Symbol: <b class="font-mono">{{ market.symbol }}</b>
-              </li>
-            </ul>
-          </li>
-        </ul>
 
         <h5 v-if="countries.length === 1">
           Country
