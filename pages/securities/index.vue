@@ -3,7 +3,6 @@ import { useRouteQuery } from '@vueuse/router'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
 
-import Tag from 'primevue/tag'
 import type { SecurityV1 } from '~/store/Security.model'
 
 const page = useRouteQuery('page', '1', { transform: Number })
