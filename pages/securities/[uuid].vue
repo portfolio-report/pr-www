@@ -2,7 +2,6 @@
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
 import Select from 'primevue/select'
-import Tag from 'primevue/tag'
 
 import { useApi } from '~/composables/useApi'
 import type { SecurityAPI } from '~/store/Security.model'
@@ -120,9 +119,7 @@ useHead(() => ({
         <div class="flex-grow-1">
           <h2>
             {{ security.name }}
-            <Tag class="mx-1 p-1 !text-xs !text-white !bg-teal-500 align-top">
-              {{ security.securityType }}
-            </Tag>
+            <SecurityType :name="security.securityType ?? ''" class="align-top" />
             <SecurityTag
               v-for="tag in security.tags"
               :key="tag"

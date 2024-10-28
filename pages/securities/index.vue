@@ -84,9 +84,7 @@ watch(page, () => {
       </Column>
       <Column field="securityType" header="Type">
         <template #body="{ data: security }">
-          <Tag class="mx-1 p-1 !text-xs !bg-teal-500 !text-white">
-            {{ security.securityType }}
-          </Tag>
+          <SecurityType :name="security.securityType" />
         </template>
       </Column>
     </DataTable>

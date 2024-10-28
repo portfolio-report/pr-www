@@ -6,7 +6,6 @@ import InputText from 'primevue/inputtext'
 import Message from 'primevue/message'
 import ProgressSpinner from 'primevue/progressspinner'
 
-import Tag from 'primevue/tag'
 import type { SecurityV1 } from '~/store/Security.model'
 
 const q = useRouteQuery('q', '', { transform: v => v || '' })
@@ -153,9 +152,7 @@ async function updateResults() {
                 {{ result.name }}
               </NuxtLink>
 
-              <Tag class="mx-1 p-1 !text-xs !bg-teal-500 !text-white">
-                {{ result.securityType }}
-              </Tag>
+              <SecurityType :name="result.securityType" />
 
               <SecurityTag v-for="tag in result.tags" :key="tag" :name="tag" />
             </div>
