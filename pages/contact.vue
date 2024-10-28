@@ -81,13 +81,17 @@ async function send() {
         Contact
       </template>
       <template #content>
-        Please use the
-        <a href="https://forum.portfolio-performance.info/">
-          discussion forum
-        </a>
-        for all matters that can be discussed publicly.<br>
-        This contact form can be used to establish direct contact with the
-        operators for all matters that cannot be discussed publicly.
+        <p>
+          Please use the
+          <a href="https://forum.portfolio-performance.info/">
+            discussion forum
+          </a>
+          for all matters that can be discussed publicly.
+        </p>
+        <p>
+          This contact form can be used to establish direct contact with the
+          operators for all matters that <strong>cannot be discussed publicly</strong>.
+        </p>
 
         <form class="mt-2" @submit.prevent="send">
           <FloatLabel class="mt-8">
