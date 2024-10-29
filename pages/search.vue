@@ -9,7 +9,6 @@ import ProgressSpinner from 'primevue/progressspinner'
 import type { Security } from '~/store/Security.model'
 
 const q = useRouteQuery('q', '', { transform: v => v || '' })
-const securityType = useRouteQuery('securityType', '', { transform: v => v || '' })
 
 const route = useRoute()
 
@@ -32,7 +31,6 @@ useHead({
 })
 
 const searchTerm = ref('')
-const selectedSecurityType = ref('')
 
 const results = ref<Security[]>([])
 const noResults = ref(false)
@@ -44,12 +42,10 @@ async function search() {
   searchTerm.value = searchTerm.value.trim()
 
   q.value = searchTerm.value
-  securityType.value = selectedSecurityType.value
 }
 
-watch([q, securityType], () => {
+watch([q], () => {
   searchTerm.value = q.value
-  selectedSecurityType.value = securityType.value
 
   updateResults()
 }, { immediate: true })
@@ -63,14 +59,7 @@ async function updateResults() {
   error.value = false
 
   try {
-    const params: Record<string, string> = {
-      q: q.value,
-    }
-    if (selectedSecurityType.value) {
-      params.securityType = securityType.value
-    }
-
-    const res = await useApi<Security[]>('/v1/securities/search', { params })
+    const res = await useApi<Security[]>('/v1/securities/search', { params: { q: q.value } })
 
     searching.value = false
     results.value = res
@@ -108,8 +97,6 @@ async function updateResults() {
                 autofocus
                 placeholder="ISIN/WKN/Symbol/Name"
               />
-
-              <SelectSecurityType v-model="selectedSecurityType" class="w-full mt-4" />
 
               <Button
                 type="submit"
