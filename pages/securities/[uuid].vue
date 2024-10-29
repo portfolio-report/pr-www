@@ -100,15 +100,9 @@ useHead(() => ({
             />
           </h2>
           <div class="separator-container font-mono">
-            <CopyClipboard v-if="security.isin" v-tooltip.top="'ISIN'" :text="security.isin">
-              {{ security.isin }}
-            </CopyClipboard>
-            <CopyClipboard v-if="security.wkn" v-tooltip.top="'WKN'" :text="security.wkn">
-              {{ security.wkn }}
-            </CopyClipboard>
-            <CopyClipboard v-if="security.code" v-tooltip.top="'Code'" :text="security.code">
-              {{ security.code }}
-            </CopyClipboard>
+            <span v-if="security.isin">{{ security.isin }}</span>
+            <span v-if="security.wkn">{{ security.wkn }}</span>
+            <span v-if="security.code">{{ security.code }}</span>
           </div>
         </div>
       </div>
