@@ -151,32 +151,6 @@ async function updateResults() {
           </div>
         </template>
       </Card>
-
-      <Card class="mt-4">
-        <template #title>
-          Your contribution is needed 💪
-        </template>
-        <template #content>
-          Your help is needed to keep this website up and running. Have you
-          thought about contributing? You could:
-          <ul>
-            <li>
-              Actively maintain and develop the
-              <a href="https://www.github.com/portfolio-report" class="text-blue-500">source code on Github</a>.
-            </li>
-            <li>
-              Become member of the
-              <a href="https://forum.portfolio-performance.info" class="text-blue-500">forum</a> and
-              help other users.
-            </li>
-            <li>
-              Cover monthly costs for server operation and licence fees. Become
-              sponsor on
-              <a href="https://github.com/sponsors/tfabritius" class="text-blue-500">Github</a>.
-            </li>
-          </ul>
-        </template>
-      </Card>
     </div>
   </div>
 </template>
