@@ -83,7 +83,7 @@ async function send() {
       <template #content>
         <p>
           Please use the
-          <a href="https://forum.portfolio-performance.info/">
+          <a href="https://forum.portfolio-performance.info/" class="text-blue-500">
             discussion forum
           </a>
           for all matters that can be discussed publicly.
