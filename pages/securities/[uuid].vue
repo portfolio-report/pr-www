@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import Column from 'primevue/column'
-import DataTable from 'primevue/datatable'
 import Select from 'primevue/select'
 
 import { useApi } from '~/composables/useApi'
-import type { SecurityAPI } from '~/store/Security.model'
-import { useTaxonomiesStore } from '~/store/taxonomies'
+import type { Security } from '~/store/Security.model'
 
 const route = useRoute()
 
 const { data: rawSecurity, error } = await useAsyncData(
   `security:${route.params.uuid}`,
-  () => useApi<SecurityAPI>(`/securities/uuid/${route.params.uuid}`),
+  () => useApi<Security>(`/securities/uuid/${route.params.uuid}`),
 )
 if (error.value || !rawSecurity.value) {
   throw createError({
@@ -75,30 +72,6 @@ const { data: prices } = await useLazyAsyncData(
   { watch: [selectedCurrency] },
 )
 
-const taxonomiesStore = useTaxonomiesStore()
-const taxonomies = ref(taxonomiesStore.taxonomies)
-
-const securityTaxonomies = computed(() =>
-  security.value.securityTaxonomies.map(st => ({
-    ...st,
-    weight: Number(st.weight),
-    // Join taxonomies to securityTaxonomies
-    taxonomy: taxonomies.value.find(t => t.uuid === st.taxonomyUuid),
-  })),
-)
-
-const countries = computed(() =>
-  securityTaxonomies.value.filter(
-    st => st.rootTaxonomyUuid === '5b0d5647-a4e6-4db8-807b-c3a6d11697a7',
-  ),
-)
-
-const industries = computed(() =>
-  securityTaxonomies.value.filter(
-    st => st.rootTaxonomyUuid === '072bba7b-ed7a-4cb4-aab3-91520d00fb00',
-  ),
-)
-
 useHead(() => ({
   title: `${security.value?.name} - Portfolio Report`,
   link: [
@@ -138,18 +111,6 @@ useHead(() => ({
             </CopyClipboard>
           </div>
         </div>
-
-        <div>
-          <img
-            v-if="security.logoUrl"
-            :src="security.logoUrl"
-            style="
-              max-width: 100px;
-              max-height: 100px;
-              mix-blend-mode: multiply;
-            "
-          >
-        </div>
       </div>
 
       <div class="mt-4">
@@ -183,105 +144,6 @@ useHead(() => ({
         <span v-if="!security.pricesAvailable">
           No prices available
         </span>
-
-        <h5 v-if="countries.length === 1">
-          Country
-        </h5>
-        <span v-if="countries.length === 1 && countries[0]" class="font-mono">
-          <CountryFlag :country="countries[0].taxonomy?.code ?? ''" class="mr-1" />
-          {{ countries[0].taxonomy?.name }}
-          ({{ countries[0].taxonomy?.code }})
-        </span>
-
-        <h5 v-if="countries.length > 1">
-          Countries
-        </h5>
-        <DataTable
-          v-if="countries.length > 1"
-          :value="countries"
-          sort-field="weight"
-          :sort-order="-1"
-          class="mb-2"
-          size="small"
-        >
-          <Column field="weight" header="Percentage" :sortable="true">
-            <template #body="{ data }">
-              {{ data.weight }}%
-            </template>
-          </Column>
-          <Column
-            field="taxonomy.name"
-            header="Country"
-            :sortable="true"
-          >
-            <template #body="{ data }">
-              <CountryFlag :country="data.taxonomy.code" class="mr-1" />
-              {{ data.taxonomy.name }}
-            </template>
-          </Column>
-          <Column
-            field="taxonomy.code"
-            header="Code"
-            :sortable="true"
-          />
-        </DataTable>
-
-        <h5 v-if="industries.length === 1">
-          Industry
-        </h5>
-        <span v-if="industries.length === 1 && industries[0]" class="font-mono">
-          {{ industries[0].taxonomy?.name }}
-        </span>
-
-        <h5 v-if="industries.length > 1">
-          Industries
-        </h5>
-
-        <DataTable
-          v-if="industries.length > 1"
-          :value="industries"
-          sort-field="weight"
-          :sort-order="-1"
-          size="small"
-        >
-          <Column field="weight" header="Percentage" :sortable="true">
-            <template #body="{ data }">
-              {{ data.weight }}%
-            </template>
-          </Column>
-          <Column
-            field="taxonomy.name"
-            header="Country"
-            :sortable="true"
-          />
-        </DataTable>
-
-        <h5 v-if="security.events.length > 0">
-          Events
-        </h5>
-        <DataTable
-          v-if="security.events.length > 0"
-          :value="security.events"
-          class="font-mono"
-          size="small"
-        >
-          <Column field="date" header="Date" />
-          <Column
-            field="type"
-            header="Type"
-            style="text-transform: capitalize"
-          />
-          <Column header="...">
-            <template #body="{ data: event }">
-              {{
-                event.type === 'dividend'
-                  ? `${event.amount} ${event.currencyCode}`
-                  : ''
-              }}
-              {{ event.type === 'split' ? event.ratio : '' }}
-            </template>
-          </Column>
-        </DataTable>
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@ import InputText from 'primevue/inputtext'
 import Message from 'primevue/message'
 import ProgressSpinner from 'primevue/progressspinner'
 
-import type { SecurityV1 } from '~/store/Security.model'
+import type { Security } from '~/store/Security.model'
 
 const q = useRouteQuery('q', '', { transform: v => v || '' })
 const securityType = useRouteQuery('securityType', '', { transform: v => v || '' })
@@ -34,7 +34,7 @@ useHead({
 const searchTerm = ref('')
 const selectedSecurityType = ref('')
 
-const results = ref<SecurityV1[]>([])
+const results = ref<Security[]>([])
 const noResults = ref(false)
 const searching = ref(false)
 const error = ref(false)
@@ -70,7 +70,7 @@ async function updateResults() {
       params.securityType = securityType.value
     }
 
-    const res = await useApi<SecurityV1[]>('/v1/securities/search', { params })
+    const res = await useApi<Security[]>('/v1/securities/search', { params })
 
     searching.value = false
     results.value = res

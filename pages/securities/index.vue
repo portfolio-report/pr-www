@@ -3,7 +3,7 @@ import { useRouteQuery } from '@vueuse/router'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
 
-import type { SecurityV1 } from '~/store/Security.model'
+import type { Security } from '~/store/Security.model'
 
 const page = useRouteQuery('page', '1', { transform: Number })
 
@@ -16,7 +16,7 @@ useHead({
 
 const rowsPerPage = 20
 
-const { data, status, refresh } = await useAsyncData(`securities:page-${page.value}`, () => useApi<{ data: SecurityV1[], count: number, pages: number }>(`/v1/securities?page=${page.value}`))
+const { data, status, refresh } = await useAsyncData(`securities:page-${page.value}`, () => useApi<{ data: Security[], count: number, pages: number }>(`/v1/securities?page=${page.value}`))
 
 async function onPage(event: { first: number, rows: number, page: number, pageCount: number }) {
   page.value = event.page + 1

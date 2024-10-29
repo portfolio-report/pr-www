@@ -34,7 +34,6 @@ export default defineNuxtConfig({
   ],
 
   modules: [
-    '@pinia/nuxt',
     '@unocss/nuxt',
     '@primevue/nuxt-module',
     //
