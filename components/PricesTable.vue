@@ -1,53 +1,33 @@
 <script setup lang="ts">
-import type { DataTableFilterMeta } from 'primevue/datatable'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
-import DatePicker from 'primevue/datepicker'
 
 const props = defineProps<{
   prices: { date: string, close: number }[]
 }>()
 
 const priceArray = computed(() =>
-  props.prices.map(e => ({
-    dateStr: e.date,
-    date: new Date(e.date),
-    close: e.close,
-  })),
+  props.prices
+    .map(e => ({
+      dateStr: e.date,
+      date: new Date(e.date),
+      close: e.close,
+    }))
+    .sort((a, b) => b.date.getTime() - a.date.getTime()),
 )
-
-const filters = ref({
-  date: {
-    operator: 'and',
-    constraints: [{ value: null, matchMode: 'dateIs' }],
-  },
-} satisfies DataTableFilterMeta)
 </script>
 
 <template>
   <div>
     <DataTable
-      v-model:filters="filters"
       :value="priceArray"
       class="font-mono"
       size="small"
-      :paginator="true"
       :rows="10"
-      sort-field="date"
-      :sort-order="-1"
-      :rows-per-page-options="[10, 30, 100, 300]"
-      filter-display="menu"
     >
-      <Column field="date" header="Date" sortable data-type="date">
+      <Column field="date" header="Date" data-type="date">
         <template #body="{ data }">
           {{ data.dateStr }}
-        </template>
-        <template #filter="{ filterModel }">
-          <DatePicker
-            v-model="filterModel.value"
-            date-format="yy-mm-dd"
-            placeholder="yyyy-mm-dd"
-          />
         </template>
       </Column>
       <Column
@@ -55,7 +35,7 @@ const filters = ref({
         body-class="!text-right"
       >
         <template #header>
-          <span class="flex-1 text-right">Close</span>
+          <span class="flex-1 text-right font-semibold">Close</span>
         </template>
         <template #body="{ data }">
           {{
