@@ -48,7 +48,6 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      gitSha: process.env.GITHUB_SHA,
       baseUrl: process.env.API_URL || 'https://api.portfolio-report.net/',
     },
   },

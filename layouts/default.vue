@@ -13,7 +13,6 @@ const containerClass = ref<Array<string | { [key: string]: boolean }>>([
       <div class="layout-main">
         <slot />
       </div>
-      <AppFooter />
     </div>
   </div>
 </template>
