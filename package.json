@@ -40,7 +40,7 @@
     "@unocss/nuxt": "^0.64.0",
     "@vueuse/core": "^11.1.0",
     "@vueuse/router": "^11.2.0",
-    "chart.js": "^4.4.5",
+    "chart.js": "^4.4.6",
     "eslint": "^9.14.0",
     "express": "^4.21.1",
     "nuxt": "^3.13.2",
