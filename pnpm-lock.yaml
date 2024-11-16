@@ -31,8 +31,8 @@ importers:
         specifier: 4.2.1
         version: 4.2.1(@babel/parser@7.25.8)(magicast@0.3.5)(rollup@4.24.0)(vue@3.5.12(typescript@5.6.3))(webpack-sources@3.2.3)
       '@primevue/themes':
-        specifier: 4.1.1
-        version: 4.1.1
+        specifier: 4.2.2
+        version: 4.2.2
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
@@ -1040,20 +1040,20 @@ packages:
   '@polka/url@1.0.0-next.24':
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
 
-  '@primeuix/styled@0.2.0':
-    resolution: {integrity: sha512-3Q6bDrmwTW88tzJsFIFenC0VyXLj0+/wYw+TZnJ/4CCDfehR4WfTs4EZdpuFtYqvmbpJ6zWXAiwSCNdSYTZkyA==}
-    engines: {node: '>=12.11.0'}
-
   '@primeuix/styled@0.3.0':
     resolution: {integrity: sha512-XsLbmyM1u50A0EDATIHyqm5O/zOCSyNKPk4pNN8HFvEPehbsjf4tkXcRZAyaVvntSCLpV4XGAj7v5EDCQkBRlg==}
     engines: {node: '>=12.11.0'}
 
-  '@primeuix/utils@0.2.0':
-    resolution: {integrity: sha512-AaDIeRFlsbkVTk2s0mlEjnGSLi31X669NVwo+n+AVAnBdDiQznjipNTpHbOobVBtjOKZize74PChK6uoaSBRUw==}
+  '@primeuix/styled@0.3.1':
+    resolution: {integrity: sha512-MIPtektNrFwEKJU0qXrguoultADtxMC39ghwXIGP3DR3zsB7vWk6VhJ1Mo7TxgWsVi3kHnh6g5v9X50eMFcBHw==}
     engines: {node: '>=12.11.0'}
 
   '@primeuix/utils@0.3.0':
     resolution: {integrity: sha512-d6ymWez1n+iqwzAVhyOTmrOHl5qnSX2oGlTy97qGuA15gLai+MQaxONHFNdDia8Q7o396v7KK9IvhAx9VET/+A==}
+    engines: {node: '>=12.11.0'}
+
+  '@primeuix/utils@0.3.1':
+    resolution: {integrity: sha512-KFJ8FylTX2j3AN6AvkF8JGSUNb7Dtqz1T5mlZnINDb6bwW+/V/d5wISiMEdhzdso69mmOX7IlYUDsj0w0pvxvA==}
     engines: {node: '>=12.11.0'}
 
   '@primevue/auto-import-resolver@4.2.1':
@@ -1078,8 +1078,8 @@ packages:
     resolution: {integrity: sha512-1pXmzgVE3aJtKQjb/zgoyHIk0OFU+9c3KrbYyCi3a/QPLEgIoAPLAIaDC04cPZSXOyYKClQyswNvS4EDjgLlDg==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/themes@4.1.1':
-    resolution: {integrity: sha512-ec2gBN2vP0ydGtGAzC0nYCFqYN7CzvXxnlJqcvcPIo3rP/pcdj+FkzAe3y2DMG3OorYtqdzoyGtBefQrx3v5ag==}
+  '@primevue/themes@4.2.2':
+    resolution: {integrity: sha512-2PUX+Ur4gyYB5xfCIySQMq4jWRVJSclniBaAiNb3HQ7rhnkfdjJRzfqfbk3YkH02ZA6QUgCNHHjqtz2vI0tk7g==}
     engines: {node: '>=12.11.0'}
 
   '@rollup/plugin-alias@5.1.0':
@@ -6067,17 +6067,17 @@ snapshots:
 
   '@polka/url@1.0.0-next.24': {}
 
-  '@primeuix/styled@0.2.0':
-    dependencies:
-      '@primeuix/utils': 0.2.0
-
   '@primeuix/styled@0.3.0':
     dependencies:
       '@primeuix/utils': 0.3.0
 
-  '@primeuix/utils@0.2.0': {}
+  '@primeuix/styled@0.3.1':
+    dependencies:
+      '@primeuix/utils': 0.3.1
 
   '@primeuix/utils@0.3.0': {}
+
+  '@primeuix/utils@0.3.1': {}
 
   '@primevue/auto-import-resolver@4.2.1':
     dependencies:
@@ -6116,9 +6116,9 @@ snapshots:
       - vue
       - webpack-sources
 
-  '@primevue/themes@4.1.1':
+  '@primevue/themes@4.2.2':
     dependencies:
-      '@primeuix/styled': 0.2.0
+      '@primeuix/styled': 0.3.1
 
   '@rollup/plugin-alias@5.1.0(rollup@4.24.0)':
     dependencies:
