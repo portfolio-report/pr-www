@@ -43,7 +43,7 @@
     "chart.js": "^4.4.6",
     "eslint": "^9.15.0",
     "express": "^4.21.1",
-    "nuxt": "^3.13.2",
+    "nuxt": "^3.14.1592",
     "primevue": "4.2.2",
     "typescript": "^5.6.3",
     "unocss": "^0.63.6",
