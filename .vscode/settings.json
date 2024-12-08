@@ -1,27 +1,18 @@
 {
+  // Enable the ESlint flat config support
+  "eslint.useFlatConfig": true,
+
+  // Disable the default formatter, use eslint instead
+  "editor.formatOnSave": false,
+
+  // Auto fix
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
   },
+
   "eslint.enable": true,
   "eslint.lintTask.enable": true,
-  // Enable eslint for all supported languages
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue",
-    "html",
-    "markdown",
-    "json",
-    "jsonc",
-    "yaml"
-  ],
-  "typescript.tsdk": "node_modules/typescript/lib",
-  // Enable the ESlint flat config support
-  "eslint.experimental.useFlatConfig": true,
-
-  // Disable the default formatter, use eslint instead
-  "editor.formatOnSave": false
+  "eslint.validate": ["html", "javascript", "json", "jsonc", "markdown", "typescript", "vue", "yaml"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
