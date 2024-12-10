@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Select from 'primevue/select'
-
-import { useApi } from '~/composables/useApi'
 import type { Security } from '~/store/Security.model'
+
+import Select from 'primevue/select'
+import { useApi } from '~/composables/useApi'
 
 const route = useRoute()
 

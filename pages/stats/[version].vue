@@ -48,10 +48,10 @@ const chartData = computed(() => {
         fill: false,
         data: byDateAccumulated.value
           ? datesSorted.reduce((acc: number[], curr) => {
-            const count = acc.length > 0 ? (acc[acc.length - 1] ?? 0) + curr.count : curr.count
-            acc.push(count)
-            return acc
-          }, [])
+              const count = acc.length > 0 ? (acc[acc.length - 1] ?? 0) + curr.count : curr.count
+              acc.push(count)
+              return acc
+            }, [])
           : datesSorted.map(e => e.count),
       },
     ],
