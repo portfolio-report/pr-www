@@ -31,8 +31,8 @@ importers:
         specifier: 4.2.5
         version: 4.2.5(@babel/parser@7.26.2)(magicast@0.3.5)(rollup@4.27.4)(vue@3.5.13(typescript@5.6.3))
       '@primevue/themes':
-        specifier: 4.2.4
-        version: 4.2.4
+        specifier: 4.2.5
+        version: 4.2.5
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
@@ -1169,8 +1169,8 @@ packages:
     resolution: {integrity: sha512-/zs9pYCu81Le56l7HCz1AUv6g3eW17XLx3BNCeE3BcYxQAcwTP9rd9uUxvrRvigQABGoc21Ye+Wb02uv1/uRtg==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/themes@4.2.4':
-    resolution: {integrity: sha512-nVM8/8qoV+lxSTK2k6Q19xyjrBlOjrgPzoA9OneKhlMYucBjWhSf3dBQaB9JgXRXAEwV5bzh4KPfcrMqn53QJA==}
+  '@primevue/themes@4.2.5':
+    resolution: {integrity: sha512-8F7yA36xYIKtNuAuyBdZZEks/bKDwlhH5WjpqGGB0FdwfAEoBYsynQ5sdqcT2Lb/NsajHmS5lc++Ttlvr1g1Lw==}
     engines: {node: '>=12.11.0'}
 
   '@redocly/ajv@8.11.2':
@@ -6398,7 +6398,7 @@ snapshots:
       - supports-color
       - vue
 
-  '@primevue/themes@4.2.4':
+  '@primevue/themes@4.2.5':
     dependencies:
       '@primeuix/styled': 0.3.2
 
