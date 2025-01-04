@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.12.1",
-    "@fontsource/fira-mono": "^5.1.0",
+    "@fontsource/fira-mono": "^5.1.1",
     "@fontsource/fira-sans": "^5.1.0",
     "@iconify/json": "^2.2.291",
     "@primevue/nuxt-module": "4.2.5",
