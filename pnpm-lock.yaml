@@ -25,8 +25,8 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       '@iconify/json':
-        specifier: ^2.2.289
-        version: 2.2.289
+        specifier: ^2.2.291
+        version: 2.2.291
       '@primevue/nuxt-module':
         specifier: 4.2.5
         version: 4.2.5(@babel/parser@7.26.2)(magicast@0.3.5)(rollup@4.27.4)(vue@3.5.13(typescript@5.6.3))
@@ -958,8 +958,8 @@ packages:
     resolution: {integrity: sha512-c7hNEllBlenFTHBky65mhq8WD2kbN9Q6gk0bTk8lSBvc554jpXSkST1iePudpt7+A/AQvuHs9EMqjHDXMY1lrA==}
     engines: {node: '>=18.18'}
 
-  '@iconify/json@2.2.289':
-    resolution: {integrity: sha512-wNAkS6TZsOKh+L4n96PKAqxsAPOYubIfy6/uU0dT32zYPy4mqmp7fqQVIwkLM22bnSQubAl9ynN1q71oz4lZ/g==}
+  '@iconify/json@2.2.291':
+    resolution: {integrity: sha512-RlSZWRx72ZClQ4U5lgdylvlEsECda7wsVY2EreICL0/lnOWIiqyXeYOpy1V5+pD2TLzaHiY+Uae1PU0eLePxPw==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -5822,7 +5822,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.1': {}
 
-  '@iconify/json@2.2.289':
+  '@iconify/json@2.2.291':
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 1.1.2
