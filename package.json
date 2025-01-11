@@ -39,7 +39,7 @@
     "@types/express": "^5.0.0",
     "@unocss/nuxt": "^0.65.3",
     "@vueuse/core": "^12.3.0",
-    "@vueuse/router": "^12.3.0",
+    "@vueuse/router": "^12.4.0",
     "chart.js": "^4.4.7",
     "eslint": "^9.17.0",
     "express": "^4.21.2",
