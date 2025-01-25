@@ -46,7 +46,7 @@
     "nuxt": "^3.15.2",
     "primevue": "4.2.5",
     "typescript": "^5.6.3",
-    "unocss": "^65.4.0",
+    "unocss": "^65.4.3",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
     "vue-tsc": "^2.1.10"
