@@ -33,7 +33,7 @@
     "@antfu/eslint-config": "^4.1.0",
     "@fontsource/fira-mono": "^5.1.1",
     "@fontsource/fira-sans": "^5.1.1",
-    "@iconify/json": "^2.2.301",
+    "@iconify/json": "^2.2.304",
     "@primevue/nuxt-module": "4.2.5",
     "@primevue/themes": "4.2.5",
     "@types/express": "^5.0.0",
