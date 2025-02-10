@@ -13,12 +13,8 @@ jobs:
       - name: Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v2
-      - name: Debug step to check the secret
-        run: echo "GH_TOKEN length is ${#GH_TOKEN}"
-        env:
-          GH_TOKEN: ${{ secrets.MY_PAT }}
       - name: Enable auto-merge
         run: gh pr merge --auto --rebase "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
-          GH_TOKEN: ${{ secrets.MY_PAT }}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
