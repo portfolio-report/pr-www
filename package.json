@@ -41,7 +41,7 @@
     "@vueuse/core": "^12.5.0",
     "@vueuse/router": "^12.6.1",
     "chart.js": "^4.4.7",
-    "eslint": "^9.20.0",
+    "eslint": "^9.20.1",
     "express": "^4.21.2",
     "nuxt": "^3.15.4",
     "primevue": "4.2.5",
