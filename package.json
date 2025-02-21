@@ -37,7 +37,7 @@
     "@primevue/nuxt-module": "4.2.5",
     "@primevue/themes": "4.2.5",
     "@types/express": "^5.0.0",
-    "@unocss/nuxt": "^65.4.3",
+    "@unocss/nuxt": "^66.0.0",
     "@vueuse/core": "^12.6.1",
     "@vueuse/router": "^12.6.1",
     "chart.js": "^4.4.7",
