@@ -31,8 +31,8 @@ importers:
         specifier: 4.3.1
         version: 4.3.1(@babel/parser@7.26.9)(magicast@0.3.5)(rollup@4.35.0)(vue@3.5.13(typescript@5.6.3))
       '@primevue/themes':
-        specifier: 4.3.1
-        version: 4.3.1
+        specifier: 4.3.2
+        version: 4.3.2
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
@@ -1107,8 +1107,8 @@ packages:
     resolution: {integrity: sha512-SCuVT5y+YNpQgFJM01noeN+WGFewNNsoqjqAFm8xdylgcHy8YPT3FENbH0QxHf0QNgsld6BEd7Qd9djVJbIaKA==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/themes@4.3.1':
-    resolution: {integrity: sha512-aC7V5BkMoMxEMoq7hIf+PNEaY/AS5EAgVg96Gf3bvV1JqZ36hSQ2CV1SfuNsWeEvIPF/u4L5qvjwC/LGjT4qgw==}
+  '@primevue/themes@4.3.2':
+    resolution: {integrity: sha512-Rw+8S1Mcg4ZsozOxSX00VpzQTEilAltTNdEn49lIH/4dUZeRu1OkxCxc3YUI5DftgJiN1frGHIEO4rzUdhbCBA==}
     engines: {node: '>=12.11.0'}
     deprecated: This package is deprecated. Use @primeuix/themes instead.
 
@@ -6123,7 +6123,7 @@ snapshots:
       - supports-color
       - vue
 
-  '@primevue/themes@4.3.1':
+  '@primevue/themes@4.3.2':
     dependencies:
       '@primeuix/styled': 0.5.0
       '@primeuix/themes': 1.0.0
