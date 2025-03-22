@@ -36,7 +36,7 @@
     "@iconify/json": "^2.2.319",
     "@primevue/nuxt-module": "4.3.1",
     "@primevue/themes": "4.3.2",
-    "@types/express": "^5.0.0",
+    "@types/express": "^5.0.1",
     "@unocss/nuxt": "^66.0.0",
     "@vueuse/core": "^13.0.0",
     "@vueuse/router": "^13.0.0",
