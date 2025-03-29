@@ -31,8 +31,8 @@ importers:
         specifier: 4.3.1
         version: 4.3.1(@babel/parser@7.27.0)(magicast@0.3.5)(rollup@4.36.0)(vue@3.5.13(typescript@5.8.2))
       '@primevue/themes':
-        specifier: 4.3.2
-        version: 4.3.2
+        specifier: 4.3.3
+        version: 4.3.3
       '@types/express':
         specifier: ^5.0.1
         version: 5.0.1
@@ -872,6 +872,10 @@ packages:
     resolution: {integrity: sha512-/bYirtF3gJOGrRQfQ5tUyQOLEria7wg/UCqvpIydTAxLmj/UWgWwh2kAjYVp49eldm1+2sk4+TDkbAz8XcPpew==}
     engines: {node: '>=12.11.0'}
 
+  '@primeuix/utils@0.5.2':
+    resolution: {integrity: sha512-fHL0DGnyhL/9toBoV0cO6L+Xg/uaxmOHJW4SrDNMq6GQ7cDXR3Y0vDLvX5j/8kIsaC7LB3329sQLNHgtEETnWw==}
+    engines: {node: '>=12.11.0'}
+
   '@primevue/auto-import-resolver@4.3.1':
     resolution: {integrity: sha512-Z3NSbREk/ZfhLwwCWAq9w7HMFyelfIqX7kGdV0/9YL8pHtB4G18dot5avG0alHWEjHkDPr2lkt3hai9+HduIDw==}
     engines: {node: '>=12.11.0'}
@@ -904,10 +908,9 @@ packages:
     resolution: {integrity: sha512-SCuVT5y+YNpQgFJM01noeN+WGFewNNsoqjqAFm8xdylgcHy8YPT3FENbH0QxHf0QNgsld6BEd7Qd9djVJbIaKA==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/themes@4.3.2':
-    resolution: {integrity: sha512-Rw+8S1Mcg4ZsozOxSX00VpzQTEilAltTNdEn49lIH/4dUZeRu1OkxCxc3YUI5DftgJiN1frGHIEO4rzUdhbCBA==}
+  '@primevue/themes@4.3.3':
+    resolution: {integrity: sha512-LiYlSXsHeA8DFm8+yGyiDFQc3SEQwHcESTN1/rV+rrZ+UPuPisHY9fNIGRFQKA5XUQPDTQDQjtwYGx25Jikwhg==}
     engines: {node: '>=12.11.0'}
-    deprecated: This package is deprecated. Use @primeuix/themes instead.
 
   '@redocly/ajv@8.11.2':
     resolution: {integrity: sha512-io1JpnwtIcvojV7QKDUSIuMN/ikdOUd1ReEnUnMKGfDVridQZ31J0MmIuqwuRjWDZfmvr+Q0MqCcfHM2gTivOg==}
@@ -5721,7 +5724,7 @@ snapshots:
 
   '@primeuix/styled@0.5.0':
     dependencies:
-      '@primeuix/utils': 0.5.1
+      '@primeuix/utils': 0.5.2
 
   '@primeuix/styles@1.0.0':
     dependencies:
@@ -5732,6 +5735,8 @@ snapshots:
       '@primeuix/styled': 0.5.0
 
   '@primeuix/utils@0.5.1': {}
+
+  '@primeuix/utils@0.5.2': {}
 
   '@primevue/auto-import-resolver@4.3.1':
     dependencies:
@@ -5782,7 +5787,7 @@ snapshots:
       - supports-color
       - vue
 
-  '@primevue/themes@4.3.2':
+  '@primevue/themes@4.3.3':
     dependencies:
       '@primeuix/styled': 0.5.0
       '@primeuix/themes': 1.0.0
