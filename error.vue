@@ -27,10 +27,7 @@ useHead({ title: 'Portfolio Report' })
       <template #content>
         <div v-if="error.statusCode === 404" class="text-center">
           <p>
-            Sorry, this page does not exist. If you think, this is wrong, please
-            <NuxtLink to="/contact" class="text-blue-500">
-              let us know
-            </NuxtLink>.
+            Sorry, this page does not exist.
           </p>
           <NuxtLink to="/" class="text-blue-500">
             Go to home page
