@@ -19,57 +19,16 @@ if (error.value || !rawSecurity.value) {
 }
 const security = ref(rawSecurity.value)
 
-const currencies = [
-  { code: 'EUR' },
-  { code: 'USD' },
-  { code: 'AED' },
-  { code: 'AUD' },
-  { code: 'BGN' },
-  { code: 'BRL' },
-  { code: 'CAD' },
-  { code: 'CHF' },
-  { code: 'CNY' },
-  { code: 'CZK' },
-  { code: 'DKK' },
-  { code: 'GBP' },
-  { code: 'GBX' },
-  { code: 'HKD' },
-  { code: 'HRK' },
-  { code: 'HUF' },
-  { code: 'IDR' },
-  { code: 'ILS' },
-  { code: 'INR' },
-  { code: 'ISK' },
-  { code: 'JPY' },
-  { code: 'KRW' },
-  { code: 'MXN' },
-  { code: 'MYR' },
-  { code: 'NOK' },
-  { code: 'NZD' },
-  { code: 'PHP' },
-  { code: 'PLN' },
-  { code: 'RON' },
-  { code: 'RUB' },
-  { code: 'SEK' },
-  { code: 'SGD' },
-  { code: 'THB' },
-  { code: 'TRY' },
-  { code: 'ZAR' },
-]
-
-const selectedCurrency = ref(currencies[0]!)
-
 const { data: prices } = await useLazyAsyncData(
-  `security:${route.params.uuid}:prices:${selectedCurrency.value.code}`,
+  `security:${route.params.uuid}:prices:EUR`,
   async () => {
     if (!security.value.pricesAvailable) {
       return []
     }
     return await useApi<{ date: string, close: number }[]>(
-      `/securities/uuid/${route.params.uuid}/prices/${selectedCurrency.value.code}`,
+      `/securities/uuid/${route.params.uuid}/prices/EUR`,
     )
   },
-  { watch: [selectedCurrency] },
 )
 
 useHead(() => ({
@@ -112,22 +71,6 @@ useHead(() => ({
           <h3 v-if="security.pricesAvailable">
             Prices
           </h3>
-          <Select
-            v-if="security.pricesAvailable"
-            v-model="selectedCurrency"
-            :options="currencies"
-            option-label="code"
-            class="ml-2"
-          >
-            <template #value="{ value }">
-              <CountryFlag :country="value.code.substring(0, 2)" class="mr-1" />
-              {{ value.code }}
-            </template>
-            <template #option="{ option }">
-              <CountryFlag :country="option.code.substring(0, 2)" class="mr-1" />
-              {{ option.code }}
-            </template>
-          </Select>
         </div>
 
         <PricesTable
