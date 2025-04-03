@@ -25,10 +25,6 @@
       ]
     }
   },
-  "dependencies": {
-    "@vuelidate/core": "2.0.3",
-    "@vuelidate/validators": "2.0.4"
-  },
   "devDependencies": {
     "@antfu/eslint-config": "^4.11.0",
     "@fontsource/fira-mono": "^5.2.5",

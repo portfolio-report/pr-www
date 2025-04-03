@@ -7,13 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@vuelidate/core':
-        specifier: 2.0.3
-        version: 2.0.3(vue@3.5.13(typescript@5.8.2))
-      '@vuelidate/validators':
-        specifier: 2.0.4
-        version: 2.0.4(vue@3.5.13(typescript@5.8.2))
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^4.11.0
@@ -1535,24 +1528,6 @@ packages:
 
   '@vue/shared@3.5.13':
     resolution: {integrity: sha512-/hnE/qP5ZoGpol0a5mDi45bOd7t3tjYJBjsgCsivow7D48cJeV5l05RD82lPqi7gRiphZM37rnhW1l6ZoCNNnQ==}
-
-  '@vuelidate/core@2.0.3':
-    resolution: {integrity: sha512-AN6l7KF7+mEfyWG0doT96z+47ljwPpZfi9/JrNMkOGLFv27XVZvKzRLXlmDPQjPl/wOB1GNnHuc54jlCLRNqGA==}
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^2.0.0 || >=3.0.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-
-  '@vuelidate/validators@2.0.4':
-    resolution: {integrity: sha512-odTxtUZ2JpwwiQ10t0QWYJkkYrfd0SyFYhdHH44QQ1jDatlZgTh/KRzrWVmn/ib9Gq7H4hFD4e8ahoo5YlUlDw==}
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^2.0.0 || >=3.0.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
 
   '@vueuse/core@13.0.0':
     resolution: {integrity: sha512-rkgb4a8/0b234lMGCT29WkCjPfsX0oxrIRR7FDndRoW3FsaC9NBzefXg/9TLhAgwM11f49XnutshM4LzJBrQ5g==}
@@ -4621,17 +4596,6 @@ packages:
   vue-bundle-renderer@2.1.1:
     resolution: {integrity: sha512-+qALLI5cQncuetYOXp4yScwYvqh8c6SMXee3B+M7oTZxOgtESP0l4j/fXdEJoZ+EdMxkGWIj+aSEyjXkOdmd7g==}
 
-  vue-demi@0.13.11:
-    resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
-    engines: {node: '>=12'}
-    hasBin: true
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^3.0.0-0 || ^2.6.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-
   vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
 
@@ -6587,16 +6551,6 @@ snapshots:
       vue: 3.5.13(typescript@5.8.2)
 
   '@vue/shared@3.5.13': {}
-
-  '@vuelidate/core@2.0.3(vue@3.5.13(typescript@5.8.2))':
-    dependencies:
-      vue: 3.5.13(typescript@5.8.2)
-      vue-demi: 0.13.11(vue@3.5.13(typescript@5.8.2))
-
-  '@vuelidate/validators@2.0.4(vue@3.5.13(typescript@5.8.2))':
-    dependencies:
-      vue: 3.5.13(typescript@5.8.2)
-      vue-demi: 0.13.11(vue@3.5.13(typescript@5.8.2))
 
   '@vueuse/core@13.0.0(vue@3.5.13(typescript@5.8.2))':
     dependencies:
@@ -10176,10 +10130,6 @@ snapshots:
   vue-bundle-renderer@2.1.1:
     dependencies:
       ufo: 1.5.4
-
-  vue-demi@0.13.11(vue@3.5.13(typescript@5.8.2)):
-    dependencies:
-      vue: 3.5.13(typescript@5.8.2)
 
   vue-devtools-stub@0.1.0: {}
 
