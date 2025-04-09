@@ -3,11 +3,6 @@ import Chart from 'primevue/chart'
 import Checkbox from 'primevue/checkbox'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
-import Tab from 'primevue/tab'
-import TabList from 'primevue/tablist'
-import TabPanel from 'primevue/tabpanel'
-import TabPanels from 'primevue/tabpanels'
-import Tabs from 'primevue/tabs'
 
 const route = useRoute()
 
@@ -15,11 +10,10 @@ const { data, error } = await useAsyncData(
   `stats:${route.params.version}`,
   () =>
     useApi<{
-      byCountry: { country: string, count: number }[]
       byDate: { date: string, count: number }[]
     }>(`/stats/updates/${route.params.version}`),
 )
-if (error.value || data.value?.byCountry == null || data.value.byDate == null) {
+if (error.value || data.value?.byDate == null) {
   throw createError({ statusCode: 404 })
 }
 
@@ -32,7 +26,7 @@ const chartOptions = {
 const byDateAccumulated = ref(false)
 
 const chartData = computed(() => {
-  if (!data.value?.byCountry) {
+  if (!data.value) {
     return { labels: [], datasets: [] }
   }
 
@@ -63,63 +57,31 @@ const chartData = computed(() => {
   <div>
     <h2>Version Statistics for {{ route.params.version }}</h2>
 
-    <Tabs value="byDate">
-      <TabList>
-        <Tab value="byDate">
-          By date
-        </Tab>
-        <Tab value="byCountry">
-          By country
-        </Tab>
-      </TabList>
-      <TabPanels>
-        <TabPanel value="byDate">
-          <Chart
-            type="line"
-            :data="chartData"
-            :options="chartOptions"
-            style="height: 400px"
-          />
-          <div class="flex items-center my-2">
-            <Checkbox v-model="byDateAccumulated" binary input-id="checkboxAccumulated" />
-            <label for="checkboxAccumulated" class="ml-2">Accumulated numbers</label>
-          </div>
+    <Chart
+      type="line"
+      :data="chartData"
+      :options="chartOptions"
+      style="height: 400px"
+    />
+    <div class="flex items-center my-2">
+      <Checkbox v-model="byDateAccumulated" binary input-id="checkboxAccumulated" />
+      <label for="checkboxAccumulated" class="ml-2">Accumulated numbers</label>
+    </div>
 
-          <DataTable
-            :value="data?.byDate"
-            sort-field="date"
-            :sort-order="-1"
-            class="font-mono"
-            size="small"
-          >
-            <Column field="date" header="Date" :sortable="true" />
-            <Column
-              field="count"
-              header="Count"
-              :sortable="true"
-              class="!text-right"
-            />
-          </DataTable>
-        </TabPanel>
-
-        <TabPanel value="byCountry">
-          <DataTable
-            :value="data?.byCountry"
-            sort-field="count"
-            :sort-order="-1"
-            class="font-mono"
-            size="small"
-          >
-            <Column field="country" header="Country" :sortable="true" />
-            <Column
-              field="count"
-              header="Count"
-              :sortable="true"
-              class="!text-right"
-            />
-          </DataTable>
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
+    <DataTable
+      :value="data?.byDate"
+      sort-field="date"
+      :sort-order="-1"
+      class="font-mono"
+      size="small"
+    >
+      <Column field="date" header="Date" :sortable="true" />
+      <Column
+        field="count"
+        header="Count"
+        :sortable="true"
+        class="!text-right"
+      />
+    </DataTable>
   </div>
 </template>
