@@ -36,7 +36,7 @@
     "@vueuse/router": "^13.1.0",
     "chart.js": "^4.4.9",
     "eslint": "^9.25.1",
-    "nuxt": "^3.16.2",
+    "nuxt": "^3.17.1",
     "primevue": "4.3.3",
     "typescript": "^5.8.3",
     "unocss": "^66.0.0",
