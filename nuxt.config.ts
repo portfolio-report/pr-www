@@ -5,13 +5,6 @@ export default defineNuxtConfig({
 
   spaLoadingTemplate: 'spa-loading-template.html',
 
-  build: {
-    transpile: [
-      'chart.js',
-      //
-    ],
-  },
-
   vite: {
     css: {
       preprocessorOptions: {
@@ -58,7 +51,6 @@ export default defineNuxtConfig({
       failOnError: false,
       ignore: [
         '/securities',
-        '/stats',
       ],
     },
   },
