@@ -28,7 +28,7 @@
     "@antfu/eslint-config": "^4.13.0",
     "@fontsource/fira-mono": "^5.2.6",
     "@fontsource/fira-sans": "^5.2.5",
-    "@iconify/json": "^2.2.336",
+    "@iconify/json": "^2.2.341",
     "@primevue/nuxt-module": "4.3.1",
     "@primevue/themes": "4.3.4",
     "@unocss/nuxt": "^66.1.2",
