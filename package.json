@@ -35,7 +35,7 @@
     "@vueuse/core": "^13.3.0",
     "@vueuse/router": "^13.3.0",
     "eslint": "^9.28.0",
-    "nuxt": "^3.17.4",
+    "nuxt": "^3.17.5",
     "primevue": "4.3.5",
     "typescript": "^5.8.3",
     "unocss": "^66.1.2",
