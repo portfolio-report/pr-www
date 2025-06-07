@@ -82,6 +82,9 @@ async function updateResults() {
 <template>
   <div class="flex justify-center">
     <div style="width: 800px">
+      <Message severity="error" icon="i-carbon-error" class="mb-4">
+        Please use the built-in quotes provider in <a href="https://www.portfolio-performance.info/download.html">Portfolio Performance</a>. This service will be discontinued in the future.
+      </Message>
       <Card>
         <template #title>
           Security Search
