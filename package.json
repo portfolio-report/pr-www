@@ -27,7 +27,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^4.13.2",
     "@fontsource/fira-mono": "^5.2.6",
-    "@fontsource/fira-sans": "^5.2.5",
+    "@fontsource/fira-sans": "^5.2.6",
     "@iconify/json": "^2.2.348",
     "@primevue/nuxt-module": "4.3.1",
     "@primevue/themes": "4.3.5",
