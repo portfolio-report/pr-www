@@ -1,15 +1,8 @@
 <script setup lang="ts">
-import Toast from 'primevue/toast'
-
 useHead({
   title: 'Portfolio Report',
   meta: [{ name: 'description', content: 'Portfolio Report' }],
   link: [
-    {
-      rel: 'search',
-      type: 'application/opensearchdescription+xml',
-      href: '/opensearch.xml',
-    },
     { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     {
       rel: 'icon',
@@ -37,10 +30,19 @@ useHead({
 </script>
 
 <template>
-  <div>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-    <Toast />
+  <div class="flex justify-center items-center h-screen">
+    <Card class="shadow-2" style="min-width: 600px">
+      <template #title>
+        <div class="text-center">
+          <h1 class="mt-0">
+            Good bye 👋
+          </h1>
+        </div>
+      </template>
+
+      <template #content>
+        Please use the built-in quotes provider in <a href="https://www.portfolio-performance.info/download.html" class="text-blue-500">Portfolio Performance</a>.
+      </template>
+    </Card>
   </div>
 </template>
