@@ -33,8 +33,8 @@ importers:
         specifier: ^13.5.0
         version: 13.5.0(vue@3.5.17(typescript@5.8.3))
       '@vueuse/router':
-        specifier: ^13.4.0
-        version: 13.4.0(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))
+        specifier: ^13.5.0
+        version: 13.5.0(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))
       eslint:
         specifier: ^9.30.1
         version: 9.30.1(jiti@2.4.2)
@@ -1764,16 +1764,11 @@ packages:
   '@vueuse/metadata@13.5.0':
     resolution: {integrity: sha512-euhItU3b0SqXxSy8u1XHxUCdQ8M++bsRs+TYhOLDU/OykS7KvJnyIFfep0XM5WjIFry9uAPlVSjmVHiqeshmkw==}
 
-  '@vueuse/router@13.4.0':
-    resolution: {integrity: sha512-3NL9RFgTiWN4SVp6CUFK/9db10BnoLU3iX+TRgcG4HEuR7GC1g+yMqxe33L6kjUTv8Dc9WeaER714vGBc9Xyjg==}
+  '@vueuse/router@13.5.0':
+    resolution: {integrity: sha512-QI735rn3FPMnEAqiwJKdYN2byMn1orRBcBq9YuZS/QSYUNV7tR8jhU99s7Vix+BL0YEIk/nU7lUZA0IOCarGzg==}
     peerDependencies:
       vue: ^3.5.0
       vue-router: ^4.0.0
-
-  '@vueuse/shared@13.4.0':
-    resolution: {integrity: sha512-+AxuKbw8R1gYy5T21V5yhadeNM7rJqb4cPaRI9DdGnnNl3uqXh+unvQ3uCaA2DjYLbNr1+l7ht/B4qEsRegX6A==}
-    peerDependencies:
-      vue: ^3.5.0
 
   '@vueuse/shared@13.5.0':
     resolution: {integrity: sha512-K7GrQIxJ/ANtucxIXbQlUHdB0TPA8c+q5i+zbrjxuhJCnJ9GtBg75sBSnvmLSxHKPg2Yo8w62PWksl9kwH0Q8g==}
@@ -7412,15 +7407,11 @@ snapshots:
 
   '@vueuse/metadata@13.5.0': {}
 
-  '@vueuse/router@13.4.0(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))':
+  '@vueuse/router@13.5.0(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))':
     dependencies:
-      '@vueuse/shared': 13.4.0(vue@3.5.17(typescript@5.8.3))
+      '@vueuse/shared': 13.5.0(vue@3.5.17(typescript@5.8.3))
       vue: 3.5.17(typescript@5.8.3)
       vue-router: 4.5.1(vue@3.5.17(typescript@5.8.3))
-
-  '@vueuse/shared@13.4.0(vue@3.5.17(typescript@5.8.3))':
-    dependencies:
-      vue: 3.5.17(typescript@5.8.3)
 
   '@vueuse/shared@13.5.0(vue@3.5.17(typescript@5.8.3))':
     dependencies:
