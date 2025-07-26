@@ -25,7 +25,7 @@
     }
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.17.0",
+    "@antfu/eslint-config": "^5.0.0",
     "@fontsource/fira-mono": "^5.2.6",
     "@fontsource/fira-sans": "^5.2.6",
     "@iconify/json": "^2.2.362",
