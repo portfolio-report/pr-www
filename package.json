@@ -29,7 +29,7 @@
     "@fontsource/fira-mono": "^5.2.6",
     "@fontsource/fira-sans": "^5.2.6",
     "@iconify/json": "^2.2.362",
-    "@primevue/nuxt-module": "4.3.1",
+    "@primevue/nuxt-module": "4.3.6",
     "@primevue/themes": "4.3.6",
     "@unocss/nuxt": "^66.3.3",
     "@vueuse/core": "^13.5.0",
