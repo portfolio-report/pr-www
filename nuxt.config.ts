@@ -5,16 +5,6 @@ export default defineNuxtConfig({
 
   spaLoadingTemplate: 'spa-loading-template.html',
 
-  vite: {
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern',
-        },
-      },
-    },
-  },
-
   typescript: {
     typeCheck: true,
     strict: true,
