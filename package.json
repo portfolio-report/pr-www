@@ -30,7 +30,7 @@
     "@fontsource/fira-sans": "^5.2.6",
     "@iconify/json": "^2.2.365",
     "@primevue/nuxt-module": "4.3.7",
-    "@primevue/themes": "4.3.6",
+    "@primevue/themes": "4.3.7",
     "@unocss/nuxt": "^66.4.0",
     "@vueuse/core": "^13.6.0",
     "@vueuse/router": "^13.6.0",
